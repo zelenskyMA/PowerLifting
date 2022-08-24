@@ -1,6 +1,7 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
+.vs/
 
 /PowerLifting
 /PowerLifting.Infrastructure/obj/Debug/net6.0
