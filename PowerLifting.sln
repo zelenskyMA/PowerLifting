@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerLifting", "PowerLifting\PowerLifting.csproj", "{0739E6DD-3B43-4B5C-879F-B1EC616465E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerLifting.Service", "PowerLifting.Service\PowerLifting.Service.csproj", "{19705DEA-8C82-480B-A060-A02E56595E2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0739E6DD-3B43-4B5C-879F-B1EC616465E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0739E6DD-3B43-4B5C-879F-B1EC616465E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0739E6DD-3B43-4B5C-879F-B1EC616465E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0739E6DD-3B43-4B5C-879F-B1EC616465E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19705DEA-8C82-480B-A060-A02E56595E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19705DEA-8C82-480B-A060-A02E56595E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19705DEA-8C82-480B-A060-A02E56595E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19705DEA-8C82-480B-A060-A02E56595E2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {18F0D882-DC38-48AF-8959-5DE16AFA924B}
+		SolutionGuid = {491FA4CA-8598-4C7A-B3D8-3D1259479374}
 	EndGlobalSection
 EndGlobal
