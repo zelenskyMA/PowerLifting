@@ -13,7 +13,7 @@
     </RootPath>
     <RootNamespace>PowerLifting.Database</RootNamespace>
     <AssemblyName>PowerLifting.Database</AssemblyName>
-    <ModelCollation>1033,CI</ModelCollation>
+    <ModelCollation>1049,CS</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -22,7 +22,7 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
-    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultCollation>Cyrillic_General_100_CS_AS</DefaultCollation>
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
     <DacApplicationName>PowerLifting</DacApplicationName>
   </PropertyGroup>
@@ -61,6 +61,7 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
+    <Folder Include="PostDeploy" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Users.sql" />
@@ -79,8 +80,10 @@
     <Build Include="dbo\Tables\Exercises.sql" />
     <Build Include="dbo\Tables\LiftingIntensity.sql" />
     <Build Include="dbo\Tables\ExercisePercentages.sql" />
+    <PostDeploy Include="PostDeploy\PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PowerLifting.publish.xml" />
+    <None Include="PowerLifting.Database.publish.xml" />
   </ItemGroup>
 </Project>
