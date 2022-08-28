@@ -74,10 +74,10 @@
     <Build Include="dbo\Tables\TrainingGroups.sql" />
     <Build Include="dbo\Tables\UserTrainingGroups.sql" />
     <Build Include="dbo\Tables\TrainingDays.sql" />
-    <Build Include="dbo\Tables\DailyExercises.sql" />
+    <Build Include="dbo\Tables\Exercises.sql" />
     <Build Include="dbo\Tables\ExerciseTypes.sql" />
     <Build Include="dbo\Tables\Percentages.sql" />
-    <Build Include="dbo\Tables\Exercises.sql" />
+    <Build Include="dbo\Tables\ExerciseValues.sql" />
     <Build Include="dbo\Tables\LiftingIntensity.sql" />
     <Build Include="dbo\Tables\ExercisePercentages.sql" />
     <PostDeploy Include="PostDeploy\PostDeployment.sql" />

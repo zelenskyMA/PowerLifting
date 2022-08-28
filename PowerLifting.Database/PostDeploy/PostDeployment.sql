@@ -24,22 +24,22 @@ SET IDENTITY_INSERT ExerciseTypes OFF
 SET IDENTITY_INSERT Percentages ON
 
 IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 1)
-  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 1, '< 50%', 'Меньше 50%', 0, 50);
+  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 1, '< 50%', 'Меньше 50%', 0, 49);
 IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 2)
-  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 2, '51 - 60%', '', 51, 60);
+  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 2, '50 - 60%', '', 50, 59);
 IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 3)
-  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 3, '61 - 70%', '', 61, 70);
+  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 3, '60 - 70%', '', 60, 69);
 IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 4)
-  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 4, '71 - 80%', '', 71, 80);
+  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 4, '70 - 80%', '', 70, 79);
 IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 5)
-  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 5, '81 - 90%', '', 81, 90);
+  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 5, '80 - 90%', '', 80, 89);
 IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 6)
-  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 6, '91 - 100%', '', 91, 100);
+  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 6, '90 - 100%', '', 90, 99);
 IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 7)
-  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 7, '101 - 110%', '', 101, 110);
+  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 7, '100 - 110%', '', 100, 109);
 IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 8)
-  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 8, '111 - 120%', '', 111, 120);
+  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 8, '110 - 120%', '', 110, 119);
 IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 9)
-  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 9, '> 120%', 'Больше 120%', 121, 999);
+  INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 9, '> 120%', 'Больше 120%', 120, 999);
 
 SET IDENTITY_INSERT Percentages OFF 

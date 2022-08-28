@@ -6,6 +6,6 @@
     [ExerciseId] INT NOT NULL, 
     CONSTRAINT [PK_ExercisePercentages] PRIMARY KEY ([Id]),
     FOREIGN KEY ([PercentageId]) REFERENCES [dbo].[Percentages] ([Id]),
-    FOREIGN KEY ([DailyExerciseId]) REFERENCES [dbo].[DailyExercises] ([Id]),
-    FOREIGN KEY ([ExerciseId]) REFERENCES [dbo].[Exercises] ([Id])
+    FOREIGN KEY ([DailyExerciseId]) REFERENCES [dbo].[Exercises] ([Id]),
+    FOREIGN KEY ([ExerciseId]) REFERENCES [dbo].[ExerciseValues] ([Id])
 )
