@@ -1,7 +1,7 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
-import { WorkDayView } from "./components/workDay/WorkDayView";
+import { TrainingDayView } from "./components/trainingDay/TrainingDayView";
 
 const AppRoutes = [
   {
@@ -17,8 +17,8 @@ const AppRoutes = [
     element: <FetchData />
   },
   {
-    path: '/workDay',
-    element: <WorkDayView />
+    path: '/trainingDay',
+    element: <TrainingDayView />
   }
 ];
 

@@ -8,14 +8,14 @@ namespace PowerLifting.Infrastructure.Repositories.Common
   {
     public CrudRepo(DbContextOptions<LiftingContext> provider) : base(provider) { }
 
+    public Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate) =>
+      predicate == null ? DbSet.ToListAsync() : DbSet.Where(predicate).ToListAsync();
 
-    public IEnumerable<T> Find(Expression<Func<T, bool>> predicate) => DbSet.Where(predicate).ToList();
+    public virtual async Task<T> GetAsyn(string name) => await DbSet.FindAsync(name);
 
-    public virtual async Task<T> Get(string name) => await DbSet.FindAsync(name);
-
-    public async Task Delete(string name)
+    public async Task DeleteAsync(string name)
     {
-      var entity = await Get(name);
+      var entity = await GetAsyn(name);
       if (entity == null) return; // not found; assume already deleted.
       await DeleteAsync(entity);
     }

@@ -1,6 +1,6 @@
 ﻿namespace PowerLifting.Domain.Models.TrainingWork
 {
-  public class WorkDay
+  public class TrainingDay
   {
     public int Id { get; set; }
 

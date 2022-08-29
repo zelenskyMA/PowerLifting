@@ -1,20 +1,20 @@
 ﻿import React, { Component } from 'react';
-import { WorkDayModel } from "../../common/models/WorkDayModel";
+import { TrainingDayModel } from "../../common/models/WorkDayModel";
 
-export class WorkDayCreate extends Component {
-  static displayName = WorkDayCreate.name;
+export class TrainingDayCreate extends Component {
+  static displayName = TrainingDayCreate.name;
 
   constructor(props) {
     super(props);
-    this.state = { workDay: WorkDayModel };
+    this.state = { trainingDay: TrainingDayModel };
 
     this.incrementCounter = this.incrementCounter.bind(this);
   }
 
   setUserId() {
     this.setState({
-      workDay: {
-        ...this.state.workDay,
+      trainingDay: {
+        ...this.state.trainingDay,
         userId: event.target.value
       }
     });
@@ -28,7 +28,7 @@ export class WorkDayCreate extends Component {
 
         <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
 
-        <input type='text' onChange={this.setUserId()} value={this.state.workDay.userId} />
+        <input type='text' onChange={this.setUserId()} value={this.state.trainingDay.userId} />
 
         <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button>
       </div>

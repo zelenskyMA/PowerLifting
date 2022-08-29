@@ -1,14 +1,14 @@
-﻿export class WorkPlanModel {
+﻿export class TrainingPlanModel {
   constructor() {
     this.id = 0;
     this.userId = 0;
     this.startDate = null;
     this.comments = '';
-    this.workDays = [];
+    this.TrainingDays = [];
   }
 }
 
-export class WorkDayModel {
+export class TrainingDayModel {
   constructor() {
     this.id = 0;
     this.activityDate = null;
@@ -19,7 +19,7 @@ export class WorkDayModel {
   }
 }
 
-export class WorkPlanModel {
+export class ExerciseModel {
   constructor() {
     this.id = 0;
     this.exerciseTypeId = 0;

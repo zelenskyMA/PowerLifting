@@ -1,16 +1,16 @@
 ﻿import React, { Component } from 'react';
 
-export class WorkDayView extends Component {
-  static displayName = WorkDayView.name;
+export class TrainingDayView extends Component {
+  static displayName = TrainingDayView.name;
 
 
   constructor(props) {
     super(props);
-    this.state = { workDay: null, loading: true };
+    this.state = { trainingDay: null, loading: true };
   }
 
   componentDidMount() {
-    this.loadWorkDay();
+    this.loadTrainingDay();
   }
 
   render() {
@@ -21,7 +21,7 @@ export class WorkDayView extends Component {
 
     let contents = this.state.loading
       ? <p><em>Загрузка...</em></p>
-      : WorkDayView.renderWorkTable(this.state.workDay);
+      : TrainingDayView.renderTrainingTable(this.state.trainingDay);
 
     return (
       <>
@@ -32,7 +32,7 @@ export class WorkDayView extends Component {
     );
   }
 
-  static renderWorkTable(workDay) {
+  static renderTrainingTable(trainingDay) {
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
@@ -53,10 +53,10 @@ export class WorkDayView extends Component {
           </tr>
         </thead>
         <tbody>
-          {[...Array(workDay.exerciseCount)].map((x, i) =>          
+          {[...Array(trainingDay.exerciseCount)].map((x, i) =>          
             <tr onDoubleClick={() => alert('test')}>
-              <td>{workDay.name}</td>
-              {workDay.data.map(exercise =>
+              <td>{trainingDay.name}</td>
+              {trainingDay.data.map(exercise =>
                 <td>{exercise.weight} | {exercise.iterationCount} <br /> {exercise.repeateCount1} | {exercise.repeateCount2} | {exercise.repeateCount3}</td>
               )}
               <td>посчитаем</td>
@@ -69,8 +69,8 @@ export class WorkDayView extends Component {
     );
   }
 
-  async loadWorkDay() {
-    const response = await fetch('weatherforecast/workday');
+  async loadTrainingDay() {
+    const response = await fetch('weatherforecast/trainingDay');
     const data = await response.json();    
     this.setState({ workDay: data, loading: false });
   }
