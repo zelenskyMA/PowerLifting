@@ -23,6 +23,7 @@ namespace PowerLifting.Service.Controllers
     }
 
     [HttpPost]
+    [Route("update")]
     public async Task<int> Update(TrainingPlan plan)
     {
       return await _trainingPlanApp.UpdateAsync(plan);

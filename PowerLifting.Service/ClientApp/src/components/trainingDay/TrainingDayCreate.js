@@ -4,11 +4,9 @@ import { TrainingDayModel } from "../../common/models/WorkDayModel";
 export class TrainingDayCreate extends Component {
   static displayName = TrainingDayCreate.name;
 
-  constructor(props) {
-    super(props);
-    this.state = { trainingDay: TrainingDayModel };
-
-    this.incrementCounter = this.incrementCounter.bind(this);
+  createPlan = e => {
+    const year = +e.currentTarget.innerText
+    this.props.createTrainingPlan(year) // setYear -> getPhotos
   }
 
   setUserId() {
@@ -30,8 +28,13 @@ export class TrainingDayCreate extends Component {
 
         <input type='text' onChange={this.setUserId()} value={this.state.trainingDay.userId} />
 
-        <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button>
+        <button className="btn btn-primary" onClick={this.createPlan}>Создать</button>
       </div>
     );
   }
+}
+
+Page.propTypes = {
+  createTrainingPlan: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
 }
