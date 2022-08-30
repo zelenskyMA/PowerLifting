@@ -1,10 +1,9 @@
-﻿import { TrainingPlanModel } from '../trainingPlanData'
-
+﻿
 const REQUEST_TRAININGPLAN = "REQUEST_TRAININGPLAN";
 const RECEIVE_TRAININGPLAN = "RECEIVE_TRAININGPLAN";
 
 const initialState = {
-  trainingPlan: new TrainingPlanModel(),
+  planId: 0,
   isFetching: false,
 }
 

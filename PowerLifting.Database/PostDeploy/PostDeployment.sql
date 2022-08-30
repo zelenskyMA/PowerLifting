@@ -10,6 +10,14 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
+SET IDENTITY_INSERT Users ON
+
+IF NOT EXISTS (SELECT * FROM Users WHERE [Id] = 1)
+  INSERT INTO Users (Id, Email, Password, Salt) VALUES ( 1, 'test@email.com', 'testPwd', 'testSalt');
+
+SET IDENTITY_INSERT Users OFF 
+
+
 SET IDENTITY_INSERT ExerciseTypes ON
 
 IF NOT EXISTS (SELECT * FROM ExerciseTypes WHERE [Id] = 1)

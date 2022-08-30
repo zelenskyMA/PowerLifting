@@ -1,8 +1,6 @@
 ﻿import { combineReducers } from 'redux'
-import { pageReducer } from './page'
-import { userReducer } from './user'
+import { trainingPlanReducer } from '../stores/trainingPlanStore/reducers/trainingPlanReducer'
 
 export const rootReducer = combineReducers({
-  page: pageReducer,
-  user: userReducer,
+  trainingPlan: trainingPlanReducer,
 })

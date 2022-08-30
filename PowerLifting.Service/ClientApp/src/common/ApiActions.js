@@ -7,6 +7,18 @@
  и т.д.
  */
 
+export function Create(entityName, payload) {
+  return fetch(
+    `${entityName}/create`, //url
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+}
 
 export function Update(entityName, payload) {
   return fetch(
@@ -26,8 +38,8 @@ export function Get(id, entityName, dispatch) {
   fetch(`${entityName}/get?id=${id}`)
     .then(response => response.json())
     .then(data => {
-      dispatch({ type: `RECEIVE_${entityName.toUpperCase()}S`, pageIndex: pageIndex, result: data });
+      dispatch({ type: `RECEIVE_${entityName.toUpperCase()}S`, result: data });
     });
 
-  dispatch({ type: `REQUEST_${entityName.toUpperCase()}S`, pageIndex: pageIndex });
+  dispatch({ type: `REQUEST_${entityName.toUpperCase()}S` });
 }

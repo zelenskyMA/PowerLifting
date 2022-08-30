@@ -23,10 +23,11 @@ namespace PowerLifting.Service.Controllers
     }
 
     [HttpPost]
-    [Route("update")]
-    public async Task<int> Update(TrainingPlan plan)
+    [Route("create")]
+    public async Task<int> Create(DateTime creationDate)
     {
-      return await _trainingPlanApp.UpdateAsync(plan);
+      var result = await _trainingPlanApp.CreateAsync(creationDate);
+      return result;
     }
   }
 }

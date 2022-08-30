@@ -1,8 +1,8 @@
-﻿import { Get, Update } from "../../common/ApiActions"
+﻿import { Get, Create } from "../../common/ApiActions"
 
-export function createTrainingPlan(plan, dispatch) {
-  Update("trainingPlan", plan)
-    .then(data => GetTrainingPlan(data.id, dispatch));
+export function createTrainingPlan(creationDate, dispatch) {
+  Create("trainingPlan", creationDate)
+    .then(data => getTrainingPlan(data.id, dispatch));
 }
 
 export function getTrainingPlan(id, dispatch) {

@@ -9,6 +9,7 @@ namespace PowerLifting.Application.Mapper
     public MapperProfile()
     {
       CreateMap<TrainingPlanDb, TrainingPlan>().ReverseMap();
+      CreateMap<TrainingDayDb, TrainingDay>().ReverseMap();
     }
   }
 }
