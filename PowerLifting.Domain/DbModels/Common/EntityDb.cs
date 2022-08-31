@@ -2,7 +2,7 @@
 
 namespace PowerLifting.Domain.DbModels.Common
 {
-  public class EntityModel
+  public class EntityDb
   {
     [Key]
     public int Id { get; set; }

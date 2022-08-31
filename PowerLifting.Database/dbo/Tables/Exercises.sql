@@ -1,13 +1,9 @@
 ﻿CREATE TABLE [dbo].[Exercises]
 (
-    [Id] INT IDENTITY (1, 1) NOT NULL, 
-    [TrainingDayId] INT NOT NULL,
+    [Id] INT IDENTITY (1, 1) NOT NULL,
     [ExerciseTypeId] INT NOT NULL,
-    [Order] INT NOT NULL, 
-    [LiftCounter] INT NOT NULL DEFAULT 0,
-    [WeightLoad] INT NOT NULL DEFAULT 0,
-    [Intensity] INT NOT NULL DEFAULT 0, 
-    CONSTRAINT [PK_DailyExercises] PRIMARY KEY ([Id]),
-    FOREIGN KEY ([TrainingDayId]) REFERENCES [dbo].[TrainingDays] ([Id]),
+    [Name] NVARCHAR(50) NOT NULL, 
+    [Description] NVARCHAR(150) NULL, 
+    CONSTRAINT [PK_Exercises] PRIMARY KEY ([Id]),
     FOREIGN KEY ([ExerciseTypeId]) REFERENCES [dbo].[ExerciseTypes] ([Id])
 )

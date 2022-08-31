@@ -1,9 +1,9 @@
-﻿namespace PowerLifting.Domain.Models.TrainingWork
-{
-  public class ExerciseValue
-  {
-    public int Id { get; set; }
+﻿using PowerLifting.Domain.Models.Common;
 
+namespace PowerLifting.Domain.Models.TrainingWork
+{
+  public class ExerciseValue : Entity
+  {
     public int Weight { get; set; }
 
     public int Iterations { get; set; }

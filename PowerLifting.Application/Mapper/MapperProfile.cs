@@ -13,6 +13,7 @@ namespace PowerLifting.Application.Mapper
       CreateMap<TrainingDayDb, TrainingDay>().ReverseMap();
 
       CreateMap<ExerciseTypeDb, DictionaryItem>().ReverseMap();
+      CreateMap<ExerciseDb, Exercise>().ReverseMap();
     }
   }
 }

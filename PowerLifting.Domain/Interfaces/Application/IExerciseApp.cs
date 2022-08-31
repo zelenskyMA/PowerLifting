@@ -1,9 +1,9 @@
-﻿using PowerLifting.Domain.Models;
+﻿using PowerLifting.Domain.Models.TrainingWork;
 
 namespace PowerLifting.Domain.Interfaces.Application
 {
   public interface IExerciseApp
   {
-    Task<List<DictionaryItem>> GetTypesAsync();
+    Task<List<Exercise>> GetListAsync();
   }
 }

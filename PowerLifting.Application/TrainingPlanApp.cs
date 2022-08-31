@@ -46,12 +46,12 @@ namespace PowerLifting.Application
     public async Task<int> CreateAsync(DateTime creationDate)
     {
       var plan = new TrainingPlanDb() { StartDate = creationDate, UserId = 1 };
-      await _trainingPlanRepository.Create(plan);
+      await _trainingPlanRepository.CreateAsync(plan);
 
       for (int i = 0; i < 7; i++) // 7 days standard plan
       {
         var trainingDay = new TrainingDayDb() { TrainingPlanId = plan.Id, ActivityDate = creationDate.AddDays(i) };
-        await _trainingDayRepository.Create(trainingDay);
+        await _trainingDayRepository.CreateAsync(trainingDay);
       }
 
       return plan.Id;

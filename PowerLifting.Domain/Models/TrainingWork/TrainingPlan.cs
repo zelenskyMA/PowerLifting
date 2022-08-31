@@ -1,9 +1,9 @@
-﻿namespace PowerLifting.Domain.Models.TrainingWork
-{
-  public class TrainingPlan
-  {
-    public int Id { get; set; }
+﻿using PowerLifting.Domain.Models.Common;
 
+namespace PowerLifting.Domain.Models.TrainingWork
+{
+  public class TrainingPlan : Entity
+  {
     public int UserId { get; set; }
 
     public DateTime StartDate { get; set; }

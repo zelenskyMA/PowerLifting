@@ -7,5 +7,5 @@
     [ExercisePart2] INT NOT NULL DEFAULT 0,
     [ExercisePart3] INT NOT NULL DEFAULT 0, 
     [Comments] NVARCHAR(250) NULL, 
-    CONSTRAINT [PK_Exercises] PRIMARY KEY ([Id])
+    CONSTRAINT [PK_ExerciseValues] PRIMARY KEY ([Id])
 )

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PowerLifting.Domain.Interfaces.Repositories;
+using PowerLifting.Domain.Interfaces.Repositories.Common;
 
 namespace PowerLifting.Infrastructure.Repositories.Common
 {
-  public class BaseRepo<T> : IBaseRepo<T>, IDisposable where T : class
+    public class BaseRepo<T> : IBaseRepo<T>, IDisposable where T : class
     {
         protected LiftingContext Context { get; }
         protected DbSet<T> DbSet { get; set; }
@@ -15,9 +15,9 @@ namespace PowerLifting.Infrastructure.Repositories.Common
         }
 
 
-        public IEnumerable<T> GetAll() => DbSet.ToList();
+        public async Task<IEnumerable<T>> GetAllAsync() => await DbSet.ToListAsync();
 
-        public async Task Create(T entity)
+        public async Task CreateAsync(T entity)
         {
             var dbEntityEntry = Context.Entry(entity);
             if (dbEntityEntry.State != EntityState.Detached)
@@ -32,7 +32,7 @@ namespace PowerLifting.Infrastructure.Repositories.Common
             await Context.SaveChangesAsync();
         }
 
-        public async Task Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
             var dbEntityEntry = Context.Entry(entity);
             if (dbEntityEntry.State == EntityState.Detached)

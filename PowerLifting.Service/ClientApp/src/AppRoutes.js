@@ -3,6 +3,7 @@ import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import { TrainingDayView } from "./components/trainingDay/TrainingDayView";
 import TrainingPlanCreate from "./components/trainingPlan/TrainingPlanCreate";
+import { ExerciseList } from "./components/exercise/ExerciseList";
 
 const AppRoutes = [
   {
@@ -24,6 +25,10 @@ const AppRoutes = [
   {
     path: '/addTrainingPlan',
     element: <TrainingPlanCreate />
+  },
+  {
+    path: '/exerciseList',
+    elemen: <ExerciseList />
   }
 ];
 

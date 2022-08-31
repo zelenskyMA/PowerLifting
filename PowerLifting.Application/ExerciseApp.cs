@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using PowerLifting.Domain.Interfaces.Application;
 using PowerLifting.Domain.Interfaces.Repositories;
-using PowerLifting.Domain.Models;
+using PowerLifting.Domain.Models.TrainingWork;
 
 namespace PowerLifting.Application
 {
@@ -18,10 +18,19 @@ namespace PowerLifting.Application
       _mapper = mapper;
     }
 
-    public async Task<List<DictionaryItem>> GetTypesAsync()
+    /// <inheritdoc />
+    public async Task<List<Exercise>> GetListAsync()
     {
-      var result = await _exerciseRepository.GetExerciseTypesAsync();
-      return result.Select(t => _mapper.Map<DictionaryItem>(t)).ToList();
+      var exercises = await _exerciseRepository.GetAllAsync();
+      var exerciseTypes = await _exerciseRepository.GetExerciseTypesAsync();
+      
+      var result = exercises.Select(t => _mapper.Map<Exercise>(t)).ToList();
+      foreach (var item in result)
+      {
+        item.ExerciseTypeName = exerciseTypes.First(t=> t.Id == item.ExerciseTypeId).Name;
+      }
+
+      return result;
     }
   }
 }

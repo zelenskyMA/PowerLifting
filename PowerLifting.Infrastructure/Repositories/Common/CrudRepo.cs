@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PowerLifting.Domain.Interfaces.Repositories;
+using PowerLifting.Domain.Interfaces.Repositories.Common;
 using System.Linq.Expressions;
 
 namespace PowerLifting.Infrastructure.Repositories.Common
 {
-  public class CrudRepo<T> : BaseRepo<T>, ICrudRepo<T> where T : class
+    public class CrudRepo<T> : BaseRepo<T>, ICrudRepo<T> where T : class
   {
     public CrudRepo(DbContextOptions<LiftingContext> provider) : base(provider) { }
 
