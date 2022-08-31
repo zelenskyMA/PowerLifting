@@ -29,25 +29,6 @@ namespace PowerLifting.Controllers
         Summary = Summaries[Random.Shared.Next(Summaries.Length)]
       })
       .ToArray();
-    }
-
-    [HttpGet]
-    [Route("workday")]
-    public WorkDay GetWorkDay()
-    {
-      var ss = new WorkDay
-      {
-        Name = "жим лежа",
-        ExerciseCount = 10,
-        Data = new List<ExerciseData>()
-      };
-
-      for (int i = 0; i < 9; i++)
-      {
-        ss.Data.Add(new ExerciseData() { IterationCount = i, Weight = i * 4, RepeateCount1 = i + 1, RepeateCount2 = i + 2, RepeateCount3 = i + 3 });
-      }
-
-      return ss;
-    }
+    }    
   }
 }

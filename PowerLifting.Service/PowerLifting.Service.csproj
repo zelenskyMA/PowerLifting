@@ -19,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,15 +30,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\components\workDay\WorkDayView.js" />
+    <None Remove="ClientApp\src\components\trainingDay\TrainingDayView.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\common\components\" />
+    <ProjectReference Include="..\PowerLifting.Application\PowerLifting.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\components\workDay\WorkDayView.js" />
+    <TypeScriptCompile Include="ClientApp\src\components\trainingDay\TrainingDayView.js" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
