@@ -1,6 +1,6 @@
 ﻿namespace PowerLifting.Domain.Models
 {
-  public class DictionaryRecord
+  public class DictionaryItem
   {
     public int Id { get; set; }
 

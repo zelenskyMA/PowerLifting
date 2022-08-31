@@ -1,7 +1,8 @@
-﻿import React from 'react';
-import { connect } from 'react-redux'
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+﻿import React from "react";
+import { connect } from "react-redux"
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { Container, Button } from "reactstrap";
 import { createTrainingPlan } from "../../stores/trainingPlanStore/trainingPlanActions";
 
 const mapStateToProps = store => {
@@ -26,18 +27,21 @@ class TrainingPlanCreate extends React.Component {
   }
 
   onDateChange = date => this.setState({ date });
-  onPlanCreate = () => { this.props.createTrainingPlan(this.state.date);}
+  onPlanCreate = () => { this.props.createTrainingPlan(this.state.date); }
 
   render() {
     return (
-      <div>
+      <>
         <h1>Создание плана тренировок</h1>
         <br />
-        <p>Выберите дату начала тренировок</p>
-        <Calendar onChange={this.onDateChange} value={this.state.date} locale="ru" />
-        <br />
-        <button className="btn btn-primary" onClick={this.onPlanCreate}>Создать</button>
-      </div>
+
+        <Container fluid>
+          <p>Выберите дату начала тренировок</p>
+          <Calendar onChange={this.onDateChange} value={this.state.date} locale="ru" />
+          <br />
+          <Button onClick={this.onPlanCreate}>Создать</Button>
+        </Container>
+      </>
     );
   }
 }
