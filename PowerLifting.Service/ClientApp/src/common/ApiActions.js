@@ -33,6 +33,12 @@ export function Update(entityName, payload) {
     })
 }
 
+export async function GetAsync(url) {
+  const response = await fetch(url);
+  debugger;
+  var data = await response.json();
+  return data;
+}
 
 export function Get(id, entityName, dispatch) {
   fetch(`${entityName}/get?id=${id}`)

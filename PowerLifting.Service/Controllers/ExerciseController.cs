@@ -16,7 +16,6 @@ namespace PowerLifting.Service.Controllers
     }
 
     [HttpGet]
-    [Route("getList")]
     public async Task<List<Exercise>> GetList()
     {
       var result = await _exerciseApp.GetListAsync();
