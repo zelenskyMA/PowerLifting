@@ -24,18 +24,25 @@ export class ExerciseList extends Component {
 
   render() {
     const columns = [
-      { Header: '', accessor: 'id' },
+      { Header: 'Id', accessor: 'id' },
       { Header: 'Название', accessor: 'name' },
       { Header: 'Тип упражнения', accessor: 'exerciseTypeName' },
       { Header: 'Описание', accessor: 'description' },
     ];
 
+    const onRowDblClick = (row) => {
+      var exerciseId = row.values.id;
+
+      let exercises = this.state.exercises;
+      exercises.splice(row.index, 1)
+      this.setState({ exercises: exercises })
+    }
+
     return (
       <>
         <h1>Упражнения</h1>
         <p>Назначте упражнения на выбранный день</p>
-        <br />
-        <TableView columns={columns} data={this.state.exercises} />
+        <TableView columnsInfo={columns} data={this.state.exercises} rowDblClick={onRowDblClick} />
       </>
     );
   }

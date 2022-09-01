@@ -45,9 +45,11 @@ SET IDENTITY_INSERT Percentages OFF
 SET IDENTITY_INSERT ExerciseTypes ON
 
 IF NOT EXISTS (SELECT * FROM ExerciseTypes WHERE [Id] = 1)
-  INSERT INTO ExerciseTypes (Id, Name, Description) VALUES ( 1, 'Толчковые', 'Упражнения, при выполнении задействующие толчок штанги');
+  INSERT INTO ExerciseTypes (Id, Name, Description) VALUES ( 1, 'Толчковые', 'Упражнения на толчок штанги');
 IF NOT EXISTS (SELECT * FROM ExerciseTypes WHERE [Id] = 2)
-  INSERT INTO ExerciseTypes (Id, Name, Description) VALUES ( 2, 'Рывковые', 'Упражнения, при выполнении задействующие рывок штанги');
+  INSERT INTO ExerciseTypes (Id, Name, Description) VALUES ( 2, 'Рывковые', 'Упражнения на рывок штанги');
+IF NOT EXISTS (SELECT * FROM ExerciseTypes WHERE [Id] = 3)
+  INSERT INTO ExerciseTypes (Id, Name, Description) VALUES ( 3, 'Жимовые', 'Упражнения на жим штанги');
 
 SET IDENTITY_INSERT ExerciseTypes OFF 
 
@@ -83,5 +85,10 @@ IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 13)
   INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 13, 2, 'Упражнение рр6 ааа', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 14)
   INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 14, 2, 'Упражнение рр7 ббб', 'Описание упражнения 1ывап');
+
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 15)
+  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 15, 3, 'Упражнение жим рр6 ааа', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 16)
+  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 16, 3, 'Упражнение жим рр7 ббб', 'Описание упражнения 1ывап');
 
 SET IDENTITY_INSERT Exercises OFF 
