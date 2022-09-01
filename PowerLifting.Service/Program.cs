@@ -15,39 +15,30 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connString = builder.Configuration.GetConnectionString("ConnectionDb"); 
+var connString = builder.Configuration.GetConnectionString("ConnectionDb");
 builder.Services.AddDbContext<LiftingContext>(options => options.UseSqlServer(connString));
 
 var mapperConfig = new MapperConfiguration(t => t.AddProfile(new MapperProfile()));
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 //repo services
+builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 builder.Services.AddScoped<ITrainingPlanRepository, TrainingPlanRepository>();
 builder.Services.AddScoped<ITrainingDayRepository, TrainingDayRepository>();
 
 //app services
 builder.Services.AddScoped<ITrainingPlanApp, TrainingPlanApp>();
+builder.Services.AddScoped<IExerciseApp, ExerciseApp>();
 
 var app = builder.Build();
-
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-  app.UseSwagger();
-  app.UseSwaggerUI();
-}
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

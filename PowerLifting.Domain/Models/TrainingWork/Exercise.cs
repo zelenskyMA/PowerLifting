@@ -1,24 +1,11 @@
-﻿namespace PowerLifting.Domain.Models.TrainingWork
-{
-  public class Exercise
-  {
-    public int Id { get; set; }
+﻿using PowerLifting.Domain.Models.Common;
 
+namespace PowerLifting.Domain.Models.TrainingWork
+{
+  public class Exercise : NamedEntity
+  {
     public int ExerciseTypeId { get; set; }
 
-    /// <summary>
-    /// Заполняется по ExerciseTypeId
-    /// </summary>
-    public string Name { get; set; }
-
-    public int Order { get; set; }
-
-    public int LiftCounter { get; set; }
-
-    public int WeightLoad { get; set; }
-
-    public int Intensity { get; set; }
-
-    public List<ExercisePercentage> ExerciseData { get; set; }
+    public string ExerciseTypeName { get; set; }
   }
 }

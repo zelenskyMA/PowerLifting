@@ -1,25 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PowerLifting.Domain.Interfaces.Application;
-using PowerLifting.Domain.Models;
+using PowerLifting.Domain.Models.TrainingWork;
 
 namespace PowerLifting.Service.Controllers
 {
   [ApiController]
-  [Route("trainingPlan")]
+  [Route("exercise")]
   public class ExerciseController : ControllerBase
   {
     private readonly IExerciseApp _exerciseApp;
-
     public ExerciseController(IExerciseApp exerciseApp)
     {
       _exerciseApp = exerciseApp;
     }
 
     [HttpGet]
-    [Route("getTypes")]
-    public async Task<List<DictionaryItem>> GetExerciseTypes()
+    [Route("getList")]
+    public async Task<List<Exercise>> GetList()
     {
-      var result = await _exerciseApp.GetTypesAsync();
+      var result = await _exerciseApp.GetListAsync();
       return result;
     }
   }
