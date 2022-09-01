@@ -1,12 +1,11 @@
 import React from "react";
 
-import { useTable, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table'
+import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, usePagination } from 'react-table'
 import { Col, Container, InputGroup, Row, Input, InputGroupText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-// Filter panel
-function GlobalFilter({ globalFilter, setGlobalFilter, }) {
+function FilterPanel({ globalFilter, setGlobalFilter, gotoPage }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce(value => { setGlobalFilter(value || undefined) }, 200);
 
@@ -24,6 +23,7 @@ function GlobalFilter({ globalFilter, setGlobalFilter, }) {
               onChange={e => {
                 setValue(e.target.value);
                 onChange(e.target.value);
+                gotoPage(0);
               }}
               placeholder={`введите название`}
             />
@@ -31,7 +31,64 @@ function GlobalFilter({ globalFilter, setGlobalFilter, }) {
         </Col>
       </Row>
     </Container>
-  )
+  );
+}
+
+function PaginationPanel({
+  canPreviousPage,
+  canNextPage,
+  pageOptions,
+  pageCount,
+  gotoPage,
+  nextPage,
+  previousPage,
+  pageIndex
+}) {
+
+  return (
+    <Container fluid>
+      <Row>
+        <Col xs={6} md={{ offset: 6 }}>
+          <ul className="pagination">
+            <li className="page-item" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+              <a className="page-link">First</a>
+            </li>
+            <li className="page-item" onClick={() => previousPage()} disabled={!canPreviousPage}>
+              <a className="page-link">{'<'}</a>
+            </li>
+            <li className="page-item" onClick={() => nextPage()} disabled={!canNextPage}>
+              <a className="page-link">{'>'}</a>
+            </li>
+            <li className="page-item" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+              <a className="page-link">Last</a>
+            </li>
+            <li>
+              <a className="page-link">
+                Page{' '}
+                <strong>
+                  {pageIndex + 1} of {pageOptions.length}
+                </strong>{' '}
+              </a>
+            </li>
+            <li>
+              <a className="page-link">
+                <input
+                  className="form-control"
+                  type="number"
+                  defaultValue={pageIndex + 1}
+                  onChange={e => {
+                    const page = e.target.value ? Number(e.target.value) - 1 : 0
+                    gotoPage(page)
+                  }}
+                  style={{ width: '100px', height: '20px' }}
+                />
+              </a>
+            </li>{' '}
+          </ul>
+        </Col>
+      </Row>
+    </Container>
+  );
 }
 
 export function TableView({ columns, data }) {
@@ -40,25 +97,32 @@ export function TableView({ columns, data }) {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
     state,
+    state: { pageIndex },
     setGlobalFilter,
   } = useTable(
     {
       columns,
-      data
+      data,
+      initialState: { pageIndex: 0, pageSize: 10 },
     },
     useFilters,
-    useGlobalFilter
+    useGlobalFilter,
+    usePagination
   );
 
   return (
-    <div>
-      <GlobalFilter
-        globalFilter={state.globalFilter}
-        setGlobalFilter={setGlobalFilter}
-      />
+    <>
+      <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} />
       <table className="table" {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -72,7 +136,7 @@ export function TableView({ columns, data }) {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
+          {page.map((row, i) => {
             prepareRow(row)
             return (
               <tr {...row.getRowProps()}>
@@ -84,13 +148,9 @@ export function TableView({ columns, data }) {
           })}
         </tbody>
       </table>
-      <br />
-      <div>Showing the first 20 results of {rows.length} rows</div>
-      <div>
-        <pre>
-          <code>{JSON.stringify(state.filters, null, 2)}</code>
-        </pre>
-      </div>
-    </div>
+      <PaginationPanel
+        canPreviousPage={canPreviousPage} canNextPage={canNextPage} pageOptions={pageOptions} pageCount={pageCount}
+        gotoPage={gotoPage} nextPage={nextPage} previousPage={previousPage} pageIndex={pageIndex} />
+    </>
   )
 }
