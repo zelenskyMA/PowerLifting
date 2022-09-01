@@ -17,8 +17,6 @@ export class TrainingDayView extends Component {
     let current = new Date();
     let date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
-    let ss = new Date().toLocaleTimeString();
-
     let contents = this.state.loading
       ? <p><em>Загрузка...</em></p>
       : TrainingDayView.renderTrainingTable(this.state.trainingDay);

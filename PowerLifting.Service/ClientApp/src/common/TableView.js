@@ -132,7 +132,7 @@ export function TableView({ columnsInfo, data, rowDblClick, pageSize = 5 }) {
           {page.map((row, i) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} onDoubleClick={() => rowDblClick(row)}>
+              <tr {...row.getRowProps()} role="button" onDoubleClick={() => rowDblClick(row)}>
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
