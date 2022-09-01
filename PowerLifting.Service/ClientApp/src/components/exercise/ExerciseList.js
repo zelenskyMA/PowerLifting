@@ -1,27 +1,15 @@
 import React, { Component } from 'react';
-import { GetAsync } from "../../common/ApiActions"
+import { GetAsync } from "../../common/ApiActions";
+import { TableView } from "../../common/TableView";
 
 export class ExerciseList extends Component {
   static displayName = ExerciseList.name;
-
-  static columns = [
-    { dataField: "name", text: "Название", sort: true },
-    { dataField: "exerciseTypeName", text: "Тип упражнения", sort: true },
-    { dataField: "description", text: "Описание", sort: true }
-  ];
-
-  static defaultSort = [
-    {
-      dataField: "name",
-      order: "desc"
-    }
-  ];
 
   constructor() {
     super();
 
     this.state = {
-      exercises: null
+      exercises: []
     };
   }
 
@@ -29,17 +17,25 @@ export class ExerciseList extends Component {
     this.getExercises();
   }
 
-  async getExercises() {    
+  async getExercises() {
     var data = await GetAsync("exercise/getList");
-    debugger;
     this.setState({ exercises: data });
   }
 
   render() {
+    const columns = [
+      { Header: '', accessor: 'id' },
+      { Header: 'Название', accessor: 'name' },
+      { Header: 'Тип упражнения', accessor: 'exerciseTypeName' },
+      { Header: 'Описание', accessor: 'description' },
+    ];
+
     return (
       <>
-        <h1>Counter</h1>
-        <p>This is a simple example of a React component.</p>
+        <h1>Упражнения</h1>
+        <p>Назначте упражнения на выбранный день</p>
+        <br />
+        <TableView columns={columns} data={this.state.exercises} />
       </>
     );
   }
