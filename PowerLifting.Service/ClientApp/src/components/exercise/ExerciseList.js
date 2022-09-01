@@ -25,6 +25,12 @@ export class ExerciseList extends Component {
   }
 
   onRowDblClick = row => {
+    const maxExercises = 10;
+    if (this.state.selectedExercises.length >= maxExercises) {
+      alert(`Максимум ${maxExercises} упражнений для одной тренировки.`);
+      return;
+    }
+
     var element = row.values;
     this.setState(previousState => ({
       selectedExercises: [...previousState.selectedExercises, element]
@@ -32,11 +38,8 @@ export class ExerciseList extends Component {
   }
 
   removeRow = (index) => {
-    var data = this.state.selectedExercises;
-    debugger;
-    var filtered = data.filter((v, i) => i !== index);
-          
-    this.setState({ selectedExercises: filtered })
+    var data = this.state.selectedExercises.filter((v, i) => i !== index);
+    this.setState({ selectedExercises: data })
   }
 
   render() {
