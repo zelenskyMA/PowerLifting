@@ -129,10 +129,10 @@ export function TableView({ columnsInfo, data, rowDblClick, pageSize = 5 }) {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
+          {page.map((row, index) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} role="button" onDoubleClick={() => rowDblClick(row)}>
+              <tr {...row.getRowProps()} key={index} role="button" onDoubleClick={() => rowDblClick(row)}>
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Container, Button } from 'reactstrap';
-import { GetAsync, Create } from "../../common/ApiActions";
+import { Container } from 'reactstrap';
+import { GetAsync, Create } from "../../common/ApiActions"
+import { GoToButton } from "../../common/Navigation";
 import { TableView } from "../../common/TableView";
 
 export class ExerciseList extends Component {
@@ -24,10 +25,7 @@ export class ExerciseList extends Component {
     this.setState({ exercises: data });
   }
 
-  confirmExercises = () => {
-    Create("exercise", this.state.selectedExercises)
-      .then(alert('Leaving'));
-  }
+  confirmExercises = () => { return Create("exercise", this.state.selectedExercises); }
 
   onRowDblClick = row => {
     const maxExercises = 10;
@@ -96,7 +94,7 @@ export class ExerciseList extends Component {
             </thead>
             <tbody>
               {this.state.selectedExercises.map((row, index) =>
-                <tr role="button">
+                <tr key={index} role="button">
                   <td>
                     <span onClick={() => this.rowMoveUp(index)} style={{ paddingRight: '7px' }} title="Вверх" >
                       🔼
@@ -112,7 +110,8 @@ export class ExerciseList extends Component {
               )}
             </tbody>
           </table>
-          <Button onClick={this.confirmExercises}>Подтвердить</Button>
+
+          <GoToButton url="/addTrainingPlan" beforeNavigate={this.confirmExercises} />
         </Container>
       </>
     );
