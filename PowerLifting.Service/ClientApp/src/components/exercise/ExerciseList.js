@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
-import { GetAsync } from "../../common/ApiActions";
+import { Container, Button } from 'reactstrap';
+import { GetAsync, Create } from "../../common/ApiActions";
 import { TableView } from "../../common/TableView";
 
 export class ExerciseList extends Component {
@@ -24,6 +24,11 @@ export class ExerciseList extends Component {
     this.setState({ exercises: data });
   }
 
+  confirmExercises = () => {
+    Create("exercise", this.state.selectedExercises)
+      .then(alert('Leaving'));
+  }
+
   onRowDblClick = row => {
     const maxExercises = 10;
     if (this.state.selectedExercises.length >= maxExercises) {
@@ -37,8 +42,30 @@ export class ExerciseList extends Component {
     }));
   }
 
-  removeRow = (index) => {
+  rowRemove = (index) => {
     var data = this.state.selectedExercises.filter((v, i) => i !== index);
+    this.setState({ selectedExercises: data })
+  }
+
+  rowMoveUp = (index) => {
+    if (index === 0) { return; }
+
+    var data = [...this.state.selectedExercises];
+    var temp = data[index - 1];
+    data[index - 1] = data[index];
+    data[index] = temp;
+
+    this.setState({ selectedExercises: data })
+  }
+
+  rowMoveDown = (index) => {
+    if (index === this.state.selectedExercises.length - 1) { return; }
+
+    var data = [...this.state.selectedExercises];
+    var temp = data[index + 1];
+    data[index + 1] = data[index];
+    data[index] = temp;
+
     this.setState({ selectedExercises: data })
   }
 
@@ -61,6 +88,7 @@ export class ExerciseList extends Component {
           <table className="table table-striped" aria-labelledby="tabelLabel">
             <thead>
               <tr>
+                <th style={{ width: '25px' }}></th>
                 <th>Название</th>
                 <th>Тип упражнения</th>
                 <th>Описание</th>
@@ -68,14 +96,23 @@ export class ExerciseList extends Component {
             </thead>
             <tbody>
               {this.state.selectedExercises.map((row, index) =>
-                <tr role="button" onDoubleClick={() => this.removeRow(index)}>
-                  <td>{row.name}</td>
-                  <td>{row.exerciseTypeName}</td>
-                  <td>{row.description}</td>
+                <tr role="button">
+                  <td>
+                    <span onClick={() => this.rowMoveUp(index)} style={{ paddingRight: '7px' }} title="Вверх" >
+                      🔼
+                    </span>
+                    <span onClick={() => this.rowMoveDown(index)} title="Вниз">
+                      🔽
+                    </span>
+                  </td>
+                  <td onDoubleClick={() => this.rowRemove(index)}>{row.name}</td>
+                  <td onDoubleClick={() => this.rowRemove(index)}>{row.exerciseTypeName}</td>
+                  <td onDoubleClick={() => this.rowRemove(index)}>{row.description}</td>
                 </tr>
               )}
             </tbody>
           </table>
+          <Button onClick={this.confirmExercises}>Подтвердить</Button>
         </Container>
       </>
     );
