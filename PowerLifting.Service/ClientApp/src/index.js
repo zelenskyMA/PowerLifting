@@ -15,9 +15,7 @@ const root = createRoot(rootElement);
 root.render(
   <Provider store={store}>
     <BrowserRouter basename={baseUrl}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <App />
     </BrowserRouter>
   </Provider>
 );
