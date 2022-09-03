@@ -6,7 +6,7 @@ namespace PowerLifting.Domain.Models.TrainingWork
   {
     public Percentage Percentage { get; set; }
 
-    public ExerciseValue Values { get; set; }
+    public ExerciseSettings Values { get; set; }
 
   }
 }

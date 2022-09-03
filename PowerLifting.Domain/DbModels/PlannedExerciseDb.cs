@@ -9,7 +9,7 @@ namespace PowerLifting.Domain.DbModels
   {
     public int TrainingDayId { get; set; }
 
-    public int ExerciseTypeId { get; set; }
+    public int ExerciseId { get; set; }
 
     public int Order { get; set; }
 

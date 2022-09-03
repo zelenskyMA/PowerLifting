@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
-import { GetAsync, Create } from "../../common/ApiActions"
+import { GetAsync, PostAsync } from "../../common/ApiActions"
 import { GoToButton } from "../../common/Navigation";
 import { TableView } from "../../common/TableView";
 
@@ -25,7 +25,7 @@ export class ExerciseList extends Component {
     this.setState({ exercises: data });
   }
 
-  confirmExercises = () => { return Create("exercise", this.state.selectedExercises); }
+  confirmExercisesAsync = () => { return PostAsync("plannedExercise/create?trainingDayId=1", this.state.selectedExercises); }
 
   onRowDblClick = row => {
     const maxExercises = 10;
@@ -111,7 +111,7 @@ export class ExerciseList extends Component {
             </tbody>
           </table>
 
-          <GoToButton url="/addTrainingPlan" beforeNavigate={this.confirmExercises} />
+          <GoToButton url="/addTrainingPlan" beforeNavigate={this.confirmExercisesAsync} />
         </Container>
       </>
     );

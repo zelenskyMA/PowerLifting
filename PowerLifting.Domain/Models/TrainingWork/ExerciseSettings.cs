@@ -2,7 +2,7 @@
 
 namespace PowerLifting.Domain.Models.TrainingWork
 {
-  public class ExerciseValue : Entity
+  public class ExerciseSettings : Entity
   {
     public int Weight { get; set; }
 

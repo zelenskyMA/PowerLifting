@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[ExerciseValues]
+﻿CREATE TABLE [dbo].[ExerciseSettings]
 (
     [Id] INT IDENTITY (1, 1) NOT NULL, 
     [Weight] INT NOT NULL DEFAULT 0, 
@@ -7,5 +7,5 @@
     [ExercisePart2] INT NOT NULL DEFAULT 0,
     [ExercisePart3] INT NOT NULL DEFAULT 0, 
     [Comments] NVARCHAR(250) NULL, 
-    CONSTRAINT [PK_ExerciseValues] PRIMARY KEY ([Id])
+    CONSTRAINT [PK_ExerciseSettings] PRIMARY KEY ([Id])
 )
