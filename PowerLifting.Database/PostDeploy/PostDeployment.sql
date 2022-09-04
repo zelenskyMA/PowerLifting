@@ -9,13 +9,46 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]          
 --------------------------------------------------------------------------------------
 */
+SET IDENTITY_INSERT DictionaryTypes ON
 
-SET IDENTITY_INSERT Users ON
+IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 1)
+  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 1, 'Тип упражнений', 'Базовые типы упражнений');
+IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 2)
+  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 2, 'Категория упражнений', 'Подраздел в рамках базового типа упражнений');
+IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 3)
+  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 3, 'Рекорды', 'Учетные рекорды в выполнении упражнений');
 
-IF NOT EXISTS (SELECT * FROM Users WHERE [Id] = 1)
-  INSERT INTO Users (Id, Email, Password, Salt) VALUES ( 1, 'admin@email.com', 'testPwd', 'testSalt');
+SET IDENTITY_INSERT DictionaryTypes OFF 
 
-SET IDENTITY_INSERT Users OFF 
+
+SET IDENTITY_INSERT Dictionaries ON
+
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 1)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 1, 1, 'Толчковые', 'Упражнения на толчок штанги');
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 2)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 2, 1, 'Рывковые', 'Упражнения на рывок штанги');
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 3)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 3, 1, 'Жимовые', 'Упражнения на жим штанги');
+
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 50)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 50, 2, 'Рывок классический', '');
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 51)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 51, 2, 'Толчок. Взятие на грудь', '');
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 52)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 52, 2, 'Толчок с груди', '');
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 53)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 53, 2, 'Толчок классический', '');
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 54)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 54, 2, 'ОФП', '');
+
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 100)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 100, 3, 'Рекорд в толчке', '');
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 101)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 101, 3, 'Рекорд в рывке', '');
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 102)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 102, 3, 'Рекорд в жиме', '');
+
+SET IDENTITY_INSERT Dictionaries OFF 
 
 
 SET IDENTITY_INSERT Percentages ON
@@ -42,53 +75,140 @@ IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 9)
 SET IDENTITY_INSERT Percentages OFF 
 
 
-SET IDENTITY_INSERT ExerciseTypes ON
 
-IF NOT EXISTS (SELECT * FROM ExerciseTypes WHERE [Id] = 1)
-  INSERT INTO ExerciseTypes (Id, Name, Description) VALUES ( 1, 'Толчковые', 'Упражнения на толчок штанги');
-IF NOT EXISTS (SELECT * FROM ExerciseTypes WHERE [Id] = 2)
-  INSERT INTO ExerciseTypes (Id, Name, Description) VALUES ( 2, 'Рывковые', 'Упражнения на рывок штанги');
-IF NOT EXISTS (SELECT * FROM ExerciseTypes WHERE [Id] = 3)
-  INSERT INTO ExerciseTypes (Id, Name, Description) VALUES ( 3, 'Жимовые', 'Упражнения на жим штанги');
+SET IDENTITY_INSERT Users ON
 
-SET IDENTITY_INSERT ExerciseTypes OFF 
+IF NOT EXISTS (SELECT * FROM Users WHERE [Id] = 1)
+  INSERT INTO Users (Id, Email, Password, Salt) VALUES ( 1, 'admin@email.com', 'testPwd', 'testSalt');
+
+SET IDENTITY_INSERT Users OFF 
 
 
 SET IDENTITY_INSERT Exercises ON
 
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 1)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 1, 1, 'Упражнение 1', 'Описание упражнения 134');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 1, 2, 50, 'Рывок: Рывок классический', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 2)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 2, 1, 'Упражнение 2', 'Описание упражнения 1ыва');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 2, 2, 50, 'Рывок без разброса ног', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 3)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 3, 1, 'Упражнение 3 пп аа вв', 'Описание упражнения 1пр');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 3, 2, 50, 'Рывок с подставки', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 4)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 4, 1, 'Упражнение 4', 'Описание упражнения 1смчит');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 4, 2, 50, 'Рывок с плинтов ниже колен', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 5)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 5, 1, 'Упражнение 5 ппп', 'Описание упражнения 1ясчвм');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 5, 2, 50, 'Рывок с плинтов выше колен', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 6)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 6, 1, 'Упражнение 6 ааа', '');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 6, 2, 50, 'Рывок с трех положений', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 7)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 7, 1, 'Упражнение 7 ббб', 'Описание упражнения 1ывап');
-
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 7, 2, 50, 'Рывок с виса ниже колен', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 8)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 8, 2, 'Упражнение рр1', 'Описание упражнения 134');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 8, 2, 50, 'Рывок с виса выше колен', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 9)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 9, 2, 'Упражнение рр2', 'Описание упражнения 1ыва');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 9, 2, 50, 'Рывок от бедра', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 10)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 10, 2, 'Упражнение рр3 пп аа вв', 'Описание упражнения 1пр');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 10, 2, 50, 'Рывок от паха', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 11)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 11, 2, 'Упражнение рр4', 'Описание упражнения 1смчит');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 11, 2, 50, 'Рывок с паузой', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 12)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 12, 2, 'Упражнение рр5 ппп', 'Описание упражнения 1ясчвм');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 12, 2, 50, 'Рывок в стойку', '');
 IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 13)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 13, 2, 'Упражнение рр6 ааа', '');
-IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 14)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 14, 2, 'Упражнение рр7 ббб', 'Описание упражнения 1ывап');
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 13, 2, 50, 'Рывок в полуподсед', '');
 
-IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 15)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 15, 3, 'Упражнение жим рр6 ааа', '');
-IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 16)
-  INSERT INTO Exercises (Id, ExerciseTypeId, Name, Description) VALUES ( 16, 3, 'Упражнение жим рр7 ббб', 'Описание упражнения 1ывап');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 20)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 20, 1, 51, 'Взятие на грудь без разброса ног', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 21)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 21, 1, 51, 'Взятие на грудь с подставки', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 22)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 22, 1, 51, 'Взятие на грудь с плинтов ниже колен', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 23)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 23, 1, 51, 'Взятие на грудь с плинтов выше колен', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 24)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 24, 1, 51, 'Взятие на грудь с трех положений', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 25)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 25, 1, 51, 'Взятие на грудь с виса ниже колен', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 26)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 26, 1, 51, 'Взятие на грудь от бедра', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 27)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 27, 1, 51, 'Взятие на грудь от паха', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 28)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 28, 1, 51, 'Взятие на грудь с паузой', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 29)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 29, 1, 51, 'Взятие на грудь в стойку', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 30)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 30, 1, 51, 'Взятие на грудь в полуподсед', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 31)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 31, 1, 51, 'Взятие на грудь с приседаниями', '');
+
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 40)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 40, 1, 52, 'Приседания на груди + толчок', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 41)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 41, 1, 52, 'Толчок со стоек', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 42)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 42, 1, 52, 'Толчок с плинтов', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 43)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 43, 1, 52, 'Толчок с паузой в подседе', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 44)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 44, 1, 52, 'Толчок с паузой в ножницах', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 45)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 45, 1, 52, 'Толчок из-за головы', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 46)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 46, 1, 52, 'Швунг жимовой + толчок', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 47)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 47, 1, 52, 'Швунг толчковый', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 48)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 48, 1, 52, 'Швунг толчковый в сед', '');
+
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 60)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 60, 1, 53, 'Толчок: Толчок классический', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 61)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 61, 1, 53, 'Взятие на грудь + толчок', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 62)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 62, 1, 53, 'Взятие на грудь + швунг жимовой + толчок', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 63)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 63, 1, 53, 'Взятие на грудь + приседания + толчок', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 64)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 64, 1, 53, 'Взятие на грудь + швунг толчковый + толчок', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 65)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 65, 1, 53, 'Взятие на грудь + толчок с паузой в подседе', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 66)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 66, 1, 53, 'Взятие на грудь + толчок с паузой в ножницах', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 67)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 67, 1, 53, 'Взятие на грудь + швунг толчковый', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 68)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 68, 1, 53, 'Взятие на грудь + швунг толчковый в сед', '');
+
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 80)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 80, 2, 54, 'Тяга рывковая', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 81)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 81, 2, 54, 'Тяга рывковая с подставки', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 82)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 82, 2, 54, 'Тяга рывковая с плинтов ниже колен', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 83)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 83, 2, 54, 'Тяга рывковая с плинтов выше колен', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 84)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 84, 2, 54, 'Протяжка рывковая', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 85)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 85, 2, 54, 'Швунг рывковым хватом из-за головы', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 86)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 86, 2, 54, 'Швунг рывковым хватом из-за головы в сед', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 87)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 87, 2, 54, 'Жим из-за головы рывковым хватом', '');
+
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 90)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 90, 1, 54, 'Тяга толчковая', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 91)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 91, 1, 54, 'Тяга толчковая с подставки', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 92)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 92, 1, 54, 'Тяга толчковая с плинтов выше колена', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 93)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 93, 1, 54, 'Тяга толчковая с плинтов ниже колена', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 94)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 94, 1, 54, 'Швунг жимовой', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 95)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 95, 1, 54, 'Швунг толчковый', '');
+
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 96)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 96, 1, 54, 'Приседания на плечах', '');
+IF NOT EXISTS (SELECT * FROM Exercises WHERE [Id] = 97)
+  INSERT INTO Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 97, 1, 54, 'Приседания на груди', '');
 
 SET IDENTITY_INSERT Exercises OFF 

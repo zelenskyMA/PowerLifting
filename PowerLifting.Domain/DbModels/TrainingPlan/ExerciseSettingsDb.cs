@@ -1,7 +1,9 @@
 ﻿using PowerLifting.Domain.DbModels.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerLifting.Domain.DbModels.TrainingPlan
 {
+    [Table("ExerciseSettings", Schema = "dbo")]
     public class ExerciseSettingsDb : EntityDb
     {
         public int Weight { get; set; }

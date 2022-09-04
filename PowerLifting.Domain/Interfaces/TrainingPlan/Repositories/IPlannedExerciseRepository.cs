@@ -4,6 +4,6 @@ using PowerLifting.Domain.Interfaces.Common.Repositories;
 namespace PowerLifting.Domain.Interfaces.TrainingPlan.Repositories
 {
     public interface IPlannedExerciseRepository : ICrudRepo<PlannedExerciseDb>
-  {
-  }
+    {
+    }
 }

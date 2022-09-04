@@ -4,7 +4,6 @@ using PowerLifting.Domain.Interfaces.Common.Repositories;
 namespace PowerLifting.Domain.Interfaces.TrainingPlan.Repositories
 {
     public interface IExerciseRepository : ICrudRepo<ExerciseDb>
-  {
-    Task<IList<ExerciseTypeDb>> GetExerciseTypesAsync();
-  }
+    {
+    }
 }

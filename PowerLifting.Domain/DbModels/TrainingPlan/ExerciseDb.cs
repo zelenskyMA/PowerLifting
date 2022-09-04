@@ -7,5 +7,7 @@ namespace PowerLifting.Domain.DbModels.TrainingPlan
     public class ExerciseDb : NamedEntityDb
     {
         public int ExerciseTypeId { get; set; }
+
+        public int ExerciseSubTypeId { get; set; }
     }
 }

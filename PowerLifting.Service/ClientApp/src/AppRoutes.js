@@ -1,7 +1,8 @@
 import { Home } from "./components/Home";
 import { TrainingDayView } from "./components/trainingPlan/TrainingDayView";
 import TrainingPlanCreate from "./components/trainingPlan/TrainingPlanCreate";
-import { ExerciseSelection } from "./components/trainingPlan/ExerciseSelection";
+import TrainingDaysSetup from "./components/trainingPlan/TrainingDaysSetup";
+import { PlannedExerciseSetup } from "./components/trainingPlan/PlannedExerciseSetup";
 
 const AppRoutes = [
   {
@@ -10,11 +11,15 @@ const AppRoutes = [
   },
   {
     path: '/exercises',
-    element: <ExerciseSelection />
+    element: <PlannedExerciseSetup />
   },
   {
     path: '/trainingDay',
     element: <TrainingDayView />
+  },
+  {
+    path: '/trainingDaysSetup',
+    element: <TrainingDaysSetup />
   },
   {
     path: '/addTrainingPlan',

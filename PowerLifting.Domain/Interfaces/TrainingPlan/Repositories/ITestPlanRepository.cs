@@ -3,7 +3,7 @@ using PowerLifting.Domain.Interfaces.Common.Repositories;
 
 namespace PowerLifting.Domain.Interfaces.TrainingPlan.Repositories
 {
-  public interface ITrainingPlanRepository : ICrudRepo<TrainingPlanDb>
-  {
-  }
+    public interface ITrainingPlanRepository : ICrudRepo<TrainingPlanDb>
+    {
+    }
 }
