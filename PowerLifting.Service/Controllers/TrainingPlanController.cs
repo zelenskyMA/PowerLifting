@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PowerLifting.Domain.Interfaces.Application;
-using PowerLifting.Domain.Models.TrainingWork;
+using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
+using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Service.Controllers
 {
@@ -18,7 +18,7 @@ namespace PowerLifting.Service.Controllers
 
     [HttpGet]
     [Route("get")]
-    public async Task<TrainingPlan> Get(int id)
+    public async Task<TrainingPlanModel> Get(int id)
     {
       return await _trainingPlanApp.GetAsync(id);
     }

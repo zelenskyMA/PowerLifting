@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PowerLifting.Domain.Interfaces.Repositories.Common;
+using PowerLifting.Domain.Interfaces.Common.Repositories;
 
 namespace PowerLifting.Infrastructure.Repositories.Common
 {

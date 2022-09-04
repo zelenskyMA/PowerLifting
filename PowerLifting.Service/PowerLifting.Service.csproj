@@ -30,15 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\components\trainingDay\TrainingDayView.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\PowerLifting.Application\PowerLifting.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\components\trainingDay\TrainingDayView.js" />
+    <TypeScriptCompile Include="ClientApp\src\components\trainingPlan\TrainingDayView.js" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

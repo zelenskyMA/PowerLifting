@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PowerLifting.Domain.DbModels;
+using PowerLifting.Domain.DbModels.TrainingPlan;
 
 namespace PowerLifting.Infrastructure
 {
-  public class LiftingContext : DbContext
+    public class LiftingContext : DbContext
   {
     public DbSet<TrainingPlanDb> TrainingPlans { get; set; }
     public DbSet<TrainingDayDb> TrainingDays { get; set; }

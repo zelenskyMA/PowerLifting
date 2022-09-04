@@ -1,7 +1,7 @@
 import { Home } from "./components/Home";
-import { TrainingDayView } from "./components/trainingDay/TrainingDayView";
+import { TrainingDayView } from "./components/trainingPlan/TrainingDayView";
 import TrainingPlanCreate from "./components/trainingPlan/TrainingPlanCreate";
-import { ExerciseList } from "./components/exercise/ExerciseList";
+import { ExerciseSelection } from "./components/trainingPlan/ExerciseSelection";
 
 const AppRoutes = [
   {
@@ -10,7 +10,7 @@ const AppRoutes = [
   },
   {
     path: '/exercises',
-    element: <ExerciseList />
+    element: <ExerciseSelection />
   },
   {
     path: '/trainingDay',

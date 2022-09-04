@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PowerLifting.Domain.Interfaces.Application;
-using PowerLifting.Domain.Models.TrainingWork;
+using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
+using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Service.Controllers
 {

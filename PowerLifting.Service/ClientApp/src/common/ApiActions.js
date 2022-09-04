@@ -7,7 +7,7 @@
  и т.д.
  */
 
-export function PostAsync(url, payload) {
+export async function PostAsync(url, payload) {
   const response = await fetch(
     url,
     {

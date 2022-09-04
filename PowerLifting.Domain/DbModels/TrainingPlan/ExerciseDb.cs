@@ -1,0 +1,11 @@
+﻿using PowerLifting.Domain.DbModels.Common;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace PowerLifting.Domain.DbModels.TrainingPlan
+{
+    [Table("Exercises", Schema = "dbo")]
+    public class ExerciseDb : NamedEntityDb
+    {
+        public int ExerciseTypeId { get; set; }
+    }
+}
