@@ -7,14 +7,8 @@ namespace PowerLifting.Infrastructure.Repositories.TrainingPlan
 {
     public class ExerciseRepository : CrudRepo<ExerciseDb>, IExerciseRepository
     {
-        protected DbSet<ExerciseTypeDb> ExerciseTypeDbSet { get; set; }
-
         public ExerciseRepository(DbContextOptions<LiftingContext> provider) : base(provider)
         {
-            ExerciseTypeDbSet = Context.Set<ExerciseTypeDb>();
         }
-
-        public async Task<IList<ExerciseTypeDb>> GetExerciseTypesAsync() => await ExerciseTypeDbSet.ToListAsync();
-
     }
 }

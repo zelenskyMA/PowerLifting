@@ -1,9 +1,9 @@
 ﻿namespace PowerLifting.Domain.DbModels.Common
 {
-  public class NamedEntityDb : EntityDb
-  {
-    public string Name { get; set; }
+    public class NamedEntityDb : EntityDb
+    {
+        public string Name { get; set; }
 
-    public string Description { get; set; }
-  }
+        public string Description { get; set; }
+    }
 }

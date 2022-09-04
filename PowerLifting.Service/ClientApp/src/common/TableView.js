@@ -54,7 +54,7 @@ function PaginationPanel({
           </li>
           <li>
             <a className="page-link disabled">
-              Страниц:{' '}<strong>{pageIndex + 1}</strong> из <strong>{pageOptions.length}</strong>{' '}
+              Стр.:{' '}<strong>{pageIndex + 1}</strong> из <strong>{pageOptions.length}</strong>{' '}
             </a>
           </li>
           <li className="page-item" role="button" onClick={() => nextPage()} disabled={!canNextPage}>

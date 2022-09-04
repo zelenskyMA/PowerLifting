@@ -1,23 +1,24 @@
 ﻿using AutoMapper;
 using PowerLifting.Domain.DbModels.TrainingPlan;
+using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Repositories;
 using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Application.TrainingPlan
 {
-  public class PlannedExerciseApp : IPlannedExerciseApp
+    public class PlannedExerciseCommands : IPlannedExerciseCommands
     {
         private readonly IPlannedExerciseRepository _plannedExerciseRepository;
         private readonly IPercentageRepository _percentageRepository;
-        private readonly IExercisePercentageRepository _exercisePercentageRepository;
+        private readonly ICrudRepo<ExercisePercentageDb> _exercisePercentageRepository;
         private readonly IExerciseSettingsRepository _exerciseSettingsRepository;
         private readonly IMapper _mapper;
 
-        public PlannedExerciseApp(
+        public PlannedExerciseCommands(
          IPlannedExerciseRepository plannedExerciseRepository,
          IPercentageRepository percentageRepository,
-         IExercisePercentageRepository exercisePercentageRepository,
+         ICrudRepo<ExercisePercentageDb> exercisePercentageRepository,
          IExerciseSettingsRepository exerciseSettingsRepository,
          IMapper mapper)
         {

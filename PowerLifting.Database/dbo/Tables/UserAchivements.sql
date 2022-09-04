@@ -6,5 +6,5 @@
     [CreationDate] DATE NOT NULL DEFAULT GETDATE(), 
     CONSTRAINT [PK_UserAchivements] PRIMARY KEY ([AchievementId], [UserId]),
     FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]),
-    FOREIGN KEY ([AchievementId]) REFERENCES [dbo].[Achievements] ([Id])  
+    FOREIGN KEY ([AchievementId]) REFERENCES [dbo].[Dictionaries] ([Id]) 
 )

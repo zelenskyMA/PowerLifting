@@ -6,13 +6,13 @@ using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Application.TrainingPlan
 {
-  public class TrainingPlanApp : ITrainingPlanApp
+    public class TrainingPlanCommands : ITrainingPlanCommands
     {
         private readonly ITrainingPlanRepository _trainingPlanRepository;
         private readonly ITrainingDayRepository _trainingDayRepository;
         private readonly IMapper _mapper;
 
-        public TrainingPlanApp(
+        public TrainingPlanCommands(
           ITrainingPlanRepository trainingPlanRepository,
           ITrainingDayRepository trainingDayRepository,
           IMapper mapper)

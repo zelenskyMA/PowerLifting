@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Container, Button } from "reactstrap";
+import { GoToButton } from "../../common/Navigation";
 import { createTrainingPlan } from "../../stores/trainingPlanStore/trainingPlanActions";
 
 const mapStateToProps = store => {
@@ -39,7 +40,7 @@ class TrainingPlanCreate extends React.Component {
           <p>Выберите дату начала тренировок</p>
           <Calendar onChange={this.onDateChange} value={this.state.date} locale="ru" />
           <br />
-          <Button onClick={this.onPlanCreate}>Создать</Button>
+          <GoToButton url="/trainingDaysSetup" beforeNavigate={this.onPlanCreate} name="Создать" />
         </Container>
       </>
     );

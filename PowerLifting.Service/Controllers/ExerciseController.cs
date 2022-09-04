@@ -4,22 +4,22 @@ using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Service.Controllers
 {
-  [ApiController]
-  [Route("exercise")]
-  public class ExerciseController : ControllerBase
-  {
-    private readonly IExerciseApp _exerciseApp;
-    public ExerciseController(IExerciseApp exerciseApp)
+    [ApiController]
+    [Route("exercise")]
+    public class ExerciseController : ControllerBase
     {
-      _exerciseApp = exerciseApp;
-    }
+        private readonly IExerciseCommands _exerciseApp;
+        public ExerciseController(IExerciseCommands exerciseApp)
+        {
+            _exerciseApp = exerciseApp;
+        }
 
-    [HttpGet]
-    [Route("getList")]
-    public async Task<List<Exercise>> GetList()
-    {
-      var result = await _exerciseApp.GetListAsync();
-      return result;
+        [HttpGet]
+        [Route("getList")]
+        public async Task<List<Exercise>> GetList()
+        {
+            var result = await _exerciseApp.GetListAsync();
+            return result;
+        }
     }
-  }
 }

@@ -4,8 +4,8 @@ import { GetAsync, PostAsync } from "../../common/ApiActions"
 import { GoToButton } from "../../common/Navigation";
 import { TableView } from "../../common/TableView";
 
-export class ExerciseSelection extends Component {
-  static displayName = ExerciseSelection.name;
+export class PlannedExerciseSetup extends Component {
+  static displayName = PlannedExerciseSetup.name;
 
   constructor() {
     super();
@@ -71,8 +71,8 @@ export class ExerciseSelection extends Component {
     const columns = [
       { Header: 'Id', accessor: 'id' },
       { Header: 'Название', accessor: 'name' },
+      { Header: 'Категория упражнения', accessor: 'exerciseSubTypeName' },
       { Header: 'Тип упражнения', accessor: 'exerciseTypeName' },
-      { Header: 'Описание', accessor: 'description' },
     ];
 
     return (
@@ -88,8 +88,8 @@ export class ExerciseSelection extends Component {
               <tr>
                 <th style={{ width: '25px' }}></th>
                 <th>Название</th>
+                <th>Категория упражнения</th>
                 <th>Тип упражнения</th>
-                <th>Описание</th>
               </tr>
             </thead>
             <tbody>
@@ -104,8 +104,8 @@ export class ExerciseSelection extends Component {
                     </span>
                   </td>
                   <td onDoubleClick={() => this.rowRemove(index)}>{row.name}</td>
+                  <td onDoubleClick={() => this.rowRemove(index)}>{row.exerciseSubTypeName}</td>
                   <td onDoubleClick={() => this.rowRemove(index)}>{row.exerciseTypeName}</td>
-                  <td onDoubleClick={() => this.rowRemove(index)}>{row.description}</td>
                 </tr>
               )}
             </tbody>

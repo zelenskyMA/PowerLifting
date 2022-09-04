@@ -2,8 +2,8 @@
 
 namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
 {
-  public interface IExerciseApp
-  {
-    Task<List<Exercise>> GetListAsync();
-  }
+    public interface IExerciseCommands
+    {
+        Task<List<Exercise>> GetListAsync();
+    }
 }
