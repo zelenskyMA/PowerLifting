@@ -1,8 +1,10 @@
-﻿import { Get, Create } from "../../common/ApiActions"
+﻿import { Get, PostAsync } from "../../common/ApiActions"
 
-export function createTrainingPlan(creationDate, dispatch) {
-  Create("trainingPlan", creationDate)
-    .then(data => getTrainingPlan(data.id, dispatch));
+export async function createTrainingPlan(creationDate, dispatch) {
+  const response = await PostAsync("trainingPlan/create", creationDate);
+  const data = await response.json();
+
+  getTrainingPlan(data.id, dispatch);
 }
 
 export function getTrainingPlan(id, dispatch) {

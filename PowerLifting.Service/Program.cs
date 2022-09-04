@@ -1,11 +1,11 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PowerLifting.Application;
 using PowerLifting.Application.Mapper;
-using PowerLifting.Domain.Interfaces.Application;
-using PowerLifting.Domain.Interfaces.Repositories;
+using PowerLifting.Application.TrainingPlan;
+using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
+using PowerLifting.Domain.Interfaces.TrainingPlan.Repositories;
 using PowerLifting.Infrastructure;
-using PowerLifting.Infrastructure.Repositories;
+using PowerLifting.Infrastructure.Repositories.TrainingPlan;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +22,13 @@ var mapperConfig = new MapperConfiguration(t => t.AddProfile(new MapperProfile()
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 //repo services
-builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 builder.Services.AddScoped<ITrainingPlanRepository, TrainingPlanRepository>();
 builder.Services.AddScoped<ITrainingDayRepository, TrainingDayRepository>();
+builder.Services.AddScoped<IPlannedExerciseRepository, PlannedExerciseRepository>();
+builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+builder.Services.AddScoped<IExerciseSettingsRepository, ExerciseSettingsRepository>();
+builder.Services.AddScoped<IPercentageRepository, PercentageRepository>();
+builder.Services.AddScoped<IExercisePercentageRepository, ExercisePercentageRepository>();
 
 //app services
 builder.Services.AddScoped<ITrainingPlanApp, TrainingPlanApp>();

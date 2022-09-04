@@ -7,9 +7,9 @@
  и т.д.
  */
 
-export function Create(entityName, payload) {
-  return fetch(
-    `${entityName}/create`, //url
+export async function PostAsync(url, payload) {
+  const response = await fetch(
+    url,
     {
       method: 'POST',
       headers: {
@@ -17,20 +17,10 @@ export function Create(entityName, payload) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-    })
-}
+    });
 
-export function Update(entityName, payload) {
-  return fetch(
-    `${entityName}/update`, //url
-    {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
+  const data = await response.json();
+  return data;
 }
 
 export async function GetAsync(url) {
