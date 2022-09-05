@@ -1,11 +1,11 @@
 import React from "react";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { Container } from "reactstrap";
-import { GoToButton } from "../../common/Navigation";
+import { Container, Button } from "reactstrap";
 import { createTrainingPlan } from "../../stores/trainingPlanStore/trainingPlanActions";
 import { Locale } from "../../common/Localization";
+import WithRouter from "../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {
@@ -26,7 +26,11 @@ class TrainingPlanCreate extends React.Component {
   }
 
   onDateChange = date => this.setState({ date: date });
-  onPlanCreate = async () => { await this.props.createTrainingPlan(this.state.date); }
+
+  onPlanCreate = async () => {
+    await this.props.createTrainingPlan(this.state.date);
+    this.props.navigate("/trainingDaysSetup");
+  }
 
   render() {
     return (
@@ -37,12 +41,12 @@ class TrainingPlanCreate extends React.Component {
         <Container fluid>
           <p>Выберите дату начала тренировок</p>
           <Calendar onChange={this.onDateChange} value={this.state.date} locale={Locale} />
-          <br />
-          <GoToButton url="/trainingDaysSetup" beforeNavigate={this.onPlanCreate} name="Создать" />
+
+          <Button style={{ marginTop: '25px' }} onClick={() => this.onPlanCreate()}>Создать</Button>
         </Container>
       </>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TrainingPlanCreate)
+export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(TrainingPlanCreate))

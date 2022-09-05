@@ -14,6 +14,6 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 
         public int ExercisePart3 { get; set; }
 
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
     }
 }

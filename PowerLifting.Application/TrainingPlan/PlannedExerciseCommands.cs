@@ -37,15 +37,12 @@ namespace PowerLifting.Application.TrainingPlan
                 return;
             }
 
-            List<Task> tasks = new List<Task>();
             for (int i = 1; i <= exercises.Count; i++)
             {
                 var exerciseId = exercises[i - 1].Id;
 
-                tasks.Add(CreatePlannedExerciseWithSettings(trainingDayId, exerciseId, i));
+                await CreatePlannedExerciseWithSettings(trainingDayId, exerciseId, i);
             }
-
-            await Task.WhenAll(tasks);
         }
 
         private async Task CreatePlannedExerciseWithSettings(int trainingDayId, int exerciseId, int order)

@@ -8,8 +8,8 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 
         public DateTime StartDate { get; set; }
 
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
 
-        public List<TrainingDay> TrainingDays { get; set; } = new List<TrainingDay>();
+        public List<TrainingDay>? TrainingDays { get; set; } = new List<TrainingDay>();
     }
 }

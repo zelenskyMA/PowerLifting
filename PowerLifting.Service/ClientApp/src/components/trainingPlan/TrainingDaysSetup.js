@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Container, Button, Row, Col } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
 import { Locale } from "../../common/Localization";
-
+import WithRouter from "../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {
@@ -25,9 +25,12 @@ class TrainingDaysSetup extends React.Component {
   }
 
   getTrainingPlan = async () => {
-    var data = await GetAsync(`trainingPlan/get?Id=${this.props.planId}`);
+    var data = await GetAsync(`/trainingPlan/get?Id=${this.props.planId}`);
     this.setState({ plannedDays: data.trainingDays });
   }
+
+  onSetExercises = (dayId) => { this.props.navigate(`/plannedExercises/${dayId}`); }
+
 
   render() {
     const days = this.state.plannedDays;
@@ -68,7 +71,6 @@ class TrainingDaysSetup extends React.Component {
     dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
 
     var dateView = dateValue.toLocaleString(Locale, { dateStyle: "medium" });
-
     const exercises = day.exercises.length > 0 ? 'Они есть' : 'Нет назначенных тренировок';
 
     return (
@@ -79,7 +81,7 @@ class TrainingDaysSetup extends React.Component {
             <div>{dateView}</div>
           </Col>
           <Col style={{ paddingTop: '7px' }} >
-            <Button color="primary" outline>{' + '}</Button>
+            <Button color="primary" outline onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
           </Col>
         </Row>
         <hr style={{ width: '60%', paddingTop: "2px" }} />
@@ -91,4 +93,4 @@ class TrainingDaysSetup extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, null)(TrainingDaysSetup)
+export default WithRouter(connect(mapStateToProps, null)(TrainingDaysSetup))

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
-import { GetAsync, PostAsync } from "../../common/ApiActions"
-import { GoToButton } from "../../common/Navigation";
+import { Container, Button } from 'reactstrap';
+import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { TableView } from "../../common/TableView";
+import WithRouter from "../../common/extensions/WithRouter";
 
-export class PlannedExerciseSetup extends Component {
+class PlannedExerciseSetup extends Component {
   constructor() {
+    super();
+
     this.state = {
       exercises: [],
       selectedExercises: []
@@ -21,7 +23,10 @@ export class PlannedExerciseSetup extends Component {
     this.setState({ exercises: data });
   }
 
-  confirmExercisesAsync = () => { return PostAsync("plannedExercise/create?trainingDayId=1", this.state.selectedExercises); }
+  confirmExercisesAsync = async () => {
+    await PostAsync(`/trainingPlan/createPlannedExercise?dayId=${this.props.params.id}`, this.state.selectedExercises);
+    this.props.navigate("/trainingDaysSetup");
+  }
 
   onRowDblClick = row => {
     const maxExercises = 10;
@@ -107,9 +112,11 @@ export class PlannedExerciseSetup extends Component {
             </tbody>
           </table>
 
-          <GoToButton url="/addTrainingPlan" beforeNavigate={this.confirmExercisesAsync} />
+          <Button onClick={() => this.confirmExercisesAsync()}>Подтвердить</Button>
         </Container>
       </>
     );
   }
 }
+
+export default WithRouter(PlannedExerciseSetup);

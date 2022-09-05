@@ -2,7 +2,7 @@ import { Home } from "./components/Home";
 import { TrainingDayView } from "./components/trainingPlan/TrainingDayView";
 import TrainingPlanCreate from "./components/trainingPlan/TrainingPlanCreate";
 import TrainingDaysSetup from "./components/trainingPlan/TrainingDaysSetup";
-import { PlannedExerciseSetup } from "./components/trainingPlan/PlannedExerciseSetup";
+import PlannedExerciseSetup from "./components/trainingPlan/PlannedExerciseSetup";
 
 const AppRoutes = [
   {
