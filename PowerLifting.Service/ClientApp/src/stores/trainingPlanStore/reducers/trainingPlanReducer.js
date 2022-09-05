@@ -1,6 +1,4 @@
-﻿
-const REQUEST_TRAININGPLAN = "REQUEST_TRAININGPLAN";
-const RECEIVE_TRAININGPLAN = "RECEIVE_TRAININGPLAN";
+import { REQUEST_TRAININGPLAN, RECEIVE_PLAN_ID } from "../trainingPlanActions"
 
 const initialState = {
   planId: 0,
@@ -10,10 +8,10 @@ const initialState = {
 export function trainingPlanReducer(state = initialState, action) {
   switch (action.type) {
     case REQUEST_TRAININGPLAN:
-      return { ...state, id: action.payload, isFetching: true }
+      return { ...state, isFetching: true }
 
-    case RECEIVE_TRAININGPLAN:
-      return { ...state, trainingPlan: action.payload, isFetching: false }
+    case RECEIVE_PLAN_ID:
+      return { ...state, planId: action.result };
 
     default:
       return state

@@ -10,7 +10,7 @@ const AppRoutes = [
     element: <Home />
   },
   {
-    path: '/exercises',
+    path: '/plannedExercises/:id',
     element: <PlannedExerciseSetup />
   },
   {

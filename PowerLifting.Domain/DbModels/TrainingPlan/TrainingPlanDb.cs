@@ -10,6 +10,6 @@ namespace PowerLifting.Domain.DbModels.TrainingPlan
 
         public DateTime StartDate { get; set; }
 
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
     }
 }

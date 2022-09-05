@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PowerLifting.Domain.DbModels.TrainingPlan;
+using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Repositories;
 using PowerLifting.Domain.Models.TrainingPlan;
@@ -8,12 +9,12 @@ namespace PowerLifting.Application.TrainingPlan
 {
     public class TrainingPlanCommands : ITrainingPlanCommands
     {
-        private readonly ITrainingPlanRepository _trainingPlanRepository;
+        private readonly ICrudRepo<TrainingPlanDb> _trainingPlanRepository;
         private readonly ITrainingDayRepository _trainingDayRepository;
         private readonly IMapper _mapper;
 
         public TrainingPlanCommands(
-          ITrainingPlanRepository trainingPlanRepository,
+          ICrudRepo<TrainingPlanDb> trainingPlanRepository,
           ITrainingDayRepository trainingDayRepository,
           IMapper mapper)
         {
@@ -25,7 +26,8 @@ namespace PowerLifting.Application.TrainingPlan
         /// <inheritdoc />
         public async Task<TrainingPlanModel> GetAsync(int Id)
         {
-            var dbPlan = (await _trainingPlanRepository.FindAsync(t => t.Id == Id)).FirstOrDefault();
+            var request = await _trainingPlanRepository.FindAsync(t => t.Id == Id);
+            var dbPlan = request.FirstOrDefault();
             if (dbPlan == null)
             {
                 return null;

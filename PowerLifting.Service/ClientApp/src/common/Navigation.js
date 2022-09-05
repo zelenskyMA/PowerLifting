@@ -6,7 +6,7 @@ export function GoToButton({ url, beforeNavigate, name = "Подтвердить
   let navigate = useNavigate();
 
   return (
-    <Button onClick={async (event) => {
+    <Button onClick={async () => {
       await beforeNavigate();
       navigate(url);
     }}>

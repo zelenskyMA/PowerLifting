@@ -16,6 +16,6 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 
         public int Intensity { get; set; }
 
-        public List<ExercisePercentage> ExerciseData { get; set; }
+        public List<ExercisePercentage> ExerciseData { get; set; } = new List<ExercisePercentage>();
     }
 }

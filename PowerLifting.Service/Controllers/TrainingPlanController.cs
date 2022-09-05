@@ -20,12 +20,13 @@ namespace PowerLifting.Service.Controllers
         [Route("get")]
         public async Task<TrainingPlanModel> Get(int id)
         {
-            return await _trainingPlanApp.GetAsync(id);
+            var result = await _trainingPlanApp.GetAsync(id);
+            return result;
         }
 
         [HttpPost]
         [Route("create")]
-        public async Task<int> Create(DateTime creationDate)
+        public async Task<int> Create([FromBody] DateTime creationDate)
         {
             var result = await _trainingPlanApp.CreateAsync(creationDate);
             return result;

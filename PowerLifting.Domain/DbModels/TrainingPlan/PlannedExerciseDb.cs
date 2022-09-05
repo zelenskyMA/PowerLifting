@@ -13,10 +13,10 @@ namespace PowerLifting.Domain.DbModels.TrainingPlan
 
         public int Order { get; set; }
 
-        public int LiftCounter { get; set; }
+        public int LiftCounter { get; set; } = 0;
 
-        public int WeightLoad { get; set; }
+        public int WeightLoad { get; set; } = 0;
 
-        public int Intensity { get; set; }
+        public int Intensity { get; set; } = 0;
     }
 }

@@ -5,11 +5,7 @@ import { GoToButton } from "../../common/Navigation";
 import { TableView } from "../../common/TableView";
 
 export class PlannedExerciseSetup extends Component {
-  static displayName = PlannedExerciseSetup.name;
-
   constructor() {
-    super();
-
     this.state = {
       exercises: [],
       selectedExercises: []

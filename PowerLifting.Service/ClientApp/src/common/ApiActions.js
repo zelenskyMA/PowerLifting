@@ -1,24 +1,13 @@
-/*
- entityName - кусок константы из reducer'a которую мы не знаем.
- 
- Префикс константы считаем извесным
- REQUEST_
- RECEIVE_
- и т.д.
- */
 
-export async function PostAsync(url, payload) {
-  const response = await fetch(
-    url,
-    {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
 
+export async function PostAsync(url, payload = null) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Accept": "application/json", "Content-Type": "application/json", },
+    body: payload === null ? null : JSON.stringify(payload),
+  };
+
+  const response = await fetch(url, requestOptions);
   const data = await response.json();
   return data;
 }

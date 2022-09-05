@@ -28,7 +28,7 @@ var mapperConfig = new MapperConfiguration(t => t.AddProfile(new MapperProfile()
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 //repo services
-builder.Services.AddScoped<ITrainingPlanRepository, TrainingPlanRepository>();
+builder.Services.AddScoped<ICrudRepo<TrainingPlanDb>, TrainingPlanRepository>();
 builder.Services.AddScoped<ITrainingDayRepository, TrainingDayRepository>();
 builder.Services.AddScoped<IPlannedExerciseRepository, PlannedExerciseRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
