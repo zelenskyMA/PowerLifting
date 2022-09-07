@@ -22,7 +22,7 @@ namespace PowerLifting.Service.Controllers
         [Route("get")]
         public async Task<Plan> Get(int id)
         {
-            var result = await _trainingPlanCommands.GetAsync(id);
+            var result = await _trainingPlanCommands.GetPlanAsync(id);
             return result;
         }
 

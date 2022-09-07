@@ -68,9 +68,37 @@ namespace PowerLifting.Application.TrainingPlan
             {
                 item.Exercise = exercises.First(t => t.Id == item.Exercise.Id);
                 item.Settings = settings.Where(t => t.PlanExerciseId == item.Id).OrderBy(t => t.Percentage.MinValue).ToList();
+
+                SetPlanExerciseCounters(item);
             }
 
             return planExercises;
+        }
+
+        private void SetPlanExerciseCounters(PlanExercise planExercise)
+        {
+            if (planExercise.Settings == null || planExercise.Settings.Count == 0)
+            {
+                return;
+            }
+
+            planExercise.WeightLoad = planExercise.Settings.Select(
+                t => t.Weight * t.Iterations * (t.ExercisePart1 + t.ExercisePart2 + t.ExercisePart3)).Sum();
+
+            planExercise.LiftCounter = planExercise.Settings.Select(
+                t => t.ExercisePart1 + t.ExercisePart2 + t.ExercisePart3).Sum();
+
+            planExercise.Intensity = planExercise.WeightLoad / planExercise.LiftCounter;
+
+            planExercise.LiftIntensities = new List<LiftIntensity>();
+            foreach (var item in planExercise.Settings)
+            {
+                planExercise.LiftIntensities.Add(new LiftIntensity()
+                {
+                    Percentage = item.Percentage,
+                    Value = item.ExercisePart1 + item.ExercisePart2 + item.ExercisePart3,
+                });
+            };
         }
     }
 }

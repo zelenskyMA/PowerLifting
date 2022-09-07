@@ -9,7 +9,14 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         /// </summary>
         /// <param name="Id">Plan Id</param>
         /// <returns>Training plan</returns>
-        Task<Plan> GetAsync(int Id);
+        Task<Plan> GetPlanAsync(int Id);
+
+        /// <summary>
+        /// Get training plan day
+        /// </summary>
+        /// <param name="dayId">training day Id</param>
+        /// <returns></returns>
+        Task<PlanDay> GetPlanDayAsync(int dayId);
 
         /// <summary>
         /// Create new training plan with training days

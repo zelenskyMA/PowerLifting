@@ -76,7 +76,6 @@
     <Build Include="dbo\Tables\PlanExercises.sql" />
     <Build Include="dbo\Tables\Percentages.sql" />
     <Build Include="dbo\Tables\PlanExerciseSettings.sql" />
-    <Build Include="dbo\Tables\LiftingIntensity.sql" />
     <PostDeploy Include="PostDeploy\PostDeployment.sql" />
     <Build Include="dbo\Tables\Exercises.sql" />
     <Build Include="dbo\Tables\Dictionaries.sql" />

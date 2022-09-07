@@ -2,6 +2,7 @@
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
+using PowerLifting.Domain.Models.Common;
 using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Application.TrainingPlan
@@ -27,28 +28,45 @@ namespace PowerLifting.Application.TrainingPlan
         }
 
         /// <inheritdoc />
-        public async Task<Plan> GetAsync(int Id)
+        public async Task<Plan> GetPlanAsync(int Id)
         {
-            var request = await _trainingPlanRepository.FindAsync(t => t.Id == Id);
-            var dbPlan = request.FirstOrDefault();
+            var dbPlan = (await _trainingPlanRepository.FindAsync(t => t.Id == Id)).FirstOrDefault();
             if (dbPlan == null)
             {
                 return null;
             }
 
-            var planDaysDb = await _trainingDayRepository.FindAsync(t => t.PlanId == dbPlan.Id);
-            var planExercises = await _plannedExerciseCommands.GetAsync(planDaysDb.Select(t => t.Id).ToList());
+            var plan = _mapper.Map<Plan>(dbPlan);
 
-            var planDays = planDaysDb.Select(t => _mapper.Map<PlanDay>(t)).ToList();
-            foreach (var item in planDays)
+            var planDays = (await _trainingDayRepository.FindAsync(t => t.PlanId == dbPlan.Id)).Select(t => _mapper.Map<PlanDay>(t)).ToList();
+            var planExercises = await _plannedExerciseCommands.GetAsync(planDays.Select(t => t.Id).ToList());
+            foreach (var planDay in planDays)
             {
-                item.Exercises = planExercises.Where(t => t.PlanDayId == item.Id).OrderBy(t => t.Order).ToList();
+                planDay.Exercises = planExercises.Where(t => t.PlanDayId == planDay.Id).OrderBy(t => t.Order).ToList();
+                SetPlanDayCounters(planDay);
             }
 
-            var plan = _mapper.Map<Plan>(dbPlan);
             plan.TrainingDays = planDays;
 
             return plan;
+        }
+
+        /// <inheritdoc />
+        public async Task<PlanDay> GetPlanDayAsync(int dayId)
+        {
+            var planDaysDb = (await _trainingDayRepository.FindAsync(t => t.Id == dayId)).FirstOrDefault();
+            if (planDaysDb == null)
+            {
+                return null;
+            }
+
+            var planExercises = await _plannedExerciseCommands.GetAsync(dayId);
+
+            var planDay = _mapper.Map<PlanDay>(planDaysDb);
+            planDay.Exercises = planExercises.Where(t => t.PlanDayId == dayId).OrderBy(t => t.Order).ToList();
+            SetPlanDayCounters(planDay);
+
+            return planDay;
         }
 
         /// <inheritdoc />
@@ -66,5 +84,49 @@ namespace PowerLifting.Application.TrainingPlan
             return plan.Id;
         }
 
+        /// <summary>
+        /// Вычисляем необходимые суммы и справочные данные для отображения в интерфейсе.
+        /// </summary>
+        /// <param name="day"></param>
+        private void SetPlanDayCounters(PlanDay day)
+        {
+            if (day.Exercises == null || day.Exercises.Count == 0)
+            {
+                return;
+            }
+
+            // простые суммы значений
+            day.WeightLoadSum = day.Exercises.Sum(t => t.WeightLoad);
+            day.LiftCounterSum = day.Exercises.Sum(t => t.LiftCounter);
+            day.IntensitySum = day.Exercises.Sum(t => t.Intensity);
+
+            // считаем, сколько упражнений по подтипам в тренировочном дне. 
+            day.ExerciseTypeCounters = new List<NamedEntity>();
+            var groups = day.Exercises.Select(t => t.Exercise).GroupBy(t => t.ExerciseSubTypeId);
+            foreach (var item in groups)
+            {
+                day.ExerciseTypeCounters.Add(new NamedEntity()
+                {
+                    Id = item.Select(t => t.Id).First(),
+                    Name = item.Select(t => t.ExerciseSubTypeName).First(),
+                    Description = item.Count().ToString()
+                });
+            }
+
+            // копируем первый сет значений и добавляем к нему все остальные по Ид процентовки.
+            var listIntensities = day.Exercises.Select(t => t.LiftIntensities).ToList();
+            var dayIntensities = listIntensities.First();
+            listIntensities.RemoveAt(0);
+            foreach (var itemList in listIntensities)
+            {
+                foreach (var item in itemList)
+                {
+                    var dayIntensityItem = dayIntensities.FirstOrDefault(t => t.Percentage.Id == item.Percentage.Id);
+                    dayIntensityItem.Value += item.Value;
+                }
+            }
+
+            day.LiftIntensities = dayIntensities;
+        }
     }
 }
