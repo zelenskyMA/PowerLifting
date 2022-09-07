@@ -28,7 +28,9 @@ class TrainingPlanCreate extends React.Component {
   onDateChange = date => this.setState({ date: date });
 
   onPlanCreate = async () => {
-    await this.props.createTrainingPlan(this.state.date);
+    var utcDate = new Date(this.state.date.getTime() - this.state.date.getTimezoneOffset() * 60 * 1000);
+
+    await this.props.createTrainingPlan(utcDate);
     this.props.navigate("/trainingDaysSetup");
   }
 

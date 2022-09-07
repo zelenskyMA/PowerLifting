@@ -2,8 +2,10 @@
 
 namespace PowerLifting.Domain.Models.TrainingPlan
 {
-    public class ExerciseSettings : Entity
+    public class PlanExerciseSettings : Entity
     {
+        public int PlanExerciseId { get; set; }
+
         public int Weight { get; set; }
 
         public int Iterations { get; set; }
@@ -15,5 +17,7 @@ namespace PowerLifting.Domain.Models.TrainingPlan
         public int ExercisePart3 { get; set; }
 
         public string? Comments { get; set; }
+
+        public Percentage? Percentage { get; set; }
     }
 }

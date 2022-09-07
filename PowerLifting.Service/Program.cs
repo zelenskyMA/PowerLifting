@@ -28,20 +28,19 @@ var mapperConfig = new MapperConfiguration(t => t.AddProfile(new MapperProfile()
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 //repo services
-builder.Services.AddScoped<ICrudRepo<TrainingPlanDb>, TrainingPlanRepository>();
-builder.Services.AddScoped<ITrainingDayRepository, TrainingDayRepository>();
-builder.Services.AddScoped<IPlannedExerciseRepository, PlannedExerciseRepository>();
-builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
-builder.Services.AddScoped<IExerciseSettingsRepository, ExerciseSettingsRepository>();
-builder.Services.AddScoped<IPercentageRepository, PercentageRepository>();
-builder.Services.AddScoped<ICrudRepo<ExercisePercentageDb>, ExercisePercentageRepository>();
+builder.Services.AddScoped<ICrudRepo<PlanDb>, PlanRepository>();
+builder.Services.AddScoped<ICrudRepo<PlanDayDb>, PlanDayRepository>();
+builder.Services.AddScoped<ICrudRepo<PlanExerciseDb>, PlanExerciseRepository>();
+builder.Services.AddScoped<IPlanExerciseSettingsRepository, PlanExerciseSettingsRepository>();
+builder.Services.AddScoped<ICrudRepo<ExerciseDb>, ExerciseRepository>();
 
 builder.Services.AddScoped<ICrudRepo<DictionaryDb>, DictionaryRepository>();
 builder.Services.AddScoped<ICrudRepo<DictionaryTypeDb>, DictionaryTypeRepository>();
 
 //app services
-builder.Services.AddScoped<ITrainingPlanCommands, TrainingPlanCommands>();
-builder.Services.AddScoped<IPlannedExerciseCommands, PlannedExerciseCommands>();
+builder.Services.AddScoped<IPlanCommands, PlanCommands>();
+builder.Services.AddScoped<IPlanExerciseCommands, PlanExerciseCommands>();
+builder.Services.AddScoped<IPlanExerciseSettingsCommands, PlanExerciseSettingsCommands>();
 builder.Services.AddScoped<IExerciseCommands, ExerciseCommands>();
 
 builder.Services.AddScoped<IDictionaryCommands, DictionaryCommands>();

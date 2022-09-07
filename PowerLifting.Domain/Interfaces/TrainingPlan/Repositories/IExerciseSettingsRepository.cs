@@ -3,7 +3,12 @@ using PowerLifting.Domain.Interfaces.Common.Repositories;
 
 namespace PowerLifting.Domain.Interfaces.TrainingPlan.Repositories
 {
-    public interface IExerciseSettingsRepository : ICrudRepo<ExerciseSettingsDb>
+    public interface IPlanExerciseSettingsRepository : ICrudRepo<PlanExerciseSettingsDb>
     {
+        /// <summary>
+        /// Get full list of persentages
+        /// </summary>
+        /// <returns></returns>
+        Task<List<PercentageDb>> GetPercentagesAsync();
     }
 }

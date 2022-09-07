@@ -2,7 +2,7 @@
 
 namespace PowerLifting.Domain.Models.TrainingPlan
 {
-    public class TrainingPlanModel : Entity
+    public class Plan : Entity
     {
         public int UserId { get; set; }
 
@@ -10,6 +10,6 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 
         public string? Comments { get; set; }
 
-        public List<TrainingDay>? TrainingDays { get; set; } = new List<TrainingDay>();
+        public List<PlanDay>? TrainingDays { get; set; } = new List<PlanDay>();
     }
 }

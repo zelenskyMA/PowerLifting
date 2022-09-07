@@ -2,7 +2,7 @@
 
 namespace PowerLifting.Domain.Models.TrainingPlan
 {
-    public class TrainingDay : Entity
+    public class PlanDay : Entity
     {
         public DateTime ActivityDate { get; set; }
 
@@ -12,6 +12,6 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 
         public int IntensitySum { get; set; }
 
-        public List<PlannedExercise>? Exercises { get; set; } = new List<PlannedExercise>();
+        public List<PlanExercise>? Exercises { get; set; } = new List<PlanExercise>();
     }
 }

@@ -2,14 +2,14 @@
 
 namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
 {
-    public interface ITrainingPlanCommands
+    public interface IPlanCommands
     {
         /// <summary>
         /// Get training plan
         /// </summary>
         /// <param name="Id">Plan Id</param>
         /// <returns>Training plan</returns>
-        Task<TrainingPlanModel> GetAsync(int Id);
+        Task<Plan> GetAsync(int Id);
 
         /// <summary>
         /// Create new training plan with training days

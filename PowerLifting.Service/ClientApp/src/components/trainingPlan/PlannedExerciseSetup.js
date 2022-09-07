@@ -14,9 +14,7 @@ class PlannedExerciseSetup extends Component {
     };
   }
 
-  componentDidMount() {
-    this.getExercises();
-  }
+  componentDidMount() { this.getExercises(); }
 
   async getExercises() {
     var data = await GetAsync("exercise/getList");

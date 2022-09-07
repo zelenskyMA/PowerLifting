@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerLifting.Domain.DbModels.TrainingPlan
 {
-    [Table("TrainingDays", Schema = "dbo")]
-    public class TrainingDayDb : EntityDb
+    [Table("PlanDays", Schema = "dbo")]
+    public class PlanDayDb : EntityDb
     {
-        public int TrainingPlanId { get; set; }
+        public int PlanId { get; set; }
 
         public DateTime ActivityDate { get; set; }
 

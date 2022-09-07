@@ -9,10 +9,10 @@ namespace PowerLifting.Service.Controllers
     [Route("trainingPlan")]
     public class TrainingPlanController : ControllerBase
     {
-        private readonly ITrainingPlanCommands _trainingPlanCommands;
-        private readonly IPlannedExerciseCommands _plannedExerciseCommands;
+        private readonly IPlanCommands _trainingPlanCommands;
+        private readonly IPlanExerciseCommands _plannedExerciseCommands;
 
-        public TrainingPlanController(ITrainingPlanCommands trainingPlanCommands, IPlannedExerciseCommands plannedExerciseCommands)
+        public TrainingPlanController(IPlanCommands trainingPlanCommands, IPlanExerciseCommands plannedExerciseCommands)
         {
             _trainingPlanCommands = trainingPlanCommands;
             _plannedExerciseCommands = plannedExerciseCommands;
@@ -20,7 +20,7 @@ namespace PowerLifting.Service.Controllers
 
         [HttpGet]
         [Route("get")]
-        public async Task<TrainingPlanModel> Get(int id)
+        public async Task<Plan> Get(int id)
         {
             var result = await _trainingPlanCommands.GetAsync(id);
             return result;

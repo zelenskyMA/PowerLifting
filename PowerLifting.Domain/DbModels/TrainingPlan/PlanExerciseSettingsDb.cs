@@ -3,9 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerLifting.Domain.DbModels.TrainingPlan
 {
-    [Table("ExerciseSettings", Schema = "dbo")]
-    public class ExerciseSettingsDb : EntityDb
+    [Table("PlanExerciseSettings", Schema = "dbo")]
+    public class PlanExerciseSettingsDb : EntityDb
     {
+        public int PercentageId { get; set; }
+
+        public int PlanExerciseId { get; set; }
+
         public int Weight { get; set; } = 0;
 
         public int Iterations { get; set; } = 0;

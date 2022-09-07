@@ -2,11 +2,9 @@
 
 namespace PowerLifting.Domain.Models.TrainingPlan
 {
-    public class PlannedExercise : Entity
+    public class PlanExercise : Entity
     {
-        public int ExerciseId { get; set; }
-
-        public string? ExerciseName { get; set; }
+        public int PlanDayId { get; set; }
 
         public int Order { get; set; }
 
@@ -16,6 +14,8 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 
         public int Intensity { get; set; }
 
-        public List<ExercisePercentage>? ExerciseData { get; set; } = new List<ExercisePercentage>();
+        public Exercise? Exercise { get; set; } = new Exercise();
+
+        public List<PlanExerciseSettings>? Settings { get; set; } = new List<PlanExerciseSettings>();
     }
 }
