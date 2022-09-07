@@ -32,7 +32,7 @@ namespace PowerLifting.Domain.Models.TrainingPlan
         /// <summary>
         /// Расчетные данные. Количество упражнений по подтипам.
         /// </summary>
-        public List<NamedEntity> ExerciseTypeCounters { get; set; } = new List<NamedEntity>();
+        public List<ValueEntity> ExerciseTypeCounters { get; set; } = new List<ValueEntity>();
 
 
         /// <summary>

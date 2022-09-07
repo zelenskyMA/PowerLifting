@@ -16,7 +16,8 @@ class TrainingDaysSetup extends React.Component {
     super(props);
 
     this.state = {
-      plannedDays: []
+      plannedDays: [],
+      typeCounters: []
     };
   }
 
@@ -25,8 +26,8 @@ class TrainingDaysSetup extends React.Component {
   }
 
   getTrainingPlan = async () => {
-    var data = await GetAsync(`/trainingPlan/get?Id=${this.props.planId}`);
-    this.setState({ plannedDays: data.trainingDays });
+    var plan = await GetAsync(`/trainingPlan/get?Id=${this.props.planId}`);
+    this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum });
   }
 
   onSetExercises = (dayId) => { this.props.navigate(`/plannedExercises/${dayId}`); }
@@ -39,9 +40,12 @@ class TrainingDaysSetup extends React.Component {
     return (
       <>
         <h1>Запланированные дни тренировок</h1>
-        <p>Назначьте упражнения на дни недели.</p>
         <br />
-
+        <Row>
+          <Col xs={3} md={{ offset: 4 }}><strong>Назначьте упражнения на дни недели.</strong></Col>
+          <Col><Button>Утвердить</Button></Col>
+        </Row>
+        <br />
         <Container fluid>
           <Row>
             <Col>{days.length === 0 ? placeHolder : this.plannedDayPanel(days[0])}</Col>
@@ -55,10 +59,14 @@ class TrainingDaysSetup extends React.Component {
           </Row>
           <Row style={{ marginTop: '100px', marginBottom: '50px' }}>
             <Col>{days.length === 0 ? placeHolder : this.plannedDayPanel(days[6])}</Col>
-            <Col></Col>
+
+            <Col className="text-center">
+              <div><strong>Всего упражнений</strong></div>
+              {this.exerciseCountersPanel(this.state.typeCounters)}
+            </Col>
+
             <Col></Col>
           </Row>
-          <Button>Подтвердить</Button>
         </Container>
       </>
     );
@@ -71,7 +79,6 @@ class TrainingDaysSetup extends React.Component {
     dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
 
     var dateView = dateValue.toLocaleString(Locale, { dateStyle: "medium" });
-    const exercises = day.exercises.length > 0 ? 'Они есть' : 'Нет назначенных тренировок';
 
     return (
       <Container fluid>
@@ -86,11 +93,33 @@ class TrainingDaysSetup extends React.Component {
         </Row>
         <hr style={{ width: '60%', paddingTop: "2px" }} />
         <Row>
-          <Col>{exercises}</Col>
+          <Col>{this.exerciseCountersPanel(day.exerciseTypeCounters)}</Col>
         </Row>
       </Container>
     );
   }
+
+  exerciseCountersPanel(counters) {
+    var fontSize = "0.85rem";
+
+    if (counters.length == 0) {
+      return (
+        <span style={{ fontSize: fontSize }}>Нет назначенных тренировок</span>
+      );
+    }
+
+    return (
+      <>
+        {counters.map((item, index) =>
+          <Row style={{ fontSize: fontSize }}>
+            <Col>{item.name}</Col>
+            <Col>{item.value}</Col>
+          </Row>
+        )}
+      </>
+    );
+  }
+
 }
 
 export default WithRouter(connect(mapStateToProps, null)(TrainingDaysSetup))

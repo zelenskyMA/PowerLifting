@@ -47,6 +47,7 @@ namespace PowerLifting.Application.TrainingPlan
             }
 
             plan.TrainingDays = planDays;
+            SetPlanCounters(plan);
 
             return plan;
         }
@@ -100,20 +101,23 @@ namespace PowerLifting.Application.TrainingPlan
             day.LiftCounterSum = day.Exercises.Sum(t => t.LiftCounter);
             day.IntensitySum = day.Exercises.Sum(t => t.Intensity);
 
+
             // считаем, сколько упражнений по подтипам в тренировочном дне. 
-            day.ExerciseTypeCounters = new List<NamedEntity>();
+            day.ExerciseTypeCounters = new List<ValueEntity>();
             var groups = day.Exercises.Select(t => t.Exercise).GroupBy(t => t.ExerciseSubTypeId);
             foreach (var item in groups)
             {
-                day.ExerciseTypeCounters.Add(new NamedEntity()
+                day.ExerciseTypeCounters.Add(new ValueEntity()
                 {
-                    Id = item.Select(t => t.Id).First(),
+                    Id = item.Select(t => t.ExerciseSubTypeId).First(),
                     Name = item.Select(t => t.ExerciseSubTypeName).First(),
-                    Description = item.Count().ToString()
+                    Value = item.Count()
                 });
             }
+            day.ExerciseTypeCounters = day.ExerciseTypeCounters.OrderBy(t => t.Name).ToList();
 
-            // копируем первый сет значений и добавляем к нему все остальные по Ид процентовки.
+
+            // считаем дневную интенсивность занятий по колонкам процентов.
             var listIntensities = day.Exercises.Select(t => t.LiftIntensities).ToList();
             var dayIntensities = listIntensities.First();
             listIntensities.RemoveAt(0);
@@ -128,5 +132,34 @@ namespace PowerLifting.Application.TrainingPlan
 
             day.LiftIntensities = dayIntensities;
         }
+
+        private void SetPlanCounters(Plan plan)
+        {
+            var planCounters = new List<ValueEntity>();
+
+            var listCounters = plan.TrainingDays.Select(t => t.ExerciseTypeCounters).ToList();
+            foreach (var itemList in listCounters)
+            {
+                foreach (var item in itemList)
+                {
+                    var dayIntensityItem = planCounters.FirstOrDefault(t => t.Id == item.Id);
+                    if (dayIntensityItem == null)
+                    {
+                        dayIntensityItem = new ValueEntity()
+                        {
+                            Id = item.Id,
+                            Name = item.Name,
+                            Value = 0
+                        };
+                        planCounters.Add(dayIntensityItem);
+                    }
+
+                    dayIntensityItem.Value += item.Value;
+                }
+            }
+
+            plan.TypeCountersSum = planCounters.OrderBy(t=> t.Name).ToList();
+        }
+
     }
 }

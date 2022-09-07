@@ -88,7 +88,7 @@ namespace PowerLifting.Application.TrainingPlan
             planExercise.LiftCounter = planExercise.Settings.Select(
                 t => t.ExercisePart1 + t.ExercisePart2 + t.ExercisePart3).Sum();
 
-            planExercise.Intensity = planExercise.WeightLoad / planExercise.LiftCounter;
+            planExercise.Intensity = planExercise.LiftCounter == 0 ? 0 : planExercise.WeightLoad / planExercise.LiftCounter;
 
             planExercise.LiftIntensities = new List<LiftIntensity>();
             foreach (var item in planExercise.Settings)
