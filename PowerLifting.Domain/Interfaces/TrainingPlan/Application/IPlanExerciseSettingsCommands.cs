@@ -5,13 +5,6 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
     public interface IPlanExerciseSettingsCommands
     {
         /// <summary>
-        /// Create exercise settings for plan exercise
-        /// </summary>
-        /// <param name="planExerciseId">Plan exercise Id</param>
-        /// <returns></returns>
-        Task Create(int planExerciseId);
-
-        /// <summary>
         /// Get exercise settings for a single planned exercise by Id
         /// </summary>
         /// <param name="planExerciseId">Planned exercise Id</param>
@@ -24,5 +17,19 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         /// <param name="planExerciseId">List of planned exercise Ids</param>
         /// <returns></returns>
         Task<List<PlanExerciseSettings>> GetAsync(List<int> planExerciseIds);
+
+        /// <summary>
+        /// Create exercise settings for plan exercise
+        /// </summary>
+        /// <param name="planExerciseId">Plan exercise Id</param>
+        /// <returns></returns>
+        Task Create(int planExerciseId);
+
+        /// <summary>
+        /// Delete all supplied items
+        /// </summary>
+        /// <param name="settings">Settings for deleting</param>
+        /// <returns></returns>
+        Task DeleteByPlanExerciseIdAsync(List<int> planExerciseIds);
     }
 }

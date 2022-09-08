@@ -34,6 +34,14 @@ namespace PowerLifting.Service.Controllers
             return result;
         }
 
+        [HttpGet]
+        [Route("getPlanExercise")]
+        public async Task<List<PlanExercise>> GetPlannedExercise(int dayId)
+        {
+            var result = await _plannedExerciseCommands.GetAsync(dayId);
+            return result;
+        }
+
         [HttpPost]
         [Route("createPlanExercise")]
         public async Task<bool> CreatePlannedExercise(int dayId, [FromBody] List<Exercise> exercises)

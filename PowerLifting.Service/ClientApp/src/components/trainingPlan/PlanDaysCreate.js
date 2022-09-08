@@ -126,7 +126,7 @@ class PlanDaysCreate extends React.Component {
     }
 
 
-    return (<Col><Button>Утвердить</Button></Col>);
+    return (<Col><Button color="primary" >Подтвердить</Button></Col>);
   }
 
 }
