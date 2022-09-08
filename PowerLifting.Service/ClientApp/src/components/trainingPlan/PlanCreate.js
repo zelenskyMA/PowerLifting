@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Container, Button } from "reactstrap";
-import { createTrainingPlan } from "../../stores/trainingPlanStore/trainingPlanActions";
+import { createTrainingPlan } from "../../stores/trainingPlanStore/planActions";
 import { Locale } from "../../common/Localization";
 import WithRouter from "../../common/extensions/WithRouter";
 
@@ -19,7 +19,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-class TrainingPlanCreate extends React.Component {
+class PlanCreate extends React.Component {
 
   state = {
     date: new Date(),
@@ -31,7 +31,7 @@ class TrainingPlanCreate extends React.Component {
     var utcDate = new Date(this.state.date.getTime() - this.state.date.getTimezoneOffset() * 60 * 1000);
 
     await this.props.createTrainingPlan(utcDate);
-    this.props.navigate("/trainingDaysSetup");
+    this.props.navigate("/createPlanDays");
   }
 
   render() {
@@ -51,4 +51,4 @@ class TrainingPlanCreate extends React.Component {
   }
 }
 
-export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(TrainingPlanCreate))
+export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(PlanCreate))

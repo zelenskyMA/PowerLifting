@@ -11,7 +11,7 @@ const mapStateToProps = store => {
   }
 }
 
-class TrainingDaysSetup extends React.Component {
+class PlanDaysCreate extends React.Component {
   constructor(props) {
     super(props);
 
@@ -30,7 +30,7 @@ class TrainingDaysSetup extends React.Component {
     this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum });
   }
 
-  onSetExercises = (dayId) => { this.props.navigate(`/plannedExercises/${dayId}`); }
+  onSetExercises = (dayId) => { this.props.navigate(`/planExercises/${dayId}`); }
 
 
   render() {
@@ -43,7 +43,7 @@ class TrainingDaysSetup extends React.Component {
         <br />
         <Row>
           <Col xs={3} md={{ offset: 4 }}><strong>Назначьте упражнения на дни недели.</strong></Col>
-          <Col><Button>Утвердить</Button></Col>
+          <Col>{this.confirmButtonPanel() }</Col>
         </Row>
         <br />
         <Container fluid>
@@ -60,7 +60,7 @@ class TrainingDaysSetup extends React.Component {
           <Row style={{ marginTop: '100px', marginBottom: '50px' }}>
             <Col>{days.length === 0 ? placeHolder : this.plannedDayPanel(days[6])}</Col>
 
-            <Col className="text-center">
+            <Col>
               <div><strong>Всего упражнений</strong></div>
               {this.exerciseCountersPanel(this.state.typeCounters)}
             </Col>
@@ -120,6 +120,15 @@ class TrainingDaysSetup extends React.Component {
     );
   }
 
+  confirmButtonPanel() {
+    if (this.state.typeCounters.length == 0) {
+      return (<></>);
+    }
+
+
+    return (<Col><Button>Утвердить</Button></Col>);
+  }
+
 }
 
-export default WithRouter(connect(mapStateToProps, null)(TrainingDaysSetup))
+export default WithRouter(connect(mapStateToProps, null)(PlanDaysCreate))

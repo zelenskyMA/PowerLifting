@@ -1,30 +1,18 @@
 import { Home } from "./components/Home";
 import { TrainingDayView } from "./components/trainingPlan/TrainingDayView";
-import TrainingPlanCreate from "./components/trainingPlan/TrainingPlanCreate";
-import TrainingDaysSetup from "./components/trainingPlan/TrainingDaysSetup";
-import PlannedExerciseSetup from "./components/trainingPlan/PlannedExerciseSetup";
+import PlanCreate from "./components/trainingPlan/PlanCreate";
+import PlanDaysCreate from "./components/trainingPlan/PlanDaysCreate";
+import PlannedExerciseSetup from "./components/trainingPlan/PlanExerciseCreate";
 
 const AppRoutes = [
-  {
-    index: true,
-    element: <Home />
-  },
-  {
-    path: '/plannedExercises/:id',
-    element: <PlannedExerciseSetup />
-  },
+  { index: true, element: <Home /> },
   {
     path: '/trainingDay',
     element: <TrainingDayView />
   },
-  {
-    path: '/trainingDaysSetup',
-    element: <TrainingDaysSetup />
-  },
-  {
-    path: '/addTrainingPlan',
-    element: <TrainingPlanCreate />
-  }
+  { path: '/planExercises/:id', element: <PlannedExerciseSetup /> },
+  { path: '/createPlanDays', element: <PlanDaysCreate /> },
+  { path: '/createPlan', element: <PlanCreate /> }
 ];
 
 export default AppRoutes;

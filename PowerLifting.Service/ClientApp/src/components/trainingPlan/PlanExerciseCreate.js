@@ -22,8 +22,8 @@ class PlannedExerciseSetup extends Component {
   }
 
   confirmExercisesAsync = async () => {
-    await PostAsync(`/trainingPlan/createPlannedExercise?dayId=${this.props.params.id}`, this.state.selectedExercises);
-    this.props.navigate("/trainingDaysSetup");
+    await PostAsync(`/trainingPlan/createPlanExercise?dayId=${this.props.params.id}`, this.state.selectedExercises);
+    this.props.navigate("/createPlanDays");
   }
 
   onRowDblClick = row => {

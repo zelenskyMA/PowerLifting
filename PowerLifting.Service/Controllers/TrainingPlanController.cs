@@ -35,7 +35,7 @@ namespace PowerLifting.Service.Controllers
         }
 
         [HttpPost]
-        [Route("createPlannedExercise")]
+        [Route("createPlanExercise")]
         public async Task<bool> CreatePlannedExercise(int dayId, [FromBody] List<Exercise> exercises)
         {
             await _plannedExerciseCommands.CreateAsync(dayId, exercises);
