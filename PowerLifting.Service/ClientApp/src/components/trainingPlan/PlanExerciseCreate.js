@@ -110,7 +110,7 @@ class PlannedExerciseSetup extends Component {
             </tbody>
           </table>
 
-          <Button onClick={() => this.confirmExercisesAsync()}>Подтвердить</Button>
+          <Button color="primary" onClick={() => this.confirmExercisesAsync()}>Подтвердить</Button>
         </Container>
       </>
     );

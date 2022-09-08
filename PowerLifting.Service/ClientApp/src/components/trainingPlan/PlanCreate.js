@@ -44,7 +44,7 @@ class PlanCreate extends React.Component {
           <p>Выберите дату начала тренировок</p>
           <Calendar onChange={this.onDateChange} value={this.state.date} locale={Locale} />
 
-          <Button style={{ marginTop: '25px' }} onClick={() => this.onPlanCreate()}>Создать</Button>
+          <Button color="primary" style={{ marginTop: '25px' }} onClick={() => this.onPlanCreate()}>Создать</Button>
         </Container>
       </>
     );
