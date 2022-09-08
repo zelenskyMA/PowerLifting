@@ -44,7 +44,9 @@ namespace PowerLifting.Application.TrainingPlan
             var planExercises = planExercisesDb.Select(t => _mapper.Map<PlanExercise>(t)).ToList();
             foreach (var item in planExercises)
             {
-                item.Exercise = exercises.First(t => t.Id == item.Exercise.Id);
+                item.Exercise = exercises.First(t => t.Id == item.Exercise.Id).Clone();
+                item.Exercise.PlannedExerciseId = item.Id;
+
                 item.Settings = settings.Where(t => t.PlanExerciseId == item.Id).OrderBy(t => t.Percentage.MinValue).ToList();
 
                 SetPlanExerciseCounters(item);
@@ -63,14 +65,22 @@ namespace PowerLifting.Application.TrainingPlan
 
             //удаляем лишние записи вместе со связями
             var planExercisesDb = await _planExerciseRepository.FindAsync(t => t.PlanDayId == dayId);
-            var itemsToDelete = planExercisesDb.Where(t => !exercises.Select(t => t.Id).Contains(t.ExerciseId)).ToList();
-            await _planExerciseSettingsCommands.DeleteByPlanExerciseIdAsync(itemsToDelete.Select(t => t.Id).ToList());
-            await _planExerciseRepository.DeleteListAsync(itemsToDelete);
+            if (planExercisesDb.Count > 0)
+            {
+                var itemsToDelete = planExercisesDb.Where(t => !exercises.Select(t => t.PlannedExerciseId).Contains(t.Id)).ToList();
+                if (itemsToDelete.Count > 0)
+                {
+                    await _planExerciseSettingsCommands.DeleteByPlanExerciseIdAsync(itemsToDelete.Select(t => t.Id).ToList());
+                    await _planExerciseRepository.DeleteListAsync(itemsToDelete);
+
+                    itemsToDelete.Select(t => planExercisesDb.Remove(t));
+                }
+            }
 
             for (int i = 1; i <= exercises.Count; i++)
             {
                 // обновление существующего упражнения
-                var planExercise = planExercisesDb.FirstOrDefault(t => t.ExerciseId == exercises[i - 1].Id);
+                var planExercise = planExercisesDb.FirstOrDefault(t => t.Id == exercises[i - 1].PlannedExerciseId);
                 if (planExercise != null)
                 {
                     planExercise.Order = i;
