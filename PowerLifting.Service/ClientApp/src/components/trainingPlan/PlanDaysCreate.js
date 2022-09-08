@@ -30,7 +30,7 @@ class PlanDaysCreate extends React.Component {
     this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum });
   }
 
-  onSetExercises = (dayId) => { this.props.navigate(`/planExercises/${dayId}`); }
+  onSetExercises = (dayId) => { this.props.navigate(`/createPlanExercises/${dayId}`); }
 
 
   render() {

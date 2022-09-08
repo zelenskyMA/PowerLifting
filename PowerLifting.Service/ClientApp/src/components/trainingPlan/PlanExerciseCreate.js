@@ -4,7 +4,7 @@ import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { TableView } from "../../common/TableView";
 import WithRouter from "../../common/extensions/WithRouter";
 
-class PlannedExerciseSetup extends Component {
+class PlanExerciseCreate extends Component {
   constructor() {
     super();
 
@@ -20,7 +20,6 @@ class PlannedExerciseSetup extends Component {
     var data = await GetAsync("exercise/getList");
     this.setState({ exercises: data });
 
-    debugger;
     var planExercises = await GetAsync(`trainingPlan/getPlanExercise?dayId=${this.props.params.id}`);
     var planExercisesData = planExercises.map((item, i) => item.exercise);
     this.setState({ selectedExercises: planExercisesData });
@@ -122,4 +121,4 @@ class PlannedExerciseSetup extends Component {
   }
 }
 
-export default WithRouter(PlannedExerciseSetup);
+export default WithRouter(PlanExerciseCreate);
