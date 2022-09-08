@@ -6,10 +6,10 @@ namespace PowerLifting.Domain.Models.TrainingPlan
     {
         public int ExerciseTypeId { get; set; }
 
-        public string ExerciseTypeName { get; set; }
+        public string? ExerciseTypeName { get; set; }
 
         public int ExerciseSubTypeId { get; set; }
 
-        public string ExerciseSubTypeName { get; set; }
+        public string? ExerciseSubTypeName { get; set; }
     }
 }

@@ -6,11 +6,10 @@ namespace PowerLifting.Infrastructure
 {
     public class LiftingContext : DbContext
     {
-        public DbSet<TrainingPlanDb> TrainingPlans { get; set; }
-        public DbSet<TrainingDayDb> TrainingDays { get; set; }
-        public DbSet<PlannedExerciseDb> PlannedExercises { get; set; }
-        public DbSet<ExerciseSettingsDb> ExerciseSettings { get; set; }
-        public DbSet<ExercisePercentageDb> ExercisePercentages { get; set; }
+        public DbSet<PlanDb> TrainingPlans { get; set; }
+        public DbSet<PlanDayDb> TrainingDays { get; set; }
+        public DbSet<PlanExerciseDb> PlannedExercises { get; set; }
+        public DbSet<PlanExerciseSettingsDb> ExerciseSettings { get; set; }
         public DbSet<ExerciseDb> Exercises { get; set; }
         public DbSet<PercentageDb> Percentages { get; set; }
 

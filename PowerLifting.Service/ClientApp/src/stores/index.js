@@ -1,6 +1,6 @@
 ﻿import { combineReducers } from 'redux'
-import { trainingPlanReducer } from '../stores/trainingPlanStore/reducers/trainingPlanReducer'
+import { planReducer } from './trainingPlanStore/reducers/planReducer'
 
 export const rootReducer = combineReducers({
-  trainingPlan: trainingPlanReducer,
+  trainingPlan: planReducer,
 })

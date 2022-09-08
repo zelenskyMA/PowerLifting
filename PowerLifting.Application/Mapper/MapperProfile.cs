@@ -10,9 +10,16 @@ namespace PowerLifting.Application.Mapper
     {
         public MapperProfile()
         {
-            CreateMap<TrainingPlanDb, TrainingPlanModel>().ReverseMap();
-            CreateMap<TrainingDayDb, TrainingDay>().ReverseMap();
+            CreateMap<PlanDb, Plan>().ReverseMap();
+            CreateMap<PlanDayDb, PlanDay>().ReverseMap();
             CreateMap<ExerciseDb, Exercise>().ReverseMap();
+            CreateMap<PlanExerciseSettingsDb, PlanExerciseSettings>().ReverseMap();
+            CreateMap<PercentageDb, Percentage>().ReverseMap();
+            
+            CreateMap<PlanExerciseDb, PlanExercise>()
+                .ForPath(dest => dest.Exercise.Id, opt => opt.MapFrom(src => src.ExerciseId))
+                .ReverseMap();
+
 
             CreateMap<DictionaryDb, DictionaryItem>().ReverseMap();
             CreateMap<DictionaryTypeDb, DictionaryType>().ReverseMap();

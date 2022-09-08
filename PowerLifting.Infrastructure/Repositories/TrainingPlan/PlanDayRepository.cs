@@ -4,10 +4,8 @@ using PowerLifting.Infrastructure.Repositories.Common;
 
 namespace PowerLifting.Infrastructure.Repositories.TrainingPlan
 {
-    public class ExerciseRepository : CrudRepo<ExerciseDb>
+    public class PlanDayRepository : CrudRepo<PlanDayDb>
     {
-        public ExerciseRepository(DbContextOptions<LiftingContext> provider) : base(provider)
-        {
-        }
+        public PlanDayRepository(DbContextOptions<LiftingContext> provider) : base(provider) { }
     }
 }
