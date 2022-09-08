@@ -53,6 +53,18 @@ namespace PowerLifting.Infrastructure.Repositories.Common
             await Context.SaveChangesAsync();
         }
 
+        public async Task DeleteListAsync(List<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                var dbEntityEntry = Context.Entry(entity);
+                dbEntityEntry.State = EntityState.Deleted;
+                DbSet.Remove(entity);
+            }
+
+            await Context.SaveChangesAsync();
+        }
+
 
         public void Dispose() { }// => Context?.Dispose();
     }

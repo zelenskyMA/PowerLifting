@@ -10,5 +10,6 @@
 
         Task DeleteAsync(T entity);
 
+        Task DeleteListAsync(List<T> entities);
     }
 }

@@ -12,7 +12,7 @@ namespace PowerLifting.Application.TrainingPlan
         private readonly IPlanExerciseSettingsCommands _planExerciseSettingsCommands;
         private readonly IExerciseCommands _exerciseCommands;
 
-        private readonly ICrudRepo<PlanExerciseDb> _plannedExerciseRepository;
+        private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
         private readonly IMapper _mapper;
 
         public PlanExerciseCommands(
@@ -24,30 +24,8 @@ namespace PowerLifting.Application.TrainingPlan
             _planExerciseSettingsCommands = planExerciseSettingsCommands;
             _exerciseCommands = exerciseCommands;
 
-            _plannedExerciseRepository = plannedExerciseRepository;
+            _planExerciseRepository = plannedExerciseRepository;
             _mapper = mapper;
-        }
-
-        /// <inheritdoc />
-        public async Task CreateAsync(int trainingDayId, List<Exercise> exercises)
-        {
-            if (exercises.Count == 0)
-            {
-                return;
-            }
-
-            for (int i = 1; i <= exercises.Count; i++)
-            {
-                var planExercise = new PlanExerciseDb()
-                {
-                    PlanDayId = trainingDayId,
-                    ExerciseId = exercises[i - 1].Id,
-                    Order = i,
-                };
-                await _plannedExerciseRepository.CreateAsync(planExercise);
-
-                await _planExerciseSettingsCommands.Create(planExercise.Id);
-            }
         }
 
         /// <inheritdoc />
@@ -56,7 +34,7 @@ namespace PowerLifting.Application.TrainingPlan
         /// <inheritdoc />
         public async Task<List<PlanExercise>> GetAsync(List<int> dayIds)
         {
-            var planExercisesDb = await _plannedExerciseRepository.FindAsync(t => dayIds.Contains(t.PlanDayId));
+            var planExercisesDb = await _planExerciseRepository.FindAsync(t => dayIds.Contains(t.PlanDayId));
 
             var exerciseIds = planExercisesDb.Select(t => t.ExerciseId).Distinct().ToList();
             var exercises = await _exerciseCommands.GetAsync(exerciseIds);
@@ -73,6 +51,44 @@ namespace PowerLifting.Application.TrainingPlan
             }
 
             return planExercises;
+        }
+
+        /// <inheritdoc />
+        public async Task CreateAsync(int dayId, List<Exercise> exercises)
+        {
+            if (exercises.Count == 0)
+            {
+                return;
+            }
+
+            //удаляем лишние записи вместе со связями
+            var planExercisesDb = await _planExerciseRepository.FindAsync(t => t.PlanDayId == dayId);
+            var itemsToDelete = planExercisesDb.Where(t => !exercises.Select(t => t.Id).Contains(t.ExerciseId)).ToList();
+            await _planExerciseSettingsCommands.DeleteByPlanExerciseIdAsync(itemsToDelete.Select(t => t.Id).ToList());
+            await _planExerciseRepository.DeleteListAsync(itemsToDelete);
+
+            for (int i = 1; i <= exercises.Count; i++)
+            {
+                // обновление существующего упражнения
+                var planExercise = planExercisesDb.FirstOrDefault(t => t.ExerciseId == exercises[i - 1].Id);
+                if (planExercise != null)
+                {
+                    planExercise.Order = i;
+                    await _planExerciseRepository.UpdateAsync(planExercise);
+                    continue;
+                }
+
+                // добавление нового упражнения
+                planExercise = new PlanExerciseDb()
+                {
+                    PlanDayId = dayId,
+                    ExerciseId = exercises[i - 1].Id,
+                    Order = i
+                };
+
+                await _planExerciseRepository.CreateAsync(planExercise);
+                await _planExerciseSettingsCommands.Create(planExercise.Id);
+            }
         }
 
         private void SetPlanExerciseCounters(PlanExercise planExercise)

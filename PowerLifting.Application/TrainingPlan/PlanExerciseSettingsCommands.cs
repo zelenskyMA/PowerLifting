@@ -19,6 +19,27 @@ namespace PowerLifting.Application.TrainingPlan
             _mapper = mapper;
         }
 
+        /// <inheritdoc />
+        public async Task<List<PlanExerciseSettings>> GetAsync(int planExerciseId) => await GetAsync(new List<int>() { planExerciseId });
+
+        /// <inheritdoc />
+        public async Task<List<PlanExerciseSettings>> GetAsync(List<int> planExerciseIds)
+        {
+            var percentages = (await _exerciseSettingsRepository.GetPercentagesAsync()).Select(t => _mapper.Map<Percentage>(t)).ToList();
+
+            var settingsDb = await _exerciseSettingsRepository.FindAsync(t => planExerciseIds.Contains(t.PlanExerciseId));
+            var settings = settingsDb.Select(t => _mapper.Map<PlanExerciseSettings>(t)).ToList();
+
+            foreach (var item in settings)
+            {
+                var percentageId = settingsDb.First(t => t.Id == item.Id).PercentageId;
+                item.Percentage = percentages.First(p => p.Id == percentageId);
+            }
+
+            return settings;
+        }
+
+        /// <inheritdoc />
         public async Task Create(int planExerciseId)
         {
             var percentages = (await _exerciseSettingsRepository.GetPercentagesAsync()).OrderBy(t => t.MinValue).ToList();
@@ -35,23 +56,14 @@ namespace PowerLifting.Application.TrainingPlan
             }
         }
 
-        public async Task<List<PlanExerciseSettings>> GetAsync(int planExerciseId) => await GetAsync(new List<int>() { planExerciseId });
-
-
-        public async Task<List<PlanExerciseSettings>> GetAsync(List<int> planExerciseIds)
+        /// <inheritdoc />
+        public async Task DeleteByPlanExerciseIdAsync(List<int> planExerciseIds)
         {
-            var percentages = (await _exerciseSettingsRepository.GetPercentagesAsync()).Select(t => _mapper.Map<Percentage>(t)).ToList();
-
             var settingsDb = await _exerciseSettingsRepository.FindAsync(t => planExerciseIds.Contains(t.PlanExerciseId));
-            var settings = settingsDb.Select(t => _mapper.Map<PlanExerciseSettings>(t)).ToList();
-
-            foreach (var item in settings)
+            foreach (var item in settingsDb)
             {
-                var percentageId = settingsDb.First(t => t.Id == item.Id).PercentageId;
-                item.Percentage = percentages.First(p => p.Id == percentageId);
+                await _exerciseSettingsRepository.DeleteAsync(_mapper.Map<PlanExerciseSettingsDb>(item));
             }
-
-            return settings;
         }
     }
 }
