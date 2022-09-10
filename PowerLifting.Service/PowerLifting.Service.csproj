@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\components\trainingPlan\TrainingDayView.js" />
+    <TypeScriptCompile Include="ClientApp\src\components\trainingPlan\PlanDayCreate.js" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -3,15 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using PowerLifting.Application;
 using PowerLifting.Application.Mapper;
 using PowerLifting.Application.TrainingPlan;
+using PowerLifting.Application.UserData;
 using PowerLifting.Domain.DbModels;
 using PowerLifting.Domain.DbModels.TrainingPlan;
+using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Interfaces;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Repositories;
+using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Infrastructure;
 using PowerLifting.Infrastructure.Repositories;
 using PowerLifting.Infrastructure.Repositories.TrainingPlan;
+using PowerLifting.Infrastructure.Repositories.UserData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,11 +41,16 @@ builder.Services.AddScoped<ICrudRepo<ExerciseDb>, ExerciseRepository>();
 builder.Services.AddScoped<ICrudRepo<DictionaryDb>, DictionaryRepository>();
 builder.Services.AddScoped<ICrudRepo<DictionaryTypeDb>, DictionaryTypeRepository>();
 
+builder.Services.AddScoped<ICrudRepo<UserAchivementDb>, UserAchivementRepository>();
+builder.Services.AddScoped<ICrudRepo<UserDb>, UserRepository>();
+
 //app services
 builder.Services.AddScoped<IPlanCommands, PlanCommands>();
 builder.Services.AddScoped<IPlanExerciseCommands, PlanExerciseCommands>();
 builder.Services.AddScoped<IPlanExerciseSettingsCommands, PlanExerciseSettingsCommands>();
 builder.Services.AddScoped<IExerciseCommands, ExerciseCommands>();
+
+builder.Services.AddScoped<IUserAchivementCommands, UserAchivementCommands>();
 
 builder.Services.AddScoped<IDictionaryCommands, DictionaryCommands>();
 

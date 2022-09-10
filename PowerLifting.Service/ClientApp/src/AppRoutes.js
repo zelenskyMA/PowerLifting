@@ -1,18 +1,18 @@
 import { Home } from "./components/Home";
-import { TrainingDayView } from "./components/trainingPlan/TrainingDayView";
 import PlanCreate from "./components/trainingPlan/PlanCreate";
 import PlanDaysCreate from "./components/trainingPlan/PlanDaysCreate";
-import PlanExerciseCreate from "./components/trainingPlan/PlanExerciseCreate";
+import PlanDayCreate from "./components/trainingPlan/PlanDayCreate";
+import PlanExercisesCreate from "./components/trainingPlan/PlanExercisesCreate";
+import PlanExerciseSettingsEdit from "./components/trainingPlan/PlanExerciseSettingsEdit";
 
 const AppRoutes = [
   { index: true, element: <Home /> },
-  {
-    path: '/trainingDay',
-    element: <TrainingDayView />
-  },
-  { path: '/createPlanExercises/:id', element: <PlanExerciseCreate /> },
+
+  { path: '/createPlanExercises/:id', element: <PlanExercisesCreate /> },
   { path: '/createPlanDays', element: <PlanDaysCreate /> },
-  { path: '/createPlan', element: <PlanCreate /> }
+  { path: '/createPlanDay/:id', element: <PlanDayCreate /> },
+  { path: '/createPlan', element: <PlanCreate /> },
+  { path: '/editPlanExerciseSettings/:dayId/:id', element: <PlanExerciseSettingsEdit /> }
 ];
 
 export default AppRoutes;

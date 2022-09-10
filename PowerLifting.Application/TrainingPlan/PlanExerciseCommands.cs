@@ -97,7 +97,7 @@ namespace PowerLifting.Application.TrainingPlan
                 };
 
                 await _planExerciseRepository.CreateAsync(planExercise);
-                await _planExerciseSettingsCommands.Create(planExercise.Id);
+                await _planExerciseSettingsCommands.CreateAsync(planExercise.Id);
             }
         }
 
