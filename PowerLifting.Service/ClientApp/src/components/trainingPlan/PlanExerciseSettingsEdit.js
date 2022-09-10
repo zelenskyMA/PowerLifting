@@ -37,7 +37,7 @@ class PlanExerciseSettingsEdit extends Component {
 
   setAreaValue = (propName) => (event) => {
     var val = event.target.value;
-    this.setState(prevState => ({ activeItem: { ...prevState.exercisesSettings, [propName]: val } }));
+    this.setState(prevState => ({ exercisesSettings: { ...prevState.exercisesSettings, [propName]: val } }));
   }
 
   render() {
@@ -77,7 +77,7 @@ class PlanExerciseSettingsEdit extends Component {
         </Row>
 
         <p style={{ marginTop: '40px' }}>Оставьте комментарий для выполняющего упражнение: </p>
-        <textarea onChange={this.setAreaValue('comments')} value={this.state?.exercisesSettings?.comments ?? ''} rows={3} cols={84} />
+        <textarea onChange={this.setAreaValue('comments')} value={this.state?.exercisesSettings?.comments} rows={3} cols={84} />
 
         <br />
         <Button style={{ marginTop: '40px' }} color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
 import { Locale } from "../../common/Localization";
 import { PanelPlanDay } from "./PanelPlanDay";
@@ -23,6 +24,8 @@ class PlanDayCreate extends Component {
     this.setState({ planDay: data, percentages: percentages, loading: false });
   }
 
+  confirmAsync = () => { this.props.navigate("/createPlanDays"); }
+
   openSettings = (settings) => { this.props.navigate(`/editPlanExerciseSettings/${this.props.params.id}/${settings.id}`); }
 
   render() {
@@ -33,7 +36,10 @@ class PlanDayCreate extends Component {
         <h2 style={{ marginBottom: '30px' }}>План тренировок на {dateView}</h2>
         {this.state.loading ?
           <p><em>Загрузка...</em></p> :
-          <PanelPlanDay planDay={this.state.planDay} percentages={this.state.percentages} rowDblClick={this.openSettings} />}
+          <PanelPlanDay planDay={this.state.planDay} percentages={this.state.percentages} rowDblClick={this.openSettings} />
+        }
+
+        <Button style={{ marginTop: '40px' }} color="primary" onClick={() => this.confirmAsync()}>Назад</Button>
       </>
     );
   }
