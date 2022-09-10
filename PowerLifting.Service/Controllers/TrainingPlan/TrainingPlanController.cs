@@ -2,7 +2,7 @@
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Models.TrainingPlan;
 
-namespace PowerLifting.Service.Controllers
+namespace PowerLifting.Service.Controllers.TrainingPlan
 {
 
     [ApiController]
@@ -35,7 +35,15 @@ namespace PowerLifting.Service.Controllers
         }
 
         [HttpGet]
-        [Route("getPlanExercise")]
+        [Route("getPlanDay")]
+        public async Task<PlanDay> GetPlanDay(int dayId)
+        {
+            var result = await _trainingPlanCommands.GetPlanDayAsync(dayId);
+            return result;
+        }
+
+        [HttpGet]
+        [Route("getPlanExercises")]
         public async Task<List<PlanExercise>> GetPlannedExercise(int dayId)
         {
             var result = await _plannedExerciseCommands.GetAsync(dayId);
@@ -43,7 +51,7 @@ namespace PowerLifting.Service.Controllers
         }
 
         [HttpPost]
-        [Route("createPlanExercise")]
+        [Route("createPlanExercises")]
         public async Task<bool> CreatePlannedExercise(int dayId, [FromBody] List<Exercise> exercises)
         {
             await _plannedExerciseCommands.CreateAsync(dayId, exercises);

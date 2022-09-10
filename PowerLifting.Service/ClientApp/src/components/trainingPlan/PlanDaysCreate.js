@@ -21,9 +21,7 @@ class PlanDaysCreate extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.getTrainingPlan();
-  }
+  componentDidMount() { this.getTrainingPlan(); }
 
   getTrainingPlan = async () => {
     var plan = await GetAsync(`/trainingPlan/get?Id=${this.props.planId}`);
@@ -43,7 +41,7 @@ class PlanDaysCreate extends React.Component {
         <br />
         <Row>
           <Col xs={3} md={{ offset: 4 }}><strong>Назначьте упражнения на дни недели.</strong></Col>
-          <Col>{this.confirmButtonPanel() }</Col>
+          <Col>{this.confirmButtonPanel()}</Col>
         </Row>
         <br />
         <Container fluid>

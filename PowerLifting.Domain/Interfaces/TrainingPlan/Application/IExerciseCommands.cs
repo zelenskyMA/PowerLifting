@@ -11,6 +11,13 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         Task<List<Exercise>> GetListAsync();
 
         /// <summary>
+        /// Get exercises by id
+        /// </summary>
+        /// <param name="id">Exercise Id</param>
+        /// <returns></returns>
+        Task<List<Exercise>> GetAsync(int id);
+
+        /// <summary>
         /// Get exercises by id list
         /// </summary>
         /// <param name="ids">Exercise Ids</param>

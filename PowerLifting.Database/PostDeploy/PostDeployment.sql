@@ -41,13 +41,6 @@ IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 53)
 IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 54)
   INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 54, 2, 'ОФП', '');
 
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 100)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 100, 3, 'Рекорд в толчке', '');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 101)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 101, 3, 'Рекорд в рывке', '');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 102)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 102, 3, 'Рекорд в жиме', '');
-
 SET IDENTITY_INSERT Dictionaries OFF 
 
 
@@ -76,12 +69,21 @@ SET IDENTITY_INSERT Percentages OFF
 
 
 
-SET IDENTITY_INSERT Users ON
+SET IDENTITY_INSERT usr.Users ON
 
-IF NOT EXISTS (SELECT * FROM Users WHERE [Id] = 1)
-  INSERT INTO Users (Id, Email, Password, Salt) VALUES ( 1, 'admin@email.com', 'testPwd', 'testSalt');
+IF NOT EXISTS (SELECT * FROM usr.Users WHERE [Id] = 1)
+  INSERT INTO usr.Users (Id, Email, Password, Salt) VALUES ( 1, 'admin@email.com', 'testPwd', 'testSalt');
 
-SET IDENTITY_INSERT Users OFF 
+SET IDENTITY_INSERT usr.Users OFF 
+
+
+IF NOT EXISTS (SELECT * FROM usr.UserAchivements WHERE [ExerciseTypeId] = 1 AND [UserId] = 1)
+  INSERT INTO usr.UserAchivements (UserId, ExerciseTypeId, Result) VALUES ( 1, 1, 100);
+IF NOT EXISTS (SELECT * FROM usr.UserAchivements WHERE [ExerciseTypeId] = 2 AND [UserId] = 1)
+  INSERT INTO usr.UserAchivements (UserId, ExerciseTypeId, Result) VALUES ( 1, 2, 200);
+IF NOT EXISTS (SELECT * FROM usr.UserAchivements WHERE [ExerciseTypeId] = 3 AND [UserId] = 1)
+  INSERT INTO usr.UserAchivements (UserId, ExerciseTypeId, Result) VALUES ( 1, 3, 300);
+
 
 
 SET IDENTITY_INSERT Exercises ON

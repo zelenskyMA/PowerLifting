@@ -4,6 +4,71 @@ import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, usePagination 
 import { Col, Container, InputGroup, Row, Input, InputGroupText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+export function TableView({ columnsInfo, data, rowDblClick, pageSize = 5 }) {
+  const columns = React.useMemo(() => columnsInfo, []);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    state,
+    state: { pageIndex },
+    setGlobalFilter,
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0, pageSize: pageSize, hiddenColumns: ['id'] },
+    },
+    useFilters,
+    useGlobalFilter,
+    usePagination
+  );
+
+  return (
+    <Container fluid>
+      <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} />
+      <table className="table table-striped" aria-labelledby="tabelLabel" {...getTableProps()}>
+        <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <th {...column.getHeaderProps()}>
+                  {column.render('Header')}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map((row, index) => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()} key={index} role="button" onDoubleClick={() => rowDblClick(row)}>
+                {row.cells.map(cell => {
+                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+      <PaginationPanel
+        canPreviousPage={canPreviousPage} canNextPage={canNextPage} pageOptions={pageOptions} pageCount={pageCount}
+        gotoPage={gotoPage} nextPage={nextPage} previousPage={previousPage} pageIndex={pageIndex} />
+    </Container>
+  )
+}
+
 function FilterPanel({ globalFilter, setGlobalFilter, gotoPage }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce(value => { setGlobalFilter(value || undefined) }, 200);
@@ -81,69 +146,4 @@ function PaginationPanel({
       </Col>
     </Row>
   );
-}
-
-export function TableView({ columnsInfo, data, rowDblClick, pageSize = 5 }) {
-  const columns = React.useMemo(() => columnsInfo, []);
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    state,
-    state: { pageIndex },
-    setGlobalFilter,
-  } = useTable(
-    {
-      columns,
-      data,
-      initialState: { pageIndex: 0, pageSize: pageSize, hiddenColumns: ['id'] },
-    },
-    useFilters,
-    useGlobalFilter,
-    usePagination
-  );
-
-  return (
-    <Container fluid>
-      <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} />
-      <table className="table table-striped" aria-labelledby="tabelLabel" {...getTableProps()}>
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>
-                  {column.render('Header')}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row, index) => {
-            prepareRow(row)
-            return (
-              <tr {...row.getRowProps()} key={index} role="button" onDoubleClick={() => rowDblClick(row)}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-      <PaginationPanel
-        canPreviousPage={canPreviousPage} canNextPage={canNextPage} pageOptions={pageOptions} pageCount={pageCount}
-        gotoPage={gotoPage} nextPage={nextPage} previousPage={previousPage} pageIndex={pageIndex} />
-    </Container>
-  )
 }

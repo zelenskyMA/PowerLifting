@@ -130,7 +130,7 @@ namespace PowerLifting.Application.TrainingPlan
                 }
             }
 
-            day.LiftIntensities = dayIntensities;
+            day.LiftIntensities = dayIntensities.OrderBy(t=> t.Percentage.MinValue).ToList();
         }
 
         private void SetPlanCounters(Plan plan)

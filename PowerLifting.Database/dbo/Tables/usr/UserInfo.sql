@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[UserInfo]
+﻿CREATE TABLE [usr].[UserInfo]
 (
     [Id] INT IDENTITY (1, 1) NOT NULL,
     [UserId] INT NOT NULL,
@@ -9,7 +9,7 @@
     [Height] INT NULL, 
     [Age] INT NULL, 
     [CoachId] INT NULL,
-    FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]),
-    FOREIGN KEY ([CoachId]) REFERENCES [dbo].[Users] ([Id]), 
+    FOREIGN KEY ([UserId]) REFERENCES [usr].[Users] ([Id]),
+    FOREIGN KEY ([CoachId]) REFERENCES [usr].[Users] ([Id]), 
     CONSTRAINT [PK_UserInfo] PRIMARY KEY ([Id])
 )

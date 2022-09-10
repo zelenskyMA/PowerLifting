@@ -4,7 +4,7 @@ import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { TableView } from "../../common/TableView";
 import WithRouter from "../../common/extensions/WithRouter";
 
-class PlanExerciseCreate extends Component {
+class PlanExercisesCreate extends Component {
   constructor() {
     super();
 
@@ -20,14 +20,14 @@ class PlanExerciseCreate extends Component {
     var data = await GetAsync("exercise/getList");
     this.setState({ exercises: data });
 
-    var planExercises = await GetAsync(`trainingPlan/getPlanExercise?dayId=${this.props.params.id}`);
+    var planExercises = await GetAsync(`trainingPlan/getPlanExercises?dayId=${this.props.params.id}`);
     var planExercisesData = planExercises.map((item, i) => item.exercise);
     this.setState({ selectedExercises: planExercisesData });
   }
 
   confirmExercisesAsync = async () => {
-    await PostAsync(`/trainingPlan/createPlanExercise?dayId=${this.props.params.id}`, this.state.selectedExercises);
-    this.props.navigate("/createPlanDays");
+    await PostAsync(`/trainingPlan/createPlanExercises?dayId=${this.props.params.id}`, this.state.selectedExercises);
+    this.props.navigate(`/createPlanDay/${this.props.params.id}`);
   }
 
   onRowDblClick = row => {
@@ -121,4 +121,4 @@ class PlanExerciseCreate extends Component {
   }
 }
 
-export default WithRouter(PlanExerciseCreate);
+export default WithRouter(PlanExercisesCreate);

@@ -34,6 +34,9 @@ namespace PowerLifting.Application.TrainingPlan
         }
 
         /// <inheritdoc />
+        public async Task<List<Exercise>> GetAsync(int id) => await GetAsync(new List<int>() { id });
+
+        /// <inheritdoc />
         public async Task<List<Exercise>> GetAsync(List<int> ids)
         {
             var dataDb = await _exerciseRepository.FindAsync(t => ids.Contains(t.Id));
