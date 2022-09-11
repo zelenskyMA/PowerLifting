@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Button, Row, Col, Input, InputGroup, InputGroupText } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
+import { WeightCount } from "../../common/Localization";
 import WithRouter from "../../common/extensions/WithRouter";
 
 class PlanExerciseSettingsEdit extends Component {
@@ -96,7 +97,9 @@ class PlanExerciseSettingsEdit extends Component {
         </Row>
         <Row style={{ marginTop: '5px', marginBottom: '25px' }}>
           <Col xs={2}>Ваш рекорд: {achivement.result}</Col>
-          <Col xs={3}>Ожидаемое значение веса: {(achivement.result) / 100 * percentage.minValue} - {(achivement.result) / 100 * percentage.maxValue}</Col>
+          <Col xs={3}>
+            Ожидаемое значение веса: {WeightCount(achivement?.result, percentage?.minValue)} - {WeightCount(achivement?.result, percentage?.maxValue)}
+          </Col>
         </Row>
       </>
     );
