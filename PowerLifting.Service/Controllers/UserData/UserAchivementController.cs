@@ -15,11 +15,20 @@ namespace PowerLifting.Service.Controllers.UserData
             _userAchivementCommands = userAchivementCommands;
         }
 
+
+        [HttpGet]
+        [Route("get")]
+        public async Task<List<UserAchivement>> GetList(int userId)
+        {
+            var result = await _userAchivementCommands.GetAsync(userId);
+            return result;
+        }
+
         [HttpGet]
         [Route("getByExercise")]
         public async Task<UserAchivement> GetList(int userId, int exerciseTypeId)
         {
-            var result = await _userAchivementCommands.GetByExerciseType(userId, exerciseTypeId);
+            var result = await _userAchivementCommands.GetByExerciseTypeAsync(userId, exerciseTypeId);
             return result;
         }
     }
