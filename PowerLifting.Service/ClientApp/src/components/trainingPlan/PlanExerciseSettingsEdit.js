@@ -17,7 +17,7 @@ class PlanExerciseSettingsEdit extends Component {
 
   componentDidMount() { this.loadExerciseSettings(); }
 
-  async loadExerciseSettings() {
+  async loadExerciseSettings() {    
     var settingsData = await GetAsync(`exercise/getExerciseSettings?id=${this.props.params.id}`);
     var achivementData = await GetAsync(`userAchivement/getByExercise?userId=1&exerciseTypeId=${settingsData?.exercise?.exerciseTypeId}`);
     this.setState({ exercisesSettings: settingsData, achivement: achivementData, loading: false });
@@ -31,9 +31,7 @@ class PlanExerciseSettingsEdit extends Component {
   // Update state object property by name. Other properties left unchanged
   setValue = (propName) => (event) => {
     var val = event.target.value;
-    this.setState(prevState => ({
-      exercisesSettings: { ...prevState.exercisesSettings, [propName]: val }
-    }));
+    this.setState(prevState => ({ exercisesSettings: { ...prevState.exercisesSettings, [propName]: val } }));
   }
 
   setAreaValue = (propName) => (event) => {
@@ -78,7 +76,7 @@ class PlanExerciseSettingsEdit extends Component {
         </Row>
 
         <p style={{ marginTop: '40px' }}>Оставьте комментарий для выполняющего упражнение: </p>
-        <textarea onChange={this.setAreaValue('comments')} value={this.state?.exercisesSettings?.comments} rows={3} cols={84} />
+        <textarea onChange={this.setAreaValue('comments')} value={this.state?.exercisesSettings?.comments ?? ''} rows={3} cols={84} />
 
         <br />
         <Button style={{ marginTop: '40px' }} color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>

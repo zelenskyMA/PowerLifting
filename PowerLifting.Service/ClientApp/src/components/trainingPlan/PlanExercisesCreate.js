@@ -17,12 +17,17 @@ class PlanExercisesCreate extends Component {
   componentDidMount() { this.getExercises(); }
 
   async getExercises() {
-    var data = await GetAsync("exercise/getList");
+    const [settingsList, planExercises] = await Promise.all([
+      GetAsync("exercise/getList"),
+      GetAsync(`trainingPlan/getPlanExercises?dayId=${this.props.params.id}`)
+    ]);
+
+    /*var data = await GetAsync("exercise/getList");
     this.setState({ exercises: data });
 
-    var planExercises = await GetAsync(`trainingPlan/getPlanExercises?dayId=${this.props.params.id}`);
+    var planExercises = await GetAsync(`trainingPlan/getPlanExercises?dayId=${this.props.params.id}`);*/
     var planExercisesData = planExercises.map((item, i) => item.exercise);
-    this.setState({ selectedExercises: planExercisesData });
+    this.setState({ exercises: settingsList, selectedExercises: planExercisesData });
   }
 
   confirmExercisesAsync = async () => {

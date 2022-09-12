@@ -9,6 +9,7 @@ const context =  [
   "/exercise",
 
   "/userAchivement",
+  "/user",
 ];
 
 module.exports = function(app) {

@@ -2,7 +2,6 @@
 using PowerLifting.Domain.DbModels;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.DbModels.UserData;
-using PowerLifting.Domain.Models.UserData;
 
 namespace PowerLifting.Infrastructure
 {
@@ -19,6 +18,7 @@ namespace PowerLifting.Infrastructure
         public DbSet<DictionaryTypeDb> DictionaryTypes { get; set; }
 
         public DbSet<UserDb> Users { get; set; }
+        public DbSet<UserInfoDb> UsersInfo { get; set; }
         public DbSet<UserAchivementDb> UserAchivements { get; set; }
 
 

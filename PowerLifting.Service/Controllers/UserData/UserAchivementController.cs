@@ -15,7 +15,6 @@ namespace PowerLifting.Service.Controllers.UserData
             _userAchivementCommands = userAchivementCommands;
         }
 
-
         [HttpGet]
         [Route("get")]
         public async Task<List<UserAchivement>> GetList(int userId)

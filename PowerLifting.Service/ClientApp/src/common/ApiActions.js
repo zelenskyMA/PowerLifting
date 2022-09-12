@@ -8,22 +8,24 @@ export async function PostAsync(url, payload = null) {
   };
 
   const response = await fetch(url, requestOptions);
-  const data = await response.json();
-  return data;
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+
+  const err = await response.json();
+  throw err;
 }
+
 
 export async function GetAsync(url) {
   const response = await fetch(url);
-  const data = await response.json();
-  return data;
-}
 
-export function Get(id, entityName, dispatch) {
-  fetch(`${entityName}/get?id=${id}`)
-    .then(response => response.json())
-    .then(data => {
-      dispatch({ type: `RECEIVE_${entityName.toUpperCase()}S`, result: data });
-    });
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
 
-  dispatch({ type: `REQUEST_${entityName.toUpperCase()}S` });
+  const err = await response.json();
+  throw err;
 }

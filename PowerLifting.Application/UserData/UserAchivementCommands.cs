@@ -19,6 +19,7 @@ namespace PowerLifting.Application.UserData
             _mapper = mapper;
         }
 
+        /// <inheritdoc />
         public async Task<List<UserAchivement>> GetAsync(int userId)
         {
             var achivements = await _userAchivementRepository.FindAsync(t => t.UserId == userId);
@@ -35,6 +36,7 @@ namespace PowerLifting.Application.UserData
             return filteredAchivements.Select(t => _mapper.Map<UserAchivement>(t)).ToList();
         }
 
+        /// <inheritdoc />
         public async Task<UserAchivement> GetByExerciseTypeAsync(int userId, int exerciseTypeId)
         {
             var achivements = await _userAchivementRepository.FindAsync(t => t.ExerciseTypeId == exerciseTypeId && t.UserId == userId);

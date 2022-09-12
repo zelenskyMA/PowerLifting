@@ -13,7 +13,7 @@ export function PanelPlanDay({ planDay, percentages = [], achivements = [], rowD
         <thead>
           <tr>
             <th style={{ width: "250px" }}>Упражнение</th>
-            {percentages.map((item, i) => <th className="text-center">{item.name}</th>)}
+            {percentages.map((item, i) => <th key={'planDayHeader' + i } className="text-center">{item.name}</th>)}
             <th style={{ width: "25px" }}>КПШ</th>
             <th style={{ width: "25px" }}>Нагрузка</th>
             <th style={{ width: "25px" }}>Интенсивность</th>
@@ -24,11 +24,9 @@ export function PanelPlanDay({ planDay, percentages = [], achivements = [], rowD
             <tr>
               <td>{planExercise.exercise.name}</td>
               {planExercise.settings.map(item =>
-                <>
-                  <td className="text-center" role="button" id={idPrefix + item.id} onDoubleClick={() => rowDblClick(item)}>
-                    <ExerciseSettingsPanel settings={item} />
-                  </td>
-                </>
+                <td key={item.id} className="text-center" role="button" id={idPrefix + item.id} onDoubleClick={() => rowDblClick(item)}>
+                  <ExerciseSettingsPanel settings={item} />
+                </td>
               )}
               <td className="text-center"><strong>{planExercise.liftCounter}</strong></td>
               <td className="text-center"><strong>{planExercise.weightLoad}</strong></td>
@@ -39,8 +37,8 @@ export function PanelPlanDay({ planDay, percentages = [], achivements = [], rowD
         <tfoot>
           <tr>
             <td><i>КПШ по зонам интенсивности</i></td>
-            {planDay.liftIntensities.map(intensity =>
-              <td className="text-center"> {intensity.value} </td>
+            {planDay.liftIntensities.map((intensity, i) =>
+              <td key={i} className="text-center"> {intensity.value} </td>
             )}
             <td className="text-center"><strong>{planDay.liftCounterSum}</strong></td>
             <td className="text-center"><strong>{planDay.weightLoadSum}</strong></td>
