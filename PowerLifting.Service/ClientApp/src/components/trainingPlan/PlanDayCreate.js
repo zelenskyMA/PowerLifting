@@ -35,7 +35,7 @@ class PlanDayCreate extends Component {
 
     return (
       <>
-        <h2 style={{ marginBottom: '30px' }}>План тренировок на {dateView}</h2>
+        <h3 style={{ marginBottom: '30px' }}>План тренировок на {dateView}</h3>
         {this.state.loading ?
           <p><em>Загрузка...</em></p> :
           <PanelPlanDay planDay={this.state.planDay} percentages={this.state.percentages} achivements={this.state.achivements}

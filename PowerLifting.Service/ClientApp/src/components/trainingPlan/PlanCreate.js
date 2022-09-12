@@ -37,7 +37,7 @@ class PlanCreate extends React.Component {
   render() {
     return (
       <>
-        <h1>Создание плана тренировок</h1>
+        <h3>Создание плана тренировок</h3>
         <br />
 
         <Container fluid>

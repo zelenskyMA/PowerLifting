@@ -21,7 +21,7 @@ export function PanelPlanDay({ planDay, percentages = [], achivements = [], rowD
         </thead>
         <tbody>
           {planDay.exercises.map((planExercise, i) =>
-            <tr>
+            <tr key={'planTr' + i}>
               <td>{planExercise.exercise.name}</td>
               {planExercise.settings.map(item =>
                 <td key={item.id} className="text-center" role="button" id={idPrefix + item.id} onDoubleClick={() => rowDblClick(item)}>
@@ -38,7 +38,7 @@ export function PanelPlanDay({ planDay, percentages = [], achivements = [], rowD
           <tr>
             <td><i>КПШ по зонам интенсивности</i></td>
             {planDay.liftIntensities.map((intensity, i) =>
-              <td key={i} className="text-center"> {intensity.value} </td>
+              <td key={'kph'+ i} className="text-center"> {intensity.value} </td>
             )}
             <td className="text-center"><strong>{planDay.liftCounterSum}</strong></td>
             <td className="text-center"><strong>{planDay.weightLoadSum}</strong></td>
@@ -65,7 +65,7 @@ function Tooltips({ planDay, idPrefix, mode, percentages, achivements }) {
         var achivement = achivements.find(t => t.exerciseTypeId === planExercise.exercise.exerciseTypeId);
 
         return (
-          <UncontrolledTooltip placement="top" target={String(idPrefix + item.id)}>
+          <UncontrolledTooltip key={'tooltip' + item.id} placement="top" target={String(idPrefix + item.id)}>
             Вес: {WeightCount(achivement?.result, percentage?.minValue)} - {WeightCount(achivement?.result, percentage?.maxValue)}
           </UncontrolledTooltip>);
       })

@@ -99,12 +99,12 @@ namespace PowerLifting.Application.UserData
             var saltedPassword = PasswordManager.ApplySalt(registerAuth.OldPassword, userDb.Salt);
             if (saltedPassword != userDb.Password)
             {
-                throw new LoginException("Пароль указан не верно.");
+                throw new RegistrationException("Пароль указан не верно.");
             }
 
             string salt = PasswordManager.GenerateSalt();
             userDb.Salt = salt;
-            userDb.Salt = PasswordManager.ApplySalt(registerAuth.Password, salt);
+            userDb.Password = PasswordManager.ApplySalt(registerAuth.Password, salt);
 
             await _userRepository.UpdateAsync(userDb);
 

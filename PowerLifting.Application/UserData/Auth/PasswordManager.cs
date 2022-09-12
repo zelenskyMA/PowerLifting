@@ -21,7 +21,7 @@ namespace PowerLifting.Application.UserData.Auth
             var hashedPassword = BitConverter.ToString(cryptoTransformSHA1.ComputeHash(bPwd));
             hashedPassword = hashedPassword.Substring(2, hashedPassword.Length - 2);
 
-            var saltedPassword = hashedPassword.Substring(0, 3) + salt + hashedPassword.Substring(3);
+            var saltedPassword = hashedPassword.Substring(0, 10) + salt + hashedPassword.Substring(3);
             saltedPassword = BitConverter.ToString(cryptoTransformSHA1.ComputeHash(Encoding.Unicode.GetBytes(saltedPassword)));
 
             return saltedPassword;

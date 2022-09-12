@@ -37,7 +37,7 @@ class PlanDaysCreate extends React.Component {
 
     return (
       <>
-        <h1>Запланированные дни тренировок</h1>
+        <h3>Запланированные дни тренировок</h3>
         <br />
         <Row>
           <Col xs={3} md={{ offset: 4 }}><strong>Назначьте упражнения на дни недели.</strong></Col>

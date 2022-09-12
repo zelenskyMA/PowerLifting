@@ -46,7 +46,7 @@ class PlanExerciseSettingsEdit extends Component {
 
     return (
       <>
-        <h2 >Упражнение '<i>{this.state.exercisesSettings?.exercise?.name}</i>'</h2>
+        <h3 >Упражнение '<i>{this.state.exercisesSettings?.exercise?.name}</i>'</h3>
 
         {this.percentageInfoPanel(this.state.exercisesSettings.percentage, this.state.achivement)}
 
