@@ -16,7 +16,7 @@ namespace PowerLifting.Service.Controllers.UserData
 
         [HttpGet]
         [Route("get")]
-        public async Task<List<UserAchivement>> GetList()
+        public async Task<List<UserAchivement>> GetListAsync()
         {
             var result = await _userAchivementCommands.GetAsync();
             return result;
@@ -24,10 +24,18 @@ namespace PowerLifting.Service.Controllers.UserData
 
         [HttpGet]
         [Route("getByExercise")]
-        public async Task<UserAchivement> GetList(int exerciseTypeId)
+        public async Task<UserAchivement> GetByExerciseAsync(int exerciseTypeId)
         {
             var result = await _userAchivementCommands.GetByExerciseTypeAsync(exerciseTypeId);
             return result;
+        }
+
+        [HttpPost]
+        [Route("create")]
+        public async Task<bool> CreateAsync(List<UserAchivement> achivements)
+        {
+            await _userAchivementCommands.CreateAsync(achivements);
+            return true;
         }
     }
 }

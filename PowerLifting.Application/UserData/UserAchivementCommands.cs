@@ -52,5 +52,26 @@ namespace PowerLifting.Application.UserData
             var achivement = achivements.OrderByDescending(t => t.CreationDate).First();
             return _mapper.Map<UserAchivement>(achivement);
         }
+
+        public async Task CreateAsync(List<UserAchivement> achivements)
+        {
+            var achivementsDb = achivements.Select(t => _mapper.Map<UserAchivementDb>(t));
+            foreach (var item in achivementsDb)
+            {
+                item.CreationDate = DateTime.Now.Date;
+                item.UserId = _user.Id;
+
+                var existingAchivement = await _userAchivementRepository.FindAsync(
+                    t => t.UserId == item.UserId && t.ExerciseTypeId == item.ExerciseTypeId && t.CreationDate == item.CreationDate);
+                if (existingAchivement.Count > 0)
+                {
+                    existingAchivement.First().Result = item.Result;
+                    await _userAchivementRepository.UpdateAsync(existingAchivement.First());
+                    continue;
+                }
+
+                await _userAchivementRepository.CreateAsync(item);
+            }
+        }
     }
 }

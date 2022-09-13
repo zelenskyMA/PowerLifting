@@ -42,7 +42,7 @@ class PlanDayCreate extends Component {
             rowDblClick={this.openSettings} mode="Edit" />
         }
 
-        <Button style={{ marginTop: '40px' }} color="primary" onClick={() => this.confirmAsync()}>Назад</Button>
+        <Button style={{ marginTop: '40px' }} color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
       </>
     );
   }

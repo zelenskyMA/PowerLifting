@@ -15,17 +15,20 @@ namespace PowerLifting.Application.UserData
     public class UserCommands : IUserCommands
     {
         private readonly ICrudRepo<UserDb> _userRepository;
+        private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
         private readonly IConfiguration _configuration;
         private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public UserCommands(
             ICrudRepo<UserDb> userRepository,
+            ICrudRepo<UserInfoDb> userInfoRepository,
             IConfiguration configuration,
             IUserProvider user,
             IMapper mapper)
         {
             _userRepository = userRepository;
+            _userInfoRepository = userInfoRepository;
             _configuration = configuration;
             _user = user;
             _mapper = mapper;
@@ -95,7 +98,9 @@ namespace PowerLifting.Application.UserData
                 Salt = salt,
                 Password = PasswordManager.ApplySalt(registerAuth.Password, salt),
             };
+
             await _userRepository.CreateAsync(userDb);
+            await _userInfoRepository.CreateAsync(new UserInfoDb() { UserId = userDb.Id });
 
             var user = _mapper.Map<UserModel>(userDb);
             var token = new TokenModel()
@@ -110,6 +115,10 @@ namespace PowerLifting.Application.UserData
         /// <inheritdoc />
         public async Task ChangePasswordAsync(RegistrationModel registerAuth)
         {
+            if (string.IsNullOrEmpty(registerAuth.Login))
+            {
+                throw new BusinessExceptions("Логин не задан.");
+            }
             if (string.IsNullOrEmpty(registerAuth.Password))
             {
                 throw new BusinessExceptions("Пароль не задан.");

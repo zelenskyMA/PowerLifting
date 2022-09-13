@@ -9,5 +9,12 @@ namespace PowerLifting.Domain.Interfaces.UserData.Application
         /// </summary>
         /// <returns>user information</returns>
         Task<UserInfo> GetAsync();
+
+        /// <summary>
+        /// Update user information
+        /// </summary>
+        /// <param name="userInfo">User information</param>
+        /// <returns></returns>
+        Task UpdateAsync(UserInfo userInfo);
     }
 }
