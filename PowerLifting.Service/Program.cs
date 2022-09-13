@@ -6,6 +6,8 @@ using PowerLifting.Application;
 using PowerLifting.Application.Mapper;
 using PowerLifting.Application.TrainingPlan;
 using PowerLifting.Application.UserData;
+using PowerLifting.Application.UserData.Auth;
+using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.DbModels;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.DbModels.UserData;
@@ -29,12 +31,15 @@ builder.Services.AddControllersWithViews();
 //misc services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
 
 var connString = builder.Configuration.GetConnectionString("ConnectionDb");
 builder.Services.AddDbContext<LiftingContext>(options => options.UseSqlServer(connString));
 
 var mapperConfig = new MapperConfiguration(t => t.AddProfile(new MapperProfile()));
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
+
+builder.Services.AddScoped<IUserProvider, UserProvider>();
 
 //repo services
 builder.Services.AddScoped<ICrudRepo<PlanDb>, PlanRepository>();

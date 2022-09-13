@@ -2,7 +2,7 @@
 
 namespace PowerLifting.Domain.Models.UserData
 {
-    public class User : Entity
+    public class UserModel : Entity
     {
         public string Email { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.UserData.Application;
@@ -10,36 +11,39 @@ namespace PowerLifting.Application.UserData
     {
         private readonly ICrudRepo<UserAchivementDb> _userAchivementRepository;
         private readonly IMapper _mapper;
+        private readonly IUserProvider _user;
 
         public UserAchivementCommands(
-         ICrudRepo<UserAchivementDb> userAchivementRepository,
-         IMapper mapper)
+            IUserProvider user,
+            ICrudRepo<UserAchivementDb> userAchivementRepository,
+            IMapper mapper)
         {
             _userAchivementRepository = userAchivementRepository;
+            _user = user;
             _mapper = mapper;
         }
 
         /// <inheritdoc />
-        public async Task<List<UserAchivement>> GetAsync(int userId)
+        public async Task<List<UserAchivement>> GetAsync()
         {
-            var achivements = await _userAchivementRepository.FindAsync(t => t.UserId == userId);
+            var achivements = await _userAchivementRepository.FindAsync(t => t.UserId == _user.Id);
             if (achivements.Count == 0)
             {
                 return new List<UserAchivement>();
             }
 
             var filteredAchivements = achivements
-                .GroupBy(t=> t.ExerciseTypeId)
-                .Select(group => group.OrderByDescending(t=> t.CreationDate).First())
+                .GroupBy(t => t.ExerciseTypeId)
+                .Select(group => group.OrderByDescending(t => t.CreationDate).First())
                 .ToList();
 
             return filteredAchivements.Select(t => _mapper.Map<UserAchivement>(t)).ToList();
         }
 
         /// <inheritdoc />
-        public async Task<UserAchivement> GetByExerciseTypeAsync(int userId, int exerciseTypeId)
+        public async Task<UserAchivement> GetByExerciseTypeAsync(int exerciseTypeId)
         {
-            var achivements = await _userAchivementRepository.FindAsync(t => t.ExerciseTypeId == exerciseTypeId && t.UserId == userId);
+            var achivements = await _userAchivementRepository.FindAsync(t => t.ExerciseTypeId == exerciseTypeId && t.UserId == _user.Id);
             if (achivements.Count == 0)
             {
                 return new UserAchivement();

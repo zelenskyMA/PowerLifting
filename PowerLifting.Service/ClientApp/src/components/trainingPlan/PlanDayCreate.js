@@ -22,7 +22,7 @@ class PlanDayCreate extends Component {
   async loadPlanDay() {
     var data = await GetAsync(`trainingPlan/getPlanDay?dayId=${this.props.params.id}`);
     var percentages = await GetAsync("exercise/getPercentages");
-    var achivementsData = await GetAsync(`userAchivement/get?userId=1`);
+    var achivementsData = await GetAsync(`userAchivement/get`);
     this.setState({ planDay: data, percentages: percentages, achivements: achivementsData, loading: false });
   }
 

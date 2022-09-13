@@ -64,9 +64,13 @@ function Tooltips({ planDay, idPrefix, mode, percentages, achivements }) {
         var percentage = percentages.find(t => t.id === item.percentage.id);
         var achivement = achivements.find(t => t.exerciseTypeId === planExercise.exercise.exerciseTypeId);
 
+        var text = achivement == null ?
+          "Укажите рекоды в профиле" :
+          `Вес: ${WeightCount(achivement?.result, percentage?.minValue)} - ${WeightCount(achivement?.result, percentage?.maxValue)}`;
+
         return (
           <UncontrolledTooltip key={'tooltip' + item.id} placement="top" target={String(idPrefix + item.id)}>
-            Вес: {WeightCount(achivement?.result, percentage?.minValue)} - {WeightCount(achivement?.result, percentage?.maxValue)}
+            {text}
           </UncontrolledTooltip>);
       })
     )}

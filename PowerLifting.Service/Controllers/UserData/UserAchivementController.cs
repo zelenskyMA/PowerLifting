@@ -4,9 +4,8 @@ using PowerLifting.Domain.Models.UserData;
 
 namespace PowerLifting.Service.Controllers.UserData
 {
-    [ApiController]
     [Route("userAchivement")]
-    public class UserAchivementController : ControllerBase
+    public class UserAchivementController : BaseController
     {
         private readonly IUserAchivementCommands _userAchivementCommands;
 
@@ -17,17 +16,17 @@ namespace PowerLifting.Service.Controllers.UserData
 
         [HttpGet]
         [Route("get")]
-        public async Task<List<UserAchivement>> GetList(int userId)
+        public async Task<List<UserAchivement>> GetList()
         {
-            var result = await _userAchivementCommands.GetAsync(userId);
+            var result = await _userAchivementCommands.GetAsync();
             return result;
         }
 
         [HttpGet]
         [Route("getByExercise")]
-        public async Task<UserAchivement> GetList(int userId, int exerciseTypeId)
+        public async Task<UserAchivement> GetList(int exerciseTypeId)
         {
-            var result = await _userAchivementCommands.GetByExerciseTypeAsync(userId, exerciseTypeId);
+            var result = await _userAchivementCommands.GetByExerciseTypeAsync(exerciseTypeId);
             return result;
         }
     }

@@ -19,7 +19,7 @@ class PlanExerciseSettingsEdit extends Component {
 
   async loadExerciseSettings() {    
     var settingsData = await GetAsync(`exercise/getExerciseSettings?id=${this.props.params.id}`);
-    var achivementData = await GetAsync(`userAchivement/getByExercise?userId=1&exerciseTypeId=${settingsData?.exercise?.exerciseTypeId}`);
+    var achivementData = await GetAsync(`userAchivement/getByExercise?exerciseTypeId=${settingsData?.exercise?.exerciseTypeId}`);
     this.setState({ exercisesSettings: settingsData, achivement: achivementData, loading: false });
   }
 
@@ -53,13 +53,13 @@ class PlanExerciseSettingsEdit extends Component {
         <Row style={{ marginBottom: '30px' }}>
           <Col xs={3}>
             <InputGroup>
-              <InputGroupText>Поднимаемый вес:</InputGroupText>
+              <InputGroupText>Вес:</InputGroupText>
               <Input onChange={this.setValue('weight')} value={this.state.exercisesSettings.weight} />
             </InputGroup>
           </Col>
           <Col xs={3}>
             <InputGroup>
-              <InputGroupText>Количество подходов к штанге:</InputGroupText>
+              <InputGroupText>Количество подходов:</InputGroupText>
               <Input onChange={this.setValue('iterations')} value={this.state.exercisesSettings.iterations} />
             </InputGroup>
           </Col>

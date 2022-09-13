@@ -19,7 +19,9 @@ class LoginUser extends React.Component {
 
   onLogin = async () => {
     try {
-      await PostAsync(`/user/login`, this.state.auth);
+      var token = await PostAsync(`/user/login`, this.state.auth);
+      localStorage.setItem("token", token);
+
       window.location.replace("/"); //не сохраняем введенные логин/пароль в истории переходов
     }
     catch (error) {

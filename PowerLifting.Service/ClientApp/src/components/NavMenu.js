@@ -4,22 +4,24 @@ import { Link } from 'react-router-dom';
 import './NavMenu.css';
 
 export class NavMenu extends Component {
-  static displayName = NavMenu.name;
-
-  constructor (props) {
+  constructor(props) {
     super(props);
 
-    this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
       collapsed: true
     };
   }
 
-  toggleNavbar () {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
+/*
+  componentDidMount() { this.getuserInfo(); }
+
+  getuserInfo = async () => {
+    var plan = await GetAsync("/userInfo/get");
+    this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum });
   }
+*/
+
+  toggleNavbar = () => { this.setState({ collapsed: !this.state.collapsed }); }
 
   render() {
     return (
@@ -35,13 +37,20 @@ export class NavMenu extends Component {
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/createPlan">Новый план</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/login">Вход</NavLink>
-              </NavItem>
+              {this.loginPanel()}
             </ul>
           </Collapse>
         </Navbar>
       </header>
     );
   }
+
+  loginPanel() {
+    return (
+      <NavItem>
+        <NavLink tag={Link} className="text-dark" to="/login">Вход</NavLink>
+      </NavItem>
+    );
+  }
+
 }

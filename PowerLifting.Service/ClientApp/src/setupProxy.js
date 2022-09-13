@@ -10,6 +10,7 @@ const context =  [
 
   "/userAchivement",
   "/user",
+  "/userInfo"
 ];
 
 module.exports = function(app) {

@@ -1,31 +1,39 @@
 
-
 export async function PostAsync(url, payload = null) {
   const requestOptions = {
     method: "POST",
-    headers: { "Accept": "application/json", "Content-Type": "application/json", },
+    headers: GetHeaders(),
     body: payload === null ? null : JSON.stringify(payload),
   };
 
   const response = await fetch(url, requestOptions);
-  if (response.ok) {
-    const data = await response.json();
-    return data;
-  }
+  return ResponseHandler(response);
+}
 
-  const err = await response.json();
-  throw err;
+export async function GetAsync(url) {
+  const response = await fetch(url, { method: "GET", headers: GetHeaders() });
+  return ResponseHandler(response);
 }
 
 
-export async function GetAsync(url) {
-  const response = await fetch(url);
 
-  if (response.ok) {
-    const data = await response.json();
-    return data;
+async function ResponseHandler(response) {
+  const data = await response.json();
+
+  if ([401, 403].includes(response.status)) {
+    localStorage.removeItem('token');
+    window.location.replace("/");
   }
 
-  const err = await response.json();
-  throw err;
+  if (response.ok) { return data; }
+  throw data;
+}
+
+function GetHeaders() {
+  const token = localStorage.getItem("token");
+  if (token) {
+    return { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` };
+  }
+
+  return { "Accept": "application/json", "Content-Type": "application/json" };
 }

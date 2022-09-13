@@ -5,9 +5,8 @@ using PowerLifting.Domain.Models.TrainingPlan;
 namespace PowerLifting.Service.Controllers.TrainingPlan
 {
 
-    [ApiController]
     [Route("trainingPlan")]
-    public class TrainingPlanController : ControllerBase
+    public class TrainingPlanController : BaseController
     {
         private readonly IPlanCommands _trainingPlanCommands;
         private readonly IPlanExerciseCommands _plannedExerciseCommands;

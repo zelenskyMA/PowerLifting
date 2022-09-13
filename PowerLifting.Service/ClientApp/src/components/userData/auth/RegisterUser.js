@@ -18,7 +18,9 @@ class RegisterUser extends React.Component {
 
   onRegister = async () => {
     try {
-      await PostAsync(`/user/register`, this.state.auth);
+      var token = await PostAsync(`/user/register`, this.state.auth);
+      localStorage.setItem("token", token);
+
       window.location.replace("/"); //не сохраняем введенные логин/пароль в истории переходов
     }
     catch (error) {
