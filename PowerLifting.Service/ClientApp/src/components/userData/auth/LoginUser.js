@@ -2,6 +2,7 @@
 import { Container, Button, Row, Col, InputGroupText, InputGroup, Input, NavLink } from "reactstrap";
 import { Link } from 'react-router-dom';
 import { PostAsync } from "../../../common/ApiActions";
+import { SetToken } from "../../../common/AuthActions";
 import { HandleErrorPanel } from "../../../common/HandlerPanels";
 import WithRouter from "../../../common/extensions/WithRouter";
 
@@ -19,8 +20,8 @@ class LoginUser extends React.Component {
 
   onLogin = async () => {
     try {
-      var token = await PostAsync(`/user/login`, this.state.auth);
-      localStorage.setItem("token", token);
+      var tokenData = await PostAsync(`/user/login`, this.state.auth);
+      SetToken(tokenData);
 
       window.location.replace("/"); //не сохраняем введенные логин/пароль в истории переходов
     }

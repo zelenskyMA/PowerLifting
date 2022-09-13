@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using PowerLifting.Application.UserData.Auth;
+using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
@@ -15,20 +16,23 @@ namespace PowerLifting.Application.UserData
     {
         private readonly ICrudRepo<UserDb> _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public UserCommands(
             ICrudRepo<UserDb> userRepository,
             IConfiguration configuration,
+            IUserProvider user,
             IMapper mapper)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _user = user;
             _mapper = mapper;
         }
 
         /// <inheritdoc />
-        public async Task<string> LoginAsync(LoginModel loginAuth)
+        public async Task<TokenModel> LoginAsync(LoginModel loginAuth)
         {
             var userDb = (await _userRepository.FindAsync(t => t.Email == loginAuth.Login)).FirstOrDefault();
             if (userDb == null)
@@ -42,13 +46,18 @@ namespace PowerLifting.Application.UserData
                 throw new BusinessExceptions("Пароль указан не верно.");
             }
 
-            string token = JwtManager.CreateToken(_configuration, _mapper.Map<UserModel>(userDb));
+            var user = _mapper.Map<UserModel>(userDb);
+            var token = new TokenModel()
+            {
+                Token = JwtManager.CreateToken(_configuration, user),
+                RefreshToken = JwtManager.CreateRefreshToken(_configuration, user)
+            };
 
             return token;
         }
 
         /// <inheritdoc />
-        public async Task<string> RegisterAsync(RegistrationModel registerAuth)
+        public async Task<TokenModel> RegisterAsync(RegistrationModel registerAuth)
         {
             if (registerAuth.Password != registerAuth.PasswordConfirm)
             {
@@ -71,12 +80,17 @@ namespace PowerLifting.Application.UserData
             await _userRepository.CreateAsync(userDb);
 
             var user = _mapper.Map<UserModel>(userDb);
-            var token = JwtManager.CreateToken(_configuration, user);
+            var token = new TokenModel()
+            {
+                Token = JwtManager.CreateToken(_configuration, user),
+                RefreshToken = JwtManager.CreateRefreshToken(_configuration, user)
+            };
+
             return token;
         }
 
         /// <inheritdoc />
-        public async Task<string> ChangePasswordAsync(RegistrationModel registerAuth)
+        public async Task ChangePasswordAsync(RegistrationModel registerAuth)
         {
             if (registerAuth.Password != registerAuth.PasswordConfirm)
             {
@@ -100,9 +114,24 @@ namespace PowerLifting.Application.UserData
             userDb.Password = PasswordManager.ApplySalt(registerAuth.Password, salt);
 
             await _userRepository.UpdateAsync(userDb);
+        }
+
+        /// <inheritdoc />
+        public async Task<TokenModel> RefreshTokenAsync()
+        {
+            var userDb = (await _userRepository.FindAsync(t => t.Id == _user.Id)).FirstOrDefault();
+            if (userDb == null)
+            {
+                throw new UnauthorizedException($"Пользователь с Id {_user.Id} не найден.");
+            }
 
             var user = _mapper.Map<UserModel>(userDb);
-            var token = JwtManager.CreateToken(_configuration, user);
+            var token = new TokenModel()
+            {
+                Token = JwtManager.CreateToken(_configuration, user),
+                RefreshToken = JwtManager.CreateRefreshToken(_configuration, user)
+            };
+
             return token;
         }
     }

@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import { Container, Button, Row, Col, InputGroupText, InputGroup, Input } from "reactstrap";
 import { PostAsync } from "../../../common/ApiActions";
+import { SetToken } from "../../../common/AuthActions";
 import { HandleErrorPanel } from "../../../common/HandlerPanels";
 import WithRouter from "../../../common/extensions/WithRouter";
 
@@ -18,8 +19,8 @@ class RegisterUser extends React.Component {
 
   onRegister = async () => {
     try {
-      var token = await PostAsync(`/user/register`, this.state.auth);
-      localStorage.setItem("token", token);
+      var tokenData = await PostAsync(`/user/register`, this.state.auth);
+      SetToken(tokenData);
 
       window.location.replace("/"); //не сохраняем введенные логин/пароль в истории переходов
     }

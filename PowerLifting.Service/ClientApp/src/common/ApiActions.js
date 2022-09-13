@@ -1,3 +1,4 @@
+import { GetToken, RefreshToken } from './AuthActions';
 
 export async function PostAsync(url, payload = null) {
   const requestOptions = {
@@ -21,8 +22,7 @@ async function ResponseHandler(response) {
   const data = await response.json();
 
   if ([401, 403].includes(response.status)) {
-    localStorage.removeItem('token');
-    window.location.replace("/");
+    await RefreshToken();
   }
 
   if (response.ok) { return data; }
@@ -30,7 +30,7 @@ async function ResponseHandler(response) {
 }
 
 function GetHeaders() {
-  const token = localStorage.getItem("token");
+  const token = GetToken();
   if (token) {
     return { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` };
   }

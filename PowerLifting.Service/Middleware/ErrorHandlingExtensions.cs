@@ -1,4 +1,6 @@
-﻿namespace PowerLifting.Service.Middleware
+﻿using PowerLifting.Domain.CustomExceptions;
+
+namespace PowerLifting.Service.Middleware
 {
 
     internal static class ErrorHandlingExtensions
@@ -28,12 +30,13 @@
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = e switch
                 {
-                    /* BadRequestException => StatusCodes.Status400BadRequest,
-                     UnauthorizedException => StatusCodes.Status401Unauthorized,
+                    /* BadRequestException => StatusCodes.Status400BadRequest,                     
                      ForbiddenException => StatusCodes.Status403Forbidden,
                      NotFoundException => StatusCodes.Status404NotFound,
                      ConflictException => StatusCodes.Status409Conflict,
                      GoneException => StatusCodes.Status410Gone,*/
+
+                    UnauthorizedException => StatusCodes.Status401Unauthorized,
                     _ => StatusCodes.Status500InternalServerError,
                 };
 
