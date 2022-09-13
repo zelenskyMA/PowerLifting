@@ -2,7 +2,7 @@
 export const Locale = "ru-ru"; // window.navigator.language;
 
 export function WeightCount(baseValue, percentageValue) {
-  if (baseValue == 0 || percentageValue == 0) {
+  if (baseValue == 0 || baseValue == null || percentageValue == 0) {
     return 1;
   }
 

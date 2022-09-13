@@ -1,48 +1,4 @@
-﻿/*
-Post-Deployment Script Template              
---------------------------------------------------------------------------------------
- This file contains SQL statements that will be appended to the build script.    
- Use SQLCMD syntax to include a file in the post-deployment script.      
- Example:      :r .\myfile.sql                
- Use SQLCMD syntax to reference a variable in the post-deployment script.    
- Example:      :setvar TableName MyTable              
-               SELECT * FROM [$(TableName)]          
---------------------------------------------------------------------------------------
-*/
-SET IDENTITY_INSERT DictionaryTypes ON
-
-IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 1)
-  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 1, 'Тип упражнений', 'Базовые типы упражнений');
-IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 2)
-  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 2, 'Категория упражнений', 'Подраздел в рамках базового типа упражнений');
-IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 3)
-  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 3, 'Рекорды', 'Учетные рекорды в выполнении упражнений');
-
-SET IDENTITY_INSERT DictionaryTypes OFF 
-
-
-SET IDENTITY_INSERT Dictionaries ON
-
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 1)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 1, 1, 'Толчковые', 'Упражнения на толчок штанги');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 2)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 2, 1, 'Рывковые', 'Упражнения на рывок штанги');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 3)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 3, 1, 'Жимовые', 'Упражнения на жим штанги');
-
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 50)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 50, 2, 'Рывок классический', '');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 51)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 51, 2, 'Толчок. Взятие на грудь', '');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 52)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 52, 2, 'Толчок с груди', '');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 53)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 53, 2, 'Толчок классический', '');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 54)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 54, 2, 'ОФП', '');
-
-SET IDENTITY_INSERT Dictionaries OFF 
-
+﻿
 
 SET IDENTITY_INSERT Percentages ON
 
@@ -66,24 +22,6 @@ IF NOT EXISTS (SELECT * FROM Percentages WHERE [Id] = 9)
   INSERT INTO Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 9, '> 120%', 'Больше 120%', 120, 999);
 
 SET IDENTITY_INSERT Percentages OFF 
-
-
-
-SET IDENTITY_INSERT usr.Users ON
-
-IF NOT EXISTS (SELECT * FROM usr.Users WHERE [Id] = 1)
-  INSERT INTO usr.Users (Id, Email, Password, Salt) VALUES ( 1, 'admin@email.com', 'testPwd', 'testSalt');
-
-SET IDENTITY_INSERT usr.Users OFF 
-
-
-IF NOT EXISTS (SELECT * FROM usr.UserAchivements WHERE [ExerciseTypeId] = 1 AND [UserId] = 1)
-  INSERT INTO usr.UserAchivements (UserId, ExerciseTypeId, Result) VALUES ( 1, 1, 100);
-IF NOT EXISTS (SELECT * FROM usr.UserAchivements WHERE [ExerciseTypeId] = 2 AND [UserId] = 1)
-  INSERT INTO usr.UserAchivements (UserId, ExerciseTypeId, Result) VALUES ( 1, 2, 200);
-IF NOT EXISTS (SELECT * FROM usr.UserAchivements WHERE [ExerciseTypeId] = 3 AND [UserId] = 1)
-  INSERT INTO usr.UserAchivements (UserId, ExerciseTypeId, Result) VALUES ( 1, 3, 300);
-
 
 
 SET IDENTITY_INSERT Exercises ON

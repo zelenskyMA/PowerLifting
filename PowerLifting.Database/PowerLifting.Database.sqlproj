@@ -67,7 +67,7 @@
     <Folder Include="dbo\Tables\usr" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="PostDeploy\PostDeployment.sql" />
+    <PostDeploy Include="PostDeploy\A_master.PostDeployment.sql" />
     <Build Include="Scripts\DbScripts.sql" />
     <Build Include="dbo\Tables\dbo\Dictionaries.sql" />
     <Build Include="dbo\Tables\dbo\PlanExerciseSettings.sql" />
@@ -83,6 +83,7 @@
     <Build Include="dbo\Tables\usr\UserInfo.sql" />
     <Build Include="dbo\Tables\usr\UserRoles.sql" />
     <Build Include="dbo\Tables\usr\Users.sql" />
+    <None Include="PostDeploy\User_PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PowerLifting.publish.xml" />
@@ -93,5 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\usr\UserTrainingGroups.sql" />
+    <None Include="PostDeploy\Plan_PostDeployment.sql" />
+    <None Include="PostDeploy\Base_PostDeploy.sql" />
   </ItemGroup>
 </Project>

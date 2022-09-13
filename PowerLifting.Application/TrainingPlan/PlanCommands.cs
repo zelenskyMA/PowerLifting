@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
@@ -13,17 +14,20 @@ namespace PowerLifting.Application.TrainingPlan
 
         private readonly ICrudRepo<PlanDb> _trainingPlanRepository;
         private readonly ICrudRepo<PlanDayDb> _trainingDayRepository;
+        private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public PlanCommands(
-          IPlanExerciseCommands plannedExerciseCommands,
-          ICrudRepo<PlanDb> trainingPlanRepository,
-          ICrudRepo<PlanDayDb> trainingDayRepository,
-          IMapper mapper)
+            IPlanExerciseCommands plannedExerciseCommands,
+            ICrudRepo<PlanDb> trainingPlanRepository,
+            ICrudRepo<PlanDayDb> trainingDayRepository,
+            IUserProvider user,
+            IMapper mapper)
         {
             _plannedExerciseCommands = plannedExerciseCommands;
             _trainingPlanRepository = trainingPlanRepository;
             _trainingDayRepository = trainingDayRepository;
+            _user = user;
             _mapper = mapper;
         }
 
@@ -73,7 +77,7 @@ namespace PowerLifting.Application.TrainingPlan
         /// <inheritdoc />
         public async Task<int> CreateAsync(DateTime creationDate)
         {
-            var plan = new PlanDb() { StartDate = creationDate, UserId = 1 };
+            var plan = new PlanDb() { StartDate = creationDate, UserId = _user.Id };
             await _trainingPlanRepository.CreateAsync(plan);
 
             for (int i = 0; i < 7; i++) // 7 days standard plan

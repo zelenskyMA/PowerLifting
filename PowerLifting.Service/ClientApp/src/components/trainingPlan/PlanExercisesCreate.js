@@ -17,12 +17,17 @@ class PlanExercisesCreate extends Component {
   componentDidMount() { this.getExercises(); }
 
   async getExercises() {
-    var data = await GetAsync("exercise/getList");
+    const [settingsList, planExercises] = await Promise.all([
+      GetAsync("exercise/getList"),
+      GetAsync(`trainingPlan/getPlanExercises?dayId=${this.props.params.id}`)
+    ]);
+
+    /*var data = await GetAsync("exercise/getList");
     this.setState({ exercises: data });
 
-    var planExercises = await GetAsync(`trainingPlan/getPlanExercises?dayId=${this.props.params.id}`);
+    var planExercises = await GetAsync(`trainingPlan/getPlanExercises?dayId=${this.props.params.id}`);*/
     var planExercisesData = planExercises.map((item, i) => item.exercise);
-    this.setState({ selectedExercises: planExercisesData });
+    this.setState({ exercises: settingsList, selectedExercises: planExercisesData });
   }
 
   confirmExercisesAsync = async () => {
@@ -80,7 +85,7 @@ class PlanExercisesCreate extends Component {
 
     return (
       <>
-        <h1>Упражнения</h1>
+        <h3>Упражнения</h3>
         <p><strong>Список упражнений.</strong> Выбрать двойным нажатием.</p>
         <TableView columnsInfo={columns} data={this.state.exercises} rowDblClick={this.onRowDblClick} />
 

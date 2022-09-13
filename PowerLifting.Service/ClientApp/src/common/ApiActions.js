@@ -1,29 +1,44 @@
-
+import { GetToken, RefreshToken } from './AuthActions';
 
 export async function PostAsync(url, payload = null) {
   const requestOptions = {
     method: "POST",
-    headers: { "Accept": "application/json", "Content-Type": "application/json", },
+    headers: GetHeaders(),
     body: payload === null ? null : JSON.stringify(payload),
   };
 
-  const response = await fetch(url, requestOptions);
-  const data = await response.json();
-  return data;
+  var funcCall = async () => { return await fetch(url, requestOptions); };
+  return await ExecuteRequest(funcCall);
 }
 
 export async function GetAsync(url) {
-  const response = await fetch(url);
-  const data = await response.json();
-  return data;
+  var funcCall = async () => { return await fetch(url, { method: "GET", headers: GetHeaders() }) };
+  return await ExecuteRequest(funcCall);
 }
 
-export function Get(id, entityName, dispatch) {
-  fetch(`${entityName}/get?id=${id}`)
-    .then(response => response.json())
-    .then(data => {
-      dispatch({ type: `RECEIVE_${entityName.toUpperCase()}S`, result: data });
-    });
 
-  dispatch({ type: `REQUEST_${entityName.toUpperCase()}S` });
+async function ExecuteRequest(funcCall) {
+  var response = await funcCall();
+
+  if ([401, 403].includes(response.status)) {
+    if (await RefreshToken()) { // repeate on successfull token refresh
+      response = await funcCall();
+    }
+  }
+
+  const data = await response.json();
+  if (response.ok) {
+    return data;
+  }
+
+  throw data;
+}
+
+function GetHeaders() {
+  const token = GetToken();
+  if (token) {
+    return { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` };
+  }
+
+  return { "Accept": "application/json", "Content-Type": "application/json" };
 }

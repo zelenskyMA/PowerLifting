@@ -37,7 +37,7 @@ class PlanDaysCreate extends React.Component {
 
     return (
       <>
-        <h1>Запланированные дни тренировок</h1>
+        <h3>Запланированные дни тренировок</h3>
         <br />
         <Row>
           <Col xs={3} md={{ offset: 4 }}><strong>Назначьте упражнения на дни недели.</strong></Col>
@@ -108,8 +108,8 @@ class PlanDaysCreate extends React.Component {
 
     return (
       <>
-        {counters.map((item, index) =>
-          <Row style={{ fontSize: fontSize }}>
+        {counters.map((item, i) =>
+          <Row key={i} style={{ fontSize: fontSize }}>
             <Col>{item.name}</Col>
             <Col>{item.value}</Col>
           </Row>
@@ -122,7 +122,6 @@ class PlanDaysCreate extends React.Component {
     if (this.state.typeCounters.length == 0) {
       return (<></>);
     }
-
 
     return (<Col><Button color="primary" >Подтвердить</Button></Col>);
   }
