@@ -34,6 +34,15 @@ namespace PowerLifting.Application.UserData
         /// <inheritdoc />
         public async Task<TokenModel> LoginAsync(LoginModel loginAuth)
         {
+            if (string.IsNullOrEmpty(loginAuth.Login))
+            {
+                throw new BusinessExceptions("Логин не задан.");
+            }
+            if (string.IsNullOrEmpty(loginAuth.Password))
+            {
+                throw new BusinessExceptions("Пароль не задан.");
+            }
+
             var userDb = (await _userRepository.FindAsync(t => t.Email == loginAuth.Login)).FirstOrDefault();
             if (userDb == null)
             {
@@ -59,6 +68,15 @@ namespace PowerLifting.Application.UserData
         /// <inheritdoc />
         public async Task<TokenModel> RegisterAsync(RegistrationModel registerAuth)
         {
+            if (string.IsNullOrEmpty(registerAuth.Login))
+            {
+                throw new BusinessExceptions("Логин не задан.");
+            }
+            if (string.IsNullOrEmpty(registerAuth.Password))
+            {
+                throw new BusinessExceptions("Пароль не задан.");
+            }
+
             if (registerAuth.Password != registerAuth.PasswordConfirm)
             {
                 throw new BusinessExceptions("Пароль и подтверждение пароля не совпадают.");
@@ -92,6 +110,11 @@ namespace PowerLifting.Application.UserData
         /// <inheritdoc />
         public async Task ChangePasswordAsync(RegistrationModel registerAuth)
         {
+            if (string.IsNullOrEmpty(registerAuth.Password))
+            {
+                throw new BusinessExceptions("Пароль не задан.");
+            }
+
             if (registerAuth.Password != registerAuth.PasswordConfirm)
             {
                 throw new BusinessExceptions("Пароль и подтверждение пароля не совпадают.");

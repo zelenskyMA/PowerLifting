@@ -7,25 +7,30 @@ export async function PostAsync(url, payload = null) {
     body: payload === null ? null : JSON.stringify(payload),
   };
 
-  const response = await fetch(url, requestOptions);
-  return ResponseHandler(response);
+  var funcCall = async () => { return await fetch(url, requestOptions); };
+  return await ExecuteRequest(funcCall);
 }
 
 export async function GetAsync(url) {
-  const response = await fetch(url, { method: "GET", headers: GetHeaders() });
-  return ResponseHandler(response);
+  var funcCall = async () => { return await fetch(url, { method: "GET", headers: GetHeaders() }) };
+  return await ExecuteRequest(funcCall);
 }
 
 
-
-async function ResponseHandler(response) {
-  const data = await response.json();
+async function ExecuteRequest(funcCall) {
+  var response = await funcCall();
 
   if ([401, 403].includes(response.status)) {
-    await RefreshToken();
+    if (await RefreshToken()) { // repeate on successfull token refresh
+      response = await funcCall();
+    }
   }
 
-  if (response.ok) { return data; }
+  const data = await response.json();
+  if (response.ok) {
+    return data;
+  }
+
   throw data;
 }
 

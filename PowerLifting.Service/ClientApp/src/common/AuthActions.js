@@ -18,6 +18,7 @@ export async function RefreshToken() {
   var refreshToken = Cookies.get(storageName);
   if (refreshToken == null) {
     window.location.replace("/");
+    return false;
   }
 
   const response = await fetch("user/refreshToken",
@@ -29,8 +30,10 @@ export async function RefreshToken() {
   if ([401, 403].includes(response.status)) {
     Cookies.remove(storageName);
     window.location.replace("/");
+    return false;
   }
 
   const data = await response.json();
   SetToken(data);
+  return true;
 }
