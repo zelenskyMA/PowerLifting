@@ -25,6 +25,12 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         Task<PlanDay> GetPlanDayAsync(int dayId);
 
         /// <summary>
+        /// Get plan day for current day. Active training.
+        /// </summary>
+        /// <returns></returns>
+        Task<PlanDay> GetCurrentDayAsync();
+
+        /// <summary>
         /// Create new training plan with training days
         /// </summary>
         /// <param name="creationDate">Plan start date</param>

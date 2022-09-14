@@ -83,14 +83,14 @@ class UserCabinet extends Component {
         <Row style={{ marginTop: '10px', marginBottom: '30px' }}>
           <Col xs={3}>
             <InputGroup>
-              <InputGroupText>Имя:</InputGroupText>
-              <Input onChange={this.setValue('firstName')} value={this.state.userInfo.firstName} />
+              <InputGroupText>Фамилия:</InputGroupText>
+              <Input onChange={this.setValue('surname')} value={this.state.userInfo.surname} />
             </InputGroup>
           </Col>
           <Col xs={3}>
             <InputGroup>
-              <InputGroupText>Фамилия:</InputGroupText>
-              <Input onChange={this.setValue('surname')} value={this.state.userInfo.surname} />
+              <InputGroupText>Имя:</InputGroupText>
+              <Input onChange={this.setValue('firstName')} value={this.state.userInfo.firstName} />
             </InputGroup>
           </Col>
           <Col xs={3}>
