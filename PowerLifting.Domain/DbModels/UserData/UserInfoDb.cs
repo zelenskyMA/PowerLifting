@@ -1,15 +1,9 @@
-﻿using PowerLifting.Domain.DbModels.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerLifting.Domain.DbModels.UserData
 {
     [Table("UserInfo", Schema = "usr")]
-    public class UserInfoDb : EntityDb
+    public class UserInfoDb
     {
         public int UserId { get; set; }
 

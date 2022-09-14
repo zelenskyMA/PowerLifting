@@ -16,5 +16,11 @@ namespace PowerLifting.Domain.Interfaces.UserData.Application
         /// <param name="exerciseTypeId">Exercise type Id</param>
         /// <returns></returns>
         Task<UserAchivement> GetByExerciseTypeAsync(int exerciseTypeId);
+
+        /// <summary>
+        /// Create new achivement entries
+        /// </summary>
+        /// <param name="achivements">User achivements</param>
+        Task CreateAsync(List<UserAchivement> achivements);
     }
 }

@@ -5,7 +5,6 @@ import { Layout } from './components/Layout';
 import './styling/Custom.css';
 
 export default class App extends Component {
-  static displayName = App.name;
 
   render() {
     return (

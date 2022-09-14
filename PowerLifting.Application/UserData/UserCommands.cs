@@ -15,17 +15,20 @@ namespace PowerLifting.Application.UserData
     public class UserCommands : IUserCommands
     {
         private readonly ICrudRepo<UserDb> _userRepository;
+        private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
         private readonly IConfiguration _configuration;
         private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public UserCommands(
             ICrudRepo<UserDb> userRepository,
+            ICrudRepo<UserInfoDb> userInfoRepository,
             IConfiguration configuration,
             IUserProvider user,
             IMapper mapper)
         {
             _userRepository = userRepository;
+            _userInfoRepository = userInfoRepository;
             _configuration = configuration;
             _user = user;
             _mapper = mapper;
@@ -36,23 +39,23 @@ namespace PowerLifting.Application.UserData
         {
             if (string.IsNullOrEmpty(loginAuth.Login))
             {
-                throw new BusinessExceptions("Логин не задан.");
+                throw new BusinessException("Логин не задан.");
             }
             if (string.IsNullOrEmpty(loginAuth.Password))
             {
-                throw new BusinessExceptions("Пароль не задан.");
+                throw new BusinessException("Пароль не задан.");
             }
 
             var userDb = (await _userRepository.FindAsync(t => t.Email == loginAuth.Login)).FirstOrDefault();
             if (userDb == null)
             {
-                throw new BusinessExceptions("Пользователь с указанным логином не найден.");
+                throw new BusinessException("Пользователь с указанным логином не найден.");
             }
 
             var saltedPassword = PasswordManager.ApplySalt(loginAuth.Password, userDb.Salt);
             if (saltedPassword != userDb.Password)
             {
-                throw new BusinessExceptions("Пароль указан не верно.");
+                throw new BusinessException("Пароль указан не верно.");
             }
 
             var user = _mapper.Map<UserModel>(userDb);
@@ -70,22 +73,22 @@ namespace PowerLifting.Application.UserData
         {
             if (string.IsNullOrEmpty(registerAuth.Login))
             {
-                throw new BusinessExceptions("Логин не задан.");
+                throw new BusinessException("Логин не задан.");
             }
             if (string.IsNullOrEmpty(registerAuth.Password))
             {
-                throw new BusinessExceptions("Пароль не задан.");
+                throw new BusinessException("Пароль не задан.");
             }
 
             if (registerAuth.Password != registerAuth.PasswordConfirm)
             {
-                throw new BusinessExceptions("Пароль и подтверждение пароля не совпадают.");
+                throw new BusinessException("Пароль и подтверждение пароля не совпадают.");
             }
 
             var userDb = (await _userRepository.FindAsync(t => t.Email == registerAuth.Login)).FirstOrDefault();
             if (userDb != null)
             {
-                throw new BusinessExceptions("Пользователь с указанным логином уже существует.");
+                throw new BusinessException("Пользователь с указанным логином уже существует.");
             }
 
             string salt = PasswordManager.GenerateSalt();
@@ -95,7 +98,9 @@ namespace PowerLifting.Application.UserData
                 Salt = salt,
                 Password = PasswordManager.ApplySalt(registerAuth.Password, salt),
             };
+
             await _userRepository.CreateAsync(userDb);
+            await _userInfoRepository.CreateAsync(new UserInfoDb() { UserId = userDb.Id });
 
             var user = _mapper.Map<UserModel>(userDb);
             var token = new TokenModel()
@@ -110,26 +115,30 @@ namespace PowerLifting.Application.UserData
         /// <inheritdoc />
         public async Task ChangePasswordAsync(RegistrationModel registerAuth)
         {
+            if (string.IsNullOrEmpty(registerAuth.Login))
+            {
+                throw new BusinessException("Логин не задан.");
+            }
             if (string.IsNullOrEmpty(registerAuth.Password))
             {
-                throw new BusinessExceptions("Пароль не задан.");
+                throw new BusinessException("Пароль не задан.");
             }
 
             if (registerAuth.Password != registerAuth.PasswordConfirm)
             {
-                throw new BusinessExceptions("Пароль и подтверждение пароля не совпадают.");
+                throw new BusinessException("Пароль и подтверждение пароля не совпадают.");
             }
 
             var userDb = (await _userRepository.FindAsync(t => t.Email == registerAuth.Login)).FirstOrDefault();
             if (userDb == null)
             {
-                throw new BusinessExceptions("Пользователь с указанным логином не найден.");
+                throw new BusinessException("Пользователь с указанным логином не найден.");
             }
 
             var saltedPassword = PasswordManager.ApplySalt(registerAuth.OldPassword, userDb.Salt);
             if (saltedPassword != userDb.Password)
             {
-                throw new BusinessExceptions("Пароль указан не верно.");
+                throw new BusinessException("Пароль указан не верно.");
             }
 
             string salt = PasswordManager.GenerateSalt();

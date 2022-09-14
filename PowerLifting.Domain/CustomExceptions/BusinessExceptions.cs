@@ -1,12 +1,12 @@
 ﻿namespace PowerLifting.Domain.CustomExceptions
 {
     [Serializable]
-    public class BusinessExceptions : Exception
+    public class BusinessException : Exception
     {
-        public BusinessExceptions() { }
+        public BusinessException() { }
 
-        public BusinessExceptions(string message) : base(message) { }
+        public BusinessException(string message) : base(message) { }
 
-        public BusinessExceptions(string message, Exception innerException) : base(message, innerException) { }
+        public BusinessException(string message, Exception innerException) : base(message, innerException) { }
     }
 }

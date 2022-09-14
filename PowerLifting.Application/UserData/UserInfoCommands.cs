@@ -26,14 +26,27 @@ namespace PowerLifting.Application.UserData
         /// <inheritdoc />
         public async Task<UserInfo> GetAsync()
         {
-            var infoDb = await _userInfoRepository.FindAsync(t => t.UserId == _user.Id);
-            if (infoDb.Count == 0)
+            var infoDb = (await _userInfoRepository.FindAsync(t => t.UserId == _user.Id)).FirstOrDefault();
+            if (infoDb == null)
             {
                 return new UserInfo();
             }
 
             var info = _mapper.Map<UserInfo>(infoDb);
+
+            string patronimic = string.IsNullOrEmpty(info.Patronimic) ? string.Empty : $" {info.Patronimic.ToUpper().First()}.";
+            string firstName = string.IsNullOrEmpty(info.FirstName) ? string.Empty : $" {info.FirstName?.ToUpper()?.First()}.";
+            info.LegalName = string.IsNullOrEmpty(info.Surname) ? "Кабинет" : $"{info.Surname}{firstName}{patronimic}";
+
             return info;
+        }
+
+        public async Task UpdateAsync(UserInfo userInfo)
+        {
+            var userInfoDb = _mapper.Map<UserInfoDb>(userInfo);
+            userInfoDb.UserId = _user.Id;
+
+            await _userInfoRepository.UpdateAsync(userInfoDb);
         }
     }
 }

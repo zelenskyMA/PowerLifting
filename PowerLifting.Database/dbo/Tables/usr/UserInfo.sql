@@ -1,6 +1,5 @@
 ﻿CREATE TABLE [usr].[UserInfo]
 (
-    [Id] INT IDENTITY (1, 1) NOT NULL,
     [UserId] INT NOT NULL,
     [FirstName] NVARCHAR (50) NULL, 
     [Surname] NVARCHAR(50) NULL, 
@@ -11,5 +10,5 @@
     [CoachId] INT NULL,
     FOREIGN KEY ([UserId]) REFERENCES [usr].[Users] ([Id]),
     FOREIGN KEY ([CoachId]) REFERENCES [usr].[Users] ([Id]), 
-    CONSTRAINT [PK_UserInfo] PRIMARY KEY ([Id])
+    CONSTRAINT [PK_UserInfo] PRIMARY KEY ([UserId])
 )

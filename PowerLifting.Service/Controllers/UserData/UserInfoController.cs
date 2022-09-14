@@ -21,5 +21,13 @@ namespace PowerLifting.Service.Controllers.UserData
             var result = await _userInfoCommands.GetAsync();
             return result;
         }
+
+        [HttpPost]
+        [Route("update")]
+        public async Task<bool> UpdateAsync(UserInfo userInfo)
+        {
+            await _userInfoCommands.UpdateAsync(userInfo);
+            return true;
+        }
     }
 }

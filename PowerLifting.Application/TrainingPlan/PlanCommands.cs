@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PowerLifting.Application.UserData.Auth.Interfaces;
+using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
@@ -29,6 +30,28 @@ namespace PowerLifting.Application.TrainingPlan
             _trainingDayRepository = trainingDayRepository;
             _user = user;
             _mapper = mapper;
+        }
+
+        /// <inheritdoc />
+        public async Task<Plans> GetPlansAsync()
+        {
+            var plansDb = await _trainingPlanRepository.FindAsync(t => t.UserId == _user.Id);
+            var plansList = plansDb.Select(t => _mapper.Map<Plan>(t)).ToList();
+            foreach (var item in plansList)
+            {
+                item.FinishDate = item.StartDate.Date.AddDays(7);
+            }
+
+            var plans = new Plans()
+            {
+                ActivePlans = plansList.Where(t => t.StartDate.AddDays(7) >= DateTime.Now.Date)
+                    .OrderByDescending(t => t.StartDate).ToList(),
+
+                ExpiredPlans = plansList.Where(t => t.StartDate.AddDays(7) < DateTime.Now.Date)
+                    .OrderByDescending(t => t.StartDate).ToList(),
+            };
+
+            return plans;
         }
 
         /// <inheritdoc />
@@ -77,6 +100,15 @@ namespace PowerLifting.Application.TrainingPlan
         /// <inheritdoc />
         public async Task<int> CreateAsync(DateTime creationDate)
         {
+            var prevPlanDate = creationDate.AddDays(-6);
+            var nextPlanDate = creationDate.AddDays(6);
+            var preventingPlans = await _trainingPlanRepository.FindAsync(t => t.StartDate >= prevPlanDate && t.StartDate <= nextPlanDate);
+            if (preventingPlans.Any())
+            {
+                string errorDates = string.Join(", ", preventingPlans.Select(t => t.StartDate.ToString("dd/MM/yyyy")));
+                throw new BusinessException($"Найдены пересекающийся по датам планы. Даты начала: {errorDates}");
+            }
+
             var plan = new PlanDb() { StartDate = creationDate, UserId = _user.Id };
             await _trainingPlanRepository.CreateAsync(plan);
 
@@ -134,7 +166,7 @@ namespace PowerLifting.Application.TrainingPlan
                 }
             }
 
-            day.LiftIntensities = dayIntensities.OrderBy(t=> t.Percentage.MinValue).ToList();
+            day.LiftIntensities = dayIntensities.OrderBy(t => t.Percentage.MinValue).ToList();
         }
 
         private void SetPlanCounters(Plan plan)
@@ -162,7 +194,7 @@ namespace PowerLifting.Application.TrainingPlan
                 }
             }
 
-            plan.TypeCountersSum = planCounters.OrderBy(t=> t.Name).ToList();
+            plan.TypeCountersSum = planCounters.OrderBy(t => t.Name).ToList();
         }
 
     }

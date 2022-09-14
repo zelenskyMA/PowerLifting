@@ -63,6 +63,7 @@ builder.Services.AddScoped<IExerciseCommands, ExerciseCommands>();
 
 builder.Services.AddScoped<IUserAchivementCommands, UserAchivementCommands>();
 builder.Services.AddScoped<IUserCommands, UserCommands>();
+builder.Services.AddScoped<IUserInfoCommands, UserInfoCommands>();
 
 builder.Services.AddScoped<IDictionaryCommands, DictionaryCommands>();
 

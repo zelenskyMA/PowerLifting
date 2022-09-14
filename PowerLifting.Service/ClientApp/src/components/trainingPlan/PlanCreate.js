@@ -5,6 +5,7 @@ import "react-calendar/dist/Calendar.css";
 import { Container, Button } from "reactstrap";
 import { createTrainingPlan } from "../../stores/trainingPlanStore/planActions";
 import { Locale } from "../../common/Localization";
+import { HandleErrorPanel } from "../../common/HandlerPanels";
 import WithRouter from "../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
@@ -23,24 +24,30 @@ class PlanCreate extends React.Component {
 
   state = {
     date: new Date(),
+    error: ''
   }
 
   onDateChange = date => this.setState({ date: date });
 
   onPlanCreate = async () => {
-    var utcDate = new Date(this.state.date.getTime() - this.state.date.getTimezoneOffset() * 60 * 1000);
+    try {
+      var utcDate = new Date(this.state.date.getTime() - this.state.date.getTimezoneOffset() * 60 * 1000);
 
-    await this.props.createTrainingPlan(utcDate);
-    this.props.navigate("/createPlanDays");
+      await this.props.createTrainingPlan(utcDate);
+      this.props.navigate("/createPlanDays");
+    }
+    catch (error) {
+      this.setState({ error: error.message });
+    }
   }
 
   render() {
     return (
       <>
         <h3>Создание плана тренировок</h3>
-        <br />
+        <HandleErrorPanel errorMessage={this.state.error} />
 
-        <Container fluid>
+        <Container style={{ marginTop: '25px' }} fluid>
           <p>Выберите дату начала тренировок</p>
           <Calendar onChange={this.onDateChange} value={this.state.date} locale={Locale} />
 

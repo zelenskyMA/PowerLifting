@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { GetAsync } from "../common/ApiActions";
+import { GetToken } from '../common/AuthActions';
 import '../styling/NavMenu.css';
 
 export class NavMenu extends Component {
@@ -8,18 +10,19 @@ export class NavMenu extends Component {
     super(props);
 
     this.state = {
-      collapsed: true
+      collapsed: true,
+      userInfo: Object
     };
   }
 
-/*
-  componentDidMount() { this.getuserInfo(); }
+  componentDidMount() { this.getUserInfo(); }
 
-  getuserInfo = async () => {
-    var plan = await GetAsync("/userInfo/get");
-    this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum });
+  getUserInfo = async () => {
+    if (GetToken() != null) {
+      var info = await GetAsync("/userInfo/get");
+      this.setState({ userInfo: info });
+    }
   }
-*/
 
   toggleNavbar = () => { this.setState({ collapsed: !this.state.collapsed }); }
 
@@ -34,8 +37,8 @@ export class NavMenu extends Component {
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/">Главная</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/createPlan">Новый план</NavLink>
+              <NavItem style={{ marginRight: '20px' }}>
+                <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
               </NavItem>
               {this.loginPanel()}
             </ul>
@@ -46,9 +49,18 @@ export class NavMenu extends Component {
   }
 
   loginPanel() {
+    var legalName = this.state.userInfo?.legalName ?? '';
+    if (legalName === '') {
+      return (
+        <NavItem>
+          <NavLink tag={Link} className="text-dark" to="/login">Вход</NavLink>
+        </NavItem>
+      );
+    }
+
     return (
       <NavItem>
-        <NavLink tag={Link} className="text-dark" to="/login">Вход</NavLink>
+        <NavLink tag={Link} className="text-dark" to="/userCabinet" title="Личный кабинет">{legalName}</NavLink>
       </NavItem>
     );
   }

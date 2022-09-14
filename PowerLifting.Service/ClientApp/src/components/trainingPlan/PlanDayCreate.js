@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
-import { Locale } from "../../common/Localization";
+import { DateToLocal } from "../../common/Localization";
 import { PanelPlanDay } from "./PanelPlanDay";
 import WithRouter from "../../common/extensions/WithRouter";
 
@@ -31,7 +31,7 @@ class PlanDayCreate extends Component {
   openSettings = (settings) => { this.props.navigate(`/editPlanExerciseSettings/${this.props.params.id}/${settings.id}`); }
 
   render() {
-    var dateView = (new Date(this.state.planDay.activityDate)).toLocaleString(Locale, { dateStyle: "medium" });
+    var dateView = DateToLocal(this.state.planDay.activityDate);
 
     return (
       <>
@@ -42,7 +42,7 @@ class PlanDayCreate extends Component {
             rowDblClick={this.openSettings} mode="Edit" />
         }
 
-        <Button style={{ marginTop: '40px' }} color="primary" onClick={() => this.confirmAsync()}>Назад</Button>
+        <Button style={{ marginTop: '40px' }} color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
       </>
     );
   }

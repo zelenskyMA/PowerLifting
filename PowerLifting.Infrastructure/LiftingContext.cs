@@ -25,6 +25,7 @@ namespace PowerLifting.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserAchivementDb>().HasKey(c => new { c.UserId, c.ExerciseTypeId, c.CreationDate });
+            modelBuilder.Entity<UserInfoDb>().HasKey(c => new { c.UserId });
         }
 
         public LiftingContext(DbContextOptions<LiftingContext> options) : base(options) { }

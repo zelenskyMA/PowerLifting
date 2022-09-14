@@ -18,8 +18,6 @@ IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 1)
   INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 1, 1, 'Толчковые', 'Упражнения на толчок штанги');
 IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 2)
   INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 2, 1, 'Рывковые', 'Упражнения на рывок штанги');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 3)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 3, 1, 'Жимовые', 'Упражнения на жим штанги');
 
 IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 50)
   INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 50, 2, 'Рывок классический', '');
