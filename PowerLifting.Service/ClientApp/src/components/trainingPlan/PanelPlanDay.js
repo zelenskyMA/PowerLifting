@@ -2,9 +2,9 @@
 import { UncontrolledTooltip } from 'reactstrap';
 import { WeightCount } from "../../common/Localization";
 
-function defaultRowDblClick(settings) { }
+function defaultRowClick(settings) { }
 
-export function PanelPlanDay({ planDay, percentages = [], achivements = [], rowDblClick = defaultRowDblClick, mode = 'View' }) {
+export function PanelPlanDay({ planDay, percentages = [], achivements = [], rowClick = defaultRowClick, mode = 'View' }) {
   const idPrefix = 'col';
 
   return (
@@ -24,7 +24,7 @@ export function PanelPlanDay({ planDay, percentages = [], achivements = [], rowD
             <tr key={'planTr' + i}>
               <td>{planExercise.exercise.name}</td>
               {planExercise.settings.map(item =>
-                <td key={item.id} className="text-center" role="button" id={idPrefix + item.id} onDoubleClick={() => rowDblClick(item)}>
+                <td key={item.id} className="text-center" role="button" id={idPrefix + item.id} onClick={() => rowClick(item)}>
                   <ExerciseSettingsPanel settings={item} />
                 </td>
               )}

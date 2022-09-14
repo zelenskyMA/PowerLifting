@@ -1,7 +1,5 @@
 import { GetAsync, PostAsync } from "../../common/ApiActions"
 
-export const REQUEST_TRAININGPLAN = "REQUEST_TRAININGPLAN";
-export const RECEIVE_TRAININGPLAN = "RECEIVE_TRAININGPLAN";
 export const RECEIVE_PLAN_ID = "RECEIVE_PLAN_ID";
 
 export async function createTrainingPlan(creationDate, dispatch) {
@@ -9,10 +7,6 @@ export async function createTrainingPlan(creationDate, dispatch) {
   dispatch({ type: RECEIVE_PLAN_ID, result: response });
 }
 
-export async function getTrainingPlan(id, dispatch) {
-  dispatch({ type: REQUEST_TRAININGPLAN });
-
-  const data = await GetAsync(`trainingPlan/get?id=${id}`);
-
-  dispatch({ type: RECEIVE_TRAININGPLAN, result: data });
+export async function setTrainingPlan(id, dispatch) {
+  dispatch({ type: RECEIVE_PLAN_ID, result: id });
 }

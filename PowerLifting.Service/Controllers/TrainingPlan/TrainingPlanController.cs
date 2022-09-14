@@ -50,6 +50,14 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
         }
 
         [HttpGet]
+        [Route("getCurrentDay")]
+        public async Task<PlanDay> GetCurrentDayAsync()
+        {
+            var result = await _trainingPlanCommands.GetCurrentDayAsync();
+            return result;
+        }        
+
+        [HttpGet]
         [Route("getPlanExercises")]
         public async Task<List<PlanExercise>> GetPlannedExercise(int dayId)
         {

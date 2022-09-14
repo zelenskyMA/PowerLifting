@@ -82,19 +82,43 @@ namespace PowerLifting.Application.TrainingPlan
         /// <inheritdoc />
         public async Task<PlanDay> GetPlanDayAsync(int dayId)
         {
-            var planDaysDb = (await _trainingDayRepository.FindAsync(t => t.Id == dayId)).FirstOrDefault();
-            if (planDaysDb == null)
+            var planDayDb = (await _trainingDayRepository.FindAsync(t => t.Id == dayId)).FirstOrDefault();
+            if (planDayDb == null)
             {
                 return null;
             }
 
             var planExercises = await _plannedExerciseCommands.GetAsync(dayId);
 
-            var planDay = _mapper.Map<PlanDay>(planDaysDb);
+            var planDay = _mapper.Map<PlanDay>(planDayDb);
             planDay.Exercises = planExercises.Where(t => t.PlanDayId == dayId).OrderBy(t => t.Order).ToList();
             SetPlanDayCounters(planDay);
 
             return planDay;
+        }
+
+        /// <inheritdoc />
+        public async Task<PlanDay> GetCurrentDayAsync()
+        {
+            var now = DateTime.Now.Date;
+            var emptyDay = new PlanDay();
+
+            var dbPlans = await _trainingPlanRepository.FindAsync(t => 
+                t.UserId == _user.Id && 
+                t.StartDate <= now && t.StartDate <= now.AddDays(6));
+            if (!dbPlans.Any())
+            {
+                return emptyDay;
+            }
+
+            var planId = dbPlans.First().Id;
+            var planDayDb = (await _trainingDayRepository.FindAsync(t => t.PlanId == planId && t.ActivityDate.Date == now)).FirstOrDefault();
+            if (planDayDb == null)
+            {
+                return emptyDay;
+            }
+
+            return await GetPlanDayAsync(planDayDb.Id);
         }
 
         /// <inheritdoc />

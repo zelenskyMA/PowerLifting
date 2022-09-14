@@ -18,10 +18,12 @@ export class NavMenu extends Component {
   componentDidMount() { this.getUserInfo(); }
 
   getUserInfo = async () => {
-    if (GetToken() != null) {
-      var info = await GetAsync("/userInfo/get");
-      this.setState({ userInfo: info });
+    if (GetToken() == null) {
+      return;
     }
+
+    var info = await GetAsync("/userInfo/get");
+    this.setState({ userInfo: info });
   }
 
   toggleNavbar = () => { this.setState({ collapsed: !this.state.collapsed }); }
