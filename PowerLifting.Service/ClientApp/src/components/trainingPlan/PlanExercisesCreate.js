@@ -22,10 +22,6 @@ class PlanExercisesCreate extends Component {
       GetAsync(`trainingPlan/getPlanExercises?dayId=${this.props.params.id}`)
     ]);
 
-    /*var data = await GetAsync("exercise/getList");
-    this.setState({ exercises: data });
-
-    var planExercises = await GetAsync(`trainingPlan/getPlanExercises?dayId=${this.props.params.id}`);*/
     var planExercisesData = planExercises.map((item, i) => item.exercise);
     this.setState({ exercises: settingsList, selectedExercises: planExercisesData });
   }

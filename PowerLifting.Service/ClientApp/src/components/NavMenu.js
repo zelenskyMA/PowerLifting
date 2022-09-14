@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { GetAsync } from "../common/ApiActions";
+import { GetToken } from '../common/AuthActions';
 import '../styling/NavMenu.css';
 
 export class NavMenu extends Component {
@@ -17,8 +18,10 @@ export class NavMenu extends Component {
   componentDidMount() { this.getUserInfo(); }
 
   getUserInfo = async () => {
-    var info = await GetAsync("/userInfo/get");
-    this.setState({ userInfo: info });
+    if (GetToken() != null) {
+      var info = await GetAsync("/userInfo/get");
+      this.setState({ userInfo: info });
+    }
   }
 
   toggleNavbar = () => { this.setState({ collapsed: !this.state.collapsed }); }
@@ -35,7 +38,7 @@ export class NavMenu extends Component {
                 <NavLink tag={Link} className="text-dark" to="/">Главная</NavLink>
               </NavItem>
               <NavItem style={{ marginRight: '20px' }}>
-                <NavLink tag={Link} className="text-dark" to="/createPlan">Новый план</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
               </NavItem>
               {this.loginPanel()}
             </ul>

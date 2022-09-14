@@ -4,7 +4,7 @@ import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, usePagination 
 import { Col, Container, InputGroup, Row, Input, InputGroupText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export function TableView({ columnsInfo, data, rowDblClick, pageSize = 5 }) {
+export function TableView({ columnsInfo, data, rowDblClick, pageSize = 5, hideFilter = false }) {
   const columns = React.useMemo(() => columnsInfo, []);
 
   const {
@@ -34,9 +34,13 @@ export function TableView({ columnsInfo, data, rowDblClick, pageSize = 5 }) {
     usePagination
   );
 
+  if (data?.length == 0) {
+    return (<p><em>Нет записей</em></p>);
+  }
+
   return (
     <Container fluid>
-      <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} />
+      <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} hideFilter={hideFilter} />
       <table className="table table-striped" aria-labelledby="tabelLabel" {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -69,7 +73,11 @@ export function TableView({ columnsInfo, data, rowDblClick, pageSize = 5 }) {
   )
 }
 
-function FilterPanel({ globalFilter, setGlobalFilter, gotoPage }) {
+function FilterPanel({ globalFilter, setGlobalFilter, gotoPage, hideFilter }) {
+  if (hideFilter) {
+    return (<></>);
+  }
+
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce(value => { setGlobalFilter(value || undefined) }, 200);
 

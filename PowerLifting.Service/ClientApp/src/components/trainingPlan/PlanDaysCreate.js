@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { Container, Button, Row, Col } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
-import { Locale } from "../../common/Localization";
+import { Locale, DateToLocal } from "../../common/Localization";
 import WithRouter from "../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
@@ -71,19 +71,15 @@ class PlanDaysCreate extends React.Component {
   }
 
   plannedDayPanel(day) {
-    var dateValue = new Date(day.activityDate);
-
-    var dateName = dateValue.toLocaleString(Locale, { weekday: 'long' });
+    var dateName = new Date(day.activityDate).toLocaleString(Locale, { weekday: 'long' });
     dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
-
-    var dateView = dateValue.toLocaleString(Locale, { dateStyle: "medium" });
 
     return (
       <Container fluid>
         <Row>
           <Col className="text-center">
             <div><strong>{dateName}</strong></div>
-            <div>{dateView}</div>
+            <div>{DateToLocal(day.activityDate)}</div>
           </Col>
           <Col style={{ paddingTop: '7px' }} >
             <Button color="primary" outline onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
@@ -123,7 +119,7 @@ class PlanDaysCreate extends React.Component {
       return (<></>);
     }
 
-    return (<Col><Button color="primary" >Подтвердить</Button></Col>);
+    return (<Col><Button color="primary" onClick={() => this.props.navigate("/")}>Завершить</Button></Col>);
   }
 
 }

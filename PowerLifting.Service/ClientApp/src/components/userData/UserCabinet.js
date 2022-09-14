@@ -16,8 +16,11 @@ class UserCabinet extends Component {
   componentDidMount() { this.getUserInfo(); }
 
   getUserInfo = async () => {
-    var info = await GetAsync("/userInfo/get");
-    var achivementsData = await GetAsync(`userAchivement/get`);
+    const [info, achivementsData] = await Promise.all([
+      GetAsync("/userInfo/get"),
+      GetAsync("/userAchivement/get")
+    ]);
+
     this.setState({ userInfo: info, achivements: achivementsData });
   }
 

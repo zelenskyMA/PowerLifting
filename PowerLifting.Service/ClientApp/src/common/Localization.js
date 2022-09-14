@@ -13,3 +13,8 @@ export function WeightCount(baseValue, percentageValue) {
 
   return Math.ceil(value);
 }
+
+export function DateToLocal(dateString) { 
+  var dateValue = new Date(dateString);
+  return dateValue.toLocaleString(Locale, { dateStyle: "medium" });
+}

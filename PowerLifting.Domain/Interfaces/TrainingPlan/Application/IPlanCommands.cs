@@ -5,6 +5,12 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
     public interface IPlanCommands
     {
         /// <summary>
+        /// Get user training plans
+        /// </summary>
+        /// <returns></returns>
+        Task<Plans> GetPlansAsync();
+
+        /// <summary>
         /// Get training plan
         /// </summary>
         /// <param name="Id">Plan Id</param>

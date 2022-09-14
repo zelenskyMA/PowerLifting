@@ -18,6 +18,14 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
         }
 
         [HttpGet]
+        [Route("getList")]
+        public async Task<Plans> Get()
+        {
+            var result = await _trainingPlanCommands.GetPlansAsync();
+            return result;
+        }               
+
+        [HttpGet]
         [Route("get")]
         public async Task<Plan> Get(int id)
         {
