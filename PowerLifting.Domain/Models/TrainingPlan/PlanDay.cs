@@ -4,6 +4,8 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 {
     public class PlanDay : Entity
     {
+        public int? PlanId { get; set; }
+
         /// <summary>
         /// Дата тренировочного дня.
         /// </summary>

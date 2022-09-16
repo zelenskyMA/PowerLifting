@@ -1,8 +1,8 @@
 ﻿
-import LineChartPanel from "../components/Analitics/LineChartPanel";
+import PlanAnaliticsView from "../components/analitics/PlanAnaliticsView";
 
 const AnaliticsRoutes = [
-  { path: '/lineChart', element: <LineChartPanel /> }
+  { path: '/planAnalitics', element: <PlanAnaliticsView /> }
 ];
 
 export default AnaliticsRoutes;

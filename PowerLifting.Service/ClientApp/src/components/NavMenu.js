@@ -40,8 +40,8 @@ export class NavMenu extends Component {
                 <NavLink tag={Link} className="text-dark" to="/">Главная</NavLink>
               </NavItem>
 
-              <NavItem style={{ marginRight: '20px' }}>
-                <NavLink tag={Link} className="text-dark" to="/lineChart">Аналитика</NavLink>
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
               </NavItem>
 
               <NavItem style={{ marginRight: '20px' }}>

@@ -19,7 +19,7 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
 
         [HttpGet]
         [Route("getList")]
-        public async Task<Plans> Get()
+        public async Task<Plans> GetAsync()
         {
             var result = await _trainingPlanCommands.GetPlansAsync();
             return result;
@@ -27,7 +27,7 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
 
         [HttpGet]
         [Route("get")]
-        public async Task<Plan> Get(int id)
+        public async Task<Plan> GetAsync(int id)
         {
             var result = await _trainingPlanCommands.GetPlanAsync(id);
             return result;
@@ -35,7 +35,7 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
 
         [HttpPost]
         [Route("create")]
-        public async Task<int> Create([FromBody] DateTime creationDate)
+        public async Task<int> CreateAsync([FromBody] DateTime creationDate)
         {
             var result = await _trainingPlanCommands.CreateAsync(creationDate);
             return result;
@@ -43,7 +43,7 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
 
         [HttpGet]
         [Route("getPlanDay")]
-        public async Task<PlanDay> GetPlanDay(int dayId)
+        public async Task<PlanDay> GetPlanDayAsync(int dayId)
         {
             var result = await _trainingPlanCommands.GetPlanDayAsync(dayId);
             return result;
@@ -59,7 +59,7 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
 
         [HttpGet]
         [Route("getPlanExercises")]
-        public async Task<List<PlanExercise>> GetPlannedExercise(int dayId)
+        public async Task<List<PlanExercise>> GetPlannedExerciseAsync(int dayId)
         {
             var result = await _plannedExerciseCommands.GetAsync(dayId);
             return result;
@@ -67,7 +67,7 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
 
         [HttpPost]
         [Route("createPlanExercises")]
-        public async Task<bool> CreatePlannedExercise(int dayId, [FromBody] List<Exercise> exercises)
+        public async Task<bool> CreatePlannedExerciseAsync(int dayId, [FromBody] List<Exercise> exercises)
         {
             await _plannedExerciseCommands.CreateAsync(dayId, exercises);
             return true;

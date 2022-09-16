@@ -17,6 +17,6 @@ namespace PowerLifting.Domain.Models.TrainingPlan
         /// </summary>
         public List<ValueEntity> TypeCountersSum { get; set; } = new List<ValueEntity>();
 
-        public List<PlanDay>? TrainingDays { get; set; } = new List<PlanDay>();
+        public List<PlanDay> TrainingDays { get; set; } = new List<PlanDay>();
     }
 }

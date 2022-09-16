@@ -16,7 +16,7 @@ namespace PowerLifting.Service.Controllers.UserData
 
         [HttpGet]
         [Route("get")]
-        public async Task<UserInfo> Get()
+        public async Task<UserInfo> GetAsync()
         {
             var result = await _userInfoCommands.GetAsync();
             return result;
