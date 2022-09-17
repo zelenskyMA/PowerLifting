@@ -12,7 +12,12 @@ export async function PostAsync(url, payload = null) {
 }
 
 export async function GetAsync(url) {
-  var funcCall = async () => { return await fetch(url, { method: "GET", headers: GetHeaders() }) };
+  const requestOptions = {
+    method: "GET",
+    headers: GetHeaders()
+  };
+
+  var funcCall = async () => { return await fetch(url, requestOptions) };
   return await ExecuteRequest(funcCall);
 }
 

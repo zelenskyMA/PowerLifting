@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using PowerLifting.Application.TrainingPlan.Process;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
+using PowerLifting.Domain.Interfaces.TrainingPlan.Application.Process;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Repositories;
 using PowerLifting.Domain.Models.TrainingPlan;
 
@@ -11,6 +13,7 @@ namespace PowerLifting.Application.TrainingPlan
     {
         private readonly IPlanExerciseSettingsCommands _planExerciseSettingsCommands;
         private readonly IExerciseCommands _exerciseCommands;
+        private readonly IPlanCountersSetup _planCountersSetup;
 
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
         private readonly IMapper _mapper;
@@ -18,11 +21,13 @@ namespace PowerLifting.Application.TrainingPlan
         public PlanExerciseCommands(
          IPlanExerciseSettingsCommands planExerciseSettingsCommands,
          IExerciseCommands exerciseCommands,
+         IPlanCountersSetup planCountersSetup,
          ICrudRepo<PlanExerciseDb> plannedExerciseRepository,
          IMapper mapper)
         {
             _planExerciseSettingsCommands = planExerciseSettingsCommands;
             _exerciseCommands = exerciseCommands;
+            _planCountersSetup = planCountersSetup;
 
             _planExerciseRepository = plannedExerciseRepository;
             _mapper = mapper;
@@ -49,7 +54,7 @@ namespace PowerLifting.Application.TrainingPlan
 
                 item.Settings = settings.Where(t => t.PlanExerciseId == item.Id).OrderBy(t => t.Percentage.MinValue).ToList();
 
-                SetPlanExerciseCounters(item);
+                _planCountersSetup.SetPlanExerciseCounters(item);
             }
 
             return planExercises;
@@ -99,32 +104,6 @@ namespace PowerLifting.Application.TrainingPlan
                 await _planExerciseRepository.CreateAsync(planExercise);
                 await _planExerciseSettingsCommands.CreateAsync(planExercise.Id);
             }
-        }
-
-        private void SetPlanExerciseCounters(PlanExercise planExercise)
-        {
-            if (planExercise.Settings == null || planExercise.Settings.Count == 0)
-            {
-                return;
-            }
-
-            planExercise.WeightLoad = planExercise.Settings.Select(
-                t => t.Weight * t.Iterations * (t.ExercisePart1 + t.ExercisePart2 + t.ExercisePart3)).Sum();
-
-            planExercise.LiftCounter = planExercise.Settings.Select(
-                t => t.ExercisePart1 + t.ExercisePart2 + t.ExercisePart3).Sum();
-
-            planExercise.Intensity = planExercise.LiftCounter == 0 ? 0 : planExercise.WeightLoad / planExercise.LiftCounter;
-
-            planExercise.LiftIntensities = new List<LiftIntensity>();
-            foreach (var item in planExercise.Settings)
-            {
-                planExercise.LiftIntensities.Add(new LiftIntensity()
-                {
-                    Percentage = item.Percentage,
-                    Value = item.ExercisePart1 + item.ExercisePart2 + item.ExercisePart3,
-                });
-            };
-        }
+        }      
     }
 }

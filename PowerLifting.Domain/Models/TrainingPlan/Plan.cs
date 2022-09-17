@@ -8,8 +8,6 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 
         public DateTime StartDate { get; set; }
 
-        public DateTime FinishDate { get; set; } = DateTime.Now;
-
         public string? Comments { get; set; }
 
         /// <summary>
@@ -17,6 +15,8 @@ namespace PowerLifting.Domain.Models.TrainingPlan
         /// </summary>
         public List<ValueEntity> TypeCountersSum { get; set; } = new List<ValueEntity>();
 
-        public List<PlanDay>? TrainingDays { get; set; } = new List<PlanDay>();
+        public List<PlanDay> TrainingDays { get; set; } = new List<PlanDay>();
+
+        public DateTime FinishDate => StartDate.Date.AddDays(7);
     }
 }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using PowerLifting.Application.TrainingPlan.Process;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
+using PowerLifting.Domain.Interfaces.TrainingPlan.Application.Process;
 using PowerLifting.Domain.Models.Common;
 using PowerLifting.Domain.Models.TrainingPlan;
 
@@ -12,6 +14,7 @@ namespace PowerLifting.Application.TrainingPlan
     public class PlanCommands : IPlanCommands
     {
         private readonly IPlanExerciseCommands _plannedExerciseCommands;
+        private readonly IPlanCountersSetup _planCountersSetup;
 
         private readonly ICrudRepo<PlanDb> _trainingPlanRepository;
         private readonly ICrudRepo<PlanDayDb> _trainingDayRepository;
@@ -20,12 +23,14 @@ namespace PowerLifting.Application.TrainingPlan
 
         public PlanCommands(
             IPlanExerciseCommands plannedExerciseCommands,
+            IPlanCountersSetup planCountersSetup,
             ICrudRepo<PlanDb> trainingPlanRepository,
             ICrudRepo<PlanDayDb> trainingDayRepository,
             IUserProvider user,
             IMapper mapper)
         {
             _plannedExerciseCommands = plannedExerciseCommands;
+            _planCountersSetup = planCountersSetup;
             _trainingPlanRepository = trainingPlanRepository;
             _trainingDayRepository = trainingDayRepository;
             _user = user;
@@ -37,10 +42,6 @@ namespace PowerLifting.Application.TrainingPlan
         {
             var plansDb = await _trainingPlanRepository.FindAsync(t => t.UserId == _user.Id);
             var plansList = plansDb.Select(t => _mapper.Map<Plan>(t)).ToList();
-            foreach (var item in plansList)
-            {
-                item.FinishDate = item.StartDate.Date.AddDays(7);
-            }
 
             var plans = new Plans()
             {
@@ -70,11 +71,11 @@ namespace PowerLifting.Application.TrainingPlan
             foreach (var planDay in planDays)
             {
                 planDay.Exercises = planExercises.Where(t => t.PlanDayId == planDay.Id).OrderBy(t => t.Order).ToList();
-                SetPlanDayCounters(planDay);
+                _planCountersSetup.SetPlanDayCounters(planDay);
             }
 
             plan.TrainingDays = planDays;
-            SetPlanCounters(plan);
+            _planCountersSetup.SetPlanCounters(plan);
 
             return plan;
         }
@@ -92,7 +93,7 @@ namespace PowerLifting.Application.TrainingPlan
 
             var planDay = _mapper.Map<PlanDay>(planDayDb);
             planDay.Exercises = planExercises.Where(t => t.PlanDayId == dayId).OrderBy(t => t.Order).ToList();
-            SetPlanDayCounters(planDay);
+            _planCountersSetup.SetPlanDayCounters(planDay);
 
             return planDay;
         }
@@ -143,83 +144,6 @@ namespace PowerLifting.Application.TrainingPlan
             }
 
             return plan.Id;
-        }
-
-        /// <summary>
-        /// Вычисляем необходимые суммы и справочные данные для отображения в интерфейсе.
-        /// </summary>
-        /// <param name="day"></param>
-        private void SetPlanDayCounters(PlanDay day)
-        {
-            if (day.Exercises == null || day.Exercises.Count == 0)
-            {
-                return;
-            }
-
-            // простые суммы значений
-            day.WeightLoadSum = day.Exercises.Sum(t => t.WeightLoad);
-            day.LiftCounterSum = day.Exercises.Sum(t => t.LiftCounter);
-            day.IntensitySum = day.Exercises.Sum(t => t.Intensity);
-
-
-            // считаем, сколько упражнений по подтипам в тренировочном дне. 
-            day.ExerciseTypeCounters = new List<ValueEntity>();
-            var groups = day.Exercises.Select(t => t.Exercise).GroupBy(t => t.ExerciseSubTypeId);
-            foreach (var item in groups)
-            {
-                day.ExerciseTypeCounters.Add(new ValueEntity()
-                {
-                    Id = item.Select(t => t.ExerciseSubTypeId).First(),
-                    Name = item.Select(t => t.ExerciseSubTypeName).First(),
-                    Value = item.Count()
-                });
-            }
-            day.ExerciseTypeCounters = day.ExerciseTypeCounters.OrderBy(t => t.Name).ToList();
-
-
-            // считаем дневную интенсивность занятий по колонкам процентов.
-            var listIntensities = day.Exercises.Select(t => t.LiftIntensities).ToList();
-            var dayIntensities = listIntensities.First();
-            listIntensities.RemoveAt(0);
-            foreach (var itemList in listIntensities)
-            {
-                foreach (var item in itemList)
-                {
-                    var dayIntensityItem = dayIntensities.FirstOrDefault(t => t.Percentage.Id == item.Percentage.Id);
-                    dayIntensityItem.Value += item.Value;
-                }
-            }
-
-            day.LiftIntensities = dayIntensities.OrderBy(t => t.Percentage.MinValue).ToList();
-        }
-
-        private void SetPlanCounters(Plan plan)
-        {
-            var planCounters = new List<ValueEntity>();
-
-            var listCounters = plan.TrainingDays.Select(t => t.ExerciseTypeCounters).ToList();
-            foreach (var itemList in listCounters)
-            {
-                foreach (var item in itemList)
-                {
-                    var dayIntensityItem = planCounters.FirstOrDefault(t => t.Id == item.Id);
-                    if (dayIntensityItem == null)
-                    {
-                        dayIntensityItem = new ValueEntity()
-                        {
-                            Id = item.Id,
-                            Name = item.Name,
-                            Value = 0
-                        };
-                        planCounters.Add(dayIntensityItem);
-                    }
-
-                    dayIntensityItem.Value += item.Value;
-                }
-            }
-
-            plan.TypeCountersSum = planCounters.OrderBy(t => t.Name).ToList();
-        }
-
+        }      
     }
 }
