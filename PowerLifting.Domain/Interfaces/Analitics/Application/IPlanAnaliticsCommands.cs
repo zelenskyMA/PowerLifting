@@ -10,6 +10,6 @@ namespace PowerLifting.Domain.Interfaces.Analitics.Application
         /// </summary>
         /// <param name="span">Request period with start and finish date</param>
         /// <returns></returns>
-        Task<List<PlanDateAnalitics>> GetAsync(TimeSpanEntity span);
+        Task<PlanAnalitics> GetAsync(TimeSpanEntity span);
     }
 }

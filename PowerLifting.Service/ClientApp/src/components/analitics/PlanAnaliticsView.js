@@ -53,6 +53,17 @@ class PlanAnaliticsView extends Component {
       return (<p><em>Загрузка...</em></p>);
     }
 
+    var colors = ['#8884d8', '#CF4034', '#239411', '#3C2CDB', '#9712C8', '#03C7EE', '#EF6206'];
+    var exerciseTypesData = [];
+    for (var i = 0; i < this.state.analitics.typeCounters.length; i++) {
+      exerciseTypesData.push({
+        id: 'value',
+        data: this.state.analitics.typeCounters[i].values,
+        name: this.state.analitics.typeCounters[i].name,
+        color: colors[i]
+      });
+    }
+
     return (
       <>
         <h3>Аналитика</h3>
@@ -64,13 +75,13 @@ class PlanAnaliticsView extends Component {
           <Col xs={3}>
             <InputGroup>
               <InputGroupText>с:</InputGroupText>
-              <Input type="date" onChange={(e) => this.setValue(e, 'startDate')} defaultValue={this.state.startDate?.toISOString()?.substring(0, 10)} />
+              <Input type="date" language="ru-ru" onChange={(e) => this.setValue(e, 'startDate')} defaultValue={this.state.startDate?.toISOString()?.substring(0, 10)} />
             </InputGroup>
           </Col>
           <Col xs={3}>
             <InputGroup>
               <InputGroupText>по:</InputGroupText>
-              <Input type="date" onChange={(e) => this.setValue(e, 'finishDate')} defaultValue={this.state.finishDate?.toISOString()?.substring(0, 10)} />
+              <Input type="date" language="ru"  onChange={(e) => this.setValue(e, 'finishDate')} defaultValue={this.state.finishDate?.toISOString()?.substring(0, 10)} />
             </InputGroup>
           </Col>
         </Row>
@@ -100,26 +111,19 @@ class PlanAnaliticsView extends Component {
         <TabContent activeTab={this.state.activeTabId.toString()}>
 
           <TabPane tabId="1">
-            <LineChartView data={this.state.analitics} displayList={[{ name: 'КПШ', id: 'liftCounterSum', color: '#8884d8' }]} />
+            <LineChartView data={this.state.analitics.planCounters} displayList={[{ name: 'КПШ', id: 'liftCounterSum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="2">
-            <LineChartView data={this.state.analitics} displayList={[{ name: 'Нагрузка', id: 'weightLoadSum', color: '#8884d8' }]} />
+            <LineChartView data={this.state.analitics.planCounters} displayList={[{ name: 'Нагрузка', id: 'weightLoadSum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="3">
-            <LineChartView data={this.state.analitics} displayList={[{ name: 'Интенсивность', id: 'intensitySum', color: '#8884d8' }]} />
+            <LineChartView data={this.state.analitics.planCounters} displayList={[{ name: 'Интенсивность', id: 'intensitySum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="4">
-            <LineChartView data={this.state.analitics} displayList={
-              [
-                { name: 'Рывок классический', id: 'classicJerk', color: '#8884d8' },
-                { name: 'Толчок. Взятие на грудь', id: 'pushOnChest', color: '#CF4034' },
-                { name: 'Толчок с груди', id: 'pushFromChest', color: '#239411' },
-                { name: 'Толчок классический', id: 'classicPush', color: '#3C2CDB' },
-                { name: 'ОФП', id: 'ofp', color: '#9712C8' }
-              ]} />
+            <LineChartView data={this.state.analitics.fullTypeCounterList} displayList={exerciseTypesData} multidata="true" />
           </TabPane>
 
         </TabContent>

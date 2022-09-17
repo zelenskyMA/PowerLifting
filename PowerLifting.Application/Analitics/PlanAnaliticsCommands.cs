@@ -38,40 +38,53 @@ namespace PowerLifting.Application.Analitics
         }
 
         /// <inheritdoc />
-        public async Task<List<PlanDateAnalitics>> GetAsync(TimeSpanEntity span)
+        public async Task<PlanAnalitics> GetAsync(TimeSpanEntity span)
         {
             var plans = await PreparePlansWithCounters(span);
-            var analitics = new List<PlanDateAnalitics>();
+            var analitics = new PlanAnalitics();
             if (plans.Count == 0)
             {
                 return analitics;
             }
 
+            // "распрямляем" данные по подтипам упражнений.
+            var typeIds = plans.SelectMany(t => t.TypeCountersSum.Select(z => z.Id)).Distinct().ToList();
+            foreach (var typeId in typeIds)
+            {
+                analitics.TypeCounters.Add(new TypeCounterAnalitics()
+                {
+                    Id = typeId,
+                    Name = plans.Select(t => t.TypeCountersSum.FirstOrDefault(z => z.Id == typeId)).First(t => t?.Name != null).Name,
+                    Values = new List<DateValueModel>()
+                });
+            }
+
+            // собираем плановые данные
             foreach (var plan in plans.OrderBy(t => t.StartDate).ToList())
             {
-                var analiticsItem = new PlanDateAnalitics()
+                var dataKey = plan.FinishDate.ToString("dd/MM/yy");
+
+                analitics.PlanCounters.Add(new PlanCounterAnalitics()
                 {
                     StartDate = plan.StartDate,
-                    Name = plan.FinishDate.ToString("dd/MM/yy"),
+                    Name = dataKey,
 
                     LiftCounterSum = plan.TrainingDays.Sum(t => t.LiftCounterSum),
                     IntensitySum = plan.TrainingDays.Sum(t => t.IntensitySum),
                     WeightLoadSum = plan.TrainingDays.Sum(t => t.WeightLoadSum),
-                };
+                });
+
+                analitics.FullTypeCounterList.Add(new DateValueModel() { Name = dataKey });
 
                 foreach (var item in plan.TypeCountersSum)
                 {
-                    switch (item.Id)
+                    var currentTypeCounter = analitics.TypeCounters.First(t => t.Id == item.Id);
+                    currentTypeCounter.Values.Add(new DateValueModel()
                     {
-                        case 50: analiticsItem.ClassicJerk = item.Value; break;
-                        case 51: analiticsItem.PushOnChest = item.Value; break;
-                        case 52: analiticsItem.PushFromChest = item.Value; break;
-                        case 53: analiticsItem.ClassicPush = item.Value; break;
-                        case 54: analiticsItem.Ofp = item.Value; break;
-                    }
+                        Name = dataKey,
+                        Value = item.Value
+                    });
                 }
-
-                analitics.Add(analiticsItem);
             }
 
             return analitics;
