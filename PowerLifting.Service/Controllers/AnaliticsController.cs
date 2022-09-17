@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PowerLifting.Domain.Interfaces.Analitics.Application;
 using PowerLifting.Domain.Models.Analitics;
+using PowerLifting.Domain.Models.Common;
 
 namespace PowerLifting.Service.Controllers
 {
@@ -16,9 +17,11 @@ namespace PowerLifting.Service.Controllers
 
         [HttpGet]
         [Route("getPlanAnalitics")]
-        public async Task<List<PlanDateAnaliticsData>> GetPlanAnaliticsAsync(DateTime startDate, DateTime finishDate)
+        public async Task<List<PlanDateAnalitics>> GetPlanAnaliticsAsync(DateTime startDate, DateTime finishDate)
         {
-            var result = await _planAnaliticsCommands.GetAsync(startDate, finishDate);
+            var result = await _planAnaliticsCommands.GetAsync(
+                new TimeSpanEntity() { StartDate = startDate, FinishDate = finishDate });
+
             return result;
         }
     }

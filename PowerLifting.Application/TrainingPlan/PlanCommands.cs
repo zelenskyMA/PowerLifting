@@ -42,10 +42,6 @@ namespace PowerLifting.Application.TrainingPlan
         {
             var plansDb = await _trainingPlanRepository.FindAsync(t => t.UserId == _user.Id);
             var plansList = plansDb.Select(t => _mapper.Map<Plan>(t)).ToList();
-            foreach (var item in plansList)
-            {
-                item.FinishDate = item.StartDate.Date.AddDays(7);
-            }
 
             var plans = new Plans()
             {

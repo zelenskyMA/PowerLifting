@@ -6,6 +6,7 @@ using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application.Process;
 using PowerLifting.Domain.Models.Analitics;
+using PowerLifting.Domain.Models.Common;
 using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Application.Analitics
@@ -37,35 +38,50 @@ namespace PowerLifting.Application.Analitics
         }
 
         /// <inheritdoc />
-        public async Task<List<PlanDateAnaliticsData>> GetAsync(DateTime startDate, DateTime finishDate)
+        public async Task<List<PlanDateAnalitics>> GetAsync(TimeSpanEntity span)
         {
-            var plans = await PreparePlansWithCounters(startDate, finishDate);
-
-            var analitics = new List<PlanDateAnaliticsData>();
-            foreach (var plan in plans)
+            var plans = await PreparePlansWithCounters(span);
+            var analitics = new List<PlanDateAnalitics>();
+            if (plans.Count == 0)
             {
-                var planAnalitics = new PlanDateAnaliticsData()
+                return analitics;
+            }
+
+            foreach (var plan in plans.OrderBy(t => t.StartDate).ToList())
+            {
+                var analiticsItem = new PlanDateAnalitics()
                 {
-                    PlanStartDate = plan.StartDate,
-                    PlanFinishDate = plan.FinishDate,
+                    StartDate = plan.StartDate,
+                    Name = plan.FinishDate.ToString("dd/MM/yy"),
 
                     LiftCounterSum = plan.TrainingDays.Sum(t => t.LiftCounterSum),
                     IntensitySum = plan.TrainingDays.Sum(t => t.IntensitySum),
                     WeightLoadSum = plan.TrainingDays.Sum(t => t.WeightLoadSum),
-                    TypeCountersSum = plan.TypeCountersSum,
                 };
 
-                analitics.Add(planAnalitics);
+                foreach (var item in plan.TypeCountersSum)
+                {
+                    switch (item.Id)
+                    {
+                        case 50: analiticsItem.ClassicJerk = item.Value; break;
+                        case 51: analiticsItem.PushOnChest = item.Value; break;
+                        case 52: analiticsItem.PushFromChest = item.Value; break;
+                        case 53: analiticsItem.ClassicPush = item.Value; break;
+                        case 54: analiticsItem.Ofp = item.Value; break;
+                    }
+                }
+
+                analitics.Add(analiticsItem);
             }
 
             return analitics;
         }
 
-        private async Task<List<Plan>> PreparePlansWithCounters(DateTime startDate, DateTime finishDate)
+        private async Task<List<Plan>> PreparePlansWithCounters(TimeSpanEntity span)
         {
-            var lastPlanDate = finishDate.Date.AddDays(-6);
+            var lastPlanDate = span.FinishDate.Date.AddDays(-6);
             var plans = (await _trainingPlanRepository.FindAsync(t => t.UserId == _user.Id &&
-                t.StartDate >= startDate.Date && t.StartDate <= lastPlanDate))
+                t.StartDate >= span.StartDate.Date && t.StartDate <= lastPlanDate))
                 .Select(t => _mapper.Map<Plan>(t)).ToList();
 
             var planIds = plans.Select(t => t.Id).ToList();

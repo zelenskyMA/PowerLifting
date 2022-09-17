@@ -2,7 +2,10 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Container } from "reactstrap";
 
-export function LineChartPanel({ data }) {
+export function LineChartPanel({ data, displayList }) {
+  if (data.length == 0) {
+    return (<></>);
+  }
 
   return (
     <Container fluid>
@@ -13,8 +16,10 @@ export function LineChartPanel({ data }) {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+
+        {displayList.map(item =>
+          <Line type="monotone" name={item.name} dataKey={item.id} stroke={item.color} />
+        )}
       </LineChart>
     </ Container>
   );

@@ -9,8 +9,16 @@ class PlanAnaliticsView extends Component {
   constructor(props) {
     super(props);
 
+    const startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 2);
+
+    const finishDate = new Date();
+    finishDate.setMonth(finishDate.getMonth() + 1);
+
     this.state = {
       analitics: [],
+      startDate: startDate,
+      finishDate: finishDate,
       activeTabId: 1,
       loading: true
     };
@@ -19,9 +27,19 @@ class PlanAnaliticsView extends Component {
   componentDidMount() { this.getPlanAnalitics(); }
 
   getPlanAnalitics = async () => {
-    var analiticsData = await GetAsync("/analitics/getPlanAnalitics");
+    var utcStartDate = new Date(this.state.startDate.getTime() - this.state.startDate.getTimezoneOffset() * 60 * 1000);
+    var utcFinishDate = new Date(this.state.finishDate.getTime() - this.state.finishDate.getTimezoneOffset() * 60 * 1000);
+
+    var analiticsData = await GetAsync(`/analitics/getPlanAnalitics?startDate=${utcStartDate.toISOString()}&finishDate=${utcFinishDate.toISOString()}`);
 
     this.setState({ analitics: analiticsData, loading: false });
+  }
+
+  setValue = async (event, propName) => {
+    var val = event.target.value;
+    this.setState({ [propName]: new Date(val) });
+
+    await this.getPlanAnalitics();
   }
 
   toggleTab = tabId => {
@@ -31,42 +49,28 @@ class PlanAnaliticsView extends Component {
   }
 
   render() {
-    if (!this.state.loading) {
-      return (
-        <>
-          <h3>Аналитика</h3>
-          <p style={{ marginBottom: '30px' }}>Графики изменения расчетных показателей тренировочных планов во времени</p>
-
-          <p><em>Загрузка...</em></p>);
-        </>);
+    if (this.state.loading) {
+      return (<p><em>Загрузка...</em></p>);
     }
-
-    const data = [
-      { name: 'Page A', uv: 4000, pv: 2400, amt: 2400, },
-      { name: 'Page B', uv: 3000, pv: 1398, amt: 2210, },
-      { name: 'Page C', uv: 2000, pv: 9800, amt: 2290, },
-      { name: 'Page D', uv: 2780, pv: 3908, amt: 2000, },
-      { name: 'Page E', uv: 1890, pv: 4800, amt: 2181, },
-      { name: 'Page F', uv: 2390, pv: 3800, amt: 2500, },
-      { name: 'Page G', uv: 3490, pv: 4300, amt: 2100, },
-    ];
 
     return (
       <>
         <h3>Аналитика</h3>
-        <p>Графики изменения расчетных показателей тренировочных планов во времени</p>
 
         <Row style={{ marginBottom: '30px', marginTop: '30px' }}>
-          <Col xs={6}>
+          <Col xs={4}>
+            <p>Построение графиков по тренировочным планам</p>
+          </Col>
+          <Col xs={3}>
             <InputGroup>
-              <InputGroupText>Построение графиков по тренировочным планам с:</InputGroupText>
-              <Input type="date" value={new Date().setFullYear(2022, 8, 1)} />
+              <InputGroupText>с:</InputGroupText>
+              <Input type="date" onChange={(e) => this.setValue(e, 'startDate')} defaultValue={this.state.startDate?.toISOString()?.substring(0, 10)} />
             </InputGroup>
           </Col>
           <Col xs={3}>
             <InputGroup>
               <InputGroupText>по:</InputGroupText>
-              <Input type="date" value={new Date()} />
+              <Input type="date" onChange={(e) => this.setValue(e, 'finishDate')} defaultValue={this.state.finishDate?.toISOString()?.substring(0, 10)} />
             </InputGroup>
           </Col>
         </Row>
@@ -79,7 +83,7 @@ class PlanAnaliticsView extends Component {
           </NavItem>
           <NavItem role="button" onClick={() => this.toggleTab(2)}>
             <NavLink className={classnames({ active: this.state.activeTabId === 2 })} >
-              Вес
+              Нагрузка
             </NavLink>
           </NavItem>
           <NavItem role="button" onClick={() => this.toggleTab(3)}>
@@ -96,19 +100,26 @@ class PlanAnaliticsView extends Component {
         <TabContent activeTab={this.state.activeTabId.toString()}>
 
           <TabPane tabId="1">
-            <LineChartPanel data={data} />
+            <LineChartPanel data={this.state.analitics} displayList={[{ name: 'КПШ', id: 'liftCounterSum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="2">
-            <LineChartPanel data={data} />
+            <LineChartPanel data={this.state.analitics} displayList={[{ name: 'Нагрузка', id: 'weightLoadSum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="3">
-            <LineChartPanel data={data} />
+            <LineChartPanel data={this.state.analitics} displayList={[{ name: 'Интенсивность', id: 'intensitySum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="4">
-            <LineChartPanel data={data} />
+            <LineChartPanel data={this.state.analitics} displayList={
+              [
+                { name: 'Рывок классический', id: 'classicJerk', color: '#8884d8' },
+                { name: 'Толчок. Взятие на грудь', id: 'pushOnChest', color: '#6884d8' },
+                { name: 'Толчок с груди', id: 'pushFromChest', color: '#4884d8' },
+                { name: 'Толчок классический', id: 'classicPush', color: '#2884d8' },
+                { name: 'ОФП', id: 'ofp', color: '#0284d8' }
+              ]} />
           </TabPane>
 
         </TabContent>

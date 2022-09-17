@@ -1,4 +1,5 @@
 ﻿using PowerLifting.Domain.Models.Analitics;
+using PowerLifting.Domain.Models.Common;
 
 namespace PowerLifting.Domain.Interfaces.Analitics.Application
 {
@@ -7,9 +8,8 @@ namespace PowerLifting.Domain.Interfaces.Analitics.Application
         /// <summary>
         /// Get plan counters for selected period
         /// </summary>
-        /// <param name="startDate">Period start date</param>
-        /// <param name="finishDate">Period end date</param>
+        /// <param name="span">Request period with start and finish date</param>
         /// <returns></returns>
-        Task<List<PlanDateAnaliticsData>> GetAsync(DateTime startDate, DateTime finishDate);
+        Task<List<PlanDateAnalitics>> GetAsync(TimeSpanEntity span);
     }
 }
