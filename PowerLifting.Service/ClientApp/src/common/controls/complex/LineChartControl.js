@@ -2,7 +2,7 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Container } from "reactstrap";
 
-export function LineChartView({ displayList, data = null, multidata = false }) {
+export function LineChartControl({ displayList, data = null, multidata = false }) {
   if (data?.length == 0) {
     return (<></>);
   }

@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { Button, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { DateToLocal } from "../../common/Localization";
-import { TableView } from "../../common/TableView";
+import { TableControl } from "../../common/controls/CustomControls";
 import { GetAsync } from "../../common/ApiActions";
 import { setTrainingPlan } from "../../stores/trainingPlanStore/planActions";
 import WithRouter from "../../common/extensions/WithRouter";
@@ -79,13 +79,13 @@ class PlansList extends Component {
         <TabContent activeTab={this.state.activeTabId.toString()}>
 
           <TabPane tabId="1">
-            <TableView columnsInfo={columns} data={this.state.activePlans} rowDblClick={this.onRowDblClick} pageSize={10} hideFilter={true} />
+            <TableControl columnsInfo={columns} data={this.state.activePlans} rowDblClick={this.onRowDblClick} pageSize={10} hideFilter={true} />
 
             <Button style={{ marginTop: '20px' }} color="primary" onClick={() => this.props.navigate("/createPlan")}>Запланировать тренировки</Button>
           </TabPane>
 
           <TabPane tabId="2">
-            <TableView columnsInfo={columns} data={this.state.expiredPlans} rowDblClick={this.onRowDblClick} pageSize={10} hideFilter={true} />
+            <TableControl columnsInfo={columns} data={this.state.expiredPlans} rowDblClick={this.onRowDblClick} pageSize={10} hideFilter={true} />
           </TabPane>
 
         </TabContent>

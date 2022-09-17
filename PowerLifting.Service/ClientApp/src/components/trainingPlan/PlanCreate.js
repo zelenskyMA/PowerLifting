@@ -5,7 +5,7 @@ import "react-calendar/dist/Calendar.css";
 import { Container, Button } from "reactstrap";
 import { createTrainingPlan } from "../../stores/trainingPlanStore/planActions";
 import { Locale } from "../../common/Localization";
-import { HandleErrorPanel } from "../../common/HandlerPanels";
+import { ErrorPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
@@ -45,7 +45,7 @@ class PlanCreate extends React.Component {
     return (
       <>
         <h3>Создание плана тренировок</h3>
-        <HandleErrorPanel errorMessage={this.state.error} />
+        <ErrorPanel errorMessage={this.state.error} />
 
         <Container style={{ marginTop: '25px' }} fluid>
           <p>Выберите дату начала тренировок</p>

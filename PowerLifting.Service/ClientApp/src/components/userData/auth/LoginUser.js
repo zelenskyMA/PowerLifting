@@ -1,9 +1,9 @@
 ﻿import React from "react";
-import { Container, Button, Row, Col, InputGroupText, InputGroup, Input, NavLink } from "reactstrap";
+import { Container, Button, Row, Col, NavLink } from "reactstrap";
 import { Link } from 'react-router-dom';
 import { PostAsync } from "../../../common/ApiActions";
 import { SetToken } from "../../../common/AuthActions";
-import { HandleErrorPanel } from "../../../common/HandlerPanels";
+import { ErrorPanel, InputEmail, InputPassword } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 
 class LoginUser extends React.Component {
@@ -13,10 +13,7 @@ class LoginUser extends React.Component {
     error: ''
   }
 
-  setValue = (propName) => (event) => {
-    var val = event.target.value;
-    this.setState(prevState => ({ auth: { ...prevState.auth, [propName]: val } }));
-  }
+  onValueChange = (propName, value) => { this.setState(prevState => ({ auth: { ...prevState.auth, [propName]: value } })); }
 
   onLogin = async () => {
     try {
@@ -36,27 +33,21 @@ class LoginUser extends React.Component {
         <h3>Вход</h3>
 
         <Container fluid>
-          <HandleErrorPanel errorMessage={this.state.error} />
+          <ErrorPanel errorMessage={this.state.error} />
 
-          <Row style={{ marginTop: '25px' }}>
+          <Row style={{ marginTop: '30px' }}>
             <Col xs={3}>
-              <InputGroup>
-                <InputGroupText>Логин:</InputGroupText>
-                <Input type="email" onChange={this.setValue('login')} />
-              </InputGroup>
+              <InputEmail label="Логин:" propName="login" onChange={this.onValueChange} />
             </Col>
             <Col xs={3}>
-              <InputGroup>
-                <InputGroupText>Пароль:</InputGroupText>
-                <Input type="password" onChange={this.setValue('password')} />
-              </InputGroup>
+              <InputPassword label="Пароль:" propName="password" onChange={this.onValueChange} />
             </Col>
           </Row>
 
           <NavLink style={{ width: '160px', marginLeft: '-15px', marginTop: '10px' }} tag={Link} to="/register">Зарегистрироваться</NavLink>
           <NavLink style={{ width: '160px', marginLeft: '-15px', }} tag={Link} to="/changePassword">Сменить пароль</NavLink>
 
-          <Button color="primary" style={{ marginTop: '20px' }} onClick={() => this.onLogin()}>Войти</Button>
+          <Button color="primary" style={{ marginTop: '30px' }} onClick={() => this.onLogin()}>Войти</Button>
         </Container>
       </>
     );

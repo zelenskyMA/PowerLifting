@@ -13,6 +13,21 @@ export function InputNumber({ label, onChange, propName, initialValue }) {
   )
 }
 
+export function MultiNumberInput({ label, onChange, inputList }) {
+
+  return (
+    <InputGroup>
+      <InputGroupText>{label}</InputGroupText>
+      {inputList.map(item =>
+        <Input pattern="[0-9]*" value={item.initialValue}
+          onChange={(e) => setValue(e, item.propName, onChange)}
+          onFocus={(e) => onFocus(e)}
+          onBlur={(e) => onFocusLost(e)} />
+      )}
+    </InputGroup>
+  )
+}
+
 function setValue(event, propName, onChange) {
   var validation = event.target.validity.valid;
   if (!validation) {

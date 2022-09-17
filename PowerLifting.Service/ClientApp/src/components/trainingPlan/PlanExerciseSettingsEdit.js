@@ -1,7 +1,8 @@
 ﻿import React, { Component } from 'react';
-import { Button, Row, Col, Input, InputGroup, InputGroupText } from "reactstrap";
+import { Button, Row, Col } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { WeightCount } from "../../common/Localization";
+import { InputNumber, InputTextArea, MultiNumberInput } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 
 class PlanExerciseSettingsEdit extends Component {
@@ -17,7 +18,7 @@ class PlanExerciseSettingsEdit extends Component {
 
   componentDidMount() { this.loadExerciseSettings(); }
 
-  async loadExerciseSettings() {    
+  async loadExerciseSettings() {
     var settingsData = await GetAsync(`exercise/getExerciseSettings?id=${this.props.params.id}`);
     var achivementData = await GetAsync(`userAchivement/getByExercise?exerciseTypeId=${settingsData?.exercise?.exerciseTypeId}`);
     this.setState({ exercisesSettings: settingsData, achivement: achivementData, loading: false });
@@ -28,16 +29,7 @@ class PlanExerciseSettingsEdit extends Component {
     this.props.navigate(`/createPlanDay/${this.props.params.dayId}`);
   }
 
-  // Update state object property by name. Other properties left unchanged
-  setValue = (propName) => (event) => {
-    var val = event.target.value;
-    this.setState(prevState => ({ exercisesSettings: { ...prevState.exercisesSettings, [propName]: val } }));
-  }
-
-  setAreaValue = (propName) => (event) => {
-    var val = event.target.value;
-    this.setState(prevState => ({ exercisesSettings: { ...prevState.exercisesSettings, [propName]: val } }));
-  }
+  onValueChange = (propName, value) => { this.setState(prevState => ({ exercisesSettings: { ...prevState.exercisesSettings, [propName]: value } })); }
 
   render() {
     if (this.state.loading) {
@@ -50,36 +42,33 @@ class PlanExerciseSettingsEdit extends Component {
 
         {this.percentageInfoPanel(this.state.exercisesSettings.percentage, this.state.achivement)}
 
-        <Row style={{ marginBottom: '30px' }}>
+        <Row style={{ marginTop: '30px' }}>
           <Col xs={3}>
-            <InputGroup>
-              <InputGroupText>Вес:</InputGroupText>
-              <Input onChange={this.setValue('weight')} value={this.state.exercisesSettings.weight} />
-            </InputGroup>
+            <InputNumber label="Вес:" propName="weight" onChange={this.onValueChange} initialValue={this.state.exercisesSettings.weight} />
           </Col>
           <Col xs={3}>
-            <InputGroup>
-              <InputGroupText>Количество подходов:</InputGroupText>
-              <Input onChange={this.setValue('iterations')} value={this.state.exercisesSettings.iterations} />
-            </InputGroup>
+            <InputNumber label="Количество подходов:" propName="iterations"
+              onChange={this.onValueChange} initialValue={this.state.exercisesSettings.iterations} />
           </Col>
         </Row>
-        <Row>
+        <Row style={{ marginTop: '30px' }}>
           <Col xs={5}>
-            <InputGroup>
-              <InputGroupText>Количество повторов частей упражнения:</InputGroupText>
-              <Input onChange={this.setValue('exercisePart1')} value={this.state.exercisesSettings.exercisePart1} />
-              <Input onChange={this.setValue('exercisePart2')} value={this.state.exercisesSettings.exercisePart2} />
-              <Input onChange={this.setValue('exercisePart3')} value={this.state.exercisesSettings.exercisePart3} />
-            </InputGroup>
+            <MultiNumberInput label="Количество повторов частей упражнения:" onChange={this.onValueChange} inputList={[
+              { propName: 'exercisePart1', initialValue: this.state.exercisesSettings.exercisePart1 },
+              { propName: 'exercisePart2', initialValue: this.state.exercisesSettings.exercisePart2 },
+              { propName: 'exercisePart3', initialValue: this.state.exercisesSettings.exercisePart3 }]
+            } />
           </Col>
         </Row>
 
-        <p style={{ marginTop: '40px' }}>Оставьте комментарий для выполняющего упражнение: </p>
-        <textarea onChange={this.setAreaValue('comments')} value={this.state?.exercisesSettings?.comments ?? ''} rows={3} cols={84} />
+        <Row style={{ marginTop: '30px' }}>
+          <Col xs={5}>
+            <InputTextArea onChange={this.onValueChange} propName="comments" cols={85}
+              label="Оставьте комментарий для выполняющего упражнение:" initialValue={this.state?.exercisesSettings?.comments} />
+          </Col>
+        </Row>
 
-        <br />
-        <Button style={{ marginTop: '40px' }} color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
+        <Button color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
       </>
     );
   }

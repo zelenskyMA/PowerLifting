@@ -4,7 +4,7 @@ import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, usePagination 
 import { Col, Container, InputGroup, Row, Input, InputGroupText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export function TableView({ columnsInfo, data, rowDblClick, pageSize = 5, hideFilter = false }) {
+export function TableControl({ columnsInfo, data, rowDblClick, pageSize = 5, hideFilter = false }) {
   const columns = React.useMemo(() => columnsInfo, []);
 
   const {

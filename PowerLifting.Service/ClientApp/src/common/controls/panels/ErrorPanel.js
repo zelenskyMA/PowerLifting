@@ -1,6 +1,6 @@
 ﻿import { Col, Row, Alert } from 'reactstrap';
 
-export function HandleErrorPanel({ errorMessage }) {
+export function ErrorPanel({ errorMessage }) {
   if (errorMessage == '') {
     return (<></>);
   }
