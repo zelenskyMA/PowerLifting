@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col, InputGroup, InputGroupText, Input } from "reactstrap";
-import { LineChartPanel } from "./LineChartPanel";
+import { LineChartView } from "./LineChartView";
 import { GetAsync } from "../../common/ApiActions";
 import WithRouter from "../../common/extensions/WithRouter";
 import classnames from 'classnames';
@@ -100,25 +100,25 @@ class PlanAnaliticsView extends Component {
         <TabContent activeTab={this.state.activeTabId.toString()}>
 
           <TabPane tabId="1">
-            <LineChartPanel data={this.state.analitics} displayList={[{ name: 'КПШ', id: 'liftCounterSum', color: '#8884d8' }]} />
+            <LineChartView data={this.state.analitics} displayList={[{ name: 'КПШ', id: 'liftCounterSum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="2">
-            <LineChartPanel data={this.state.analitics} displayList={[{ name: 'Нагрузка', id: 'weightLoadSum', color: '#8884d8' }]} />
+            <LineChartView data={this.state.analitics} displayList={[{ name: 'Нагрузка', id: 'weightLoadSum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="3">
-            <LineChartPanel data={this.state.analitics} displayList={[{ name: 'Интенсивность', id: 'intensitySum', color: '#8884d8' }]} />
+            <LineChartView data={this.state.analitics} displayList={[{ name: 'Интенсивность', id: 'intensitySum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="4">
-            <LineChartPanel data={this.state.analitics} displayList={
+            <LineChartView data={this.state.analitics} displayList={
               [
                 { name: 'Рывок классический', id: 'classicJerk', color: '#8884d8' },
-                { name: 'Толчок. Взятие на грудь', id: 'pushOnChest', color: '#6884d8' },
-                { name: 'Толчок с груди', id: 'pushFromChest', color: '#4884d8' },
-                { name: 'Толчок классический', id: 'classicPush', color: '#2884d8' },
-                { name: 'ОФП', id: 'ofp', color: '#0284d8' }
+                { name: 'Толчок. Взятие на грудь', id: 'pushOnChest', color: '#CF4034' },
+                { name: 'Толчок с груди', id: 'pushFromChest', color: '#239411' },
+                { name: 'Толчок классический', id: 'classicPush', color: '#3C2CDB' },
+                { name: 'ОФП', id: 'ofp', color: '#9712C8' }
               ]} />
           </TabPane>
 
