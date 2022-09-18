@@ -1,9 +1,9 @@
 ﻿import React from "react";
 import { connect } from "react-redux";
 import { Container, Button, Row, Col } from "reactstrap";
-import { GetAsync } from "../../common/ApiActions";
-import { Locale, DateToLocal } from "../../common/Localization";
-import WithRouter from "../../common/extensions/WithRouter";
+import { GetAsync } from "../../../common/ApiActions";
+import { Locale, DateToLocal } from "../../../common/Localization";
+import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {

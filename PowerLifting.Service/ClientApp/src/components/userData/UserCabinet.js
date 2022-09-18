@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Button, Row, Col, Input, InputGroup, InputGroupText } from "reactstrap";
+import { Button, Row, Col} from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { InputNumber, InputText } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";

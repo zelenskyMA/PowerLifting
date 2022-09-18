@@ -1,11 +1,11 @@
 ﻿import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Button, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
-import { DateToLocal } from "../../common/Localization";
-import { TableControl } from "../../common/controls/CustomControls";
-import { GetAsync } from "../../common/ApiActions";
-import { setTrainingPlan } from "../../stores/trainingPlanStore/planActions";
-import WithRouter from "../../common/extensions/WithRouter";
+import { DateToLocal } from "../../../common/Localization";
+import { TableControl } from "../../../common/controls/CustomControls";
+import { GetAsync } from "../../../common/ApiActions";
+import { setTrainingPlan } from "../../../stores/trainingPlanStore/planActions";
+import WithRouter from "../../../common/extensions/WithRouter";
 import classnames from 'classnames';
 
 const mapStateToProps = store => {

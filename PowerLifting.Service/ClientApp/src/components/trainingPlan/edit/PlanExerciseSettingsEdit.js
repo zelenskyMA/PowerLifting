@@ -1,9 +1,9 @@
 ﻿import React, { Component } from 'react';
 import { Button, Row, Col } from "reactstrap";
-import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { WeightCount } from "../../common/Localization";
-import { InputNumber, InputTextArea, MultiNumberInput } from "../../common/controls/CustomControls";
-import WithRouter from "../../common/extensions/WithRouter";
+import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { WeightCount } from "../../../common/Localization";
+import { InputNumber, InputTextArea, MultiNumberInput } from "../../../common/controls/CustomControls";
+import WithRouter from "../../../common/extensions/WithRouter";
 
 class PlanExerciseSettingsEdit extends Component {
   constructor() {

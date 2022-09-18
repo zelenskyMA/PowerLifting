@@ -1,10 +1,10 @@
-﻿import PlanCreate from "../components/trainingPlan/PlanCreate";
-import PlanDaysCreate from "../components/trainingPlan/PlanDaysCreate";
-import PlanDayCreate from "../components/trainingPlan/PlanDayCreate";
-import PlanExercisesCreate from "../components/trainingPlan/PlanExercisesCreate";
-import PlanExerciseSettingsEdit from "../components/trainingPlan/PlanExerciseSettingsEdit";
+﻿import PlanCreate from "../components/trainingPlan/edit/PlanCreate";
+import PlanDaysCreate from "../components/trainingPlan/edit/PlanDaysCreate";
+import PlanDayCreate from "../components/trainingPlan/edit/PlanDayCreate";
+import PlanExercisesCreate from "../components/trainingPlan/edit/PlanExercisesCreate";
+import PlanExerciseSettingsEdit from "../components/trainingPlan/edit/PlanExerciseSettingsEdit";
 
-import PlansList from "../components/plans/PlansList";
+import PlansList from "../components/trainingPlan/view/PlansList";
 
 const TrainingPlanRoutes = [
   { path: '/createPlanExercises/:id', element: <PlanExercisesCreate /> },

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Button } from 'reactstrap';
-import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { TableControl } from "../../common/controls/CustomControls";
-import WithRouter from "../../common/extensions/WithRouter";
+import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { TableControl } from "../../../common/controls/CustomControls";
+import WithRouter from "../../../common/extensions/WithRouter";
 
 class PlanExercisesCreate extends Component {
   constructor() {

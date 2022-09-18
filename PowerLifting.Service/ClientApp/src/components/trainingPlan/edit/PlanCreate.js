@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Container, Button } from "reactstrap";
-import { createTrainingPlan } from "../../stores/trainingPlanStore/planActions";
-import { Locale } from "../../common/Localization";
-import { ErrorPanel } from "../../common/controls/CustomControls";
-import WithRouter from "../../common/extensions/WithRouter";
+import { createTrainingPlan } from "../../../stores/trainingPlanStore/planActions";
+import { Locale } from "../../../common/Localization";
+import { ErrorPanel } from "../../../common/controls/CustomControls";
+import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {
