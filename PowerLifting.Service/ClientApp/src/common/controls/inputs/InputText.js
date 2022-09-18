@@ -1,6 +1,6 @@
 ﻿import { Input, InputGroup, InputGroupText } from "reactstrap";
 
-export function InputText({ label, onChange, propName, initialValue = '' }) {
+export function InputText({ label, onChange, propName, initialValue}) {
   return (
     <InputGroup>
       <InputGroupText>{label}</InputGroupText>
@@ -9,7 +9,7 @@ export function InputText({ label, onChange, propName, initialValue = '' }) {
   )
 }
 
-export function InputPassword({ label, onChange, propName, initialValue = '' }) {
+export function InputPassword({ label, onChange, propName, initialValue}) {
   return (
     <InputGroup>
       <InputGroupText>{label}</InputGroupText>
@@ -18,7 +18,7 @@ export function InputPassword({ label, onChange, propName, initialValue = '' }) 
   )
 }
 
-export function MultiTextInput({ label, onChange, inputList }) {
+export function MultiTextInput({ label, onChange, inputList}) {
 
   return (
     <InputGroup>

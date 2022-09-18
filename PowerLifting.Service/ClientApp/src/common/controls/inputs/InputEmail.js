@@ -1,6 +1,6 @@
 ﻿import { Input, InputGroup, InputGroupText } from "reactstrap";
 
-export function InputEmail({ label, onChange, propName, initialValue = '' }) {
+export function InputEmail({ label, onChange, propName, initialValue }) {
   return (
     <InputGroup>
       <InputGroupText>{label}</InputGroupText>
