@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.DbModels.UserData;
+using PowerLifting.Domain.Enums;
+using PowerLifting.Domain.Interfaces;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Domain.Models.UserData;
@@ -9,15 +11,19 @@ namespace PowerLifting.Application.UserData
 {
     public class UserAchivementCommands : IUserAchivementCommands
     {
+        private readonly IDictionaryCommands _dictionaryCommands;
         private readonly ICrudRepo<UserAchivementDb> _userAchivementRepository;
+
         private readonly IMapper _mapper;
         private readonly IUserProvider _user;
 
         public UserAchivementCommands(
-            IUserProvider user,
+            IDictionaryCommands dictionaryCommands,
             ICrudRepo<UserAchivementDb> userAchivementRepository,
+            IUserProvider user,
             IMapper mapper)
         {
+            _dictionaryCommands = dictionaryCommands;
             _userAchivementRepository = userAchivementRepository;
             _user = user;
             _mapper = mapper;
@@ -29,7 +35,17 @@ namespace PowerLifting.Application.UserData
             var achivements = await _userAchivementRepository.FindAsync(t => t.UserId == _user.Id);
             if (achivements.Count == 0)
             {
-                return new List<UserAchivement>();
+                var dictionaryAchivements = await _dictionaryCommands.GetItemsByTypeIdAsync((int)DictionaryTypes.ExerciseType);
+                foreach (var item in dictionaryAchivements)
+                {
+                    achivements.Add(new UserAchivementDb()
+                    {
+                        UserId = _user.Id,
+                        Result = 0,
+                        ExerciseTypeId = item.Id,
+                        CreationDate = DateTime.Now
+                    });
+                }
             }
 
             var filteredAchivements = achivements

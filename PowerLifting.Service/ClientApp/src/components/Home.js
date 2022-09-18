@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { GetAsync } from "../common/ApiActions";
-import { GetToken } from '../common/AuthActions';
+import { GetToken } from '../common/TokenActions';
 import { PlanDayPanel } from "./trainingPlan/PlanDayPanel";
 import WithRouter from "../common/extensions/WithRouter";
 
@@ -40,7 +40,7 @@ class Home extends Component {
         <h1>Помощник спортсмена</h1>
         <p style={{ marginBottom: '30px' }}>Программа для ведения планов тренировок спортсменов</p>
 
-        {this.planDayPanel()}        
+        {this.planDayPanel()}
       </>
     );
   }

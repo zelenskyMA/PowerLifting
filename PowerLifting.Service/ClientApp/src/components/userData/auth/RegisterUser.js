@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import { Container, Button, Row, Col } from "reactstrap";
 import { PostAsync } from "../../../common/ApiActions";
-import { SetToken } from "../../../common/AuthActions";
+import { SetToken } from "../../../common/TokenActions";
 import { ErrorPanel, InputPassword, InputEmail } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 

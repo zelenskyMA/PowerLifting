@@ -1,4 +1,4 @@
-import { GetToken, RefreshToken } from './AuthActions';
+import { GetToken, RefreshToken } from './TokenActions';
 
 export async function PostAsync(url, payload = null) {
   const requestOptions = {

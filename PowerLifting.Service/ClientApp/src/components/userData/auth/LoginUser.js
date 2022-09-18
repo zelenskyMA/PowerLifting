@@ -2,7 +2,7 @@
 import { Container, Button, Row, Col, NavLink } from "reactstrap";
 import { Link } from 'react-router-dom';
 import { PostAsync } from "../../../common/ApiActions";
-import { SetToken } from "../../../common/AuthActions";
+import { SetToken } from "../../../common/TokenActions";
 import { ErrorPanel, InputEmail, InputPassword } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 

@@ -6,8 +6,6 @@ IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 1)
   INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 1, 'Тип упражнений', 'Базовые типы упражнений');
 IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 2)
   INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 2, 'Категория упражнений', 'Подраздел в рамках базового типа упражнений');
-IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 3)
-  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 3, 'Рекорды', 'Учетные рекорды в выполнении упражнений');
 
 SET IDENTITY_INSERT DictionaryTypes OFF 
 

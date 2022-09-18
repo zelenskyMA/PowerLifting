@@ -91,10 +91,10 @@ class UserCabinet extends Component {
       <>
         <Row style={{ marginTop: '10px' }}>
           <Col xs={3}>
-            <InputNumber label="Рекорд в толчке:" propName="result" onChange={this.onPushChange} initialValue={this.state.pushAchivement.result} />
+            <InputNumber label="Рекорд в толчке:" propName="result" onChange={this.onPushChange} initialValue={this.state.pushAchivement?.result} />
           </Col>
           <Col xs={3}>
-            <InputNumber label="Рекорд в рывке:" propName="result" onChange={this.onJerkChange} initialValue={this.state.jerkAchivement.result} />
+            <InputNumber label="Рекорд в рывке:" propName="result" onChange={this.onJerkChange} initialValue={this.state.jerkAchivement?.result} />
           </Col>
         </Row>
       </>
