@@ -35,9 +35,15 @@ function setValue(event, propName, onChange) {
     return;
   }
 
+  //вызываем переданный хендлер, в который уходит: 1) имя свойства в стейте, 2)значение, которое в него надо положить.
   var val = event.target.value;
+  if (val == '') {
+    onChange(propName, val);
+    return;
+  }
+
   let number = parseInt(val, 10);
-  onChange(propName, number.toString()); //вызываем переданный хендлер, в который уходит: 1) имя свойства в стейте, 2)значение, которое в него надо положить.
+  onChange(propName, number.toString());   
 }
 
 function onFocus(event) {

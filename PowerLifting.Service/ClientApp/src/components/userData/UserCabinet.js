@@ -10,7 +10,8 @@ class UserCabinet extends Component {
 
     this.state = {
       userInfo: Object,
-      achivements: [],
+      pushAchivement: Object, // толчок, id = 1
+      jerkAchivement: Object // рывок, id = 2
     };
   }
 
@@ -22,44 +23,19 @@ class UserCabinet extends Component {
       GetAsync("/userAchivement/get")
     ]);
 
-    this.setState({ userInfo: info, achivements: achivementsData });
+    var push = achivementsData.find(t => t.exerciseTypeId === 1);
+    var jerk = achivementsData.find(t => t.exerciseTypeId === 2);
+
+    this.setState({ userInfo: info, pushAchivement: push, jerkAchivement: jerk });
   }
 
   onValueChange = (propName, value) => { this.setState(prevState => ({ userInfo: { ...prevState.userInfo, [propName]: value } })); }
-
-  getAchivement = (typeId) => {
-    var achivement = this.state.achivements.find(t => t.exerciseTypeId === typeId);
-    if (achivement == null) {
-      return 0;
-    }
-
-    return achivement.result;
-  }
-
-  setAchivement = (typeId) => (event) => {
-    var validation = event.target.validity.valid;
-    if (!validation) {
-      event.preventDefault();
-      return;
-    }
-
-    var val = event.target.value;
-    var achivements = this.state.achivements;
-
-    var achivement = achivements.find(t => t.exerciseTypeId === typeId);
-    if (achivement == null) {
-      achivements = [...achivements, { exerciseTypeId: typeId, result: val }];
-    }
-    else {
-      achivement.result = val;
-    }
-
-    this.setState({ achivements: achivements });
-  }
+  onPushChange = (propName, value) => { this.setState(prevState => ({ pushAchivement: { ...prevState.pushAchivement, [propName]: value } })); }
+  onJerkChange = (propName, value) => { this.setState(prevState => ({ jerkAchivement: { ...prevState.jerkAchivement, [propName]: value } })); }
 
   confirmAsync = async () => {
     await PostAsync(`/userInfo/update`, this.state.userInfo);
-    await PostAsync(`/userAchivement/create`, this.state.achivements);
+    await PostAsync(`/userAchivement/create`, [this.state.pushAchivement, this.state.jerkAchivement]);
     this.props.navigate("/");
   }
 
@@ -115,16 +91,10 @@ class UserCabinet extends Component {
       <>
         <Row style={{ marginTop: '10px' }}>
           <Col xs={3}>
-            <InputGroup>
-              <InputGroupText>Рекорд в толчке:</InputGroupText>
-              <Input pattern="[0-9]*" onChange={this.setAchivement(1)} value={this.getAchivement(1)} />
-            </InputGroup>
+            <InputNumber label="Рекорд в толчке:" propName="result" onChange={this.onPushChange} initialValue={this.state.pushAchivement.result} />
           </Col>
           <Col xs={3}>
-            <InputGroup>
-              <InputGroupText>Рекорд в рывке:</InputGroupText>
-              <Input pattern="[0-9]*" onChange={this.setAchivement(2)} value={this.getAchivement(2)} />
-            </InputGroup>
+            <InputNumber label="Рекорд в рывке:" propName="result" onChange={this.onJerkChange} initialValue={this.state.jerkAchivement.result} />
           </Col>
         </Row>
       </>
