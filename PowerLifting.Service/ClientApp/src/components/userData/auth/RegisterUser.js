@@ -1,8 +1,8 @@
 ﻿import React from "react";
-import { Container, Button, Row, Col, InputGroupText, InputGroup, Input } from "reactstrap";
+import { Container, Button, Row, Col } from "reactstrap";
 import { PostAsync } from "../../../common/ApiActions";
-import { SetToken } from "../../../common/AuthActions";
-import { HandleErrorPanel } from "../../../common/HandlerPanels";
+import { SetToken } from "../../../common/TokenActions";
+import { ErrorPanel, InputPassword, InputEmail } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 
 class RegisterUser extends React.Component {
@@ -12,10 +12,7 @@ class RegisterUser extends React.Component {
     error: ''
   }
 
-  setValue = (propName) => (event) => {
-    var val = event.target.value;
-    this.setState(prevState => ({ auth: { ...prevState.auth, [propName]: val } }));
-  }
+  onValueChange = (propName, value) => { this.setState(prevState => ({ auth: { ...prevState.auth, [propName]: value } })); }
 
   onRegister = async () => {
     try {
@@ -35,32 +32,23 @@ class RegisterUser extends React.Component {
         <h3>Регистрация</h3>
 
         <Container fluid>
-          <HandleErrorPanel errorMessage={this.state.error} />
+          <ErrorPanel errorMessage={this.state.error} />
 
-          <Row style={{ marginTop: '25px' }}>
+          <Row style={{ marginTop: '30px' }}>
             <Col xs={6}>
-              <InputGroup>
-                <InputGroupText>Адрес вашей электронной почты (логин):</InputGroupText>
-                <Input type="email" onChange={this.setValue('login')} />
-              </InputGroup>
+              <InputEmail label="Адрес вашей электронной почты (логин):" propName="login" onChange={this.onValueChange} />
             </Col>
           </Row>
-          <Row style={{ marginTop: '20px' }}>
+          <Row style={{ marginTop: '30px' }}>
             <Col xs={3}>
-              <InputGroup>
-                <InputGroupText>Пароль:</InputGroupText>
-                <Input type="password" onChange={this.setValue('password')} />
-              </InputGroup>
+              <InputPassword label="Пароль:" propName="password" onChange={this.onValueChange} />
             </Col>
             <Col xs={3}>
-              <InputGroup>
-                <InputGroupText>Подтверждение пароля:</InputGroupText>
-                <Input type="password" onChange={this.setValue('passwordConfirm')} />
-              </InputGroup>
+              <InputPassword label="Подтверждение пароля:" propName="passwordConfirm" onChange={this.onValueChange} />
             </Col>
           </Row>
 
-          <Button color="primary" style={{ marginTop: '25px' }} onClick={() => this.onRegister()}>Зарегистрироваться</Button>
+          <Button color="primary" style={{ marginTop: '30px' }} onClick={() => this.onRegister()}>Зарегистрироваться</Button>
         </Container>
       </>
     );

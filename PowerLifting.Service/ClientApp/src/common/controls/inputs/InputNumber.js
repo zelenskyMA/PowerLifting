@@ -13,6 +13,21 @@ export function InputNumber({ label, onChange, propName, initialValue }) {
   )
 }
 
+export function MultiNumberInput({ label, onChange, inputList }) {
+
+  return (
+    <InputGroup>
+      <InputGroupText>{label}</InputGroupText>
+      {inputList.map(item =>
+        <Input pattern="[0-9]*" value={item.initialValue}
+          onChange={(e) => setValue(e, item.propName, onChange)}
+          onFocus={(e) => onFocus(e)}
+          onBlur={(e) => onFocusLost(e)} />
+      )}
+    </InputGroup>
+  )
+}
+
 function setValue(event, propName, onChange) {
   var validation = event.target.validity.valid;
   if (!validation) {
@@ -20,8 +35,15 @@ function setValue(event, propName, onChange) {
     return;
   }
 
+  //вызываем переданный хендлер, в который уходит: 1) имя свойства в стейте, 2)значение, которое в него надо положить.
   var val = event.target.value;
-  onChange(propName, val); //вызываем переданный хендлер, в который уходит: 1) имя свойства в стейте, 2)значение, которое в него надо положить.
+  if (val == '') {
+    onChange(propName, val);
+    return;
+  }
+
+  let number = parseInt(val, 10);
+  onChange(propName, number.toString());   
 }
 
 function onFocus(event) {

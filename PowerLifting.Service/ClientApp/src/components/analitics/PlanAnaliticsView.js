@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col, InputGroup, InputGroupText, Input } from "reactstrap";
-import { LineChartView } from "./LineChartView";
+import { LineChartControl } from "../../common/controls/CustomControls";
 import { GetAsync } from "../../common/ApiActions";
 import WithRouter from "../../common/extensions/WithRouter";
 import classnames from 'classnames';
@@ -111,19 +111,19 @@ class PlanAnaliticsView extends Component {
         <TabContent activeTab={this.state.activeTabId.toString()}>
 
           <TabPane tabId="1">
-            <LineChartView data={this.state.analitics.planCounters} displayList={[{ name: 'КПШ', id: 'liftCounterSum', color: '#8884d8' }]} />
+            <LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: 'КПШ', id: 'liftCounterSum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="2">
-            <LineChartView data={this.state.analitics.planCounters} displayList={[{ name: 'Нагрузка', id: 'weightLoadSum', color: '#8884d8' }]} />
+            <LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: 'Нагрузка', id: 'weightLoadSum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="3">
-            <LineChartView data={this.state.analitics.planCounters} displayList={[{ name: 'Интенсивность', id: 'intensitySum', color: '#8884d8' }]} />
+            <LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: 'Интенсивность', id: 'intensitySum', color: '#8884d8' }]} />
           </TabPane>
 
           <TabPane tabId="4">
-            <LineChartView data={this.state.analitics.fullTypeCounterList} displayList={exerciseTypesData} multidata="true" />
+            <LineChartControl data={this.state.analitics.fullTypeCounterList} displayList={exerciseTypesData} multidata="true" />
           </TabPane>
 
         </TabContent>

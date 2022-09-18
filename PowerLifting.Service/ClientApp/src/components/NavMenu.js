@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { GetAsync } from "../common/ApiActions";
-import { GetToken } from '../common/AuthActions';
+import { GetToken, RemoveTokens } from '../common/TokenActions';
 import '../styling/NavMenu.css';
 
 export class NavMenu extends Component {
@@ -32,13 +32,17 @@ export class NavMenu extends Component {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-          <NavbarBrand tag={Link} to="/">Помощник атлета</NavbarBrand>
+          <NavbarBrand tag={Link} to="/">Помощник спортсмена</NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/">Главная</NavLink>
               </NavItem>
+
+              {/*<NavItem>*/}
+              {/*  <Button color="primary" onClick={() => RemoveTokens()}>Выйти</Button>*/}
+              {/*</NavItem>*/}
 
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>

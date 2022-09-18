@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Button } from 'reactstrap';
-import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { TableView } from "../../common/TableView";
-import WithRouter from "../../common/extensions/WithRouter";
+import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { TableControl } from "../../../common/controls/CustomControls";
+import WithRouter from "../../../common/extensions/WithRouter";
 
 class PlanExercisesCreate extends Component {
   constructor() {
@@ -83,7 +83,7 @@ class PlanExercisesCreate extends Component {
       <>
         <h3>Упражнения</h3>
         <p><strong>Список упражнений.</strong> Выбрать двойным нажатием.</p>
-        <TableView columnsInfo={columns} data={this.state.exercises} rowDblClick={this.onRowDblClick} />
+        <TableControl columnsInfo={columns} data={this.state.exercises} rowDblClick={this.onRowDblClick} />
 
         <p><strong>Выбранные упражнения.</strong> Убрать лишнее двойным нажатием.</p>
         <Container fluid>

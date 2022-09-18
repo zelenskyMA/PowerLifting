@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button } from "reactstrap";
-import { GetAsync } from "../../common/ApiActions";
-import { DateToLocal } from "../../common/Localization";
-import { PanelPlanDay } from "./PanelPlanDay";
-import WithRouter from "../../common/extensions/WithRouter";
+import { GetAsync } from "../../../common/ApiActions";
+import { DateToLocal } from "../../../common/Localization";
+import { PlanDayPanel } from "../PlanDayPanel";
+import WithRouter from "../../../common/extensions/WithRouter";
 
 class PlanDayCreate extends Component {
   constructor() {
@@ -41,7 +41,7 @@ class PlanDayCreate extends Component {
         <h3 style={{ marginBottom: '30px' }}>План тренировок на {dateView}</h3>
         {this.state.loading ?
           <p><em>Загрузка...</em></p> :
-          <PanelPlanDay planDay={this.state.planDay} percentages={this.state.percentages} achivements={this.state.achivements}
+          <PlanDayPanel planDay={this.state.planDay} percentages={this.state.percentages} achivements={this.state.achivements}
             rowClick={this.openSettings} mode="Edit" />
         }
 

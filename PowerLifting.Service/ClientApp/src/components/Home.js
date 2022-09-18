@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { GetAsync } from "../common/ApiActions";
-import { GetToken } from '../common/AuthActions';
-import { PanelPlanDay } from "./trainingPlan/PanelPlanDay";
+import { GetToken } from '../common/TokenActions';
+import { PlanDayPanel } from "./trainingPlan/PlanDayPanel";
 import WithRouter from "../common/extensions/WithRouter";
 
 class Home extends Component {
@@ -40,7 +40,7 @@ class Home extends Component {
         <h1>Помощник спортсмена</h1>
         <p style={{ marginBottom: '30px' }}>Программа для ведения планов тренировок спортсменов</p>
 
-        {this.planDayPanel()}        
+        {this.planDayPanel()}
       </>
     );
   }
@@ -49,7 +49,7 @@ class Home extends Component {
     if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
     if (this.state.planDay?.id == null) { return (<p><em>Нет тренировок на сегодня</em></p>); }
 
-    return (<PanelPlanDay planDay={this.state.planDay} percentages={this.state.percentages} achivements={this.state.achivements} />);
+    return (<PlanDayPanel planDay={this.state.planDay} percentages={this.state.percentages} achivements={this.state.achivements} />);
   }
 
 }

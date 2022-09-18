@@ -4,7 +4,7 @@ import { WeightCount } from "../../common/Localization";
 
 function defaultRowClick(settings) { }
 
-export function PanelPlanDay({ planDay, percentages = [], achivements = [], rowClick = defaultRowClick, mode = 'View' }) {
+export function PlanDayPanel({ planDay, percentages = [], achivements = [], rowClick = defaultRowClick, mode = 'View' }) {
   const idPrefix = 'col';
 
   return (

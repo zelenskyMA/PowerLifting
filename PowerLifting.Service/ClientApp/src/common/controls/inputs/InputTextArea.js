@@ -1,12 +1,11 @@
-﻿import { Input, InputGroup, InputGroupText } from "reactstrap";
-
-export function InputText({ label, onChange, propName, initialValue }) {
+﻿
+export function InputTextArea({ label, onChange, propName, initialValue, rows = 3, cols = 85 }) {
 
   return (
-    <InputGroup>
-      <InputGroupText>{label}</InputGroupText>
-      <Input onChange={(e) => setValue(e, propName, onChange)} value={initialValue} />
-    </InputGroup>
+    <>
+      <p>{label}</p>
+      <textarea onChange={(e) => setValue(e, propName, onChange)} value={initialValue ?? ''} rows={rows} cols={cols} />
+    </>
   )
 }
 

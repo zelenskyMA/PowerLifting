@@ -37,3 +37,9 @@ export async function RefreshToken() {
   SetToken(data);
   return true;
 }
+
+export function RemoveTokens() {
+  localStorage.removeItem(storageName);
+  Cookies.remove(storageName);
+  window.location.replace("/");
+}
