@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, usePagination } from 'react-table'
 import { Col, Container, InputGroup, Row, Input, InputGroupText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -74,12 +73,10 @@ export function TableControl({ columnsInfo, data, rowDblClick, pageSize = 5, hid
 }
 
 function FilterPanel({ globalFilter, setGlobalFilter, gotoPage, hideFilter }) {
-  if (hideFilter) {
-    return (<></>);
-  }
-
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce(value => { setGlobalFilter(value || undefined) }, 200);
+
+  if (hideFilter) { return (<></>); }
 
   return (
     <Row>

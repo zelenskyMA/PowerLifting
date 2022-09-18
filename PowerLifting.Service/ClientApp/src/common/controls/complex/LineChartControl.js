@@ -3,9 +3,12 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'r
 import { Container } from "reactstrap";
 
 export function LineChartControl({ displayList, data = null, multidata = false }) {
-  if (data?.length == 0) {
-    return (<></>);
-  }
+
+  if (data?.length == 0) { return (<></>); }
+  if (data?.length >= 15) { return (<>Слишком много элементов на графике</>); }
+
+  var colors = ['#000000', '#FF0000', '#0000FF', '#728C00', '#C19A6B', '#FF00FF', '#800000', '#008000', '#FFDB58', '#FFD700',
+    '#00BFFF', '#00FFFF', '#31906E', '#3C565B', '#C04000', '#827839', '#B8860B', '#806517'];
 
   return (
     <Container fluid>
@@ -17,10 +20,10 @@ export function LineChartControl({ displayList, data = null, multidata = false }
         <Tooltip />
         <Legend layout="vertical" align="right" verticalAlign="middle" />
         {
-          displayList.map(item =>
+          displayList.map((item, i) =>
             multidata ?
-              <Line type="monotone" name={item.name} dataKey={(data) => getValue(data, item.data)} stroke={item.color} dot={false} /> :
-              <Line type="monotone" name={item.name} dataKey={item.id} stroke={item.color} />
+              <Line type="monotone" name={item.name} dataKey={(data) => getValue(data, item.data)} stroke={colors[i]} dot={false} /> :
+              <Line type="monotone" name={item.name} dataKey={item.id} stroke={colors[i]} />
           )
         }
       </LineChart>
@@ -31,7 +34,7 @@ export function LineChartControl({ displayList, data = null, multidata = false }
 // Пробегая по основным данным, для каждой линии подбираем соответствующее значение из ее собственного массивы данных.
 // data - массив данных в LineChart, основные данные. Там должны быть все возможные зачения ключа, а данные - заглушки.
 // myData - массив данных, записанный в конкретную линию графика. В этом массиве реальные данные для графика.
-function getValue (data, myData) {
+function getValue(data, myData) {
   const index = myData.findIndex(obj => obj.name === data.name);
   return index === -1 ? 0 : myData[index].value;
 };
