@@ -24,6 +24,8 @@ namespace PowerLifting.Application.Mapper
             CreateMap<UserDb, UserModel>().ReverseMap();
             CreateMap<UserInfoDb, UserInfo>().ReverseMap();
             CreateMap<UserAchivementDb, UserAchivement>().ReverseMap();
+            CreateMap<UserRoleDb, UserRole>().ReverseMap();
+            
         }
 
         private void PlanProfile()

@@ -77,7 +77,6 @@
     <Build Include="dbo\Tables\dbo\Exercises.sql" />
     <Build Include="dbo\Tables\dbo\DictionaryTypes.sql" />
     <Build Include="dbo\Tables\dbo\Plans.sql" />
-    <Build Include="dbo\Tables\usr\Roles.sql" />
     <Build Include="dbo\Tables\usr\TrainingGroups.sql" />
     <Build Include="dbo\Tables\usr\UserAchivements.sql" />
     <Build Include="dbo\Tables\usr\UserInfo.sql" />

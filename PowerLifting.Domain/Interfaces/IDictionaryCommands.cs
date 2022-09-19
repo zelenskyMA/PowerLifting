@@ -1,4 +1,5 @@
-﻿using PowerLifting.Domain.Models;
+﻿using PowerLifting.Domain.Enums;
+using PowerLifting.Domain.Models;
 
 namespace PowerLifting.Domain.Interfaces
 {
@@ -17,7 +18,7 @@ namespace PowerLifting.Domain.Interfaces
         /// </summary>
         /// <param name="typeId">Type id</param>
         /// <returns>Dictionary items</returns>
-        Task<List<DictionaryItem>> GetItemsByTypeIdAsync(int typeId);
+        Task<List<DictionaryItem>> GetItemsByTypeIdAsync(DictionaryTypes typeId);
 
         /// <summary>
         /// Get full list of dictionary types

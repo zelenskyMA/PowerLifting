@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Button } from 'reactstrap';
+import {
+  Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink,
+  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
+} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { GetAsync } from "../common/ApiActions";
 import { GetToken, RemoveTokens } from '../common/TokenActions';
@@ -35,14 +38,7 @@ export class NavMenu extends Component {
           <NavbarBrand tag={Link} to="/">Помощник спортсмена</NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-            <ul className="navbar-nav flex-grow">
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">Главная</NavLink>
-              </NavItem>
-
-              {/*<NavItem>*/}
-              {/*  <Button color="primary" onClick={() => RemoveTokens()}>Выйти</Button>*/}
-              {/*</NavItem>*/}
+            <ul className="navbar-nav flex-grow">             
 
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
@@ -51,6 +47,7 @@ export class NavMenu extends Component {
               <NavItem style={{ marginRight: '20px' }}>
                 <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
               </NavItem>
+
               {this.loginPanel()}
             </ul>
           </Collapse>
@@ -70,9 +67,14 @@ export class NavMenu extends Component {
     }
 
     return (
-      <NavItem>
-        <NavLink tag={Link} className="text-dark" to="/userCabinet" title="Личный кабинет">{legalName}</NavLink>
-      </NavItem>
+      <UncontrolledDropdown nav inNavbar>
+        <DropdownToggle nav caret>{legalName}</DropdownToggle>
+        <DropdownMenu end>
+          <DropdownItem className="text-dark" tag={Link} to="/userCabinet" >Личный кабинет</DropdownItem>
+          <DropdownItem className="text-dark" >Финансы</DropdownItem>
+          <DropdownItem className="text-dark" onClick={() => RemoveTokens()} >Выход</DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
     );
   }
 

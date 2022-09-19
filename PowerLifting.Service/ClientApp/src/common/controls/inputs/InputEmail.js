@@ -1,11 +1,14 @@
-﻿import { Input, InputGroup, InputGroupText } from "reactstrap";
+﻿import React from 'react';
+import { Input, InputGroup, InputGroupText } from "reactstrap";
 
 export function InputEmail({ label, onChange, propName, initialValue }) {
   return (
-    <InputGroup>
-      <InputGroupText>{label}</InputGroupText>
-      <Input type="email" onChange={(e) => setValue(e, propName, onChange)} value={initialValue} />
-    </InputGroup>
+    <>
+      <InputGroup>
+        <InputGroupText>{label}</InputGroupText>
+        <Input onChange={(e) => setValue(e, propName, onChange)} value={initialValue} />
+      </InputGroup>
+    </>
   )
 }
 

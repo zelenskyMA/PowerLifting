@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PowerLifting.Domain.DbModels;
+using PowerLifting.Domain.Enums;
 using PowerLifting.Domain.Interfaces;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Models;
@@ -28,9 +29,9 @@ namespace PowerLifting.Application
             return items.Select(t => _mapper.Map<DictionaryItem>(t)).ToList();
         }
 
-        public async Task<List<DictionaryItem>> GetItemsByTypeIdAsync(int typeId)
+        public async Task<List<DictionaryItem>> GetItemsByTypeIdAsync(DictionaryTypes typeId)
         {
-            var items = await _itemRepository.FindAsync(t => t.TypeId == typeId);
+            var items = await _itemRepository.FindAsync(t => t.TypeId == (int)typeId);
             return items.Select(t => _mapper.Map<DictionaryItem>(t)).ToList();
         }
 

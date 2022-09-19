@@ -20,11 +20,14 @@ namespace PowerLifting.Infrastructure
         public DbSet<UserDb> Users { get; set; }
         public DbSet<UserInfoDb> UsersInfo { get; set; }
         public DbSet<UserAchivementDb> UserAchivements { get; set; }
+        public DbSet<UserRoleDb> UserRoles { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserAchivementDb>().HasKey(c => new { c.UserId, c.ExerciseTypeId, c.CreationDate });
+            modelBuilder.Entity<UserRoleDb>().HasKey(c => new { c.UserId, c.RoleId });
             modelBuilder.Entity<UserInfoDb>().HasKey(c => new { c.UserId });
         }
 

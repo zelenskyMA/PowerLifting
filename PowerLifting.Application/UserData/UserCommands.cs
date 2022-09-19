@@ -4,6 +4,8 @@ using PowerLifting.Application.UserData.Auth;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.UserData;
+using PowerLifting.Domain.Enums;
+using PowerLifting.Domain.Interfaces;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Domain.Models.Auth;
@@ -20,6 +22,9 @@ namespace PowerLifting.Application.UserData
         private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
+        private readonly AuthDataVaidation _authValidation;
+        private readonly JwtManager _jwtManager;
+
         public UserCommands(
             ICrudRepo<UserDb> userRepository,
             ICrudRepo<UserInfoDb> userInfoRepository,
@@ -32,37 +37,24 @@ namespace PowerLifting.Application.UserData
             _configuration = configuration;
             _user = user;
             _mapper = mapper;
+
+            _authValidation = new AuthDataVaidation();
+            _jwtManager = new JwtManager();
         }
 
         /// <inheritdoc />
         public async Task<TokenModel> LoginAsync(LoginModel loginAuth)
         {
-            if (string.IsNullOrEmpty(loginAuth.Login))
-            {
-                throw new BusinessException("Логин не задан.");
-            }
-            if (string.IsNullOrEmpty(loginAuth.Password))
-            {
-                throw new BusinessException("Пароль не задан.");
-            }
+            _authValidation.ValidateLogin(loginAuth.Login);
+            _authValidation.ValidatePassword(loginAuth.Password);
 
-            var userDb = (await _userRepository.FindAsync(t => t.Email == loginAuth.Login)).FirstOrDefault();
-            if (userDb == null)
-            {
-                throw new BusinessException("Пользователь с указанным логином не найден.");
-            }
-
-            var saltedPassword = PasswordManager.ApplySalt(loginAuth.Password, userDb.Salt);
-            if (saltedPassword != userDb.Password)
-            {
-                throw new BusinessException("Пароль указан не верно.");
-            }
+            var userDb = await TryToLogin(loginAuth.Login, loginAuth.Password);
 
             var user = _mapper.Map<UserModel>(userDb);
             var token = new TokenModel()
             {
-                Token = JwtManager.CreateToken(_configuration, user),
-                RefreshToken = JwtManager.CreateRefreshToken(_configuration, user)
+                Token = _jwtManager.CreateToken(_configuration, user),
+                RefreshToken = _jwtManager.CreateRefreshToken(_configuration, user)
             };
 
             return token;
@@ -71,19 +63,8 @@ namespace PowerLifting.Application.UserData
         /// <inheritdoc />
         public async Task<TokenModel> RegisterAsync(RegistrationModel registerAuth)
         {
-            if (string.IsNullOrEmpty(registerAuth.Login))
-            {
-                throw new BusinessException("Логин не задан.");
-            }
-            if (string.IsNullOrEmpty(registerAuth.Password))
-            {
-                throw new BusinessException("Пароль не задан.");
-            }
-
-            if (registerAuth.Password != registerAuth.PasswordConfirm)
-            {
-                throw new BusinessException("Пароль и подтверждение пароля не совпадают.");
-            }
+            _authValidation.ValidateLogin(registerAuth.Login);
+            _authValidation.ValidatePassword(registerAuth.Password, registerAuth.PasswordConfirm, true);
 
             var userDb = (await _userRepository.FindAsync(t => t.Email == registerAuth.Login)).FirstOrDefault();
             if (userDb != null)
@@ -91,22 +72,12 @@ namespace PowerLifting.Application.UserData
                 throw new BusinessException("Пользователь с указанным логином уже существует.");
             }
 
-            string salt = PasswordManager.GenerateSalt();
-            userDb = new UserDb()
-            {
-                Email = registerAuth.Login,
-                Salt = salt,
-                Password = PasswordManager.ApplySalt(registerAuth.Password, salt),
-            };
+            var user = await CreateNewUser(registerAuth);
 
-            await _userRepository.CreateAsync(userDb);
-            await _userInfoRepository.CreateAsync(new UserInfoDb() { UserId = userDb.Id });
-
-            var user = _mapper.Map<UserModel>(userDb);
             var token = new TokenModel()
             {
-                Token = JwtManager.CreateToken(_configuration, user),
-                RefreshToken = JwtManager.CreateRefreshToken(_configuration, user)
+                Token = _jwtManager.CreateToken(_configuration, user),
+                RefreshToken = _jwtManager.CreateRefreshToken(_configuration, user)
             };
 
             return token;
@@ -115,31 +86,10 @@ namespace PowerLifting.Application.UserData
         /// <inheritdoc />
         public async Task ChangePasswordAsync(RegistrationModel registerAuth)
         {
-            if (string.IsNullOrEmpty(registerAuth.Login))
-            {
-                throw new BusinessException("Логин не задан.");
-            }
-            if (string.IsNullOrEmpty(registerAuth.Password))
-            {
-                throw new BusinessException("Пароль не задан.");
-            }
+            _authValidation.ValidateLogin(registerAuth.Login);
+            _authValidation.ValidatePassword(registerAuth.Password, registerAuth.PasswordConfirm, true);
 
-            if (registerAuth.Password != registerAuth.PasswordConfirm)
-            {
-                throw new BusinessException("Пароль и подтверждение пароля не совпадают.");
-            }
-
-            var userDb = (await _userRepository.FindAsync(t => t.Email == registerAuth.Login)).FirstOrDefault();
-            if (userDb == null)
-            {
-                throw new BusinessException("Пользователь с указанным логином не найден.");
-            }
-
-            var saltedPassword = PasswordManager.ApplySalt(registerAuth.OldPassword, userDb.Salt);
-            if (saltedPassword != userDb.Password)
-            {
-                throw new BusinessException("Пароль указан не верно.");
-            }
+            var userDb = await TryToLogin(registerAuth.Login, registerAuth.OldPassword);
 
             string salt = PasswordManager.GenerateSalt();
             userDb.Salt = salt;
@@ -160,11 +110,44 @@ namespace PowerLifting.Application.UserData
             var user = _mapper.Map<UserModel>(userDb);
             var token = new TokenModel()
             {
-                Token = JwtManager.CreateToken(_configuration, user),
-                RefreshToken = JwtManager.CreateRefreshToken(_configuration, user)
+                Token = _jwtManager.CreateToken(_configuration, user),
+                RefreshToken = _jwtManager.CreateRefreshToken(_configuration, user)
             };
 
             return token;
+        }
+
+        private async Task<UserDb> TryToLogin(string login, string password)
+        {
+            var userDb = (await _userRepository.FindAsync(t => t.Email == login)).FirstOrDefault();
+            if (userDb == null)
+            {
+                throw new BusinessException("Пользователь с указанным логином не найден.");
+            }
+
+            var saltedPassword = PasswordManager.ApplySalt(password, userDb.Salt);
+            if (saltedPassword != userDb.Password)
+            {
+                throw new BusinessException("Пароль указан не верно.");
+            }
+
+            return userDb;
+        }
+
+        private async Task<UserModel> CreateNewUser(RegistrationModel registerAuth)
+        {
+            string salt = PasswordManager.GenerateSalt();
+            var userDb = new UserDb()
+            {
+                Email = registerAuth.Login,
+                Salt = salt,
+                Password = PasswordManager.ApplySalt(registerAuth.Password, salt),
+            };
+
+            await _userRepository.CreateAsync(userDb);
+            await _userInfoRepository.CreateAsync(new UserInfoDb() { UserId = userDb.Id });
+
+            return _mapper.Map<UserModel>(userDb);
         }
     }
 }
