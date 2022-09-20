@@ -21,7 +21,7 @@ namespace PowerLifting.Infrastructure
         public DbSet<UserInfoDb> UsersInfo { get; set; }
         public DbSet<UserAchivementDb> UserAchivements { get; set; }
         public DbSet<UserRoleDb> UserRoles { get; set; }
-
+        public DbSet<UserBlockHistoryDb> UserBlockHistoryItems { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

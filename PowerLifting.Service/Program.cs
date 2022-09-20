@@ -69,6 +69,9 @@ builder.Services.AddScoped<IPlanCountersSetup, PlanCountersSetup>();
 builder.Services.AddScoped<IUserAchivementCommands, UserAchivementCommands>();
 builder.Services.AddScoped<IUserCommands, UserCommands>();
 builder.Services.AddScoped<IUserInfoCommands, UserInfoCommands>();
+builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
+builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
+
 
 builder.Services.AddScoped<IPlanAnaliticsCommands, PlanAnaliticsCommands>();
 

@@ -16,6 +16,8 @@ namespace PowerLifting.Application.UserData
 {
     public class UserCommands : IUserCommands
     {
+        private readonly IUserBlockCommands _userBlockCommands;
+
         private readonly ICrudRepo<UserDb> _userRepository;
         private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
         private readonly IConfiguration _configuration;
@@ -23,15 +25,19 @@ namespace PowerLifting.Application.UserData
         private readonly IMapper _mapper;
 
         private readonly AuthDataVaidation _authValidation;
+        private readonly PasswordManager _passwordManager;
         private readonly JwtManager _jwtManager;
 
         public UserCommands(
+            IUserBlockCommands userBlockCommands,
             ICrudRepo<UserDb> userRepository,
             ICrudRepo<UserInfoDb> userInfoRepository,
             IConfiguration configuration,
             IUserProvider user,
             IMapper mapper)
         {
+            _userBlockCommands = userBlockCommands;
+
             _userRepository = userRepository;
             _userInfoRepository = userInfoRepository;
             _configuration = configuration;
@@ -39,6 +45,7 @@ namespace PowerLifting.Application.UserData
             _mapper = mapper;
 
             _authValidation = new AuthDataVaidation();
+            _passwordManager = new PasswordManager();
             _jwtManager = new JwtManager();
         }
 
@@ -91,9 +98,9 @@ namespace PowerLifting.Application.UserData
 
             var userDb = await TryToLogin(registerAuth.Login, registerAuth.OldPassword);
 
-            string salt = PasswordManager.GenerateSalt();
+            string salt = _passwordManager.GenerateSalt();
             userDb.Salt = salt;
-            userDb.Password = PasswordManager.ApplySalt(registerAuth.Password, salt);
+            userDb.Password = _passwordManager.ApplySalt(registerAuth.Password, salt);
 
             await _userRepository.UpdateAsync(userDb);
         }
@@ -105,6 +112,11 @@ namespace PowerLifting.Application.UserData
             if (userDb == null)
             {
                 throw new UnauthorizedException($"Пользователь с Id {_user.Id} не найден.");
+            }
+
+            if (userDb.Blocked)
+            {
+                throw new UnauthorizedException($"Этот пользователь был заблокирован.");
             }
 
             var user = _mapper.Map<UserModel>(userDb);
@@ -125,10 +137,16 @@ namespace PowerLifting.Application.UserData
                 throw new BusinessException("Пользователь с указанным логином не найден.");
             }
 
-            var saltedPassword = PasswordManager.ApplySalt(password, userDb.Salt);
+            var saltedPassword = _passwordManager.ApplySalt(password, userDb.Salt);
             if (saltedPassword != userDb.Password)
             {
                 throw new BusinessException("Пароль указан не верно.");
+            }
+
+            if (userDb.Blocked)
+            {
+                var blockReson = await _userBlockCommands.GetCurrentBlockReason(userDb.Id);
+                throw new UnauthorizedException($"Пользователь заблокирован, обратитесь к администрации. Причина: '{blockReson.Reason}'");
             }
 
             return userDb;
@@ -136,12 +154,13 @@ namespace PowerLifting.Application.UserData
 
         private async Task<UserModel> CreateNewUser(RegistrationModel registerAuth)
         {
-            string salt = PasswordManager.GenerateSalt();
+            string salt = _passwordManager.GenerateSalt();
             var userDb = new UserDb()
             {
                 Email = registerAuth.Login,
                 Salt = salt,
-                Password = PasswordManager.ApplySalt(registerAuth.Password, salt),
+                Password = _passwordManager.ApplySalt(registerAuth.Password, salt),
+                Blocked = false
             };
 
             await _userRepository.CreateAsync(userDb);

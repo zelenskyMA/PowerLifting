@@ -11,5 +11,7 @@ namespace PowerLifting.Domain.DbModels.UserData
         public string Password { get; set; }
 
         public string Salt { get; set; }
+
+        public bool Blocked { get; set; }
     }
 }

@@ -22,6 +22,14 @@ namespace PowerLifting.Service.Controllers.UserData
             return result;
         }
 
+        [HttpGet]
+        [Route("getCard")]
+        public async Task<UserCard> GetCard(int userId, string login)
+        {
+            var result = await _userInfoCommands.GetUserCardAsync(userId, login);
+            return result;
+        }
+
         [HttpPost]
         [Route("update")]
         public async Task<bool> UpdateAsync(UserInfo userInfo)

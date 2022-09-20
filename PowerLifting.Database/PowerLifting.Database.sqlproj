@@ -95,5 +95,6 @@
     <Build Include="dbo\Tables\usr\UserTrainingGroups.sql" />
     <None Include="PostDeploy\Plan_PostDeployment.sql" />
     <None Include="PostDeploy\Base_PostDeploy.sql" />
+    <Build Include="dbo\Tables\usr\UserBlockHistory.sql" />
   </ItemGroup>
 </Project>
