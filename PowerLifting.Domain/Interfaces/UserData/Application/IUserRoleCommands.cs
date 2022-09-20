@@ -17,7 +17,7 @@ namespace PowerLifting.Domain.Interfaces.UserData.Application
         /// </summary>
         /// <param name="userId">User Id</param>
         /// <returns>List of roles</returns>
-        Task<List<UserRole>> GetUserRoles(int userId);
+        Task<RolesInfo> GetUserRoles(int userId);
 
         /// <summary>
         /// Check executor role. 

@@ -79,6 +79,8 @@ namespace PowerLifting.Application.UserData
 
             var card = new UserCard()
             {
+                UserId = userDb.Id,
+                Login = userDb.Email,
                 BaseInfo = info,
             };
 
@@ -108,6 +110,8 @@ namespace PowerLifting.Application.UserData
             string patronimic = string.IsNullOrEmpty(info.Patronimic) ? string.Empty : $" {info.Patronimic.ToUpper().First()}.";
             string firstName = string.IsNullOrEmpty(info.FirstName) ? string.Empty : $" {info.FirstName?.ToUpper()?.First()}.";
             info.LegalName = string.IsNullOrEmpty(info.Surname) ? "Кабинет" : $"{info.Surname}{firstName}{patronimic}";
+
+            info.RolesInfo = await _userRoleCommands.GetUserRoles(userId);
 
             return info;
         }

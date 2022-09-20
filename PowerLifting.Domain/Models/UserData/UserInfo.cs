@@ -22,5 +22,7 @@ namespace PowerLifting.Domain.Models.UserData
         /// Formatted full name, ex: Иванов И.И.
         /// </summary>
         public string? LegalName { get; set; }
-    }
+
+        public RolesInfo RolesInfo { get; set; } = new RolesInfo();
+}
 }

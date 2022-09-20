@@ -58,6 +58,8 @@ builder.Services.AddScoped<ICrudRepo<DictionaryTypeDb>, DictionaryTypeRepository
 builder.Services.AddScoped<ICrudRepo<UserAchivementDb>, UserAchivementRepository>();
 builder.Services.AddScoped<ICrudRepo<UserDb>, UserRepository>();
 builder.Services.AddScoped<ICrudRepo<UserInfoDb>, UserInfoRepository>();
+builder.Services.AddScoped<ICrudRepo<UserRoleDb>, UserRoleRepository>();
+builder.Services.AddScoped<ICrudRepo<UserBlockHistoryDb>, UserBlockHistoryRepository>();
 
 //app services
 builder.Services.AddScoped<IPlanCommands, PlanCommands>();

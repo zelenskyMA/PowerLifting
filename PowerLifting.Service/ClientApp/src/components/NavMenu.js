@@ -38,7 +38,7 @@ export class NavMenu extends Component {
           <NavbarBrand tag={Link} to="/">Помощник спортсмена</NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-            <ul className="navbar-nav flex-grow">             
+            <ul className="navbar-nav flex-grow">
 
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
@@ -48,7 +48,11 @@ export class NavMenu extends Component {
                 <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
               </NavItem>
 
-              {this.loginPanel()}
+              {this.coachGroupsLink()}
+
+              {this.adminLink()}
+
+              {this.loginLink()}
             </ul>
           </Collapse>
         </Navbar>
@@ -56,7 +60,7 @@ export class NavMenu extends Component {
     );
   }
 
-  loginPanel() {
+  loginLink() {
     var legalName = this.state.userInfo?.legalName ?? '';
     if (legalName === '') {
       return (
@@ -75,6 +79,26 @@ export class NavMenu extends Component {
           <DropdownItem className="text-dark" onClick={() => RemoveTokens()} >Выход</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
+    );
+  }
+
+  adminLink() {
+    if (!this.state.userInfo?.rolesInfo?.isAdmin) { return (<></>) }
+
+    return (
+      <NavItem style={{ marginRight: '20px' }}>
+        <NavLink tag={Link} className="text-dark" to="/adminConsole">Администрирование</NavLink>
+      </NavItem>
+    );
+  }
+
+  coachGroupsLink() {
+    if (!this.state.userInfo?.rolesInfo?.isCoach) { return (<></>) }
+
+    return (
+      <NavItem style={{ marginRight: '20px' }}>
+        <NavLink tag={Link} className="text-dark" to="/coachConsole">Тренерская</NavLink>
+      </NavItem>
     );
   }
 

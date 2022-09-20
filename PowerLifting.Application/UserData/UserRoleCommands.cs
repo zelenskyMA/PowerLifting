@@ -35,8 +35,21 @@ namespace PowerLifting.Application.UserData
         public async Task<List<DictionaryItem>> GetRolesList() => await _dictionaryCommands.GetItemsByTypeIdAsync(DictionaryTypes.UserRole);
 
         /// <inheritdoc />
-        public async Task<List<UserRole>> GetUserRoles(int userId) => (await _userRoleRepository.FindAsync(t => t.UserId == userId))
-            .Select(t => _mapper.Map<UserRole>(t)).ToList();
+        public async Task<RolesInfo> GetUserRoles(int userId)
+        {
+            var roles = (await _userRoleRepository.FindAsync(t => t.UserId == userId)).Select(t => _mapper.Map<UserRole>(t)).ToList();
+            var roleInfo = new RolesInfo();
+            foreach (var item in roles)
+            {
+                switch (item.RoleId)
+                {
+                    case 10: roleInfo.isAdmin = true; break;
+                    case 11: roleInfo.isCoach = true; break;
+                }
+            }
+
+            return roleInfo;
+        }
 
         /// <inheritdoc />
         public async Task<bool> IHaveRole(UserRoles role) =>
