@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Button } from 'reactstrap';
+import {
+  Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink,
+  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
+} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { GetAsync } from "../common/ApiActions";
 import { GetToken, RemoveTokens } from '../common/TokenActions';
@@ -36,13 +39,6 @@ export class NavMenu extends Component {
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">Главная</NavLink>
-              </NavItem>
-
-              {/*<NavItem>*/}
-              {/*  <Button color="primary" onClick={() => RemoveTokens()}>Выйти</Button>*/}
-              {/*</NavItem>*/}
 
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
@@ -51,7 +47,12 @@ export class NavMenu extends Component {
               <NavItem style={{ marginRight: '20px' }}>
                 <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
               </NavItem>
-              {this.loginPanel()}
+
+              {this.coachGroupsLink()}
+
+              {this.adminLink()}
+
+              {this.loginLink()}
             </ul>
           </Collapse>
         </Navbar>
@@ -59,7 +60,7 @@ export class NavMenu extends Component {
     );
   }
 
-  loginPanel() {
+  loginLink() {
     var legalName = this.state.userInfo?.legalName ?? '';
     if (legalName === '') {
       return (
@@ -70,8 +71,33 @@ export class NavMenu extends Component {
     }
 
     return (
-      <NavItem>
-        <NavLink tag={Link} className="text-dark" to="/userCabinet" title="Личный кабинет">{legalName}</NavLink>
+      <UncontrolledDropdown nav inNavbar>
+        <DropdownToggle nav caret>{legalName}</DropdownToggle>
+        <DropdownMenu end>
+          <DropdownItem className="text-dark" tag={Link} to="/userCabinet" >Личный кабинет</DropdownItem>
+          <DropdownItem className="text-dark" >Финансы</DropdownItem>
+          <DropdownItem className="text-dark" onClick={() => RemoveTokens()} >Выход</DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    );
+  }
+
+  adminLink() {
+    if (!this.state.userInfo?.rolesInfo?.isAdmin) { return (<></>) }
+
+    return (
+      <NavItem style={{ marginRight: '20px' }}>
+        <NavLink tag={Link} className="text-dark" to="/adminConsole">Администрирование</NavLink>
+      </NavItem>
+    );
+  }
+
+  coachGroupsLink() {
+    if (!this.state.userInfo?.rolesInfo?.isCoach) { return (<></>) }
+
+    return (
+      <NavItem style={{ marginRight: '20px' }}>
+        <NavLink tag={Link} className="text-dark" to="/coachConsole">Тренерская</NavLink>
       </NavItem>
     );
   }

@@ -3,9 +3,9 @@ using System.Text;
 
 namespace PowerLifting.Application.UserData.Auth
 {
-    public static class PasswordManager
+    public class PasswordManager
     {
-        public static string GenerateSalt()
+        public string GenerateSalt()
         {
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] bSalt = new byte[5];
@@ -13,7 +13,7 @@ namespace PowerLifting.Application.UserData.Auth
             return BitConverter.ToString(bSalt).Replace("-", "");
         }
 
-        public static string ApplySalt(string password, string salt)
+        public string ApplySalt(string password, string salt)
         {
             SHA1CryptoServiceProvider cryptoTransformSHA1 = new SHA1CryptoServiceProvider();
             byte[] bPwd = Encoding.Unicode.GetBytes(password);
@@ -27,7 +27,7 @@ namespace PowerLifting.Application.UserData.Auth
             return saltedPassword;
         }
 
-        public static string GeneratePassword()
+        public string GeneratePassword()
         {
             string PASSWORD_CHARS_LCASE = "abcdefgijkmnopqrstwxyz";
             string PASSWORD_CHARS_UCASE = "ABCDEFGHJKLMNPQRSTWXYZ";
@@ -168,7 +168,7 @@ namespace PowerLifting.Application.UserData.Auth
             return new string(password);
         }
 
-        private static Random CreateRandomizer()
+        private Random CreateRandomizer()
         {
             byte[] randomBytes = new byte[4];
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();

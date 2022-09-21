@@ -35,7 +35,7 @@ namespace PowerLifting.Application.UserData
             var achivements = await _userAchivementRepository.FindAsync(t => t.UserId == _user.Id);
             if (achivements.Count == 0)
             {
-                var dictionaryAchivements = await _dictionaryCommands.GetItemsByTypeIdAsync((int)DictionaryTypes.ExerciseType);
+                var dictionaryAchivements = await _dictionaryCommands.GetItemsByTypeIdAsync(DictionaryTypes.ExerciseType);
                 foreach (var item in dictionaryAchivements)
                 {
                     achivements.Add(new UserAchivementDb()

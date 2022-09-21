@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PowerLifting.Application;
+using PowerLifting.Application.Administration;
 using PowerLifting.Application.Analitics;
 using PowerLifting.Application.Mapper;
 using PowerLifting.Application.TrainingPlan;
@@ -14,6 +15,7 @@ using PowerLifting.Domain.DbModels;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Interfaces;
+using PowerLifting.Domain.Interfaces.Administration;
 using PowerLifting.Domain.Interfaces.Analitics.Application;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
@@ -58,6 +60,8 @@ builder.Services.AddScoped<ICrudRepo<DictionaryTypeDb>, DictionaryTypeRepository
 builder.Services.AddScoped<ICrudRepo<UserAchivementDb>, UserAchivementRepository>();
 builder.Services.AddScoped<ICrudRepo<UserDb>, UserRepository>();
 builder.Services.AddScoped<ICrudRepo<UserInfoDb>, UserInfoRepository>();
+builder.Services.AddScoped<ICrudRepo<UserRoleDb>, UserRoleRepository>();
+builder.Services.AddScoped<ICrudRepo<UserBlockHistoryDb>, UserBlockHistoryRepository>();
 
 //app services
 builder.Services.AddScoped<IPlanCommands, PlanCommands>();
@@ -69,6 +73,10 @@ builder.Services.AddScoped<IPlanCountersSetup, PlanCountersSetup>();
 builder.Services.AddScoped<IUserAchivementCommands, UserAchivementCommands>();
 builder.Services.AddScoped<IUserCommands, UserCommands>();
 builder.Services.AddScoped<IUserInfoCommands, UserInfoCommands>();
+builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
+builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
+
+builder.Services.AddScoped<IUserAdministrationCommands, UserAdministrationCommands>();
 
 builder.Services.AddScoped<IPlanAnaliticsCommands, PlanAnaliticsCommands>();
 

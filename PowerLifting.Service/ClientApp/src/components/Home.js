@@ -37,7 +37,7 @@ class Home extends Component {
   render() {
     return (
       <>
-        <h1>Помощник спортсмена</h1>
+        <h3>Помощник спортсмена</h3>
         <p style={{ marginBottom: '30px' }}>Программа для ведения планов тренировок спортсменов</p>
 
         {this.planDayPanel()}

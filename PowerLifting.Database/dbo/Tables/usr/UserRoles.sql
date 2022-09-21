@@ -4,5 +4,5 @@
     [RoleId] INT NOT NULL, 
     CONSTRAINT [PK_UserRoles] PRIMARY KEY ([RoleId], [UserId]),
     FOREIGN KEY ([UserId]) REFERENCES [usr].[Users] ([Id]),
-    FOREIGN KEY ([RoleId]) REFERENCES [usr].[Roles] ([Id])
+    FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Dictionaries] ([Id])
 )

@@ -9,5 +9,7 @@ namespace PowerLifting.Domain.Models.UserData
         public string Password { get; set; }
 
         public string Salt { get; set; }
+
+        public bool Blocked { get; set; }
     }
 }

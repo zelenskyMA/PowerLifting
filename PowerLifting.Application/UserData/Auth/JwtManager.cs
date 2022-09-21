@@ -6,15 +6,15 @@ using System.Text;
 
 namespace PowerLifting.Application.UserData.Auth
 {
-    public static class JwtManager
+    public class JwtManager
     {
-        public static string CreateToken(IConfiguration configuration, UserModel user)
+        public string CreateToken(IConfiguration configuration, UserModel user)
             => CreateTokenData(configuration, user, 30);
 
-        public static string CreateRefreshToken(IConfiguration configuration, UserModel user)
+        public string CreateRefreshToken(IConfiguration configuration, UserModel user)
             => CreateTokenData(configuration, user, 120);
 
-        private static string CreateTokenData(IConfiguration configuration, UserModel user, int minutesOfLife)
+        private string CreateTokenData(IConfiguration configuration, UserModel user, int minutesOfLife)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JWT:Secret").Value));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);

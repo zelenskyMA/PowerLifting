@@ -3,6 +3,7 @@
     [Email] NVARCHAR (250) NOT NULL,
     [Password] NVARCHAR (250) NOT NULL,
     [Salt] NVARCHAR (50)  NOT NULL, 
+    [Blocked] bit NOT NULL,
     CONSTRAINT [PK_Users] PRIMARY KEY ([Id])
 );
 

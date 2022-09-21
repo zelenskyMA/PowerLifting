@@ -77,7 +77,6 @@
     <Build Include="dbo\Tables\dbo\Exercises.sql" />
     <Build Include="dbo\Tables\dbo\DictionaryTypes.sql" />
     <Build Include="dbo\Tables\dbo\Plans.sql" />
-    <Build Include="dbo\Tables\usr\Roles.sql" />
     <Build Include="dbo\Tables\usr\TrainingGroups.sql" />
     <Build Include="dbo\Tables\usr\UserAchivements.sql" />
     <Build Include="dbo\Tables\usr\UserInfo.sql" />
@@ -96,5 +95,6 @@
     <Build Include="dbo\Tables\usr\UserTrainingGroups.sql" />
     <None Include="PostDeploy\Plan_PostDeployment.sql" />
     <None Include="PostDeploy\Base_PostDeploy.sql" />
+    <Build Include="dbo\Tables\usr\UserBlockHistory.sql" />
   </ItemGroup>
 </Project>

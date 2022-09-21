@@ -6,6 +6,8 @@ IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 1)
   INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 1, 'Тип упражнений', 'Базовые типы упражнений');
 IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 2)
   INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 2, 'Категория упражнений', 'Подраздел в рамках базового типа упражнений');
+IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 3)
+  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 3, 'Роль пользователя', 'Роли пользователей, определяющие набор их прав');
 
 SET IDENTITY_INSERT DictionaryTypes OFF 
 
@@ -16,6 +18,11 @@ IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 1)
   INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 1, 1, 'Толчковые', 'Упражнения на толчок штанги');
 IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 2)
   INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 2, 1, 'Рывковые', 'Упражнения на рывок штанги');
+
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 10)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 10, 3, 'Администратор', 'Администратор сайта.');
+IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 11)
+  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 11, 3, 'Тренер', 'Продвинутый пользователь сайта. Управляет группами спортсменов.');
 
 IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 50)
   INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 50, 2, 'Рывок классический', '');
