@@ -65,6 +65,11 @@ namespace PowerLifting.Application.UserData
                 throw new BusinessException($"Пользователья с Ид {userId} уже заблокирован.");
             }
 
+            if (userDb.Id == _user.Id)
+            {
+                throw new BusinessException("Нельзя заблокировать самого себя");
+            }
+
             userDb.Blocked = true;
             await _userRepository.UpdateAsync(userDb);
 

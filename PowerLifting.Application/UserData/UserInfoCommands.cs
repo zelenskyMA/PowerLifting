@@ -51,7 +51,7 @@ namespace PowerLifting.Application.UserData
             await _userInfoRepository.UpdateAsync(userInfoDb);
         }
 
-        public async Task<UserCard> GetUserCardAsync(int userId, string login)
+        public async Task<UserCard> GetUserCardAsync(int userId, string? login)
         {
             UserDb? userDb = null;
             if (userId != 0)

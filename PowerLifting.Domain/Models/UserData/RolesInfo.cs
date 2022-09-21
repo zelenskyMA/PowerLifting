@@ -2,8 +2,19 @@
 {
     public class RolesInfo
     {
-        public bool isAdmin { get; set; } = false;
+        /// <summary>
+        /// UI supplies this field for role update
+        /// </summary>
+        public int UserId { get; set; }
 
-        public bool isCoach { get; set; } = false;
+        /// <summary>
+        /// True if user har administration role
+        /// </summary>
+        public bool IsAdmin { get; set; } = false;
+
+        /// <summary>
+        /// True if user har coach role
+        /// </summary>
+        public bool IsCoach { get; set; } = false;
     }
 }

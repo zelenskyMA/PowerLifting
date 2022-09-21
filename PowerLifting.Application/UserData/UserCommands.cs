@@ -146,7 +146,7 @@ namespace PowerLifting.Application.UserData
             if (userDb.Blocked)
             {
                 var blockReson = await _userBlockCommands.GetCurrentBlockReason(userDb.Id);
-                throw new UnauthorizedException($"Пользователь заблокирован, обратитесь к администрации. Причина: '{blockReson.Reason}'");
+                throw new BusinessException($"Пользователь заблокирован, обратитесь к администрации. Причина: '{blockReson.Reason}'");
             }
 
             return userDb;

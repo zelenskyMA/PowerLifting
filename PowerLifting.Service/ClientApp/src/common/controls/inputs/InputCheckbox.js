@@ -4,7 +4,7 @@ export function InputCheckbox({ label, onChange, propName, initialValue }) {
   return (
     <>
       <Label check>
-        <Input type="checkbox" onChange={(e) => setValue(e, propName, onChange)} value={initialValue} />{' '}
+        <Input type="checkbox" onChange={(e) => setValue(e, propName, onChange)} checked={initialValue} />{' '}
         {label}
       </Label>
     </>
@@ -12,6 +12,6 @@ export function InputCheckbox({ label, onChange, propName, initialValue }) {
 }
 
 function setValue(event, propName, onChange) {
-  var val = event.target.value;
+  var val = event.target.checked; // в value всегда 'on'
   onChange(propName, val); //вызываем переданный хендлер, в который уходит: 1) имя свойства в стейте, 2)значение, которое в него надо положить.
 }

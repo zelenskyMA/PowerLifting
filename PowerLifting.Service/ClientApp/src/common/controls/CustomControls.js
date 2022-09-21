@@ -10,10 +10,11 @@ import { TabControl } from "./complex/TabControl";
 import { LineChartControl } from "./complex/LineChartControl";
 
 import { ErrorPanel } from "./panels/ErrorPanel";
+import { InfoPanel } from "./panels/InfoPanel";
 
 export {
   InputNumber, InputText, InputPassword, InputEmail, InputTextArea, InputDate, InputCheckbox,
   MultiTextInput, MultiNumberInput,
   TableControl, LineChartControl, TabControl,
-  ErrorPanel
+  ErrorPanel, InfoPanel
 };

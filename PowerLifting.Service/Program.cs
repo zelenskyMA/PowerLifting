@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PowerLifting.Application;
+using PowerLifting.Application.Administration;
 using PowerLifting.Application.Analitics;
 using PowerLifting.Application.Mapper;
 using PowerLifting.Application.TrainingPlan;
@@ -14,6 +15,7 @@ using PowerLifting.Domain.DbModels;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Interfaces;
+using PowerLifting.Domain.Interfaces.Administration;
 using PowerLifting.Domain.Interfaces.Analitics.Application;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
@@ -74,6 +76,7 @@ builder.Services.AddScoped<IUserInfoCommands, UserInfoCommands>();
 builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
 builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
 
+builder.Services.AddScoped<IUserAdministrationCommands, UserAdministrationCommands>();
 
 builder.Services.AddScoped<IPlanAnaliticsCommands, PlanAnaliticsCommands>();
 

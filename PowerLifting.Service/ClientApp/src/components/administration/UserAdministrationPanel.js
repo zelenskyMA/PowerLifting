@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
-import { Col, Row, Button } from "reactstrap";
+import { Container, Col, Row, Button } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { ErrorPanel, InputNumber, InputText, InputCheckbox } from "../../common/controls/CustomControls";
+import { ErrorPanel, InfoPanel, InputNumber, InputText, InputCheckbox } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
@@ -16,23 +16,41 @@ class UserAdministrationPanel extends Component {
 
       userCard: Object,
       error: '',
+      success: ''
     };
   }
 
   onSearchChange = (propName, value) => { this.setState(prevState => ({ userSearch: { ...prevState.userSearch, [propName]: value } })); }
   onBlockChange = (propName, value) => { this.setState(prevState => ({ blockUser: { ...prevState.blockUser, [propName]: value } })); }
-  onUserRoleChange = (propName, value) => { this.setState(prevState => ({ userRoles: { ...prevState.userRoles, [propName]: value } })); }
+  onUserRoleChange = (propName, value) => {
+    this.setState(prevState => ({ userRoles: { ...prevState.userRoles, [propName]: value } }));
+  }
 
   onUserSearch = async () => {
     try {
-      var cardData = await GetAsync(`/userInfo/getCard?userId=${this.state.userSearch.id}&login=${this.state.userSearch.login}`);
+      var searchId = this.state.userSearch.id > 0 ? `userId=${this.state.userSearch.id}` : '';
+      var searchLogin = this.state.userSearch.login ? `login=${this.state.userSearch.login}` : '';
+      if (!searchId && !searchLogin) {
+        this.setState({ error: "Необходимо указать хотя бы один критерий поиска" });
+      }
 
-      var blockReason = this.state.userCard?.blockReason?.reason == null ? '' : this.state.userCard?.blockReason?.reason;
+      var cardData = null;
+      if (searchId) {
+        cardData = await GetAsync(`/userAdministration/getCard?${searchId}`);
+      }
+      else {
+        if (searchLogin) { cardData = await GetAsync(`/userAdministration/getCard?${searchLogin}`); }
+      }
+
+      var blockReason = cardData?.blockReason?.reason == null ? '' : cardData?.blockReason?.reason;
+      var roles = cardData?.baseInfo?.rolesInfo;
 
       this.setState({
         userCard: cardData,
-        blockUser: { block: blockReason == '', reason: blockReason },
-        error: ''
+        userRoles: { admin: roles?.isAdmin, coach: roles?.isCoach},
+        blockUser: { block: blockReason !== '', reason: blockReason },
+        error: '',
+        success: ''
       });
     }
     catch (error) {
@@ -42,21 +60,18 @@ class UserAdministrationPanel extends Component {
 
   blockUser = async () => {
     try {
-      var blockReason = this.state.userCard?.blockReason?.reason == null ? '' : this.state.userCard?.blockReason?.reason;
-      var flag = blockReason === '';
-
-      if (blockReason === this.state.blockUser.reason && flag === this.state.blockUser.block) { return; }
-
       var blockInfo = {
         userId: this.state.userCard?.userId,
         status: this.state.blockUser.block,
         reason: this.state.blockUser.reason
       }
 
-      await PostAsync('/administration/applyBlock', blockInfo);
+      await PostAsync('/userAdministration/applyBlock', blockInfo);
+
+      this.setState({ success: 'Блокировка изменена успешно', error: '' });
     }
     catch (error) {
-      this.setState({ error: error.message });
+      this.setState({ error: error.message, success: '' });
     }
   }
 
@@ -64,14 +79,15 @@ class UserAdministrationPanel extends Component {
     try {
       var roleInfo = {
         userId: this.state.userCard?.userId,
-        admin: this.state.userRoles.admin,
-        coach: this.state.userRoles.coach
+        isAdmin: this.state.userRoles.admin,
+        isCoach: this.state.userRoles.coach
       }
 
-      await PostAsync('/administration/applyRoles', roleInfo);
+      await PostAsync('/userAdministration/applyRoles', roleInfo);
+      this.setState({ success: 'Роли изменены успешно', error: '' });
     }
     catch (error) {
-      this.setState({ error: error.message });
+      this.setState({ error: error.message, success: '' });
     }
   }
 
@@ -80,6 +96,7 @@ class UserAdministrationPanel extends Component {
       <>
         <p className="spaceTop">Поиск пользователя</p>
         <ErrorPanel errorMessage={this.state.error} />
+        <InfoPanel infoMessage={this.state.success} />
 
         <Row>
           <Col xs={3}>
@@ -100,43 +117,49 @@ class UserAdministrationPanel extends Component {
   }
 
   userData = () => {
-    if (this.state.userCard?.Id == null) { return (<></>); }
+    if (this.state.userCard?.userId == null) { return (<></>); }
 
     return (
       <>
         <h6 className="spaceTop">Найден пользователь {this.state.userCard?.baseInfo?.legalName}</h6>
-        <Row>
-          <Col xs={3}>
-            Ид: {this.state.userCard?.userId}
-          </Col>
-          <Col xs={3}>
-            Логин: {this.state.userCard?.login}
-          </Col>
-        </Row>
+        <Container fluid>
+          <Row>
+            <Col xs={3}>
+              Ид: {this.state.userCard?.userId}
+            </Col>
+            <Col xs={3}>
+              Логин: {this.state.userCard?.login}
+            </Col>
+          </Row>
+        </Container>
 
         <h6 className="spaceTop">Блокировка</h6>
-        <Row>
-          <Col xs={2}>
-            <InputCheckbox label="Заблокирован" initialValue={this.state.userCard?.blockReason == null} propName="block" onChange={this.onBlockChange} />
-          </Col>
-          <Col xs={6}>
-            <InputText label="Причина" initialValue={this.state.userCard?.blockReason?.reason} propName="reason" onChange={this.onBlockChange} />
-          </Col>
-          <Col xs={3}>
-            <Button color="primary" onClick={() => this.blockUser()}>Применить</Button>
-          </Col>
-        </Row>
+        <Container fluid>
+          <Row>
+            <Col xs={2}>
+              <InputCheckbox label="Заблокирован" initialValue={this.state.blockUser.block} propName="block" onChange={this.onBlockChange} />
+            </Col>
+            <Col xs={6}>
+              <InputText label="Причина" initialValue={this.state.blockUser.reason} propName="reason" onChange={this.onBlockChange} />
+            </Col>
+            <Col xs={3}>
+              <Button color="primary" onClick={() => this.blockUser()}>Применить</Button>
+            </Col>
+          </Row>
+        </Container>
 
         <h6 className="spaceTop">Роли пользователя</h6>
-        <Col xs={3}>
-          <InputCheckbox label="Тренер" initialValue={this.state.userCard?.blockReason == null} propName="coach" onChange={this.onUserRoleChange} />
-        </Col>
-        <Col xs={3}>
-          <InputCheckbox label="Администратор" initialValue={this.state.userCard?.blockReason == null} propName="admin" onChange={this.onUserRoleChange} />
-        </Col>
-        <Col xs={3}>
-          <Button color="primary" onClick={() => this.applyUserRoles()}>Применить</Button>
-        </Col>
+        <Container fluid>
+          <Col xs={2}>
+            <InputCheckbox label="Тренер" initialValue={this.state.userRoles.coach} propName="coach" onChange={this.onUserRoleChange} />
+          </Col>
+          <Col xs={2}>
+            <InputCheckbox label="Администратор" initialValue={this.state.userRoles.admin} propName="admin" onChange={this.onUserRoleChange} />
+          </Col>
+          <Col xs={3}>
+            <Button color="primary" onClick={() => this.applyUserRoles()}>Применить</Button>
+          </Col>
+        </Container>
       </>
     );
   }

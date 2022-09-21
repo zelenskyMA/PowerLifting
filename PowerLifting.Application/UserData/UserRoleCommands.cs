@@ -43,8 +43,8 @@ namespace PowerLifting.Application.UserData
             {
                 switch (item.RoleId)
                 {
-                    case 10: roleInfo.isAdmin = true; break;
-                    case 11: roleInfo.isCoach = true; break;
+                    case 10: roleInfo.IsAdmin = true; break;
+                    case 11: roleInfo.IsCoach = true; break;
                 }
             }
 
@@ -79,9 +79,9 @@ namespace PowerLifting.Application.UserData
                 throw new RoleException();
             }
 
-            if (userId == _user.Id)
+            if (userId == _user.Id && role == UserRoles.Admin)
             {
-                throw new BusinessException("Нельзя забрать роль у самого себя");
+                throw new BusinessException("Нельзя забрать роль администратора у самого себя");
             }
 
             var roleDb = await _userRoleRepository.FindAsync(t => t.UserId == userId && t.RoleId == (int)role);

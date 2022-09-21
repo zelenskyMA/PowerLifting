@@ -23,6 +23,6 @@ namespace PowerLifting.Domain.Interfaces.UserData.Application
         /// <param name="userId">Find user by id</param>
         /// <param name="login">Find user by login</param>
         /// <returns>User card</returns>
-        Task<UserCard> GetUserCardAsync(int userId, string login);
+        Task<UserCard> GetUserCardAsync(int userId, string? login);
     }
 }
