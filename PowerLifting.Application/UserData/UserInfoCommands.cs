@@ -84,11 +84,6 @@ namespace PowerLifting.Application.UserData
                 BaseInfo = info,
             };
 
-            if (info.CoachId > 0)
-            {
-                card.CoachLegalName = (await GetInfo(info.CoachId.Value)).LegalName;
-            }
-
             if (userDb.Blocked)
             {
                 card.BlockReason = await _userBlockCommands.GetCurrentBlockReason(userDb.Id);
@@ -112,6 +107,11 @@ namespace PowerLifting.Application.UserData
             info.LegalName = string.IsNullOrEmpty(info.Surname) ? "Кабинет" : $"{info.Surname}{firstName}{patronimic}";
 
             info.RolesInfo = await _userRoleCommands.GetUserRoles(userId);
+
+            if (info.CoachId > 0)
+            {
+                info.CoachLegalName = (await GetInfo(info.CoachId.Value)).LegalName;
+            }
 
             return info;
         }

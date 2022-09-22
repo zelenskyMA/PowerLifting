@@ -23,6 +23,8 @@ namespace PowerLifting.Domain.Models.UserData
         /// </summary>
         public string? LegalName { get; set; }
 
+        public string? CoachLegalName { get; set; }
+
         public RolesInfo RolesInfo { get; set; } = new RolesInfo();
 }
 }

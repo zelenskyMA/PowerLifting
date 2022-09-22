@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Container, Col, Row, Button } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
+import { UserCardModal } from "../userData/UserCardModal";
 import { ErrorPanel, InfoPanel, InputNumber, InputText, InputCheckbox } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
@@ -15,6 +16,7 @@ class UserAdministrationPanel extends Component {
       userRoles: { admin: false, coach: false },
 
       userCard: Object,
+      userCardView: false,
       error: '',
       success: ''
     };
@@ -22,9 +24,9 @@ class UserAdministrationPanel extends Component {
 
   onSearchChange = (propName, value) => { this.setState(prevState => ({ userSearch: { ...prevState.userSearch, [propName]: value } })); }
   onBlockChange = (propName, value) => { this.setState(prevState => ({ blockUser: { ...prevState.blockUser, [propName]: value } })); }
-  onUserRoleChange = (propName, value) => {
-    this.setState(prevState => ({ userRoles: { ...prevState.userRoles, [propName]: value } }));
-  }
+  onUserRoleChange = (propName, value) => { this.setState(prevState => ({ userRoles: { ...prevState.userRoles, [propName]: value } })); }
+
+  onUserCardView = (value) => { this.setState({ userCardView: value }); }
 
   onUserSearch = async () => {
     try {
@@ -47,7 +49,7 @@ class UserAdministrationPanel extends Component {
 
       this.setState({
         userCard: cardData,
-        userRoles: { admin: roles?.isAdmin, coach: roles?.isCoach},
+        userRoles: { admin: roles?.isAdmin, coach: roles?.isCoach },
         blockUser: { block: blockReason !== '', reason: blockReason },
         error: '',
         success: ''
@@ -121,7 +123,14 @@ class UserAdministrationPanel extends Component {
 
     return (
       <>
-        <h6 className="spaceTop">Найден пользователь {this.state.userCard?.baseInfo?.legalName}</h6>
+        <h6 className="spaceTop"> Найден пользователь
+          <span id="legalName" role="Button" style={{ marginLeft: '10px', color: 'blue', cursor: 'zoom-in' }}
+            onMouseEnter={() => this.onUserCardView(true)} onMouseLeave={() => this.onUserCardView(false)}>
+            {this.state.userCard?.baseInfo?.legalName}
+          </span>
+        </h6>
+        <UserCardModal userInfo={this.state.userCard?.baseInfo} targetId="legalName" isOpen={this.state.userCardView} />
+
         <Container fluid>
           <Row>
             <Col xs={3}>
