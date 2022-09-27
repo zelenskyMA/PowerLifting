@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using PowerLifting.Domain.DbModels;
+using PowerLifting.Domain.DbModels.Coaching;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Models;
+using PowerLifting.Domain.Models.Coaching;
 using PowerLifting.Domain.Models.TrainingPlan;
 using PowerLifting.Domain.Models.UserData;
 
@@ -14,12 +16,13 @@ namespace PowerLifting.Application.Mapper
         {
             PlanProfile();
             UserProfile();
+            CoachProfile();
 
             CreateMap<DictionaryDb, DictionaryItem>().ReverseMap();
             CreateMap<DictionaryTypeDb, DictionaryType>().ReverseMap();
         }
 
-        public void UserProfile()
+        private void UserProfile()
         {
             CreateMap<UserDb, UserModel>().ReverseMap();
             CreateMap<UserInfoDb, UserInfo>().ReverseMap();
@@ -37,6 +40,14 @@ namespace PowerLifting.Application.Mapper
             CreateMap<PercentageDb, Percentage>().ReverseMap();
             CreateMap<PlanExerciseDb, PlanExercise>()
                 .ForPath(dest => dest.Exercise.Id, opt => opt.MapFrom(src => src.ExerciseId))
+                .ReverseMap();
+        }
+
+        private void CoachProfile()
+        {
+            CreateMap<TrainingRequestDb, TrainingRequest>().ReverseMap();
+            CreateMap<UserInfoDb, CoachInfo>()
+                .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
                 .ReverseMap();
         }
     }

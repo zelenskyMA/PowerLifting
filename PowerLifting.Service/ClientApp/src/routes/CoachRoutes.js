@@ -1,7 +1,9 @@
 ﻿import CoachConsoleView from "../components/coaching/CoachConsoleView";
+import CoachSelection from "../components/userData/CoachSelection";
 
-const AdminRoutes = [
-  { path: '/adminConsole', element: <CoachConsoleView /> }
+const CoachRoutes = [
+  { path: '/coachConsole', element: <CoachConsoleView /> },
+  { path: '/coachSelection', element: <CoachSelection /> }
 ];
 
-export default AdminRoutes;
+export default CoachRoutes;

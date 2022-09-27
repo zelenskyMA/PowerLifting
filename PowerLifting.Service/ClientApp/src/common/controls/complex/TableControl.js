@@ -93,7 +93,7 @@ function FilterPanel({ globalFilter, setGlobalFilter, gotoPage, hideFilter }) {
               onChange(e.target.value);
               gotoPage(0);
             }}
-            placeholder={`введите название`}
+            placeholder={`введите строку или ее часть`}
           />
         </InputGroup>
       </Col>
@@ -124,7 +124,7 @@ function PaginationPanel({
           </li>
           <li>
             <a className="page-link disabled">
-              Стр.:{' '}<strong>{pageIndex + 1}</strong> из <strong>{pageOptions.length}</strong>{' '}
+              <strong>{pageIndex + 1}</strong> из <strong>{pageOptions.length}</strong>{' '}
             </a>
           </li>
           <li className="page-item" role="button" onClick={() => nextPage()} disabled={!canNextPage}>

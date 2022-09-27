@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PowerLifting.Domain.DbModels;
+using PowerLifting.Domain.DbModels.Coaching;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.DbModels.UserData;
 
@@ -23,6 +24,8 @@ namespace PowerLifting.Infrastructure
         public DbSet<UserRoleDb> UserRoles { get; set; }
         public DbSet<UserBlockHistoryDb> UserBlockHistoryItems { get; set; }
 
+        public DbSet<TrainingRequestDb> TrainingRequests { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -12,7 +12,9 @@ const context =  [
   "/user",
   "/userInfo",
 
-  "/analitics"
+  "/analitics",
+
+  "/trainingRequests"
 ];
 
 module.exports = function(app) {
