@@ -10,6 +10,8 @@ namespace PowerLifting.Domain.Models.Coaching
 
         public string? CoachName { get; set; }
 
+        public string? UserName { get; set; }
+
         public DateTime CreationDate { get; set; }
     }
 }

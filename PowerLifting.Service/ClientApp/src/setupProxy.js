@@ -14,7 +14,8 @@ const context =  [
 
   "/analitics",
 
-  "/trainingRequests"
+  "/trainingRequests",
+  "/trainingGroups"
 ];
 
 module.exports = function(app) {

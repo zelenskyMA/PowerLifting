@@ -3,7 +3,12 @@ import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, usePagination 
 import { Col, Container, InputGroup, Row, Input, InputGroupText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export function TableControl({ columnsInfo, data, rowDblClick, pageSize = 5, hideFilter = false }) {
+function defaultRowClick(row) { }
+function defaultRowDblClick(row) { }
+
+export function TableControl({ columnsInfo, data,
+  rowDblClick = defaultRowDblClick, rowClick = defaultRowClick, pageSize = 5, hideFilter = false }) {
+
   const columns = React.useMemo(() => columnsInfo, []);
 
   const {
@@ -26,7 +31,7 @@ export function TableControl({ columnsInfo, data, rowDblClick, pageSize = 5, hid
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: pageSize, hiddenColumns: ['id'] },
+      initialState: { pageIndex: 0, pageSize: pageSize, hiddenColumns: ['id', 'userId'] },
     },
     useFilters,
     useGlobalFilter,
@@ -56,7 +61,8 @@ export function TableControl({ columnsInfo, data, rowDblClick, pageSize = 5, hid
           {page.map((row, index) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} key={index} role="button" onDoubleClick={() => rowDblClick(row)}>
+              <tr {...row.getRowProps()} key={index} role="button"
+                onDoubleClick={() => rowDblClick(row)} rowClick={() => rowClick(row)}>
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}

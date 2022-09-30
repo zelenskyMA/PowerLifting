@@ -46,6 +46,8 @@ namespace PowerLifting.Application.Mapper
         private void CoachProfile()
         {
             CreateMap<TrainingRequestDb, TrainingRequest>().ReverseMap();
+            CreateMap<TrainingGroupDb, TrainingGroup>().ReverseMap();
+            
             CreateMap<UserInfoDb, CoachInfo>()
                 .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
                 .ReverseMap();

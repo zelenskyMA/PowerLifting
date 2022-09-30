@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PowerLifting.Application.Common;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.UserData;
@@ -101,11 +102,7 @@ namespace PowerLifting.Application.UserData
             }
 
             var info = _mapper.Map<UserInfo>(infoDb);
-
-            string patronimic = string.IsNullOrEmpty(info.Patronimic) ? string.Empty : $" {info.Patronimic.ToUpper().First()}.";
-            string firstName = string.IsNullOrEmpty(info.FirstName) ? string.Empty : $" {info.FirstName?.ToUpper()?.First()}.";
-            info.LegalName = string.IsNullOrEmpty(info.Surname) ? "Кабинет" : $"{info.Surname}{firstName}{patronimic}";
-
+            info.LegalName = Naming.GetLegalName(info.FirstName, info.Surname, info.Patronimic, "Кабинет");
             info.RolesInfo = await _userRoleCommands.GetUserRoles(userId);
 
             if (info.CoachId > 0)

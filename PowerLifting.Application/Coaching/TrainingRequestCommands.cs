@@ -32,19 +32,10 @@ namespace PowerLifting.Application.Coaching
         }
 
         /// <inheritdoc />
-        public async Task<TrainingRequest> GetMyRequestAsync()
-        {
-            var requestDb = (await _trainingRequestRepository.FindAsync(t => t.UserId == _user.Id)).FirstOrDefault();
-            if (requestDb == null)
-            {
-                return new TrainingRequest();
-            }
+        public async Task<TrainingRequest> GetMyRequestAsync() => await  GetRequestByUserAsync(_user.Id);
 
-            var request = _mapper.Map<TrainingRequest>(requestDb);
-            request.CoachName = await GetCoachName(request.CoachId);
-
-            return request;
-        }
+        /// <inheritdoc />
+        public async Task<TrainingRequest> GetUserRequestAsync(int userId) => await GetRequestByUserAsync(userId);
 
         /// <inheritdoc />
         public async Task<List<TrainingRequest>> GetCoachRequestsAsync()
@@ -55,7 +46,16 @@ namespace PowerLifting.Application.Coaching
                 return new List<TrainingRequest>();
             }
 
-            return requestsDb.Select(t => _mapper.Map<TrainingRequest>(t)).ToList();
+            var usersInfoDb = await _trainingRequestRepository.GetUsersAsync(requestsDb.Select(t => t.UserId).ToList());
+
+            var requests = requestsDb.Select(t => _mapper.Map<TrainingRequest>(t)).OrderByDescending(t => t.CreationDate).ToList();
+            foreach (var item in requests)
+            {
+                var userInfoDb = usersInfoDb.First(t => t.UserId == item.UserId);
+                item.UserName = string.Join(" ", new[] { userInfoDb.Surname, userInfoDb.FirstName, userInfoDb.Patronimic });
+            }
+
+            return requests;
         }
 
         /// <inheritdoc />
@@ -112,6 +112,20 @@ namespace PowerLifting.Application.Coaching
             var infoDb = (await _userInfoRepository.FindAsync(t => t.UserId == userId)).FirstOrDefault();
             var info = _mapper.Map<UserInfo>(infoDb);
             return Naming.GetLegalName(info.FirstName, info.Surname, info.Patronimic, "Аноним");
+        }
+
+        private async Task<TrainingRequest> GetRequestByUserAsync(int userId)
+        {
+            var requestDb = (await _trainingRequestRepository.FindAsync(t => t.UserId == userId)).FirstOrDefault();
+            if (requestDb == null)
+            {
+                return new TrainingRequest();
+            }
+
+            var request = _mapper.Map<TrainingRequest>(requestDb);
+            request.CoachName = await GetCoachName(request.CoachId);
+
+            return request;
         }
     }
 }

@@ -4,8 +4,6 @@ using PowerLifting.Application.UserData.Auth;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.UserData;
-using PowerLifting.Domain.Enums;
-using PowerLifting.Domain.Interfaces;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Domain.Models.Auth;

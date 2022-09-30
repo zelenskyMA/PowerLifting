@@ -17,12 +17,23 @@ namespace PowerLifting.Infrastructure.Repositories.Coaching
             int coachRoleId = (int)UserRoles.Coach;
 
             var coaches = from info in Context.UsersInfo
-                          join users in Context.Users on info.UserId equals users.Id
+                          join user in Context.Users on info.UserId equals user.Id
                           join roles in Context.UserRoles on info.UserId equals roles.UserId
-                          where roles.RoleId == coachRoleId && !users.Blocked
+                          where roles.RoleId == coachRoleId && !user.Blocked
                           select info;
 
             return await coaches.ToListAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task<List<UserInfoDb>> GetUsersAsync(List<int> requestedUserIds)
+        {
+            var users = from info in Context.UsersInfo
+                          join user in Context.Users on info.UserId equals user.Id
+                          where requestedUserIds.Contains(user.Id) && !user.Blocked
+                          select info;
+
+            return await users.ToListAsync();
         }
 
     }

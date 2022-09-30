@@ -13,6 +13,7 @@ using PowerLifting.Application.UserData;
 using PowerLifting.Application.UserData.Auth;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.DbModels;
+using PowerLifting.Domain.DbModels.Coaching;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Interfaces;
@@ -28,6 +29,7 @@ using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Infrastructure;
 using PowerLifting.Infrastructure.Repositories;
 using PowerLifting.Infrastructure.Repositories.Coaching;
+using PowerLifting.Infrastructure.Repositories.Common;
 using PowerLifting.Infrastructure.Repositories.TrainingPlan;
 using PowerLifting.Infrastructure.Repositories.UserData;
 using PowerLifting.Service.Middleware;
@@ -68,6 +70,8 @@ builder.Services.AddScoped<ICrudRepo<UserRoleDb>, UserRoleRepository>();
 builder.Services.AddScoped<ICrudRepo<UserBlockHistoryDb>, UserBlockHistoryRepository>();
 
 builder.Services.AddScoped<ITrainingRequestRepository, TrainingRequestRepository>();
+builder.Services.AddScoped<ICrudRepo<TrainingGroupDb>, TrainingGroupRepository>();
+builder.Services.AddScoped<ICrudRepo<UserTrainingGroupDb>, UserTrainingGroupRepository>();
 
 
 //app services
@@ -86,6 +90,7 @@ builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
 builder.Services.AddScoped<IUserAdministrationCommands, UserAdministrationCommands>();
 
 builder.Services.AddScoped<ITrainingRequestCommands, TrainingRequestCommands>();
+builder.Services.AddScoped<ITrainingGroupCommands, TrainingGroupCommands>();
 
 builder.Services.AddScoped<IPlanAnaliticsCommands, PlanAnaliticsCommands>();
 

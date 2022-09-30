@@ -11,5 +11,12 @@ namespace PowerLifting.Domain.Interfaces.Coaching.Repositories
         /// </summary>
         /// <returns></returns>
         Task<List<UserInfoDb>> GetCoachesAsync();
+
+        /// <summary>
+        /// Get list of active users from training requests
+        /// </summary>
+        /// <param name="requestedUserIds">List of user Id's</param>
+        /// <returns></returns>
+        Task<List<UserInfoDb>> GetUsersAsync(List<int> requestedUserIds);
     }
 }

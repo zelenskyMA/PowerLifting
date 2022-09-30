@@ -127,7 +127,11 @@ namespace PowerLifting.Application.TrainingPlan
         {
             var prevPlanDate = creationDate.AddDays(-6);
             var nextPlanDate = creationDate.AddDays(6);
-            var preventingPlans = await _trainingPlanRepository.FindAsync(t => t.StartDate >= prevPlanDate && t.StartDate <= nextPlanDate);
+            var preventingPlans = await _trainingPlanRepository.FindAsync(t =>
+                t.Id == _user.Id &&
+                t.StartDate >= prevPlanDate && 
+                t.StartDate <= nextPlanDate);
+
             if (preventingPlans.Any())
             {
                 string errorDates = string.Join(", ", preventingPlans.Select(t => t.StartDate.ToString("dd/MM/yyyy")));

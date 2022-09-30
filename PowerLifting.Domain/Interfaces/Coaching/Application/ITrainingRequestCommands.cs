@@ -5,10 +5,16 @@ namespace PowerLifting.Domain.Interfaces.Coaching.Application
     public interface ITrainingRequestCommands
     {
         /// <summary>
-        /// Chech user request
+        /// Chech my request
         /// </summary>
         /// <returns></returns>
         Task<TrainingRequest> GetMyRequestAsync();
+
+        /// <summary>
+        /// Chech user request. For internal use only
+        /// </summary>
+        /// <returns></returns>
+        Task<TrainingRequest> GetUserRequestAsync(int userId);
 
         /// <summary>
         /// Get user requests for coach
