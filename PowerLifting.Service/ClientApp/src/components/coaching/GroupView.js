@@ -1,10 +1,23 @@
 ﻿import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { Button } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { ErrorPanel, TableControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
+import { setGroupUserId } from "../../stores/coachingStore/coachActions";
 import '../../styling/Common.css';
 
+const mapStateToProps = store => {
+  return {
+    groupUserId: store.groupUserId,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setGroupUserId: (userId) => setGroupUserId(userId, dispatch)
+  }
+}
 
 class GroupView extends Component {
   constructor(props) {
@@ -25,7 +38,10 @@ class GroupView extends Component {
     this.setState({ group: groupData.group, users: groupData.users, error: '', loading: false });
   }
 
-  onRowClick = row => { this.props.navigate(`/groupUser/${row.values.id}`); }
+  onRowClick = async (row) => {
+    await this.props.setGroupUserId(row.values.id);
+    this.props.navigate(`/groupUser/${row.values.id}`);
+  }
 
   deleteGroup = async () => {
     try {
@@ -44,7 +60,7 @@ class GroupView extends Component {
     const columns = [
       { Header: 'Id', accessor: 'id' },
       { Header: 'Имя', accessor: 'fullName' },
-      { Header: 'Запланировано недель', accessor: 'activePlansCount' },      
+      { Header: 'Запланировано недель', accessor: 'activePlansCount' },
     ];
 
     var hasData = this.state.users && this.state.users.length > 0;
@@ -72,4 +88,4 @@ class GroupView extends Component {
   }
 }
 
-export default WithRouter(GroupView)
+export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(GroupView))

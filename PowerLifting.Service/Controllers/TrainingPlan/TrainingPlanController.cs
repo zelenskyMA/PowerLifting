@@ -35,9 +35,9 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
 
         [HttpPost]
         [Route("create")]
-        public async Task<int> CreateAsync([FromBody] DateTime creationDate)
+        public async Task<int> CreateAsync(RequestPlanCreation request)
         {
-            var result = await _trainingPlanCommands.CreateAsync(creationDate);
+            var result = await _trainingPlanCommands.CreateAsync(request);
             return result;
         }
 
