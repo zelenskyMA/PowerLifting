@@ -32,7 +32,7 @@ namespace PowerLifting.Application.Coaching
         }
 
         /// <inheritdoc />
-        public async Task<TrainingRequest> GetMyRequestAsync() => await  GetRequestByUserAsync(_user.Id);
+        public async Task<TrainingRequest> GetMyRequestAsync() => await GetRequestByUserAsync(_user.Id);
 
         /// <inheritdoc />
         public async Task<TrainingRequest> GetUserRequestAsync(int userId) => await GetRequestByUserAsync(userId);
@@ -52,10 +52,31 @@ namespace PowerLifting.Application.Coaching
             foreach (var item in requests)
             {
                 var userInfoDb = usersInfoDb.First(t => t.UserId == item.UserId);
-                item.UserName = string.Join(" ", new[] { userInfoDb.Surname, userInfoDb.FirstName, userInfoDb.Patronimic });
+                item.UserName = Naming.GetLegalFullName(userInfoDb.FirstName, userInfoDb.Surname, userInfoDb.Patronimic);
             }
 
             return requests;
+        }
+
+        /// <inheritdoc />
+        public async Task<TrainingRequest> GetCoachRequestAsync(int id)
+        {
+            var requestsDb = await _trainingRequestRepository.FindAsync(t => t.CoachId == _user.Id && t.Id == id);
+            if (requestsDb.Count == 0)
+            {
+                throw new BusinessException($"У тренера с Ид {_user.Id} нет заявки с Ид {id}");
+            }
+
+            var usersInfoDb = await _trainingRequestRepository.GetUsersAsync(requestsDb.Select(t => t.UserId).ToList());
+
+            var request = requestsDb.Select(t => _mapper.Map<TrainingRequest>(t)).First();
+            var userInfoDb = usersInfoDb.First(t => t.UserId == request.UserId);
+            request.UserName = Naming.GetLegalFullName(userInfoDb.FirstName, userInfoDb.Surname, userInfoDb.Patronimic);
+            request.UserWeight = userInfoDb.Weight ?? 0;
+            request.UserHeight = userInfoDb.Height ?? 0;
+            request.UserAge = userInfoDb.Age ?? 0;
+
+            return request;
         }
 
         /// <inheritdoc />
@@ -111,7 +132,7 @@ namespace PowerLifting.Application.Coaching
         {
             var infoDb = (await _userInfoRepository.FindAsync(t => t.UserId == userId)).FirstOrDefault();
             var info = _mapper.Map<UserInfo>(infoDb);
-            return Naming.GetLegalName(info.FirstName, info.Surname, info.Patronimic, "Аноним");
+            return Naming.GetLegalShortName(info.FirstName, info.Surname, info.Patronimic, "Аноним");
         }
 
         private async Task<TrainingRequest> GetRequestByUserAsync(int userId)

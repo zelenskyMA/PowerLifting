@@ -5,8 +5,7 @@ import { DateToLocal } from "../../common/Localization";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
-
-class TrainingRequestsPanel extends Component {
+class RequestConsolePanel extends Component {
   constructor(props) {
     super(props);
 
@@ -23,15 +22,16 @@ class TrainingRequestsPanel extends Component {
   }
 
   onRowlClick = row => {
+    this.props.navigate(`/acceptRequest/${row.values.id}`);
   }
 
   render() {
     if (this.state.myRequests.length === 0) {
-      return (<p><em>У вас нет заявок, ожидающих принятия</em></p>);
+      return (<p className="spaceBorder"><em>У вас нет заявок, ожидающих принятия</em></p>);
     }
 
     const columns = [
-      { Header: 'Id', accessor: 'userId' },
+      { Header: 'Id', accessor: 'id' },
       { Header: 'Заявитель', accessor: 'userName' },
       { Header: 'Дата заявки', accessor: 'creationDate', Cell: t => DateToLocal(t.value) }
     ];
@@ -45,4 +45,4 @@ class TrainingRequestsPanel extends Component {
   }
 }
 
-export default WithRouter(TrainingRequestsPanel)
+export default WithRouter(RequestConsolePanel)

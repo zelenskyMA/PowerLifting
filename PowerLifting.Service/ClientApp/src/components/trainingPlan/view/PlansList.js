@@ -33,7 +33,9 @@ class PlansList extends Component {
   componentDidMount() { this.getPlans(); }
 
   getPlans = async () => {
-    var plans = await GetAsync("/trainingPlan/getList");
+    var request = this.props.params.userId ? `?userId=${this.props.params.userId}` : "";
+
+    var plans = await GetAsync(`/trainingPlan/getList${request}`);
     this.setState({ activePlans: plans.activePlans, expiredPlans: plans.expiredPlans });
   }
 

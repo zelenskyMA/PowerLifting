@@ -19,9 +19,9 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
 
         [HttpGet]
         [Route("getList")]
-        public async Task<Plans> GetAsync()
+        public async Task<Plans> GetListAsync(int userId = 0)
         {
-            var result = await _trainingPlanCommands.GetPlansAsync();
+            var result = await _trainingPlanCommands.GetPlansAsync(userId);
             return result;
         }               
 

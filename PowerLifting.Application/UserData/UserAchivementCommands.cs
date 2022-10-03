@@ -30,9 +30,11 @@ namespace PowerLifting.Application.UserData
         }
 
         /// <inheritdoc />
-        public async Task<List<UserAchivement>> GetAsync()
+        public async Task<List<UserAchivement>> GetAsync(int userId = 0)
         {
-            var achivements = await _userAchivementRepository.FindAsync(t => t.UserId == _user.Id);
+            userId = userId == 0 ? _user.Id : userId;
+
+            var achivements = await _userAchivementRepository.FindAsync(t => t.UserId == userId);
             if (achivements.Count == 0)
             {
                 var dictionaryAchivements = await _dictionaryCommands.GetItemsByTypeIdAsync(DictionaryTypes.ExerciseType);
@@ -40,7 +42,7 @@ namespace PowerLifting.Application.UserData
                 {
                     achivements.Add(new UserAchivementDb()
                     {
-                        UserId = _user.Id,
+                        UserId = userId,
                         Result = 0,
                         ExerciseTypeId = item.Id,
                         CreationDate = DateTime.Now

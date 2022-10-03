@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using PowerLifting.Application.TrainingPlan.Process;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application.Process;
-using PowerLifting.Domain.Models.Common;
 using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Application.TrainingPlan
@@ -38,9 +36,11 @@ namespace PowerLifting.Application.TrainingPlan
         }
 
         /// <inheritdoc />
-        public async Task<Plans> GetPlansAsync()
+        public async Task<Plans> GetPlansAsync(int userId)
         {
-            var plansDb = await _trainingPlanRepository.FindAsync(t => t.UserId == _user.Id);
+            userId = userId == 0 ? _user.Id : userId;
+
+            var plansDb = await _trainingPlanRepository.FindAsync(t => t.UserId == userId);
             var plansList = plansDb.Select(t => _mapper.Map<Plan>(t)).ToList();
 
             var plans = new Plans()

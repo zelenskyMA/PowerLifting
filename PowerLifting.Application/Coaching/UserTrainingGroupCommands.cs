@@ -4,6 +4,7 @@ using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.Coaching;
 using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Interfaces.Coaching.Application;
+using PowerLifting.Domain.Interfaces.Coaching.Repositories;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Models.Coaching;
 
@@ -12,16 +13,16 @@ namespace PowerLifting.Application.Coaching
     public class UserTrainingGroupCommands : IUserTrainingGroupCommands
     {
         private readonly ITrainingRequestCommands _trainingRequestCommands;
+        private readonly IUserTrainingGroupRepository _userTrainingGroupRepository;
         private readonly ICrudRepo<TrainingGroupDb> _trainingGroupRepository;
-        private readonly ICrudRepo<UserTrainingGroupDb> _userTrainingGroupRepository;
         private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
         private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public UserTrainingGroupCommands(
          ITrainingRequestCommands trainingRequestCommands,
+         IUserTrainingGroupRepository userTrainingGroupRepository,
          ICrudRepo<TrainingGroupDb> trainingGroupRepository,
-         ICrudRepo<UserTrainingGroupDb> userTrainingGroupRepository,
          ICrudRepo<UserInfoDb> userInfoRepository,
          IUserProvider user,
          IMapper mapper)

@@ -8,7 +8,7 @@ namespace PowerLifting.Domain.Interfaces.UserData.Application
         /// Get all user achivements
         /// </summary>
         /// <returns></returns>
-        Task<List<UserAchivement>> GetAsync();
+        Task<List<UserAchivement>> GetAsync(int userId = 0);
 
         /// <summary>
         /// Get user achivement by exercise type

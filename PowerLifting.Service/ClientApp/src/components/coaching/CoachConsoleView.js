@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { TabControl } from "../../common/controls/CustomControls";
-import TrainingGroupsPanel from "./TrainingGroupsPanel";
-import TrainingRequestsPanel from "./TrainingRequestsPanel";
+import GroupConsolePanel from "./GroupConsolePanel";
+import RequestConsolePanel from "./RequestConsolePanel";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
@@ -23,8 +23,8 @@ class CoachConsoleView extends Component {
     );
   }
 
-  groupsContent = () => { return (<TrainingGroupsPanel />); }
-  requestsContent = () => { return (<TrainingRequestsPanel />); }
+  groupsContent = () => { return (<GroupConsolePanel />); }
+  requestsContent = () => { return (<RequestConsolePanel />); }
 }
 
 export default WithRouter(CoachConsoleView)

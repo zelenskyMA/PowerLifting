@@ -14,6 +14,7 @@ namespace PowerLifting.Application.UserData
     {
         private readonly IUserBlockCommands _userBlockCommands;
         private readonly IUserRoleCommands _userRoleCommands;
+        private readonly IUserAchivementCommands _userAchivementCommands;
 
         private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
         private readonly ICrudRepo<UserDb> _userRepository;
@@ -23,6 +24,7 @@ namespace PowerLifting.Application.UserData
         public UserInfoCommands(
             IUserBlockCommands userBlockCommands,
             IUserRoleCommands userRoleCommands,
+            IUserAchivementCommands userAchivementCommands,
             ICrudRepo<UserInfoDb> userInfoRepository,
             ICrudRepo<UserDb> userRepository,
             IUserProvider user,
@@ -30,6 +32,7 @@ namespace PowerLifting.Application.UserData
         {
             _userBlockCommands = userBlockCommands;
             _userRoleCommands = userRoleCommands;
+            _userAchivementCommands = userAchivementCommands;
             _userInfoRepository = userInfoRepository;
             _userRepository = userRepository;
             _user = user;
@@ -81,8 +84,10 @@ namespace PowerLifting.Application.UserData
             var card = new UserCard()
             {
                 UserId = userDb.Id,
+                UserName = Naming.GetLegalFullName(info),
                 Login = userDb.Email,
                 BaseInfo = info,
+                Achivements = await _userAchivementCommands.GetAsync(userId)
             };
 
             if (userDb.Blocked)
@@ -102,7 +107,7 @@ namespace PowerLifting.Application.UserData
             }
 
             var info = _mapper.Map<UserInfo>(infoDb);
-            info.LegalName = Naming.GetLegalName(info.FirstName, info.Surname, info.Patronimic, "Кабинет");
+            info.LegalName = Naming.GetLegalShortName(info.FirstName, info.Surname, info.Patronimic, "Кабинет");
             info.RolesInfo = await _userRoleCommands.GetUserRoles(userId);
 
             if (info.CoachId > 0)

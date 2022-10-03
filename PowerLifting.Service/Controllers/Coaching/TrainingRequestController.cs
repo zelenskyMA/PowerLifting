@@ -39,6 +39,14 @@ namespace PowerLifting.Service.Controllers.Coaching
             return result;
         }
 
+        [HttpGet]
+        [Route("get")]
+        public async Task<TrainingRequest> GetAsync(int id)
+        {
+            var result = await _trainingRequestCommands.GetCoachRequestAsync(id);
+            return result;
+        }
+
         [HttpPost]
         [Route("create")]
         public async Task<bool> CreateAsync(int coachId)

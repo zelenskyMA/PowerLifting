@@ -23,6 +23,13 @@ namespace PowerLifting.Domain.Interfaces.Coaching.Application
         Task<List<TrainingRequest>> GetCoachRequestsAsync();
 
         /// <summary>
+        /// Get user request bu requestId
+        /// </summary>
+        /// <param name="id">request Id</param>
+        /// <returns></returns>
+        Task<TrainingRequest> GetCoachRequestAsync(int id);
+
+        /// <summary>
         /// Get active coaches for user selection
         /// </summary>
         /// <returns></returns>

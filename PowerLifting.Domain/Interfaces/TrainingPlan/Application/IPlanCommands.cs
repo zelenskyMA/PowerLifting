@@ -8,7 +8,7 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         /// Get user training plans
         /// </summary>
         /// <returns></returns>
-        Task<Plans> GetPlansAsync();
+        Task<Plans> GetPlansAsync(int userId);
 
         /// <summary>
         /// Get training plan

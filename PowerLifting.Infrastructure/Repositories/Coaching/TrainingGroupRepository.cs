@@ -7,6 +7,5 @@ namespace PowerLifting.Infrastructure.Repositories.Coaching
     public class TrainingGroupRepository : CrudRepo<TrainingGroupDb>
     {
         public TrainingGroupRepository(DbContextOptions<LiftingContext> provider) : base(provider) { }
-
     }
 }

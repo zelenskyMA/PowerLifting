@@ -8,6 +8,8 @@ namespace PowerLifting.Domain.Models.Coaching
 
         public string? Description { get; set; }
 
+        public int ParticipantsCount { get; set; }
+
         public int CoachId { get; set; }
     }
 }

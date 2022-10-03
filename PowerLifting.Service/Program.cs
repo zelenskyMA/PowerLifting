@@ -71,7 +71,7 @@ builder.Services.AddScoped<ICrudRepo<UserBlockHistoryDb>, UserBlockHistoryReposi
 
 builder.Services.AddScoped<ITrainingRequestRepository, TrainingRequestRepository>();
 builder.Services.AddScoped<ICrudRepo<TrainingGroupDb>, TrainingGroupRepository>();
-builder.Services.AddScoped<ICrudRepo<UserTrainingGroupDb>, UserTrainingGroupRepository>();
+builder.Services.AddScoped<IUserTrainingGroupRepository, UserTrainingGroupRepository>();
 
 
 //app services
@@ -91,6 +91,7 @@ builder.Services.AddScoped<IUserAdministrationCommands, UserAdministrationComman
 
 builder.Services.AddScoped<ITrainingRequestCommands, TrainingRequestCommands>();
 builder.Services.AddScoped<ITrainingGroupCommands, TrainingGroupCommands>();
+builder.Services.AddScoped<IUserTrainingGroupCommands, UserTrainingGroupCommands>();
 
 builder.Services.AddScoped<IPlanAnaliticsCommands, PlanAnaliticsCommands>();
 

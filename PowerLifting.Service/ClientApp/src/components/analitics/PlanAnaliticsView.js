@@ -28,7 +28,10 @@ class PlanAnaliticsView extends Component {
     var utcStartDate = new Date(this.state.startDate.getTime() - this.state.startDate.getTimezoneOffset() * 60 * 1000);
     var utcFinishDate = new Date(this.state.finishDate.getTime() - this.state.finishDate.getTimezoneOffset() * 60 * 1000);
 
-    var analiticsData = await GetAsync(`/analitics/getPlanAnalitics?startDate=${utcStartDate.toISOString()}&finishDate=${utcFinishDate.toISOString()}`);
+    var request = `startDate=${utcStartDate.toISOString()}&finishDate=${utcFinishDate.toISOString()}`;
+    request = this.props.params.userId ? request + `&userId=${this.props.params.userId}` : request;
+
+    var analiticsData = await GetAsync(`/analitics/getPlanAnalitics?${request}`);
 
     this.setState({ analitics: analiticsData, loading: false });
   }

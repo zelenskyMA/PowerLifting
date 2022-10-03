@@ -1,10 +1,11 @@
 ﻿
 export function InputTextArea({ label, onChange, propName, initialValue, rows = 3, cols = 85 }) {
+  label = '  ' + label;
 
   return (
     <>
-      <p>{label}</p>
-      <textarea onChange={(e) => setValue(e, propName, onChange)} value={initialValue ?? ''} rows={rows} cols={cols} />
+      <textarea value={initialValue} rows={rows} cols={cols} placeholder={label}
+        onChange={(e) => setValue(e, propName, onChange)} />
     </>
   )
 }

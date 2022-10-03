@@ -62,7 +62,7 @@ export function TableControl({ columnsInfo, data,
             prepareRow(row)
             return (
               <tr {...row.getRowProps()} key={index} role="button"
-                onDoubleClick={() => rowDblClick(row)} rowClick={() => rowClick(row)}>
+                onDoubleClick={() => rowDblClick(row)} onClick={() => rowClick(row)}>
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
