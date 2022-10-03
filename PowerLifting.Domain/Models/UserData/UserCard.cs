@@ -4,9 +4,13 @@
     {
         public int UserId { get; set; }
 
+        public string UserName { get; set; }
+
         public string Login { get; set; }
 
         public UserInfo BaseInfo { get; set; }
+
+        public List<UserAchivement> Achivements { get; set; }
 
         public UserBlockHistory? BlockReason { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PowerLifting.Application.Common;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.UserData;
@@ -13,6 +14,7 @@ namespace PowerLifting.Application.UserData
     {
         private readonly IUserBlockCommands _userBlockCommands;
         private readonly IUserRoleCommands _userRoleCommands;
+        private readonly IUserAchivementCommands _userAchivementCommands;
 
         private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
         private readonly ICrudRepo<UserDb> _userRepository;
@@ -22,6 +24,7 @@ namespace PowerLifting.Application.UserData
         public UserInfoCommands(
             IUserBlockCommands userBlockCommands,
             IUserRoleCommands userRoleCommands,
+            IUserAchivementCommands userAchivementCommands,
             ICrudRepo<UserInfoDb> userInfoRepository,
             ICrudRepo<UserDb> userRepository,
             IUserProvider user,
@@ -29,6 +32,7 @@ namespace PowerLifting.Application.UserData
         {
             _userBlockCommands = userBlockCommands;
             _userRoleCommands = userRoleCommands;
+            _userAchivementCommands = userAchivementCommands;
             _userInfoRepository = userInfoRepository;
             _userRepository = userRepository;
             _user = user;
@@ -80,14 +84,11 @@ namespace PowerLifting.Application.UserData
             var card = new UserCard()
             {
                 UserId = userDb.Id,
+                UserName = Naming.GetLegalFullName(info),
                 Login = userDb.Email,
                 BaseInfo = info,
+                Achivements = await _userAchivementCommands.GetAsync(userId)
             };
-
-            if (info.CoachId > 0)
-            {
-                card.CoachLegalName = (await GetInfo(info.CoachId.Value)).LegalName;
-            }
 
             if (userDb.Blocked)
             {
@@ -106,12 +107,13 @@ namespace PowerLifting.Application.UserData
             }
 
             var info = _mapper.Map<UserInfo>(infoDb);
-
-            string patronimic = string.IsNullOrEmpty(info.Patronimic) ? string.Empty : $" {info.Patronimic.ToUpper().First()}.";
-            string firstName = string.IsNullOrEmpty(info.FirstName) ? string.Empty : $" {info.FirstName?.ToUpper()?.First()}.";
-            info.LegalName = string.IsNullOrEmpty(info.Surname) ? "Кабинет" : $"{info.Surname}{firstName}{patronimic}";
-
+            info.LegalName = Naming.GetLegalShortName(info.FirstName, info.Surname, info.Patronimic, "Кабинет");
             info.RolesInfo = await _userRoleCommands.GetUserRoles(userId);
+
+            if (info.CoachId > 0)
+            {
+                info.CoachLegalName = (await GetInfo(info.CoachId.Value)).LegalName;
+            }
 
             return info;
         }

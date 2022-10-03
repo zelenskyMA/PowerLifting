@@ -8,7 +8,7 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         /// Get user training plans
         /// </summary>
         /// <returns></returns>
-        Task<Plans> GetPlansAsync();
+        Task<Plans> GetPlansAsync(int userId);
 
         /// <summary>
         /// Get training plan
@@ -33,8 +33,8 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         /// <summary>
         /// Create new training plan with training days
         /// </summary>
-        /// <param name="creationDate">Plan start date</param>
+        /// <param name="request">Plan creation information</param>
         /// <returns>Plan Id</returns>
-        Task<int> CreateAsync(DateTime creationDate);
+        Task<int> CreateAsync(RequestPlanCreation request);
     }
 }

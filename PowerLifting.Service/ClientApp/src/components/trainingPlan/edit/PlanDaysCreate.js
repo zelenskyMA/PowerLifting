@@ -2,12 +2,20 @@
 import { connect } from "react-redux";
 import { Container, Button, Row, Col } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
+import { setGroupUserId } from "../../../stores/coachingStore/coachActions";
 import { Locale, DateToLocal } from "../../../common/Localization";
 import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {
     planId: store.trainingPlan.planId,
+    groupUserId: store.coach.groupUserId,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setGroupUserId: (userId) => setGroupUserId(userId, dispatch)
   }
 }
 
@@ -119,9 +127,13 @@ class PlanDaysCreate extends React.Component {
       return (<></>);
     }
 
-    return (<Col><Button color="primary" onClick={() => this.props.navigate("/")}>Завершить</Button></Col>);
+    var url = this.props.groupUserId ? `/groupUser/${this.props.groupUserId}` : "/plansList";
+
+    return (<Col>
+      <Button color="primary" onClick={async () => this.props.navigate(url)}>Завершить</Button>
+    </Col>);
   }
 
 }
 
-export default WithRouter(connect(mapStateToProps, null)(PlanDaysCreate))
+export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(PlanDaysCreate))

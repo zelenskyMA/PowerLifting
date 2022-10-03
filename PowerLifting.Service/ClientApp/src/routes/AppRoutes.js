@@ -2,6 +2,7 @@ import TrainingPlanRoutes from "./TrainingPlanRoutes";
 import UserRoutes from "./UserRoutes";
 import AnaliticsRoutes from "./AnaliticsRoutes";
 import AdminRoutes from "./AdminRoutes";
+import CoachRoutes from "./CoachRoutes";
 
 import Home from "../components/Home";
 
@@ -11,7 +12,8 @@ const AppRoutes = [
   ...TrainingPlanRoutes,
   ...UserRoutes,
   ...AnaliticsRoutes,
-  ...AdminRoutes
+  ...AdminRoutes,
+  ...CoachRoutes
 ];
 
 export default AppRoutes;

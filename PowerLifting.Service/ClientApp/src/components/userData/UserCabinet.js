@@ -1,8 +1,9 @@
 ﻿import React, { Component } from 'react';
-import { Button, Row, Col} from "reactstrap";
+import { Button, Row, Col, Label } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { InputNumber, InputText } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
+import '../../styling/Common.css';
 
 class UserCabinet extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class UserCabinet extends Component {
 
     this.state = {
       userInfo: Object,
+      trainingRequest: Object,
       pushAchivement: Object, // толчок, id = 1
       jerkAchivement: Object // рывок, id = 2
     };
@@ -18,20 +20,28 @@ class UserCabinet extends Component {
   componentDidMount() { this.getUserInfo(); }
 
   getUserInfo = async () => {
-    const [info, achivementsData] = await Promise.all([
+    const [info, achivementsData, trainingRequestData] = await Promise.all([
       GetAsync("/userInfo/get"),
-      GetAsync("/userAchivement/get")
+      GetAsync("/userAchivement/get"),
+      GetAsync("/trainingRequests/getMyRequest")
     ]);
 
     var push = achivementsData.find(t => t.exerciseTypeId === 1);
     var jerk = achivementsData.find(t => t.exerciseTypeId === 2);
 
-    this.setState({ userInfo: info, pushAchivement: push, jerkAchivement: jerk });
+    this.setState({ userInfo: info, trainingRequest: trainingRequestData, pushAchivement: push, jerkAchivement: jerk });
   }
 
   onValueChange = (propName, value) => { this.setState(prevState => ({ userInfo: { ...prevState.userInfo, [propName]: value } })); }
   onPushChange = (propName, value) => { this.setState(prevState => ({ pushAchivement: { ...prevState.pushAchivement, [propName]: value } })); }
   onJerkChange = (propName, value) => { this.setState(prevState => ({ jerkAchivement: { ...prevState.jerkAchivement, [propName]: value } })); }
+
+  createRequest = () => { this.props.navigate("/coachSelection"); }
+  cancelRequest = async () => {
+    await PostAsync(`/trainingRequests/remove`);
+    var trainingRequestData = await GetAsync("/trainingRequests/getMyRequest");
+    this.setState({ trainingRequest: trainingRequestData });
+  }
 
   confirmAsync = async () => {
     await PostAsync(`/userInfo/update`, this.state.userInfo);
@@ -42,7 +52,7 @@ class UserCabinet extends Component {
   render() {
     return (
       <>
-        <h3 style={{ marginBottom: '30px' }}>Кабинет пользователя</h3>
+        <h3 className="spaceBottom">Кабинет пользователя</h3>
 
         <p>Личные данные</p>
         {this.personalInfoPanel()}
@@ -52,7 +62,7 @@ class UserCabinet extends Component {
         <p>Спортивные данные</p>
         {this.sportInfoPanel()}
 
-        <Button style={{ marginTop: '40px' }} color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
+        <Button className="spaceTop" color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
       </>
     );
   }
@@ -97,8 +107,34 @@ class UserCabinet extends Component {
             <InputNumber label="Рекорд в рывке:" propName="result" onChange={this.onJerkChange} initialValue={this.state.jerkAchivement?.result} />
           </Col>
         </Row>
+
+        <Row className="spaceTop">
+          <Col xs={6}>
+            <Label check>
+              <span style={{ marginRight: '20px' }} >Мой тренер:</span>
+              {this.coachRequestView()}
+            </Label>
+          </Col>
+        </Row>
+
       </>
     );
+  }
+
+  coachRequestView = () => {
+    if (this.state.userInfo.coachLegalName) {
+      return (this.state.userInfo.coachLegalName);
+    }
+
+    if (this.state.trainingRequest.coachName) {
+      return (<>
+        <strong style={{ marginRight: '20px' }} >Заявка подана тренеру {this.state.trainingRequest.coachName}</strong>
+        <Button color="primary" onClick={() => this.cancelRequest()}>Отменить</Button >
+      </>
+      );
+    }
+
+    return (<Button color="primary" onClick={() => this.createRequest()}>Выбрать</Button>);
   }
 
 }

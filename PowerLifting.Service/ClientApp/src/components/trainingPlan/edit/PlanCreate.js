@@ -10,13 +10,14 @@ import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {
-    planId: store.planId,
+    planId: store.trainingPlan.planId,
+    groupUserId: store.coach.groupUserId,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    createTrainingPlan: (creationDate) => createTrainingPlan(creationDate, dispatch)
+    createTrainingPlan: (request) => createTrainingPlan(request, dispatch)
   }
 }
 
@@ -32,8 +33,9 @@ class PlanCreate extends React.Component {
   onPlanCreate = async () => {
     try {
       var utcDate = new Date(this.state.date.getTime() - this.state.date.getTimezoneOffset() * 60 * 1000);
+      var request = { creationDate: utcDate, userId: this.props.groupUserId };
 
-      await this.props.createTrainingPlan(utcDate);
+      await this.props.createTrainingPlan(request);
       this.props.navigate("/createPlanDays");
     }
     catch (error) {

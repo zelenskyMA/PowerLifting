@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PowerLifting.Domain.DbModels;
+using PowerLifting.Domain.DbModels.Coaching;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.DbModels.UserData;
 
@@ -23,12 +24,18 @@ namespace PowerLifting.Infrastructure
         public DbSet<UserRoleDb> UserRoles { get; set; }
         public DbSet<UserBlockHistoryDb> UserBlockHistoryItems { get; set; }
 
+        public DbSet<TrainingRequestDb> TrainingRequests { get; set; }
+        public DbSet<TrainingGroupDb> TrainingGroups { get; set; }
+        public DbSet<UserTrainingGroupDb> UserTrainingGroups { get; set; }
 
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserAchivementDb>().HasKey(c => new { c.UserId, c.ExerciseTypeId, c.CreationDate });
             modelBuilder.Entity<UserRoleDb>().HasKey(c => new { c.UserId, c.RoleId });
             modelBuilder.Entity<UserInfoDb>().HasKey(c => new { c.UserId });
+
+            modelBuilder.Entity<UserTrainingGroupDb>().HasKey(c => new { c.UserId, c.GroupId });
         }
 
         public LiftingContext(DbContextOptions<LiftingContext> options) : base(options) { }

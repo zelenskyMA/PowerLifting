@@ -6,3 +6,12 @@
 .spaceBottom {
   margin-bottom: 30px
 }
+
+.spaceRight {
+  margin-right: 30px
+}
+
+.spaceBorder {
+  margin-top: 15px;
+  margin-left: 15px;
+}

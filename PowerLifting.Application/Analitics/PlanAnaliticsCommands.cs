@@ -38,9 +38,9 @@ namespace PowerLifting.Application.Analitics
         }
 
         /// <inheritdoc />
-        public async Task<PlanAnalitics> GetAsync(TimeSpanEntity span)
+        public async Task<PlanAnalitics> GetAsync(int userId, TimeSpanEntity span)
         {
-            var plans = await PreparePlansWithCounters(span);
+            var plans = await PreparePlansWithCounters(userId, span);
             var analitics = new PlanAnalitics();
             if (plans.Count == 0)
             {
@@ -90,10 +90,12 @@ namespace PowerLifting.Application.Analitics
             return analitics;
         }
 
-        private async Task<List<Plan>> PreparePlansWithCounters(TimeSpanEntity span)
+        private async Task<List<Plan>> PreparePlansWithCounters(int userId, TimeSpanEntity span)
         {
+            userId = userId == 0 ? _user.Id : userId;
+
             var lastPlanDate = span.FinishDate.Date.AddDays(-6);
-            var plans = (await _trainingPlanRepository.FindAsync(t => t.UserId == _user.Id &&
+            var plans = (await _trainingPlanRepository.FindAsync(t => t.UserId == userId &&
                 t.StartDate >= span.StartDate.Date && t.StartDate <= lastPlanDate))
                 .Select(t => _mapper.Map<Plan>(t)).ToList();
 

@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using PowerLifting.Application.TrainingPlan.Process;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application.Process;
-using PowerLifting.Domain.Models.Common;
 using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Application.TrainingPlan
@@ -38,9 +36,11 @@ namespace PowerLifting.Application.TrainingPlan
         }
 
         /// <inheritdoc />
-        public async Task<Plans> GetPlansAsync()
+        public async Task<Plans> GetPlansAsync(int userId)
         {
-            var plansDb = await _trainingPlanRepository.FindAsync(t => t.UserId == _user.Id);
+            userId = userId == 0 ? _user.Id : userId;
+
+            var plansDb = await _trainingPlanRepository.FindAsync(t => t.UserId == userId);
             var plansList = plansDb.Select(t => _mapper.Map<Plan>(t)).ToList();
 
             var plans = new Plans()
@@ -123,23 +123,34 @@ namespace PowerLifting.Application.TrainingPlan
         }
 
         /// <inheritdoc />
-        public async Task<int> CreateAsync(DateTime creationDate)
+        public async Task<int> CreateAsync(RequestPlanCreation request)
         {
-            var prevPlanDate = creationDate.AddDays(-6);
-            var nextPlanDate = creationDate.AddDays(6);
-            var preventingPlans = await _trainingPlanRepository.FindAsync(t => t.StartDate >= prevPlanDate && t.StartDate <= nextPlanDate);
+            var userId = _user.Id;
+            if (request.UserId != 0)
+            {
+                // проверяем что _user.Id - тренер указанного UserId
+                userId = request.UserId;
+            }
+
+            var prevPlanDate = request.CreationDate.AddDays(-6);
+            var nextPlanDate = request.CreationDate.AddDays(6);
+            var preventingPlans = await _trainingPlanRepository.FindAsync(t =>
+                t.Id == userId &&
+                t.StartDate >= prevPlanDate && 
+                t.StartDate <= nextPlanDate);
+
             if (preventingPlans.Any())
             {
                 string errorDates = string.Join(", ", preventingPlans.Select(t => t.StartDate.ToString("dd/MM/yyyy")));
                 throw new BusinessException($"Найдены пересекающийся по датам планы. Даты начала: {errorDates}");
             }
 
-            var plan = new PlanDb() { StartDate = creationDate, UserId = _user.Id };
+            var plan = new PlanDb() { StartDate = request.CreationDate, UserId = userId };
             await _trainingPlanRepository.CreateAsync(plan);
 
             for (int i = 0; i < 7; i++) // 7 days standard plan
             {
-                var trainingDay = new PlanDayDb() { PlanId = plan.Id, ActivityDate = creationDate.AddDays(i) };
+                var trainingDay = new PlanDayDb() { PlanId = plan.Id, ActivityDate = request.CreationDate.AddDays(i) };
                 await _trainingDayRepository.CreateAsync(trainingDay);
             }
 

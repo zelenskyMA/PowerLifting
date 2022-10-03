@@ -1,1 +1,5 @@
 ﻿CREATE SCHEMA [usr]
+GO
+
+CREATE SCHEMA [trn]
+GO

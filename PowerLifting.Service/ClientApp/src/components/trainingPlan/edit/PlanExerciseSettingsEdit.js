@@ -64,7 +64,7 @@ class PlanExerciseSettingsEdit extends Component {
         <Row style={{ marginTop: '30px' }}>
           <Col xs={5}>
             <InputTextArea onChange={this.onValueChange} propName="comments" cols={85}
-              label="Оставьте комментарий для выполняющего упражнение:" initialValue={this.state?.exercisesSettings?.comments} />
+              label="Оставьте комментарий для выполняющего упражнение" initialValue={this.state?.exercisesSettings?.comments} />
           </Col>
         </Row>
 

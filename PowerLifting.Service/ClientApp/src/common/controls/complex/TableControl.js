@@ -3,7 +3,12 @@ import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, usePagination 
 import { Col, Container, InputGroup, Row, Input, InputGroupText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export function TableControl({ columnsInfo, data, rowDblClick, pageSize = 5, hideFilter = false }) {
+function defaultRowClick(row) { }
+function defaultRowDblClick(row) { }
+
+export function TableControl({ columnsInfo, data,
+  rowDblClick = defaultRowDblClick, rowClick = defaultRowClick, pageSize = 5, hideFilter = false }) {
+
   const columns = React.useMemo(() => columnsInfo, []);
 
   const {
@@ -26,7 +31,7 @@ export function TableControl({ columnsInfo, data, rowDblClick, pageSize = 5, hid
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: pageSize, hiddenColumns: ['id'] },
+      initialState: { pageIndex: 0, pageSize: pageSize, hiddenColumns: ['id', 'userId'] },
     },
     useFilters,
     useGlobalFilter,
@@ -56,7 +61,8 @@ export function TableControl({ columnsInfo, data, rowDblClick, pageSize = 5, hid
           {page.map((row, index) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} key={index} role="button" onDoubleClick={() => rowDblClick(row)}>
+              <tr {...row.getRowProps()} key={index} role="button"
+                onDoubleClick={() => rowDblClick(row)} onClick={() => rowClick(row)}>
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
@@ -93,7 +99,7 @@ function FilterPanel({ globalFilter, setGlobalFilter, gotoPage, hideFilter }) {
               onChange(e.target.value);
               gotoPage(0);
             }}
-            placeholder={`введите название`}
+            placeholder={`введите строку или ее часть`}
           />
         </InputGroup>
       </Col>
@@ -124,7 +130,7 @@ function PaginationPanel({
           </li>
           <li>
             <a className="page-link disabled">
-              Стр.:{' '}<strong>{pageIndex + 1}</strong> из <strong>{pageOptions.length}</strong>{' '}
+              <strong>{pageIndex + 1}</strong> из <strong>{pageOptions.length}</strong>{' '}
             </a>
           </li>
           <li className="page-item" role="button" onClick={() => nextPage()} disabled={!canNextPage}>

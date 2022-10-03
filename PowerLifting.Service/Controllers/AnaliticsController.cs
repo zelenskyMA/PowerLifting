@@ -17,9 +17,9 @@ namespace PowerLifting.Service.Controllers
 
         [HttpGet]
         [Route("getPlanAnalitics")]
-        public async Task<PlanAnalitics> GetPlanAnaliticsAsync(DateTime startDate, DateTime finishDate)
+        public async Task<PlanAnalitics> GetPlanAnaliticsAsync(DateTime startDate, DateTime finishDate, int userId = 0)
         {
-            var result = await _planAnaliticsCommands.GetAsync(
+            var result = await _planAnaliticsCommands.GetAsync(userId,
                 new TimeSpanEntity() { StartDate = startDate, FinishDate = finishDate });
 
             return result;

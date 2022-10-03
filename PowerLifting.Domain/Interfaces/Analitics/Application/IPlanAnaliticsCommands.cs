@@ -8,8 +8,9 @@ namespace PowerLifting.Domain.Interfaces.Analitics.Application
         /// <summary>
         /// Get plan counters for selected period
         /// </summary>
+        /// <param name="userId">Optional user Id for coach data request</param>
         /// <param name="span">Request period with start and finish date</param>
         /// <returns></returns>
-        Task<PlanAnalitics> GetAsync(TimeSpanEntity span);
+        Task<PlanAnalitics> GetAsync(int userId, TimeSpanEntity span);
     }
 }
