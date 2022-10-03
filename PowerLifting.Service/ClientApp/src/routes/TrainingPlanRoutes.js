@@ -4,7 +4,7 @@ import PlanDayCreate from "../components/trainingPlan/edit/PlanDayCreate";
 import PlanExercisesCreate from "../components/trainingPlan/edit/PlanExercisesCreate";
 import PlanExerciseSettingsEdit from "../components/trainingPlan/edit/PlanExerciseSettingsEdit";
 
-import PlansList from "../components/trainingPlan/view/PlansList";
+import PlansListView from "../components/trainingPlan/view/PlansListView";
 
 const TrainingPlanRoutes = [
   { path: '/createPlanExercises/:id', element: <PlanExercisesCreate /> },
@@ -13,7 +13,7 @@ const TrainingPlanRoutes = [
   { path: '/createPlan', element: <PlanCreate /> },
   { path: '/editPlanExerciseSettings/:dayId/:id', element: <PlanExerciseSettingsEdit /> },
 
-  { path: '/plansList', element: <PlansList /> }
+  { path: '/plansList', element: <PlansListView /> }
 ];
 
 export default TrainingPlanRoutes;

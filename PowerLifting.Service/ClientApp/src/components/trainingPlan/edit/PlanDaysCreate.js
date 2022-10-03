@@ -9,7 +9,7 @@ import WithRouter from "../../../common/extensions/WithRouter";
 const mapStateToProps = store => {
   return {
     planId: store.trainingPlan.planId,
-    groupUserId: store.groupUserId,
+    groupUserId: store.coach.groupUserId,
   }
 }
 
@@ -127,15 +127,10 @@ class PlanDaysCreate extends React.Component {
       return (<></>);
     }
 
-    var userId = this.props.groupUserId;
+    var url = this.props.groupUserId ? `/groupUser/${this.props.groupUserId}` : "/plansList";
 
     return (<Col>
-      <Button color="primary" onClick={ async () => {
-        await this.props.setGroupUserId(0);
-
-        if (userId == 0) { this.props.navigate("/"); }
-        else { this.props.navigate("/coachConsole"); }
-      }}>Завершить</Button>
+      <Button color="primary" onClick={async () => this.props.navigate(url)}>Завершить</Button>
     </Col>);
   }
 

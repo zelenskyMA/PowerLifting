@@ -10,8 +10,8 @@ import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {
-    planId: store.planId,
-    groupUserId: store.groupUserId,
+    planId: store.trainingPlan.planId,
+    groupUserId: store.coach.groupUserId,
   }
 }
 
