@@ -44,7 +44,7 @@ class GroupUserCardPanel extends Component {
 
   changeGroup = async () => {
     try {
-      var userGroup = { userId: this.state.request.userId, groupId: this.state.selectedGroupId };
+      var userGroup = { userId: this.props.params.id, groupId: this.state.selectedGroupId };
       await PostAsync(`/trainingGroups/updateUserGroup`, userGroup);
     }
     catch (error) { this.setState({ error: error.message }); }
@@ -52,7 +52,8 @@ class GroupUserCardPanel extends Component {
 
   removeUser = async () => {
     try {
-      await PostAsync(`/trainingRequests/remove?userId=${this.state.request.userId}`);
+      var userGroup = { userId: this.props.params.id, groupId: this.state.card?.groupInfo?.id };
+      await PostAsync(`/trainingGroups/removeFromGroup`, userGroup);
       this.props.navigate(`/coachConsole`);
     }
     catch (error) { this.setState({ error: error.message }); }

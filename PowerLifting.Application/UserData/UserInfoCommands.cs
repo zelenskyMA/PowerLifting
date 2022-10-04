@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using PowerLifting.Application.Coaching;
 using PowerLifting.Application.Common;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Enums;
+using PowerLifting.Domain.Interfaces.Coaching.Application;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Domain.Models.UserData;
@@ -15,6 +17,7 @@ namespace PowerLifting.Application.UserData
         private readonly IUserBlockCommands _userBlockCommands;
         private readonly IUserRoleCommands _userRoleCommands;
         private readonly IUserAchivementCommands _userAchivementCommands;
+        private readonly ITrainingGroupCommands _trainingGroupCommands;
 
         private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
         private readonly ICrudRepo<UserDb> _userRepository;
@@ -25,6 +28,7 @@ namespace PowerLifting.Application.UserData
             IUserBlockCommands userBlockCommands,
             IUserRoleCommands userRoleCommands,
             IUserAchivementCommands userAchivementCommands,
+            ITrainingGroupCommands trainingGroupCommands,
             ICrudRepo<UserInfoDb> userInfoRepository,
             ICrudRepo<UserDb> userRepository,
             IUserProvider user,
@@ -33,6 +37,8 @@ namespace PowerLifting.Application.UserData
             _userBlockCommands = userBlockCommands;
             _userRoleCommands = userRoleCommands;
             _userAchivementCommands = userAchivementCommands;
+            _trainingGroupCommands = trainingGroupCommands;
+
             _userInfoRepository = userInfoRepository;
             _userRepository = userRepository;
             _user = user;
@@ -87,6 +93,7 @@ namespace PowerLifting.Application.UserData
                 UserName = Naming.GetLegalFullName(info),
                 Login = userDb.Email,
                 BaseInfo = info,
+                GroupInfo = await _trainingGroupCommands.GetUserGroupAsync(userId),
                 Achivements = await _userAchivementCommands.GetAsync(userId)
             };
 
