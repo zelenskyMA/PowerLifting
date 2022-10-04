@@ -58,6 +58,13 @@ namespace PowerLifting.Service.Controllers.Coaching
         }
 
         [HttpPost]
+        [Route("rejectCoach")]
+        public async Task<bool> RejectCoach() {
+            await _userTrainingGroupCommands.RejectCoach();
+            return true;
+        }
+
+        [HttpPost]
         [Route("updateUserGroup")]
         public async Task<bool> UpdateUserGroupAsync(UserTrainingGroup targetGroup)
         {
