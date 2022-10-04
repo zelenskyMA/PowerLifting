@@ -15,8 +15,8 @@ class CoachConsoleView extends Component {
       <>
         <h3 className="spaceBottom">Тренерский кабинет</h3>
         <TabControl data={[
-          { id: 1, label: 'Заявки', renderContent: () => this.requestsContent() },
-          { id: 2, label: 'Группы', renderContent: () => this.groupsContent() }
+          { id: 1, label: 'Группы', renderContent: () => this.groupsContent() },
+          { id: 2, label: 'Заявки', renderContent: () => this.requestsContent() },
         ]}
         />
       </>

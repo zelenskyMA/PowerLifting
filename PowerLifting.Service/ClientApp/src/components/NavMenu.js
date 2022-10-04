@@ -41,11 +41,11 @@ export class NavMenu extends Component {
             <ul className="navbar-nav flex-grow">
 
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
               </NavItem>
 
               <NavItem style={{ marginRight: '20px' }}>
-                <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
               </NavItem>
 
               {this.coachGroupsLink()}
