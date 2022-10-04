@@ -1,4 +1,6 @@
-﻿namespace PowerLifting.Domain.Models.UserData
+﻿using PowerLifting.Domain.Models.Coaching;
+
+namespace PowerLifting.Domain.Models.UserData
 {
     public class UserCard
     {
@@ -11,6 +13,8 @@
         public UserInfo BaseInfo { get; set; }
 
         public List<UserAchivement> Achivements { get; set; }
+
+        public TrainingGroup GroupInfo { get; set; }
 
         public UserBlockHistory? BlockReason { get; set; }
 

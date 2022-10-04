@@ -70,7 +70,7 @@ public class TrainingGroupCommands : ITrainingGroupCommands
             Id = t.UserId,
             FullName = Naming.GetLegalFullName(t.FirstName, t.Surname, t.Patronimic),
             ActivePlansCount = allActivePlans.Count(t => t.UserId == t.UserId),
-        }).OrderBy(t=> t.FullName).ToList();
+        }).OrderBy(t => t.FullName).ToList();
 
         var groupInfo = new TrainingGroupInfo()
         {
@@ -80,6 +80,25 @@ public class TrainingGroupCommands : ITrainingGroupCommands
 
         return groupInfo;
     }
+
+    /// <inheritdoc />
+    public async Task<TrainingGroup> GetUserGroupAsync(int userId)
+    {
+        var userGroupDb = (await _userTrainingGroupRepository.FindAsync(t => t.UserId == userId))?.FirstOrDefault();
+        if (userGroupDb == null)
+        {
+            throw new BusinessException("У спортсмена нет группы");
+        }
+
+        var groupDb = (await _trainingGroupRepository.FindAsync(t => t.Id == userGroupDb.GroupId)).FirstOrDefault();
+        if (groupDb == null)
+        {
+            throw new BusinessException("Группа не найдена");
+        }
+
+        return _mapper.Map<TrainingGroup>(groupDb);
+    }
+
 
     /// <inheritdoc />
     public async Task CreateAsync(TrainingGroup group)

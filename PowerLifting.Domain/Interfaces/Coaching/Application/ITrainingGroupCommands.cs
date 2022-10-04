@@ -18,6 +18,13 @@ namespace PowerLifting.Domain.Interfaces.Coaching.Application
         Task<TrainingGroupInfo> GetAsync(int id);
 
         /// <summary>
+        /// Get user group information by user Id
+        /// </summary>
+        /// <param name="userId">user Id</param>
+        /// <returns></returns>
+        Task<TrainingGroup> GetUserGroupAsync(int userId);
+
+        /// <summary>
         /// Create new training group
         /// </summary>
         /// <param name="name">Group name</param>

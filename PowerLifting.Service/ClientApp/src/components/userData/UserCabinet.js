@@ -43,6 +43,12 @@ class UserCabinet extends Component {
     this.setState({ trainingRequest: trainingRequestData });
   }
 
+  rejectCoach = async () => {
+    await PostAsync(`/trainingGroups/rejectCoach`);
+    var info = await GetAsync("/userInfo/get");
+    this.setState({ userInfo: info });
+  }
+
   confirmAsync = async () => {
     await PostAsync(`/userInfo/update`, this.state.userInfo);
     await PostAsync(`/userAchivement/create`, [this.state.pushAchivement, this.state.jerkAchivement]);
@@ -123,12 +129,15 @@ class UserCabinet extends Component {
 
   coachRequestView = () => {
     if (this.state.userInfo.coachLegalName) {
-      return (this.state.userInfo.coachLegalName);
+      return (<>
+        <strong className="spaceRight" >{this.state.userInfo.coachLegalName}</strong>
+        <Button color="primary" onClick={() => this.rejectCoach()}>Отказаться</Button >
+      </>);
     }
 
     if (this.state.trainingRequest.coachName) {
       return (<>
-        <strong style={{ marginRight: '20px' }} >Заявка подана тренеру {this.state.trainingRequest.coachName}</strong>
+        <strong className="spaceRight" >Заявка подана тренеру {this.state.trainingRequest.coachName}</strong>
         <Button color="primary" onClick={() => this.cancelRequest()}>Отменить</Button >
       </>
       );

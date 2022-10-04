@@ -17,5 +17,11 @@ namespace PowerLifting.Domain.Interfaces.Coaching.Application
         /// <param name="targetGroup">Target group and user Id</param>
         /// <returns></returns>
         Task RemoveUserFromGroup(UserTrainingGroup targetGroup);
+
+        /// <summary>
+        /// User rejects coach
+        /// </summary>
+        /// <returns></returns>
+        Task RejectCoach();
     }
 }

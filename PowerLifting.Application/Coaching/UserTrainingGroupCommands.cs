@@ -7,6 +7,7 @@ using PowerLifting.Domain.Interfaces.Coaching.Application;
 using PowerLifting.Domain.Interfaces.Coaching.Repositories;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Models.Coaching;
+using PowerLifting.Domain.Models.UserData;
 
 namespace PowerLifting.Application.Coaching
 {
@@ -54,13 +55,37 @@ namespace PowerLifting.Application.Coaching
         /// <inheritdoc />
         public async Task RemoveUserFromGroup(UserTrainingGroup targetGroup)
         {
-            await CheckAssignmentAvailable(targetGroup);
+            (TrainingGroupDb group, UserInfoDb userInfo) = await CheckAssignmentAvailable(targetGroup);
 
             var userGroupsDb = await _userTrainingGroupRepository.FindAsync(t => t.UserId == targetGroup.UserId && t.GroupId == targetGroup.GroupId);
             if (userGroupsDb.Any())
             {
                 await _userTrainingGroupRepository.DeleteAsync(userGroupsDb.First());
+
+                userInfo.CoachId = null;
+                await _userInfoRepository.UpdateAsync(userInfo);
             }
+        }
+
+        /// <inheritdoc />
+        public async Task RejectCoach()
+        {
+            var userInfoDb = (await _userInfoRepository.FindAsync(t => t.UserId == _user.Id)).FirstOrDefault();
+            if (userInfoDb == null)
+            {
+                throw new BusinessException("Пользователь не найден");
+            }
+
+            var userGroupDb = (await _userTrainingGroupRepository.FindAsync(t => t.UserId == _user.Id)).FirstOrDefault();
+            if (userGroupDb != null)
+            {
+                await _userTrainingGroupRepository.DeleteAsync(userGroupDb);
+            }
+
+            await _trainingRequestCommands.RemoveRequestAsync(_user.Id);
+
+            userInfoDb.CoachId = null;
+            await _userInfoRepository.UpdateAsync(userInfoDb);
         }
 
 
