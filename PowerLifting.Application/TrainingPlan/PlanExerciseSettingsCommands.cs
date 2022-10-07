@@ -39,7 +39,7 @@ namespace PowerLifting.Application.TrainingPlan
             }
 
             var planExercise = (await _planExerciseRepository.FindAsync(t => t.Id == settingsDb.PlanExerciseId)).First();
-            var exercise = (await _exerciseCommands.GetAsync(planExercise.ExerciseId)).First();
+            var exercise = await _exerciseCommands.GetAsync(planExercise.ExerciseId);
             var percentages = await GetPercentagesAsync();
 
             var settings = _mapper.Map<PlanExerciseSettings>(settingsDb);

@@ -6,6 +6,10 @@ namespace PowerLifting.Domain.DbModels.TrainingPlan
     [Table("Exercises", Schema = "dbo")]
     public class ExerciseDb : NamedEntityDb
     {
+        public int? UserId { get; set; }
+
+        public bool Closed { get; set; }
+
         public int ExerciseTypeId { get; set; }
 
         public int ExerciseSubTypeId { get; set; }

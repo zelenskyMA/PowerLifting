@@ -14,7 +14,7 @@ namespace PowerLifting.Infrastructure
         public DbSet<PlanExerciseSettingsDb> PlanExerciseSettings { get; set; }
         public DbSet<ExerciseDb> Exercises { get; set; }
         public DbSet<PercentageDb> Percentages { get; set; }
-
+        
         public DbSet<DictionaryDb> Dictionaries { get; set; }
         public DbSet<DictionaryTypeDb> DictionaryTypes { get; set; }
 

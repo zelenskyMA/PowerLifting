@@ -1,7 +1,12 @@
 ﻿import React, { useState } from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup, InputGroupText} from "reactstrap";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup, InputGroupText } from "reactstrap";
 
-export function DropdownControl({ data, onChange, placeholder, label, noData ='' }) {
+export function DropdownControl({ data, onChange, placeholder, label, defaultValue = 0, noData = '' }) {
+  var selectedItem = data.find(t => t.id === defaultValue);
+  if (selectedItem) {
+    placeholder = selectedItem.name;
+  }
+
   const [isOpened, toggleControl] = useState(false);
   const [selectedText, changeSelection] = useState(placeholder);
 
@@ -17,7 +22,7 @@ export function DropdownControl({ data, onChange, placeholder, label, noData =''
           <DropdownMenu container="body">
             {data.map((item) => {
               return (
-                <DropdownItem key={'dd_' + item.id} onClick={() => setValue(item, changeSelection, toggleControl, onChange)}>
+                <DropdownItem active={item.id == defaultValue} key={'dd_' + item.id} onClick={() => setValue(item, changeSelection, toggleControl, onChange)}>
                   {item.name}
                 </DropdownItem>
               );

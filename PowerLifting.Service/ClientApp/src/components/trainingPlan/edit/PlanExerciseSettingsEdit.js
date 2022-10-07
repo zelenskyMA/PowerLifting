@@ -20,13 +20,13 @@ class PlanExerciseSettingsEdit extends Component {
   componentDidMount() { this.loadExerciseSettings(); }
 
   async loadExerciseSettings() {
-    var settingsData = await GetAsync(`exercise/getExerciseSettings?id=${this.props.params.id}`);
-    var achivementData = await GetAsync(`userAchivement/getByExercise?exerciseTypeId=${settingsData?.exercise?.exerciseTypeId}`);
+    var settingsData = await GetAsync(`/exerciseInfo/getExerciseSettings?id=${this.props.params.id}`);
+    var achivementData = await GetAsync(`/userAchivement/getByExercise?exerciseTypeId=${settingsData?.exercise?.exerciseTypeId}`);
     this.setState({ exercisesSettings: settingsData, achivement: achivementData, loading: false });
   }
 
   confirmAsync = async () => {
-    await PostAsync(`/exercise/updateExerciseSettings`, this.state.exercisesSettings);
+    await PostAsync(`/exerciseInfo/updateExerciseSettings`, this.state.exercisesSettings);
     this.props.navigate(`/createPlanDay/${this.props.params.dayId}`);
   }
 

@@ -28,9 +28,9 @@ class Home extends Component {
     }
 
     const [data, percentages, achivementsData] = await Promise.all([
-      GetAsync("trainingPlan/getCurrentDay"),
-      GetAsync("exercise/getPercentages"),
-      GetAsync("userAchivement/get")
+      GetAsync("/trainingPlan/getCurrentDay"),
+      GetAsync("/exerciseInfo/getPercentages"),
+      GetAsync("/userAchivement/get")
     ]);
 
     this.setState({ planDay: data, percentages: percentages, achivements: achivementsData, loggedUser: true, loading: false });

@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using PowerLifting.Application.TrainingPlan.Process;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application.Process;
-using PowerLifting.Domain.Interfaces.TrainingPlan.Repositories;
 using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Application.TrainingPlan
