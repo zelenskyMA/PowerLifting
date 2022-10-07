@@ -41,7 +41,6 @@ builder.Services.AddControllersWithViews();
 
 //misc services
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 
 var connString = builder.Configuration.GetConnectionString("ConnectionDb");
