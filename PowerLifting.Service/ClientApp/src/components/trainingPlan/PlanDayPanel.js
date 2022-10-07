@@ -79,12 +79,12 @@ function Tooltips({ planDay, idPrefix, mode, percentages, achivements }) {
 
 function ExerciseSettingsPanel({ settings }) {
   if (settings.weight === 0) {
-    return (<> - </>);
+    return (<div style={{ width: "80px" }}> - </div>);
   }
 
   return (
-    <>
+    <div style={{ width: "80px" }}>
       {settings.weight} | {settings.iterations} < br /> {settings.exercisePart1} | {settings.exercisePart2} | {settings.exercisePart3}
-    </>
+    </div>
   );
 }
