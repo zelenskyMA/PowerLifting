@@ -32,7 +32,7 @@ class LoginUser extends React.Component {
       <>
         <h3>Вход</h3>
 
-        <Container fluid>
+        <Container onKeyPress={async (e) => e.key === 'Enter' && await this.onLogin()} fluid>
           <ErrorPanel errorMessage={this.state.error} />
 
           <Row style={{ marginTop: '30px' }}>

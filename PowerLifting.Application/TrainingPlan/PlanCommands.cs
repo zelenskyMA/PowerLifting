@@ -106,7 +106,7 @@ namespace PowerLifting.Application.TrainingPlan
 
             var dbPlans = await _trainingPlanRepository.FindAsync(t => 
                 t.UserId == _user.Id && 
-                t.StartDate <= now && t.StartDate <= now.AddDays(6));
+                t.StartDate <= now && t.StartDate >= now.AddDays(-6));
             if (!dbPlans.Any())
             {
                 return emptyDay;

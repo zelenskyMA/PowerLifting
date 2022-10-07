@@ -3,6 +3,7 @@ import UserRoutes from "./UserRoutes";
 import AnaliticsRoutes from "./AnaliticsRoutes";
 import AdminRoutes from "./AdminRoutes";
 import CoachRoutes from "./CoachRoutes";
+import ExerciseRoutes from "./ExerciseRoutes";
 
 import Home from "../components/Home";
 
@@ -13,7 +14,8 @@ const AppRoutes = [
   ...UserRoutes,
   ...AnaliticsRoutes,
   ...AdminRoutes,
-  ...CoachRoutes
+  ...CoachRoutes,
+  ...ExerciseRoutes
 ];
 
 export default AppRoutes;

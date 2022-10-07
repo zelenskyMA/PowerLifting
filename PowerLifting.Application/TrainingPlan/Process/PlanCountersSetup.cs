@@ -46,7 +46,7 @@ namespace PowerLifting.Application.TrainingPlan.Process
             // простые суммы значений
             day.WeightLoadSum = day.Exercises.Sum(t => t.WeightLoad);
             day.LiftCounterSum = day.Exercises.Sum(t => t.LiftCounter);
-            day.IntensitySum = day.Exercises.Sum(t => t.Intensity);
+            day.IntensitySum = day.Exercises.Count() > 0 ? day.Exercises.Sum(t => t.Intensity) / day.Exercises.Count() : 0;
 
 
             // считаем, сколько упражнений по подтипам в тренировочном дне. 

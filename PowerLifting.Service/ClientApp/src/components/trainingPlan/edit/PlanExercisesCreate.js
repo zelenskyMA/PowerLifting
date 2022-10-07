@@ -18,8 +18,8 @@ class PlanExercisesCreate extends Component {
 
   async getExercises() {
     const [settingsList, planExercises] = await Promise.all([
-      GetAsync("exercise/getList"),
-      GetAsync(`trainingPlan/getPlanExercises?dayId=${this.props.params.id}`)
+      GetAsync("/exerciseInfo/getPlanningList"),
+      GetAsync(`/trainingPlan/getPlanExercises?dayId=${this.props.params.id}`)
     ]);
 
     var planExercisesData = planExercises.map((item, i) => item.exercise);

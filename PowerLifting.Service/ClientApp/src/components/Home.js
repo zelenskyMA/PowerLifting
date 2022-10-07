@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { GetAsync } from "../common/ApiActions";
 import { GetToken } from '../common/TokenActions';
 import { PlanDayPanel } from "./trainingPlan/PlanDayPanel";
+import { DateToLocal } from "../common/Localization";
 import WithRouter from "../common/extensions/WithRouter";
+import '../styling/Common.css';
 
 class Home extends Component {
   constructor() {
@@ -12,6 +14,7 @@ class Home extends Component {
       planDay: Object,
       percentages: [],
       achivements: [],
+      loggedUser: false,
       loading: true,
     };
   }
@@ -25,31 +28,46 @@ class Home extends Component {
     }
 
     const [data, percentages, achivementsData] = await Promise.all([
-      GetAsync("trainingPlan/getCurrentDay"),
-      GetAsync("exercise/getPercentages"),
-      GetAsync("userAchivement/get")
+      GetAsync("/trainingPlan/getCurrentDay"),
+      GetAsync("/exerciseInfo/getPercentages"),
+      GetAsync("/userAchivement/get")
     ]);
 
-    this.setState({ planDay: data, percentages: percentages, achivements: achivementsData, loading: false });
+    this.setState({ planDay: data, percentages: percentages, achivements: achivementsData, loggedUser: true, loading: false });
   }
 
 
   render() {
     return (
       <>
-        <h3>Помощник спортсмена</h3>
-        <p style={{ marginBottom: '30px' }}>Программа для ведения планов тренировок спортсменов</p>
+        <h3>Спортивный ассистент</h3>
 
         {this.planDayPanel()}
       </>
     );
   }
 
-  planDayPanel() {
+  planDayPanel = () => {
+    if (this.state.loggedUser === false) { return (this.noUserPanel()); }
     if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
-    if (this.state.planDay?.id == null) { return (<p><em>Нет тренировок на сегодня</em></p>); }
 
-    return (<PlanDayPanel planDay={this.state.planDay} percentages={this.state.percentages} achivements={this.state.achivements} />);
+    return (
+      <>
+        <p className="spaceBottom" >Ваш план на <strong>{DateToLocal(new Date())}</strong></p>
+
+        {this.state.planDay.id ?
+          <PlanDayPanel planDay={this.state.planDay} percentages={this.state.percentages} achivements={this.state.achivements} />
+          : <p><em>У вас нет тренировок на сегодня</em></p>
+        }
+      </>
+    );
+  }
+
+  noUserPanel = () => {
+    return (<>
+      <p className="spaceBottom" >Ведение тренировок для спортсменов. <strong>{DateToLocal(new Date())}</strong></p>
+      <p>Войдите в свой кабинет, или создайте нового пользователя чтобы начать планирование тренировок.</p>
+    </>);
   }
 
 }

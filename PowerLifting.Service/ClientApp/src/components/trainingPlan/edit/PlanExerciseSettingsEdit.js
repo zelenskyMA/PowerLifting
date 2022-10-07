@@ -4,6 +4,7 @@ import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { WeightCount } from "../../../common/Localization";
 import { InputNumber, InputTextArea, MultiNumberInput } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
+import '../../../styling/Common.css';
 
 class PlanExerciseSettingsEdit extends Component {
   constructor() {
@@ -19,13 +20,13 @@ class PlanExerciseSettingsEdit extends Component {
   componentDidMount() { this.loadExerciseSettings(); }
 
   async loadExerciseSettings() {
-    var settingsData = await GetAsync(`exercise/getExerciseSettings?id=${this.props.params.id}`);
-    var achivementData = await GetAsync(`userAchivement/getByExercise?exerciseTypeId=${settingsData?.exercise?.exerciseTypeId}`);
+    var settingsData = await GetAsync(`/exerciseInfo/getExerciseSettings?id=${this.props.params.id}`);
+    var achivementData = await GetAsync(`/userAchivement/getByExercise?exerciseTypeId=${settingsData?.exercise?.exerciseTypeId}`);
     this.setState({ exercisesSettings: settingsData, achivement: achivementData, loading: false });
   }
 
   confirmAsync = async () => {
-    await PostAsync(`/exercise/updateExerciseSettings`, this.state.exercisesSettings);
+    await PostAsync(`/exerciseInfo/updateExerciseSettings`, this.state.exercisesSettings);
     this.props.navigate(`/createPlanDay/${this.props.params.dayId}`);
   }
 
@@ -38,11 +39,11 @@ class PlanExerciseSettingsEdit extends Component {
 
     return (
       <>
-        <h3 >Упражнение '<i>{this.state.exercisesSettings?.exercise?.name}</i>'</h3>
+        <h4><i>{this.state.exercisesSettings?.exercise?.name}</i></h4>
 
         {this.percentageInfoPanel(this.state.exercisesSettings.percentage, this.state.achivement)}
 
-        <Row style={{ marginTop: '30px' }}>
+        <Row className="spaceTop">
           <Col xs={3}>
             <InputNumber label="Вес:" propName="weight" onChange={this.onValueChange} initialValue={this.state.exercisesSettings.weight} />
           </Col>
@@ -51,7 +52,7 @@ class PlanExerciseSettingsEdit extends Component {
               onChange={this.onValueChange} initialValue={this.state.exercisesSettings.iterations} />
           </Col>
         </Row>
-        <Row style={{ marginTop: '30px' }}>
+        <Row className="spaceTop">
           <Col xs={5}>
             <MultiNumberInput label="Количество повторов частей упражнения:" onChange={this.onValueChange} inputList={[
               { propName: 'exercisePart1', initialValue: this.state.exercisesSettings.exercisePart1 },
@@ -61,7 +62,7 @@ class PlanExerciseSettingsEdit extends Component {
           </Col>
         </Row>
 
-        <Row style={{ marginTop: '30px' }}>
+        <Row className="spaceTop">
           <Col xs={5}>
             <InputTextArea onChange={this.onValueChange} propName="comments" cols={85}
               label="Оставьте комментарий для выполняющего упражнение" initialValue={this.state?.exercisesSettings?.comments} />

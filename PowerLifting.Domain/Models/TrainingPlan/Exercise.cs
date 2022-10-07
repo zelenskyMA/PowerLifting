@@ -4,6 +4,10 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 {
     public class Exercise : NamedEntity
     {
+        public int UserId { get; set; } = 0;
+
+        public bool Closed { get; set; }
+
         /// <summary>
         /// Держим в модели, чтобы позволить изменять упражнения в тренировочном дне.
         /// </summary>
@@ -17,7 +21,7 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 
         public string? ExerciseSubTypeName { get; set; }
 
-        public Exercise Clone()
+        public virtual Exercise Clone()
         {
             return (Exercise)MemberwiseClone();
         }

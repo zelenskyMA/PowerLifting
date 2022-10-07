@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { GetAsync } from "../common/ApiActions";
 import { GetToken, RemoveTokens } from '../common/TokenActions';
 import '../styling/NavMenu.css';
+import '../styling/Common.css';
 
 export class NavMenu extends Component {
   constructor(props) {
@@ -35,17 +36,21 @@ export class NavMenu extends Component {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-          <NavbarBrand tag={Link} to="/">Помощник спортсмена</NavbarBrand>
+          <NavbarBrand tag={Link} to="/">Главная</NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
 
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
               </NavItem>
 
-              <NavItem style={{ marginRight: '20px' }}>
-                <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/exercises">Упражнения</NavLink>
+              </NavItem>
+
+              <NavItem className="spaceRight">
+                <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
               </NavItem>
 
               {this.coachGroupsLink()}
