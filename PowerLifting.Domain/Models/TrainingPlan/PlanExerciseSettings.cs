@@ -6,6 +6,8 @@ namespace PowerLifting.Domain.Models.TrainingPlan
     {
         public int PlanExerciseId { get; set; }
 
+        public bool Completed { get; set; }
+
         /// <summary>
         /// Вес, который будет подниматься при выполнении упражнения
         /// </summary>
@@ -30,8 +32,6 @@ namespace PowerLifting.Domain.Models.TrainingPlan
         /// Количество повторов третьей части упражнения
         /// </summary>
         public int ExercisePart3 { get; set; }
-
-        public string? Comments { get; set; }
 
         public Percentage? Percentage { get; set; }
 

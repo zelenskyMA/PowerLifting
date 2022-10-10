@@ -29,9 +29,9 @@ class PlanDaysCreate extends React.Component {
     };
   }
 
-  componentDidMount() { this.getTrainingPlan(); }
+  componentDidMount() { this.getInitData(); }
 
-  getTrainingPlan = async () => {
+  getInitData = async () => {
     var plan = await GetAsync(`/trainingPlan/get?Id=${this.props.planId}`);
     this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum });
   }

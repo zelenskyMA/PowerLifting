@@ -10,6 +10,8 @@ namespace PowerLifting.Domain.DbModels.TrainingPlan
 
         public int PlanExerciseId { get; set; }
 
+        public bool Completed { get; set; }
+
         public int Weight { get; set; } = 0;
 
         public int Iterations { get; set; } = 0;
@@ -19,7 +21,5 @@ namespace PowerLifting.Domain.DbModels.TrainingPlan
         public int ExercisePart2 { get; set; } = 0;
 
         public int ExercisePart3 { get; set; } = 0;
-
-        public string? Comments { get; set; }   
     }
 }

@@ -15,3 +15,11 @@
   margin-top: 15px;
   margin-left: 15px;
 }
+
+.intColumn {
+  width: 25px;
+}
+
+.nameColumn {
+  width: 250px;
+}

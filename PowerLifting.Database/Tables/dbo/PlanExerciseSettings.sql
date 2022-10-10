@@ -7,8 +7,8 @@
     [Iterations] INT NOT NULL DEFAULT 0,
     [ExercisePart1] INT NOT NULL DEFAULT 0,
     [ExercisePart2] INT NOT NULL DEFAULT 0,
-    [ExercisePart3] INT NOT NULL DEFAULT 0, 
-    [Comments] NVARCHAR(250) NULL, 
+    [ExercisePart3] INT NOT NULL DEFAULT 0,
+    [Completed] BIT NOT NULL DEFAULT 0,
     CONSTRAINT [PK_PlanExerciseSettings] PRIMARY KEY ([Id]),
     FOREIGN KEY ([PercentageId]) REFERENCES [dbo].[Percentages] ([Id]),
     FOREIGN KEY ([PlanExerciseId]) REFERENCES [dbo].[PlanExercises] ([Id])

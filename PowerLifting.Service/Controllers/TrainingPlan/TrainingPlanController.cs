@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PowerLifting.Application.TrainingPlan;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Models.TrainingPlan;
 
@@ -23,7 +24,7 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
         {
             var result = await _trainingPlanCommands.GetPlansAsync(userId);
             return result;
-        }               
+        }
 
         [HttpGet]
         [Route("get")]
@@ -55,11 +56,11 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
         {
             var result = await _trainingPlanCommands.GetCurrentDayAsync();
             return result;
-        }        
+        }
 
         [HttpGet]
         [Route("getPlanExercises")]
-        public async Task<List<PlanExercise>> GetPlannedExerciseAsync(int dayId)
+        public async Task<List<PlanExercise>> GetPlannedExercisesAsync(int dayId)
         {
             var result = await _plannedExerciseCommands.GetAsync(dayId);
             return result;
@@ -70,6 +71,22 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
         public async Task<bool> CreatePlannedExerciseAsync(int dayId, [FromBody] List<Exercise> exercises)
         {
             await _plannedExerciseCommands.CreateAsync(dayId, exercises);
+            return true;
+        }
+
+        [HttpGet]
+        [Route("getPlanExercise")]
+        public async Task<PlanExercise> GetPlannedExerciseAsync(int id)
+        {
+            var result = await _plannedExerciseCommands.GetByIdAsync(id);
+            return result;
+        }
+
+        [HttpPost]
+        [Route("updatePlanExercise/{userId:int}")]
+        public async Task<bool> UpdatePlanExerciseAsync(int userId, PlanExercise planExercise)
+        {
+            await _plannedExerciseCommands.UpdateAsync(userId, planExercise);
             return true;
         }
     }

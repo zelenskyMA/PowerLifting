@@ -24,9 +24,9 @@ namespace PowerLifting.Service.Controllers.UserData
 
         [HttpGet]
         [Route("getByExercise")]
-        public async Task<UserAchivement> GetByExerciseAsync(int exerciseTypeId)
+        public async Task<UserAchivement> GetByExerciseAsync(int userId, int exerciseTypeId)
         {
-            var result = await _userAchivementCommands.GetByExerciseTypeAsync(exerciseTypeId);
+            var result = await _userAchivementCommands.GetByExerciseTypeAsync(userId, exerciseTypeId);
             return result;
         }
 

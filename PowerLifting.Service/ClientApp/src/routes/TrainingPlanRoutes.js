@@ -11,7 +11,7 @@ const TrainingPlanRoutes = [
   { path: '/createPlanDays', element: <PlanDaysCreate /> },
   { path: '/createPlanDay/:id', element: <PlanDayCreate /> },
   { path: '/createPlan', element: <PlanCreate /> },
-  { path: '/editPlanExerciseSettings/:dayId/:id', element: <PlanExerciseSettingsEdit /> },
+  { path: '/editPlanExerciseSettings/:id', element: <PlanExerciseSettingsEdit /> },
 
   { path: '/plansList', element: <PlansListView /> }
 ];

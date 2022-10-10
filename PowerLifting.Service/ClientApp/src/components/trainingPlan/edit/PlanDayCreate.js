@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Button } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
 import { DateToLocal } from "../../../common/Localization";
-import { PlanDayPanel } from "../PlanDayPanel";
+import { ExerciseSettingsPanel } from "./ExerciseSettingsPanel";
 import WithRouter from "../../../common/extensions/WithRouter";
+import '../../../styling/Common.css';
 
 class PlanDayCreate extends Component {
   constructor() {
@@ -11,41 +12,72 @@ class PlanDayCreate extends Component {
 
     this.state = {
       planDay: Object,
-      percentages: [],
-      achivements: [],
       loading: true,
     };
   }
 
-  componentDidMount() { this.loadPlanDay(); }
+  componentDidMount() { this.getInitData(); }
 
-  async loadPlanDay() {
-    const [data, percentages, achivementsData] = await Promise.all([
-      GetAsync(`/trainingPlan/getPlanDay?dayId=${this.props.params.id}`),
-      GetAsync("/exerciseInfo/getPercentages"),
-      GetAsync(`/userAchivement/get`)
-    ]);
-
-    this.setState({ planDay: data, percentages: percentages, achivements: achivementsData, loading: false });
+  async getInitData() {
+    var data = await GetAsync(`/trainingPlan/getPlanDay?dayId=${this.props.params.id}`);
+    this.setState({ planDay: data, loading: false });
   }
 
-  confirmAsync = () => { this.props.navigate("/createPlanDays"); }
+  editSettings = (planExercise) => { this.props.navigate(`/editPlanExerciseSettings/${planExercise.id}`); }
 
-  openSettings = (settings) => { this.props.navigate(`/editPlanExerciseSettings/${this.props.params.id}/${settings.id}`); }
+  confirmAsync = () => { this.props.navigate("/createPlanDays"); }
 
   render() {
     var dateView = DateToLocal(this.state.planDay.activityDate);
 
+    if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
+
     return (
       <>
-        <h3 style={{ marginBottom: '30px' }}>План тренировок на {dateView}</h3>
-        {this.state.loading ?
-          <p><em>Загрузка...</em></p> :
-          <PlanDayPanel planDay={this.state.planDay} percentages={this.state.percentages} achivements={this.state.achivements}
-            rowClick={this.openSettings} mode="Edit" />
-        }
+        <h3 className="spaceBottom">План тренировок на {dateView}</h3>
 
-        <Button style={{ marginTop: '40px' }} color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
+        <table className='table table-striped' aria-labelledby="tabelLabel">
+          <thead>
+            <tr>
+              <th className="nameColumn" >Упражнение</th>
+              {this.state.planDay.percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
+              <th className="intColumn text-center">КПШ</th>
+              <th className="intColumn text-center">Нагрузка</th>
+              <th className="intColumn text-center">Интенсивность</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.planDay.exercises.map((planExercise, i) =>
+              <tr key={'planTr' + i}>
+                <td role="button" title="Запланировать" onClick={() => this.editSettings(planExercise)}>
+                  {planExercise.exercise.name}
+                </td>
+
+                {this.state.planDay.percentages.map(item =>
+                  <td key={item.id} className="text-center">
+                    <ExerciseSettingsPanel percentage={item} settings={planExercise.settings} />
+                  </td>
+                )}
+                <td className="text-center"><strong>{planExercise.liftCounter}</strong></td>
+                <td className="text-center"><strong>{planExercise.weightLoad}</strong></td>
+                <td className="text-center"><strong>{planExercise.intensity}</strong></td>
+              </tr>
+            )}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><i>КПШ по зонам интенсивности</i></td>
+              {this.state.planDay.liftIntensities.map((intensity, i) =>
+                <td key={'kph' + i} className="text-center"> {intensity.value} </td>
+              )}
+              <td className="text-center"><strong>{this.state.planDay.liftCounterSum}</strong></td>
+              <td className="text-center"><strong>{this.state.planDay.weightLoadSum}</strong></td>
+              <td className="text-center"><strong>{this.state.planDay.intensitySum}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <Button className="spaceTop" color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
       </>
     );
   }

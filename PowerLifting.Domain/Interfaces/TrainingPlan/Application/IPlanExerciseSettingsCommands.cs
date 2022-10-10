@@ -19,24 +19,13 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         Task<List<PlanExerciseSettings>> GetAsync(List<int> planExerciseIds);
 
         /// <summary>
-        /// Get full list of current planDay percentages
-        /// </summary>
-        /// <returns></returns>
-        Task<List<Percentage>> GetPercentagesAsync();
-
-        /// <summary>
-        /// Create exercise settings for plan exercise
-        /// </summary>
-        /// <param name="planExerciseId">Plan exercise Id</param>
-        /// <returns></returns>
-        Task CreateAsync(int planExerciseId);
-
-        /// <summary>
         /// Update exercise settings for plan exercise
         /// </summary>
-        /// <param name="settings">Plan exercise settings</param>
+        /// <param name="planExerciseId">Plan exercise Id</param>
+        /// <param name="achivement">User achivement in target exercise type</param>
+        /// <param name="settingsList">List of plan exercise settings to update</param>
         /// <returns></returns>
-        Task UpdateAsync(PlanExerciseSettings settings);
+        Task UpdateAsync(int planExerciseId, int achivement, List<PlanExerciseSettings> settingsList);
 
         /// <summary>
         /// Delete all supplied items
@@ -44,5 +33,11 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         /// <param name="settings">Settings for deleting</param>
         /// <returns></returns>
         Task DeleteByPlanExerciseIdAsync(List<int> planExerciseIds);
+
+        /// <summary>
+        /// Get full list of current planDay percentages
+        /// </summary>
+        /// <returns></returns>
+        Task<List<Percentage>> GetPercentageListAsync();
     }
 }
