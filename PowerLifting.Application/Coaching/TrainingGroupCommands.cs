@@ -87,7 +87,7 @@ public class TrainingGroupCommands : ITrainingGroupCommands
         var userGroupDb = (await _userTrainingGroupRepository.FindAsync(t => t.UserId == userId))?.FirstOrDefault();
         if (userGroupDb == null)
         {
-            throw new BusinessException("У спортсмена нет группы");
+            return new TrainingGroup();
         }
 
         var groupDb = (await _trainingGroupRepository.FindAsync(t => t.Id == userGroupDb.GroupId)).FirstOrDefault();
