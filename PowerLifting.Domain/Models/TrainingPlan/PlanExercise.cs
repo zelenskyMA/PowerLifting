@@ -8,6 +8,8 @@ namespace PowerLifting.Domain.Models.TrainingPlan
 
         public int Order { get; set; }
 
+        public string? Comments { get; set; }
+
         /// <summary>
         /// Расчетное поле. КПШ по упражнению. Количество Поднятий Штанги
         /// </summary>
@@ -31,5 +33,7 @@ namespace PowerLifting.Domain.Models.TrainingPlan
         public Exercise? Exercise { get; set; } = new Exercise();
 
         public List<PlanExerciseSettings>? Settings { get; set; } = new List<PlanExerciseSettings>();
+
+        public PlanExerciseSettings SettingsTemplate { get; set; } = new PlanExerciseSettings();
     }
 }

@@ -14,9 +14,9 @@ class PlanExercisesCreate extends Component {
     };
   }
 
-  componentDidMount() { this.getExercises(); }
+  componentDidMount() { this.getInitData(); }
 
-  async getExercises() {
+  async getInitData() {
     const [settingsList, planExercises] = await Promise.all([
       GetAsync("/exerciseInfo/getPlanningList"),
       GetAsync(`/trainingPlan/getPlanExercises?dayId=${this.props.params.id}`)

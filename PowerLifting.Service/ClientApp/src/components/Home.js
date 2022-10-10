@@ -29,7 +29,7 @@ class Home extends Component {
 
     const [data, percentages, achivementsData] = await Promise.all([
       GetAsync("/trainingPlan/getCurrentDay"),
-      GetAsync("/exerciseInfo/getPercentages"),
+      GetAsync("/exerciseInfo/getPlanPercentages"),
       GetAsync("/userAchivement/get")
     ]);
 

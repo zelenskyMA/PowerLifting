@@ -90,9 +90,16 @@ namespace PowerLifting.Application.TrainingPlan
             }
 
             var planExercises = await _plannedExerciseCommands.GetAsync(dayId);
+            var percentages = planExercises.Where(t => t.Settings != null)
+                .SelectMany(t => t.Settings.Select(z => z.Percentage))
+                .DistinctBy(t => t.Id);
 
             var planDay = _mapper.Map<PlanDay>(planDayDb);
             planDay.Exercises = planExercises.Where(t => t.PlanDayId == dayId).OrderBy(t => t.Order).ToList();
+            planDay.Percentages = planExercises.Where(t => t.Settings != null)
+                .SelectMany(t => t.Settings.Select(z => z.Percentage))
+                .DistinctBy(t => t.Id).OrderBy(t => t.MinValue).ToList();
+
             _planCountersSetup.SetPlanDayCounters(planDay);
 
             return planDay;
@@ -104,8 +111,8 @@ namespace PowerLifting.Application.TrainingPlan
             var now = DateTime.Now.Date;
             var emptyDay = new PlanDay();
 
-            var dbPlans = await _trainingPlanRepository.FindAsync(t => 
-                t.UserId == _user.Id && 
+            var dbPlans = await _trainingPlanRepository.FindAsync(t =>
+                t.UserId == _user.Id &&
                 t.StartDate <= now && t.StartDate >= now.AddDays(-6));
             if (!dbPlans.Any())
             {
@@ -136,7 +143,7 @@ namespace PowerLifting.Application.TrainingPlan
             var nextPlanDate = request.CreationDate.AddDays(6);
             var preventingPlans = await _trainingPlanRepository.FindAsync(t =>
                 t.Id == userId &&
-                t.StartDate >= prevPlanDate && 
+                t.StartDate >= prevPlanDate &&
                 t.StartDate <= nextPlanDate);
 
             if (preventingPlans.Any())
@@ -155,6 +162,6 @@ namespace PowerLifting.Application.TrainingPlan
             }
 
             return plan.Id;
-        }      
+        }
     }
 }

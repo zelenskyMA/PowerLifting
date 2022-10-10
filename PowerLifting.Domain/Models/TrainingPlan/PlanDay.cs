@@ -41,5 +41,10 @@ namespace PowerLifting.Domain.Models.TrainingPlan
         /// Упражнения, назначенные на тренировочный день.
         /// </summary>
         public List<PlanExercise>? Exercises { get; set; } = new List<PlanExercise>();
+
+        /// <summary>
+        /// Процентовки, которые задействованы в плане на день
+        /// </summary>
+        public List<Percentage> Percentages { get; set; }
     }
 }

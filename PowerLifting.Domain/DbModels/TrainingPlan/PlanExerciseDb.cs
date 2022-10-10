@@ -12,5 +12,7 @@ namespace PowerLifting.Domain.DbModels.TrainingPlan
         public int ExerciseId { get; set; }
 
         public int Order { get; set; }
+
+        public string? Comments { get; set; }
     }
 }

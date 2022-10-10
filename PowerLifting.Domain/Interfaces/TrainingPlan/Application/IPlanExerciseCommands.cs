@@ -19,11 +19,26 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         Task<List<PlanExercise>> GetAsync(List<int> dayIds);
 
         /// <summary>
+        /// Get planned exercises by entity Id
+        /// </summary>
+        /// <param name="id">Planned exercise Id</param>
+        /// <returns></returns>
+        Task<PlanExercise> GetByIdAsync(int id);
+
+        /// <summary>
         /// Create new planned exercises set for training plan
         /// </summary>
         /// <param name="trainingDayId">Id of the day in training plan</param>
         /// <param name="exercises">Selected exercises for planning</param>
         /// <returns></returns>
         Task CreateAsync(int dayId, List<Exercise> exercises);
+
+        /// <summary>
+        /// Update planned exercise
+        /// </summary>
+        /// <param name="userId">Entity user</param>
+        /// <param name="planExercise">Entity to update</param>
+        /// <returns></returns>
+        Task UpdateAsync(int userId, PlanExercise planExercise);
     }
 }

@@ -11,5 +11,9 @@
         Task DeleteAsync(T entity);
 
         Task DeleteListAsync(List<T> entities);
+
+        Task CreateListAsync(List<T> entities);
+
+        Task UpdateListAsync(List<T> entities);
     }
 }

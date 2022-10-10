@@ -26,10 +26,10 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
         }
 
         [HttpGet]
-        [Route("getPercentages")]
-        public async Task<List<Percentage>> GetPercentagesAsync()
+        [Route("getPlanPercentages")]
+        public async Task<List<Percentage>> GetPlanPercentagesAsync(int dayId)
         {
-            var result = await _planExerciseSettingsCommands.GetPercentagesAsync();
+            var result = await _planExerciseSettingsCommands.GetPercentageListAsync();
             return result;
         }
 
@@ -40,14 +40,7 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
             var result = await _planExerciseSettingsCommands.GetAsync(id);
             return result;
         }
-
-        [HttpPost]
-        [Route("updateExerciseSettings")]
-        public async Task<bool> UpdateExerciseSettingsAsync([FromBody] PlanExerciseSettings settings)
-        {
-            await _planExerciseSettingsCommands.UpdateAsync(settings);
-            return true;
-        }
+               
 
         [HttpGet]
         [Route("getPlanningList")]

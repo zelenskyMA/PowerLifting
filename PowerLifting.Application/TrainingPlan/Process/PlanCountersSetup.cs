@@ -65,16 +65,18 @@ namespace PowerLifting.Application.TrainingPlan.Process
 
 
             // считаем дневную интенсивность занятий по колонкам процентов.
-            var listIntensities = day.Exercises.Select(t => t.LiftIntensities).ToList();
-            var dayIntensities = listIntensities.First();
-            listIntensities.RemoveAt(0);
-            foreach (var itemList in listIntensities)
+            var groupedIntensities = day.Exercises.Where(t => t.LiftIntensities != null && t.LiftIntensities.Count > 0)
+                .SelectMany(t => t.LiftIntensities)
+                .GroupBy(t => t.Percentage.Id).ToList();
+
+            var dayIntensities = new List<LiftIntensity>();
+            foreach (var group in groupedIntensities)
             {
-                foreach (var item in itemList)
+                dayIntensities.Add(new LiftIntensity()
                 {
-                    var dayIntensityItem = dayIntensities.FirstOrDefault(t => t.Percentage.Id == item.Percentage.Id);
-                    dayIntensityItem.Value += item.Value;
-                }
+                    Percentage = group.First().Percentage,
+                    Value = group.Sum(t => t.Value)
+                });
             }
 
             day.LiftIntensities = dayIntensities.OrderBy(t => t.Percentage.MinValue).ToList();

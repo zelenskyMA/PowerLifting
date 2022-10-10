@@ -1,11 +1,50 @@
 ﻿import React from 'react';
-import { UncontrolledTooltip } from 'reactstrap';
-import { WeightCount } from "../../common/Localization";
-import '../../styling/Common.css';
+import { UncontrolledTooltip } from "reactstrap";
+import '../../../styling/Common.css';
+import Barbell from '../../../styling/icons/barbell.png';
 
-function defaultRowClick(settings) { }
+export function ExerciseSettingsPanel({ percentage, settings }) {
+  var idPrefix = String("settings_" + percentage.id);
 
-export function PlanDayPanel({ planDay, percentages = [], achivements = [], rowClick = defaultRowClick, mode = 'View' }) {
+  var settingsList = settings.filter(t => t.percentage.id === percentage.id);
+
+  if (settingsList.length === 0 || settingsList.filter(t => t.weight !== 0).length === 0) {
+    return (<div> - </div>);
+  }
+
+  return (
+    <>
+      <div className="text-center" id={idPrefix}>
+        <img src={Barbell} width="30" height="35" className="rounded mx-auto d-block" />
+      </div>
+      <Tooltip settingsList={settingsList} idPrefix={idPrefix} />
+    </>
+  );
+}
+
+
+function Tooltip({ settingsList, idPrefix }) {
+  return (
+    <UncontrolledTooltip placement="top" target={idPrefix}>
+      {settingsList.map(settings => {
+        return (
+          <p>
+            {
+              `Вес: ${settings.weight} Подходы: ${settings.iterations} Повторы: ${settings.exercisePart1} | ${settings.exercisePart2} | ${settings.exercisePart3}`
+            }
+          </p>
+        );
+      })}
+    </UncontrolledTooltip>
+  );
+}
+
+//{settings.weight} | {settings.iterations} < br /> {settings.exercisePart1} | {settings.exercisePart2} | {settings.exercisePart3}
+
+
+
+/*
+export function PlanDayEditPanel({ planDay, percentages = [], achivements = [], mode = 'View' }) {
   const idPrefix = 'col';
 
   return (
@@ -13,7 +52,7 @@ export function PlanDayPanel({ planDay, percentages = [], achivements = [], rowC
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th style={{ width: "250px" }}>Упражнение</th>
+            <th className="nameColumn" >Упражнение</th>
             {percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
             <th className="intColumn text-center">КПШ</th>
             <th className="intColumn text-center">Нагрузка</th>
@@ -23,9 +62,11 @@ export function PlanDayPanel({ planDay, percentages = [], achivements = [], rowC
         <tbody>
           {planDay.exercises.map((planExercise, i) =>
             <tr key={'planTr' + i}>
-              <td>{planExercise.exercise.name}</td>
+              <td role="button" title="Запланировать" onClick={() => createSettings(planDay, useNavigate)}>{planExercise.exercise.name}</td>
+
               {planExercise.settings.map(item =>
-                <td key={item.id} className="text-center" role="button" id={idPrefix + item.id} onClick={() => rowClick(item)}>
+                <td key={item.id} className="text-center" role="button" id={idPrefix + item.id}
+                  onClick={() => openSettings(planDay, item)}>
                   <ExerciseSettingsPanel settings={item} />
                 </td>
               )}
@@ -53,7 +94,7 @@ export function PlanDayPanel({ planDay, percentages = [], achivements = [], rowC
   );
 }
 
-function Tooltips({ planDay, idPrefix, mode, percentages, achivements }) {
+export function Tooltips({ planDay, idPrefix, mode, percentages, achivements }) {
   return (<>
     {planDay.exercises.map((planExercise, i) =>
       planExercise.settings.map(item => {
@@ -77,15 +118,4 @@ function Tooltips({ planDay, idPrefix, mode, percentages, achivements }) {
     )}
   </>);
 }
-
-function ExerciseSettingsPanel({ settings }) {
-  if (settings.weight === 0) {
-    return (<div style={{ width: "80px" }}> - </div>);
-  }
-
-  return (
-    <div style={{ width: "80px" }}>
-      {settings.weight} | {settings.iterations} < br /> {settings.exercisePart1} | {settings.exercisePart2} | {settings.exercisePart3}
-    </div>
-  );
-}
+*/

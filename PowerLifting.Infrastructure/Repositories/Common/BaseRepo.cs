@@ -53,6 +53,7 @@ namespace PowerLifting.Infrastructure.Repositories.Common
             await Context.SaveChangesAsync();
         }
 
+
         public async Task DeleteListAsync(List<T> entities)
         {
             foreach (var entity in entities)
@@ -65,6 +66,38 @@ namespace PowerLifting.Infrastructure.Repositories.Common
             await Context.SaveChangesAsync();
         }
 
+        public async Task CreateListAsync(List<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                var dbEntityEntry = Context.Entry(entity);
+                if (dbEntityEntry.State != EntityState.Detached)
+                {
+                    dbEntityEntry.State = EntityState.Added;
+                }
+                else
+                {
+                    await DbSet.AddAsync(entity);
+                }
+            }
+
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task UpdateListAsync(List<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                var dbEntityEntry = Context.Entry(entity);
+                if (dbEntityEntry.State == EntityState.Detached)
+                {
+                    DbSet.Attach(entity);
+                }
+                dbEntityEntry.State = EntityState.Modified;
+            }
+
+            await Context.SaveChangesAsync();
+        }
 
         public void Dispose() { }// => Context?.Dispose();
     }
