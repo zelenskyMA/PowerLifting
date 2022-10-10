@@ -142,7 +142,7 @@ namespace PowerLifting.Application.TrainingPlan
             var prevPlanDate = request.CreationDate.AddDays(-6);
             var nextPlanDate = request.CreationDate.AddDays(6);
             var preventingPlans = await _trainingPlanRepository.FindAsync(t =>
-                t.Id == userId &&
+                t.UserId == userId &&
                 t.StartDate >= prevPlanDate &&
                 t.StartDate <= nextPlanDate);
 
