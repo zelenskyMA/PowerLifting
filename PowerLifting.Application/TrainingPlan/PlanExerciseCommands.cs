@@ -121,6 +121,10 @@ namespace PowerLifting.Application.TrainingPlan
 
             userId = userId == 0 ? _user.Id : userId;
             var achivement = await _userAchivementCommands.GetByExerciseTypeAsync(userId, planExercise.Exercise.ExerciseTypeId);
+            if (achivement == null || achivement.Result == 0)
+            {
+                throw new BusinessException("Рекорд спортсмена не указан. Нельзя запланировать тренировку.");
+            }
 
             await _planExerciseSettingsCommands.UpdateAsync(planExercise.Id, achivement.Result, planExercise.Settings);
         }
