@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
@@ -107,6 +108,22 @@ namespace PowerLifting.Application.TrainingPlan
 
             await _exerciseSettingsRepository.CreateListAsync(settingsListDb.Where(t => t.Id == 0).ToList());
             await _exerciseSettingsRepository.UpdateListAsync(settingsListDb.Where(t => t.Id != 0).ToList());
+        }
+
+        public async Task CompleteExercisesAsync(List<int> exerciseIds)
+        {
+            var excercisesDb = await _exerciseSettingsRepository.FindAsync(t => exerciseIds.Contains(t.Id));
+            if (excercisesDb.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var item in excercisesDb)
+            {
+                item.Completed = true;
+            }
+
+            await _exerciseSettingsRepository.UpdateListAsync(excercisesDb);
         }
 
         /// <inheritdoc />

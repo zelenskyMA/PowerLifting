@@ -28,6 +28,13 @@ namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
         Task UpdateAsync(int planExerciseId, int achivement, List<PlanExerciseSettings> settingsList);
 
         /// <summary>
+        /// Complete exercises in selected percentage span
+        /// </summary>
+        /// <param name="exerciseIds">List of exercise Ids to complete</param>
+        /// <returns></returns>
+        Task CompleteExercisesAsync(List<int> exerciseIds);
+
+        /// <summary>
         /// Delete all supplied items
         /// </summary>
         /// <param name="settings">Settings for deleting</param>

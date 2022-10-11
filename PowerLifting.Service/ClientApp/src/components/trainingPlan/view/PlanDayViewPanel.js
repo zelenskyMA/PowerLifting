@@ -1,21 +1,32 @@
 ﻿import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Col, Row } from 'reactstrap';
-import { DateToLocal } from "../../../common/Localization";
+import { Button, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, UncontrolledTooltip } from 'reactstrap';
 import { PostAsync } from "../../../common/ApiActions";
 import '../../../styling/Common.css';
-import { UncontrolledTooltip } from "reactstrap";
-import Planned from '../../../styling/icons/barbellPlanned.png';
 import Completed from '../../../styling/icons/barbellCompleted.png';
+import Planned from '../../../styling/icons/barbellPlanned.png';
 
 export function PlanDayViewPanel({ planDay }) {
   const [modal, setModal] = useState(false);
-  const [modalData, setModalData] = useState(Object)
+  const [modalData, setModalData] = useState(Object);
+
+  var completed = [];
+  planDay.exercises.map((planExercise, i) => {
+    planDay.percentages.map(percentage => {
+      var state = planExercise.settings.filter(t => t.percentage.id === percentage.id).some(r => r.completed);
+      completed = [...completed, { id: planExercise.id + "_" + percentage.id, state: state }];
+    })
+  });
+  const [completedExercises, setCompleted] = useState(completed);
+
+  const completeExercise = async (modalData) => {
+    await PostAsync("/trainingPlan/completeExercises", modalData.settings.map(a => a.id));
+
+    var current = completedExercises.find(t => t.id === modalData.id);
+    current.state = true;
+    setCompleted([...completedExercises.filter(t => t.id !== modalData.id), current]);
+  }
 
   const toggle = () => setModal(!modal);
-  const completeExercise = async (modalData) => {
-    await PostAsync(`/exerciseInfo/completeExercise/${modalData.percentageId}`);
-    modalData.settings[0].complete = true;
-  }
 
   return (
     <>
@@ -36,7 +47,7 @@ export function PlanDayViewPanel({ planDay }) {
 
               {planDay.percentages.map(item =>
                 <td key={item.id} className="text-center">
-                  <ExerciseSettingsViewPanel percentage={item} planExercise={planExercise} setModalData={setModalData} toggle={toggle} />
+                  <ExerciseSettingsViewPanel percentage={item} planExercise={planExercise} setModalData={setModalData} toggle={toggle} completedExercises={completedExercises} />
                 </td>
               )}
               <td className="text-center"><strong>{planExercise.liftCounter}</strong></td>
@@ -85,21 +96,21 @@ export function PlanDayViewPanel({ planDay }) {
 }
 
 
-function ExerciseSettingsViewPanel({ percentage, planExercise, setModalData, toggle }) {
+function ExerciseSettingsViewPanel({ percentage, planExercise, completedExercises, setModalData, toggle }) {
   var idPrefix = String("settings_" + percentage.id);
 
   var settingsList = planExercise.settings.filter(t => t.percentage.id === percentage.id);
-
   if (settingsList.length === 0 || settingsList.filter(t => t.weight !== 0).length === 0) {
     return (<div> - </div>);
   }
 
-  var modalData = { percentageId: percentage.id, name: planExercise.exercise.name, settings: settingsList };
+  var modalData = { id: planExercise.id + "_" + percentage.id, settings: settingsList };
+  var exerciseState = completedExercises.find(t => t.id === modalData.id).state;
 
   return (
     <>
       <div role="button" className="text-center" id={idPrefix} onClick={() => { setModalData(modalData); toggle(); }}>
-        <img src={settingsList[0].completed ? Completed : Planned} width="30" height="35" className="rounded mx-auto d-block" />
+        <img src={exerciseState ? Completed : Planned} width="30" height="35" className="rounded mx-auto d-block" />
       </div>
       <Tooltip settingsList={settingsList} idPrefix={idPrefix} />
     </>

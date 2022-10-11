@@ -31,7 +31,7 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
         {
             var result = await _planExerciseSettingsCommands.GetAsync(id);
             return result;
-        }               
+        }
 
         [HttpGet]
         [Route("getPlanningList")]
@@ -62,14 +62,6 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
         public async Task<bool> UpdateExerciseAsync(Exercise exercise)
         {
             await _exerciseCommands.UpdateAsync(exercise);
-            return true;
-        }
-
-        [HttpPost]
-        [Route("completeExercise")]
-        public async Task<bool> CompleteExerciseAsync(int percentageId)
-        {
-            // await _exerciseCommands.UpdateAsync(exercise);
             return true;
         }
 

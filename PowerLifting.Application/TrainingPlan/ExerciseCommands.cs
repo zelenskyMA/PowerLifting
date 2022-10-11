@@ -134,7 +134,7 @@ namespace PowerLifting.Application.TrainingPlan
             exerciseDb.Closed = true;
             await _exerciseRepository.UpdateAsync(exerciseDb);
         }
-
+      
         private async Task<List<Exercise>> GetAllowedExercises(int?[] allowedUserIds)
         {
             var dataDb = await _exerciseRepository.FindAsync(t => allowedUserIds.Contains(t.UserId) && !t.Closed);

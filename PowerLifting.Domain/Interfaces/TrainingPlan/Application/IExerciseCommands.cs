@@ -1,8 +1,4 @@
-﻿using PowerLifting.Domain.CustomExceptions;
-using PowerLifting.Domain.DbModels.TrainingPlan;
-using PowerLifting.Domain.Enums;
-using PowerLifting.Domain.Interfaces.UserData.Application;
-using PowerLifting.Domain.Models.TrainingPlan;
+﻿using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Domain.Interfaces.TrainingPlan.Application
 {
