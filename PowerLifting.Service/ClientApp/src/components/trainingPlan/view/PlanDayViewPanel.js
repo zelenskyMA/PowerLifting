@@ -43,7 +43,8 @@ export function PlanDayViewPanel({ planDay }) {
         <tbody>
           {planDay.exercises.map((planExercise, i) =>
             <tr key={'planTr' + i}>
-              <td>{planExercise.exercise.name}</td>
+              <td id={'exercise' + planExercise.id}>{planExercise.exercise.name}</td>
+              <ExerciseTooltip planExercise={planExercise} idPrefix={'exercise' + planExercise.id} />
 
               {planDay.percentages.map(item =>
                 <td key={item.id} className="text-center">
@@ -112,12 +113,12 @@ function ExerciseSettingsViewPanel({ percentage, planExercise, completedExercise
       <div role="button" className="text-center" id={idPrefix} onClick={() => { setModalData(modalData); toggle(); }}>
         <img src={exerciseState ? Completed : Planned} width="30" height="35" className="rounded mx-auto d-block" />
       </div>
-      <Tooltip settingsList={settingsList} idPrefix={idPrefix} />
+      <SettingsTooltip settingsList={settingsList} idPrefix={idPrefix} />
     </>
   );
 }
 
-function Tooltip({ settingsList, idPrefix }) {
+function SettingsTooltip({ settingsList, idPrefix }) {
   return (
     <UncontrolledTooltip placement="top" target={idPrefix}>
       {settingsList.map(settings => {
@@ -129,6 +130,18 @@ function Tooltip({ settingsList, idPrefix }) {
           </p>
         );
       })}
+    </UncontrolledTooltip>
+  );
+}
+
+function ExerciseTooltip({ planExercise, idPrefix }) {
+  var text = planExercise.comments;
+
+  if (!text) { return (<></>); }
+
+  return (
+    <UncontrolledTooltip placement="top" target={idPrefix}>
+      <p>{text}</p>
     </UncontrolledTooltip>
   );
 }
