@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { GetAsync } from "../common/ApiActions";
 import { GetToken } from '../common/TokenActions';
-import { PlanDayPanel } from "./trainingPlan/PlanDayPanel";
+import { PlanDayViewPanel } from "./trainingPlan/view/PlanDayViewPanel";
 import { DateToLocal } from "../common/Localization";
 import WithRouter from "../common/extensions/WithRouter";
 import '../styling/Common.css';
@@ -12,8 +12,6 @@ class Home extends Component {
 
     this.state = {
       planDay: Object,
-      percentages: [],
-      achivements: [],
       loggedUser: false,
       loading: true,
     };
@@ -27,13 +25,8 @@ class Home extends Component {
       return;
     }
 
-    const [data, percentages, achivementsData] = await Promise.all([
-      GetAsync("/trainingPlan/getCurrentDay"),
-      GetAsync("/exerciseInfo/getPlanPercentages"),
-      GetAsync("/userAchivement/get")
-    ]);
-
-    this.setState({ planDay: data, percentages: percentages, achivements: achivementsData, loggedUser: true, loading: false });
+    var data = await GetAsync("/trainingPlan/getCurrentDay");
+    this.setState({ planDay: data, loggedUser: true, loading: false });
   }
 
 
@@ -55,10 +48,7 @@ class Home extends Component {
       <>
         <p className="spaceBottom" >Ваш план на <strong>{DateToLocal(new Date())}</strong></p>
 
-        {this.state.planDay.id ?
-          <PlanDayPanel planDay={this.state.planDay} percentages={this.state.percentages} achivements={this.state.achivements} />
-          : <p><em>У вас нет тренировок на сегодня</em></p>
-        }
+        {this.state.planDay.id ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>У вас нет тренировок на сегодня</em></p>}
       </>
     );
   }

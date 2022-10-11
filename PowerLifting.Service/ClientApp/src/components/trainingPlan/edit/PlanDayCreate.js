@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
 import { DateToLocal } from "../../../common/Localization";
-import { ExerciseSettingsPanel } from "./ExerciseSettingsPanel";
+import { ExerciseSettingsEditPanel } from "./ExerciseSettingsEditPanel";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
 
@@ -55,7 +55,7 @@ class PlanDayCreate extends Component {
 
                 {this.state.planDay.percentages.map(item =>
                   <td key={item.id} className="text-center">
-                    <ExerciseSettingsPanel percentage={item} settings={planExercise.settings} />
+                    <ExerciseSettingsEditPanel percentage={item} settings={planExercise.settings} />
                   </td>
                 )}
                 <td className="text-center"><strong>{planExercise.liftCounter}</strong></td>
