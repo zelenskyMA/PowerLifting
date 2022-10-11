@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PowerLifting.Domain\PowerLifting.Domain.csproj" />
     <ProjectReference Include="..\PowerLifting.Infrastructure\PowerLifting.Infrastructure.csproj" />
+    <ProjectReference Include="..\SportAssist.Common\SportAssist.Common.csproj" />
   </ItemGroup>
 
 </Project>

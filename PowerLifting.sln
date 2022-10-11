@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerLifting.Service", "Pow
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PowerLifting.Database", "PowerLifting.Database\PowerLifting.Database.sqlproj", "{7535DB73-CD75-489C-96BA-66ECE7425198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerLifting.Infrastructure", "PowerLifting.Infrastructure\PowerLifting.Infrastructure.csproj", "{835ACBDC-FDE4-46E2-9476-2DB8723FD95B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerLifting.Infrastructure", "PowerLifting.Infrastructure\PowerLifting.Infrastructure.csproj", "{835ACBDC-FDE4-46E2-9476-2DB8723FD95B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerLifting.Domain", "PowerLifting.Domain\PowerLifting.Domain.csproj", "{46AF3744-3713-4F22-9164-4D41186ACFDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerLifting.Domain", "PowerLifting.Domain\PowerLifting.Domain.csproj", "{46AF3744-3713-4F22-9164-4D41186ACFDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerLifting.Application", "PowerLifting.Application\PowerLifting.Application.csproj", "{2263BC79-4D24-448D-8F07-5508535C8EA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerLifting.Application", "PowerLifting.Application\PowerLifting.Application.csproj", "{2263BC79-4D24-448D-8F07-5508535C8EA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportAssist.Common", "SportAssist.Common\SportAssist.Common.csproj", "{DBB6C5EC-5A52-47DB-8FD5-FCB69C2DA71E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{2263BC79-4D24-448D-8F07-5508535C8EA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2263BC79-4D24-448D-8F07-5508535C8EA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2263BC79-4D24-448D-8F07-5508535C8EA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBB6C5EC-5A52-47DB-8FD5-FCB69C2DA71E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBB6C5EC-5A52-47DB-8FD5-FCB69C2DA71E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBB6C5EC-5A52-47DB-8FD5-FCB69C2DA71E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBB6C5EC-5A52-47DB-8FD5-FCB69C2DA71E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
