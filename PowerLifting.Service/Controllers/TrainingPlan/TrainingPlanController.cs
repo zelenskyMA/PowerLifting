@@ -11,11 +11,16 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
     {
         private readonly IPlanCommands _trainingPlanCommands;
         private readonly IPlanExerciseCommands _plannedExerciseCommands;
+        private readonly IPlanExerciseSettingsCommands _planExerciseSettingsCommands;
 
-        public TrainingPlanController(IPlanCommands trainingPlanCommands, IPlanExerciseCommands plannedExerciseCommands)
+        public TrainingPlanController(
+            IPlanCommands trainingPlanCommands, 
+            IPlanExerciseCommands plannedExerciseCommands,
+            IPlanExerciseSettingsCommands planExerciseSettingsCommands)
         {
             _trainingPlanCommands = trainingPlanCommands;
             _plannedExerciseCommands = plannedExerciseCommands;
+            _planExerciseSettingsCommands = planExerciseSettingsCommands;
         }
 
         [HttpGet]
@@ -87,6 +92,14 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
         public async Task<bool> UpdatePlanExerciseAsync(int userId, PlanExercise planExercise)
         {
             await _plannedExerciseCommands.UpdateAsync(userId, planExercise);
+            return true;
+        }
+
+        [HttpPost]
+        [Route("completeExercises")]
+        public async Task<bool> CompleteExercisesAsync(List<int> exerciseIds)
+        {
+            await _planExerciseSettingsCommands.CompleteExercisesAsync(exerciseIds);
             return true;
         }
     }

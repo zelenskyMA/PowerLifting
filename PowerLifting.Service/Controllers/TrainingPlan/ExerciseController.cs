@@ -26,21 +26,12 @@ namespace PowerLifting.Service.Controllers.TrainingPlan
         }
 
         [HttpGet]
-        [Route("getPlanPercentages")]
-        public async Task<List<Percentage>> GetPlanPercentagesAsync(int dayId)
-        {
-            var result = await _planExerciseSettingsCommands.GetPercentageListAsync();
-            return result;
-        }
-
-        [HttpGet]
         [Route("getExerciseSettings")]
         public async Task<PlanExerciseSettings> GetExerciseSettingsAsync(int id)
         {
             var result = await _planExerciseSettingsCommands.GetAsync(id);
             return result;
         }
-               
 
         [HttpGet]
         [Route("getPlanningList")]
