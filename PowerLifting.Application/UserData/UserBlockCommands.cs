@@ -35,13 +35,13 @@ namespace PowerLifting.Application.UserData
 
         public async Task<UserBlockHistory> GetCurrentBlockReason(int userId)
         {
-            var bloscks = await _userBlockHistoryRepository.FindAsync(t => t.UserId == userId);
-            if (bloscks.Count == 0)
+            var blocks = await _userBlockHistoryRepository.FindAsync(t => t.UserId == userId);
+            if (blocks.Count == 0)
             {
                 return null;
             }
 
-            return _mapper.Map<UserBlockHistory>(bloscks.OrderByDescending(t => t.CreationDate).First());
+            return _mapper.Map<UserBlockHistory>(blocks.OrderByDescending(t => t.CreationDate).First());
         }
 
         public async Task BlockUser(int userId, string reason)
@@ -71,7 +71,7 @@ namespace PowerLifting.Application.UserData
             }
 
             userDb.Blocked = true;
-            await _userRepository.UpdateAsync(userDb);
+            _userRepository.Update(userDb);
 
             await _userBlockHistoryRepository.CreateAsync(new UserBlockHistoryDb()
             {
@@ -99,7 +99,7 @@ namespace PowerLifting.Application.UserData
             }
 
             userDb.Blocked = false;
-            await _userRepository.UpdateAsync(userDb);
+            _userRepository.Update(userDb);
         }
 
     }

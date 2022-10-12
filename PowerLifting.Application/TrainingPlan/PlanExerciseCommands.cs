@@ -15,7 +15,7 @@ namespace PowerLifting.Application.TrainingPlan
     public class PlanExerciseCommands : IPlanExerciseCommands
     {
         private readonly IPlanExerciseSettingsCommands _planExerciseSettingsCommands;
-        private readonly IUserAchivementCommands _userAchivementCommands;
+        private readonly IProcessUserAchivements _userAchivementCommands;
         private readonly IExerciseCommands _exerciseCommands;
         private readonly IPlanCountersSetup _planCountersSetup;
 
@@ -25,7 +25,7 @@ namespace PowerLifting.Application.TrainingPlan
 
         public PlanExerciseCommands(
          IPlanExerciseSettingsCommands planExerciseSettingsCommands,
-         IUserAchivementCommands userAchivementCommands,
+         IProcessUserAchivements userAchivementCommands,
          IExerciseCommands exerciseCommands,
          IPlanCountersSetup planCountersSetup,
          ICrudRepo<PlanExerciseDb> plannedExerciseRepository,
@@ -75,7 +75,7 @@ namespace PowerLifting.Application.TrainingPlan
                 if (itemsToDelete.Count > 0)
                 {
                     await _planExerciseSettingsCommands.DeleteByPlanExerciseIdAsync(itemsToDelete.Select(t => t.Id).ToList());
-                    await _planExerciseRepository.DeleteListAsync(itemsToDelete);
+                    _planExerciseRepository.DeleteList(itemsToDelete);
 
                     itemsToDelete.Select(t => planExercisesDb.Remove(t));
                 }
@@ -88,7 +88,7 @@ namespace PowerLifting.Application.TrainingPlan
                 if (planExercise != null)
                 {
                     planExercise.Order = i;
-                    await _planExerciseRepository.UpdateAsync(planExercise);
+                    _planExerciseRepository.Update(planExercise);
                     continue;
                 }
 
@@ -116,7 +116,7 @@ namespace PowerLifting.Application.TrainingPlan
             if (planExerciseDb.Comments != planExercise.Comments)
             {
                 planExerciseDb.Comments = planExercise.Comments;
-                await _planExerciseRepository.UpdateAsync(planExerciseDb);
+                _planExerciseRepository.Update(planExerciseDb);
             }
 
             userId = userId == 0 ? _user.Id : userId;

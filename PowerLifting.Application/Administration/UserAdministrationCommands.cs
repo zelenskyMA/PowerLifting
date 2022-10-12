@@ -8,20 +8,15 @@ namespace PowerLifting.Application.Administration
     public class UserAdministrationCommands : IUserAdministrationCommands
     {
         private readonly IUserRoleCommands _userRoleCommands;
-        private readonly IUserInfoCommands _userInfoCommands;
         private readonly IUserBlockCommands _userBlockCommands;
 
         public UserAdministrationCommands(
             IUserRoleCommands userRoleCommands,
-            IUserInfoCommands userInfoCommands,
             IUserBlockCommands userBlockCommands)
         {
             _userRoleCommands = userRoleCommands;
-            _userInfoCommands = userInfoCommands;
             _userBlockCommands = userBlockCommands;
         }
-
-        public async Task<UserCard> GetUserCardAsync(int userId, string? login) => await _userInfoCommands.GetUserCardAsync(userId, login);
 
         public async Task ApplyRolesAsync(RolesInfo rolesInfo)
         {

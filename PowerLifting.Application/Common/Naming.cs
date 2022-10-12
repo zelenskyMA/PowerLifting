@@ -1,11 +1,10 @@
-﻿using PowerLifting.Domain.DbModels.UserData;
-using PowerLifting.Domain.Models.UserData;
+﻿using PowerLifting.Domain.Models.UserData;
 
 namespace PowerLifting.Application.Common
 {
     public static class Naming
     {
-        public static string GetLegalShortName(string firstName, string surname, string patronimic, string defaultValue)
+        public static string GetLegalShortName(string? firstName, string? surname, string? patronimic, string defaultValue = "")
         {
             string firstLetter = string.IsNullOrEmpty(firstName) ? string.Empty : $" {firstName?.ToUpper()?.First()}.";
             string secondLetter = string.IsNullOrEmpty(patronimic) ? string.Empty : $" {patronimic.ToUpper().First()}.";
@@ -16,7 +15,7 @@ namespace PowerLifting.Application.Common
         public static string GetLegalFullName(UserInfo info, string defaultValue = "") =>
             GetLegalFullName(info.FirstName, info.Surname, info.Patronimic, defaultValue);
 
-        public static string GetLegalFullName(string firstName, string surname, string patronimic, string defaultValue = "")
+        public static string GetLegalFullName(string? firstName, string? surname, string? patronimic, string defaultValue = "")
         {
             var fullName = string.Join(" ", new[] { surname, firstName, patronimic }).Trim();
 

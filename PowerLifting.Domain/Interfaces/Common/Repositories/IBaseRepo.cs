@@ -4,16 +4,10 @@
     {
         Task<IEnumerable<T>> GetAllAsync();
 
-        Task CreateAsync(T entity);
+        Task<bool> CreateAsync(T entity);
 
-        Task UpdateAsync(T entity);
+        bool Update(T entity);
 
-        Task DeleteAsync(T entity);
-
-        Task DeleteListAsync(List<T> entities);
-
-        Task CreateListAsync(List<T> entities);
-
-        Task UpdateListAsync(List<T> entities);
+        bool Delete(T entity);
     }
 }

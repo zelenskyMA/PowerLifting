@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PowerLifting.Application.UserData.UserInfoCommands;
 using PowerLifting.Domain.Interfaces.Administration;
+using PowerLifting.Domain.Interfaces.Common.Actions;
 using PowerLifting.Domain.Models.UserData;
 
 namespace PowerLifting.Service.Controllers.Administration
@@ -16,9 +18,9 @@ namespace PowerLifting.Service.Controllers.Administration
 
         [HttpGet]
         [Route("getCard")]
-        public async Task<UserCard> GetCard(string? login, int userId = 0)
+        public async Task<UserCard> GetCard([FromServices] ICommand<UserInfoGetCardQuery.Param, UserCard> command, string? login, int userId = 0)
         {
-            var result = await _userAdministrationCommands.GetUserCardAsync(userId, login);
+            var result = await command.ExecuteAsync(new UserInfoGetCardQuery.Param() { UserId = userId, Login = login });
             return result;
         }
 

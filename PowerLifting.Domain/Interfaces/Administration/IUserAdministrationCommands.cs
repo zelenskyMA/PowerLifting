@@ -5,14 +5,6 @@ namespace PowerLifting.Domain.Interfaces.Administration
     public interface IUserAdministrationCommands
     {
         /// <summary>
-        /// Get user information for  administration console
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="login"></param>
-        /// <returns></returns>
-        Task<UserCard> GetUserCardAsync(int userId, string? login);
-
-        /// <summary>
         /// Apply role changes for selected user
         /// </summary>
         /// <param name="rolesInfo"><see cref="RolesInfo"/>></param>

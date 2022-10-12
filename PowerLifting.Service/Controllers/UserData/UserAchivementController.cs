@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PowerLifting.Domain.Interfaces.UserData.Application;
+using PowerLifting.Application.UserData.UserAchivementCommands;
+using PowerLifting.Application.UserData.UserCommands1;
+using PowerLifting.Domain.Interfaces.Common.Actions;
 using PowerLifting.Domain.Models.UserData;
 
 namespace PowerLifting.Service.Controllers.UserData
@@ -7,35 +9,28 @@ namespace PowerLifting.Service.Controllers.UserData
     [Route("userAchivement")]
     public class UserAchivementController : BaseController
     {
-        private readonly IUserAchivementCommands _userAchivementCommands;
-
-        public UserAchivementController(IUserAchivementCommands userAchivementCommands)
-        {
-            _userAchivementCommands = userAchivementCommands;
-        }
-
         [HttpGet]
         [Route("get")]
-        public async Task<List<UserAchivement>> GetListAsync()
+        public async Task<List<UserAchivement>> GetAsync([FromServices] ICommand<UserAchivementGetQuery.Param, List<UserAchivement>> command)
         {
-            var result = await _userAchivementCommands.GetAsync();
+            var result = await command.ExecuteAsync(new UserAchivementGetQuery.Param());
             return result;
         }
 
         [HttpGet]
         [Route("getByExercise")]
-        public async Task<UserAchivement> GetByExerciseAsync(int userId, int exerciseTypeId)
+        public async Task<UserAchivement> GetByExerciseAsync([FromServices] ICommand<UserAchivementsGetByExerciseQuery.Param, UserAchivement> command, int userId, int exerciseTypeId)
         {
-            var result = await _userAchivementCommands.GetByExerciseTypeAsync(userId, exerciseTypeId);
+            var result = await command.ExecuteAsync(new UserAchivementsGetByExerciseQuery.Param() { UserId = userId, ExerciseTypeId = exerciseTypeId });
             return result;
         }
 
         [HttpPost]
         [Route("create")]
-        public async Task<bool> CreateAsync(List<UserAchivement> achivements)
+        public async Task<bool> CreateAsync([FromServices] ICommand<UserAchivementCreateCommand.Param, bool> command, List<UserAchivement> achivements)
         {
-            await _userAchivementCommands.CreateAsync(achivements);
-            return true;
+            var result = await command.ExecuteAsync(new UserAchivementCreateCommand.Param() { Achivements = achivements });
+            return result;
         }
     }
 }

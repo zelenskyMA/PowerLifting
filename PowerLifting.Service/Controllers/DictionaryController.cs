@@ -8,9 +8,9 @@ namespace PowerLifting.Service.Controllers
     [Route("dictionary")]
     public class DictionaryController : BaseController
     {
-        private readonly IDictionaryCommands _dictionaryCommands;
+        private readonly IProcessDictionary _dictionaryCommands;
 
-        public DictionaryController(IDictionaryCommands dictionaryCommands)
+        public DictionaryController(IProcessDictionary dictionaryCommands)
         {
             _dictionaryCommands = dictionaryCommands;
         }

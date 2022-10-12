@@ -6,7 +6,7 @@ namespace PowerLifting.Infrastructure.Setup
     public class SqlContextProvider : IContextProvider
     {
         private bool _disposed = false;
-        private IDbContextTransaction? _transaction;
+        private IDbContextTransaction _transaction;
 
         public LiftingContext Context { get; }
 
@@ -18,12 +18,7 @@ namespace PowerLifting.Infrastructure.Setup
         /// <inheritdoc/>
         public IDbContextTransaction BeginTransaction()
         {
-            _transaction = Context.Database.CurrentTransaction;
-            if (_transaction == null)
-            {
-                _transaction = Context.Database.BeginTransaction();
-            }
-
+            _transaction = Context.Database.CurrentTransaction ?? Context.Database.BeginTransaction();
             return _transaction;
         }
 
@@ -39,16 +34,15 @@ namespace PowerLifting.Infrastructure.Setup
         }
 
         /// <inheritdoc/>
-        public void CommitTransaction()
+        public async Task CommitTransactionAsync()
         {
             if (Context.Database.CurrentTransaction == null)
             {
                 throw new InvalidOperationException("Отсутствует открытая транзакция.");
             }
 
-            Context.SaveChanges();
-            Context.Database.CommitTransaction();
-            _transaction = null;
+            await Context.Database.CommitTransactionAsync();
+            await Context.SaveChangesAsync();
         }
 
         /// <inheritdoc/>
@@ -68,6 +62,7 @@ namespace PowerLifting.Infrastructure.Setup
                 if (disposing)
                 {
                     DisposeObject(_transaction);
+                    Context.Dispose();
                 }
 
                 _disposed = true;
@@ -80,9 +75,7 @@ namespace PowerLifting.Infrastructure.Setup
             {
                 obj?.Dispose();
             }
-            catch
-            {
-            }
+            catch { }
         }
     }
 

@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PowerLifting.Domain.DbModels.Coaching;
-using PowerLifting.Infrastructure.Repositories.Common;
+﻿using PowerLifting.Domain.DbModels.Coaching;
 using PowerLifting.Infrastructure.Setup;
+using PowerLifting.Infrastructure.Setup.Generic.Repository;
 
 namespace PowerLifting.Infrastructure.Repositories.Coaching
 {

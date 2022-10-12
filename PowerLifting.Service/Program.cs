@@ -2,16 +2,19 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using PowerLifting.Application;
 using PowerLifting.Application.Administration;
 using PowerLifting.Application.Analitics;
 using PowerLifting.Application.Coaching;
+using PowerLifting.Application.Dictionaryies;
 using PowerLifting.Application.Mapper;
 using PowerLifting.Application.TrainingPlan;
 using PowerLifting.Application.TrainingPlan.Process;
 using PowerLifting.Application.UserData;
 using PowerLifting.Application.UserData.Auth;
 using PowerLifting.Application.UserData.Auth.Interfaces;
+using PowerLifting.Application.UserData.UserAchivementCommands;
+using PowerLifting.Application.UserData.UserCommands;
+using PowerLifting.Application.UserData.UserInfoCommands;
 using PowerLifting.Domain.Interfaces;
 using PowerLifting.Domain.Interfaces.Administration;
 using PowerLifting.Domain.Interfaces.Analitics.Application;
@@ -58,15 +61,21 @@ internal class Program
 
     private static void RegisterCommands(WebApplicationBuilder builder)
     {
+        builder.Services.AddCommandsFromAssemblyOf<UserInfoGetQuery>();
+
+        //processes
+        builder.Services.AddScoped<IProcessUserInfo, ProcessUserInfo>();
+        builder.Services.AddScoped<IProcessDictionary, ProcessDictionary>();
+
+        //old apps
         builder.Services.AddScoped<IPlanCommands, PlanCommands>();
         builder.Services.AddScoped<IPlanExerciseCommands, PlanExerciseCommands>();
         builder.Services.AddScoped<IPlanExerciseSettingsCommands, PlanExerciseSettingsCommands>();
         builder.Services.AddScoped<IExerciseCommands, ExerciseCommands>();
         builder.Services.AddScoped<IPlanCountersSetup, PlanCountersSetup>();
 
-        builder.Services.AddScoped<IUserAchivementCommands, UserAchivementCommands>();
-        builder.Services.AddScoped<IUserCommands, UserCommands>();
-        builder.Services.AddScoped<IUserInfoCommands, UserInfoCommands>();
+        builder.Services.AddScoped<IProcessUserAchivements, ProcessUserAchivements>();
+        builder.Services.AddScoped<IProcessUser, ProcessUser>();        
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
 
@@ -78,9 +87,9 @@ internal class Program
 
         builder.Services.AddScoped<IPlanAnaliticsCommands, PlanAnaliticsCommands>();
 
-        builder.Services.AddScoped<IDictionaryCommands, DictionaryCommands>();
-
+        
         builder.Services.AddScoped<IUserProvider, UserProvider>();
+
     }
 
     private static void RegisterJwtAuth(WebApplicationBuilder builder)

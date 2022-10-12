@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PowerLifting.Application.UserData.UserCommands;
+using PowerLifting.Application.UserData.UserCommands.UserCommands;
+using PowerLifting.Domain.Interfaces.Common.Actions;
 using PowerLifting.Domain.Interfaces.UserData.Application;
-using PowerLifting.Domain.Models.Auth;
 using PowerLifting.Domain.Models.UserData.Auth;
 
 namespace PowerLifting.Service.Controllers.UserData
@@ -10,42 +12,35 @@ namespace PowerLifting.Service.Controllers.UserData
     [Route("user")]
     public class UserController : ControllerBase
     {
-        private readonly IUserCommands _userCommands;
-
-        public UserController(IUserCommands userCommands)
-        {
-            _userCommands = userCommands;
-        }
-
         [HttpPost]
         [Route("login")]
-        public async Task<TokenModel> LoginAsync([FromBody] LoginModel loginModel)
+        public async Task<TokenModel> LoginAsync([FromServices] ICommand<UserLoginCommand.Param, TokenModel> command, UserLoginCommand.Param loginModel)
         {
-            var result = await _userCommands.LoginAsync(loginModel);
+            var result = await command.ExecuteAsync(loginModel);
             return result;
         }
 
         [HttpPost]
         [Route("register")]
-        public async Task<TokenModel> RegisterAsync([FromBody] RegistrationModel registrationModel)
+        public async Task<TokenModel> RegisterAsync([FromServices] ICommand<UserRegisterCommand.Param, TokenModel> command, UserRegisterCommand.Param registrationModel)
         {
-            var result = await _userCommands.RegisterAsync(registrationModel);
+            var result = await command.ExecuteAsync(registrationModel);
             return result;
         }
 
         [HttpPost]
         [Route("changePassword")]
-        public async Task<bool> ChangePasswordAsync([FromBody] RegistrationModel registrationModel)
+        public async Task<bool> ChangePasswordAsync([FromServices] ICommand<UserChangePasswordCommand.Param, bool> command, UserChangePasswordCommand.Param registrationModel)
         {
-            await _userCommands.ChangePasswordAsync(registrationModel);
-            return true;
+            var result = await command.ExecuteAsync(registrationModel);
+            return result;
         }
 
         [HttpGet, Authorize]
         [Route("refreshToken")]
-        public async Task<TokenModel> RefreshTokenAsync()
+        public async Task<TokenModel> RefreshTokenAsync([FromServices] ICommand<UserRefreshTokenCommand.Param, TokenModel> command)
         {
-            var result = await _userCommands.RefreshTokenAsync();
+            var result = await command.ExecuteAsync(new UserRefreshTokenCommand.Param());
             return result;
         }
 

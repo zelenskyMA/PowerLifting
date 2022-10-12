@@ -124,7 +124,7 @@ namespace PowerLifting.Application.Coaching
             var requestDb = (await _trainingRequestRepository.FindAsync(t => t.UserId == userId)).FirstOrDefault();
             if (requestDb != null)
             {
-                await _trainingRequestRepository.DeleteAsync(requestDb);
+                _trainingRequestRepository.Delete(requestDb);
             }
         }
 

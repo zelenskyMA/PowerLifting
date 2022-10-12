@@ -77,7 +77,7 @@ namespace PowerLifting.Application.TrainingPlan
             }
 
             var newIds = settingsList.Select(t => t.Id);
-            await _exerciseSettingsRepository.DeleteListAsync(existingSettingsDb.Where(t => !newIds.Contains(t.Id)).ToList());
+            _exerciseSettingsRepository.DeleteList(existingSettingsDb.Where(t => !newIds.Contains(t.Id)).ToList());
 
             var percentages = await _exerciseSettingsRepository.GetPercentagesAsync();
             var settingsListDb = existingSettingsDb
@@ -107,7 +107,7 @@ namespace PowerLifting.Application.TrainingPlan
             }
 
             await _exerciseSettingsRepository.CreateListAsync(settingsListDb.Where(t => t.Id == 0).ToList());
-            await _exerciseSettingsRepository.UpdateListAsync(settingsListDb.Where(t => t.Id != 0).ToList());
+            _exerciseSettingsRepository.UpdateList(settingsListDb.Where(t => t.Id != 0).ToList());
         }
 
         public async Task CompleteExercisesAsync(List<int> exerciseIds)
@@ -123,14 +123,14 @@ namespace PowerLifting.Application.TrainingPlan
                 item.Completed = true;
             }
 
-            await _exerciseSettingsRepository.UpdateListAsync(excercisesDb);
+            _exerciseSettingsRepository.UpdateList(excercisesDb);
         }
 
         /// <inheritdoc />
         public async Task DeleteByPlanExerciseIdAsync(List<int> planExerciseIds)
         {
             var settingsDb = await _exerciseSettingsRepository.FindAsync(t => planExerciseIds.Contains(t.PlanExerciseId));
-            await _exerciseSettingsRepository.DeleteListAsync(settingsDb.Select(t => _mapper.Map<PlanExerciseSettingsDb>(t)).ToList());
+            _exerciseSettingsRepository.DeleteList(settingsDb.Select(t => _mapper.Map<PlanExerciseSettingsDb>(t)).ToList());
         }
 
         /// <inheritdoc />

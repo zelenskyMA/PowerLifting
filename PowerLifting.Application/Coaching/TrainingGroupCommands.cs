@@ -139,7 +139,7 @@ public class TrainingGroupCommands : ITrainingGroupCommands
         groupDb.Description = group.Description;
         groupDb.Name = group.Name;
 
-        await _trainingGroupRepository.UpdateAsync(groupDb);
+        _trainingGroupRepository.Update(groupDb);
     }
 
     /// <inheritdoc />
@@ -157,6 +157,6 @@ public class TrainingGroupCommands : ITrainingGroupCommands
             throw new BusinessException($"В удаляемой группе устались участники");
         }
 
-        await _trainingGroupRepository.DeleteAsync(groupDb.First());
+        _trainingGroupRepository.Delete(groupDb.First());
     }
 }

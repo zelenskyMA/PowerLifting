@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PowerLifting.Domain.DbModels.TrainingPlan;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Repositories;
-using PowerLifting.Infrastructure.Repositories.Common;
 using PowerLifting.Infrastructure.Setup;
+using PowerLifting.Infrastructure.Setup.Generic.Repository;
 
 namespace PowerLifting.Infrastructure.Repositories.TrainingPlan
 {

@@ -10,6 +10,6 @@ namespace PowerLifting.Infrastructure.Setup
 
         IDbContextTransaction GetTransaction();
 
-        void CommitTransaction();
+        Task CommitTransactionAsync();
     }
 }

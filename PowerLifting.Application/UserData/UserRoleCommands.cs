@@ -13,26 +13,26 @@ namespace PowerLifting.Application.UserData
 {
     public class UserRoleCommands : IUserRoleCommands
     {
-        private readonly IDictionaryCommands _dictionaryCommands;
+        private readonly IProcessDictionary _processDictionary;
 
         private readonly ICrudRepo<UserRoleDb> _userRoleRepository;
         private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public UserRoleCommands(
-            IDictionaryCommands dictionaryCommands,
+            IProcessDictionary dictionaryCommands,
             ICrudRepo<UserRoleDb> userRoleRepository,
             IUserProvider user,
             IMapper mapper)
         {
-            _dictionaryCommands = dictionaryCommands;
+            _processDictionary = dictionaryCommands;
             _userRoleRepository = userRoleRepository;
             _user = user;
             _mapper = mapper;
         }
 
         /// <inheritdoc />
-        public async Task<List<DictionaryItem>> GetRolesList() => await _dictionaryCommands.GetItemsByTypeIdAsync(DictionaryTypes.UserRole);
+        public async Task<List<DictionaryItem>> GetRolesList() => await _processDictionary.GetItemsByTypeIdAsync(DictionaryTypes.UserRole);
 
         /// <inheritdoc />
         public async Task<RolesInfo> GetUserRoles(int userId)
@@ -87,7 +87,7 @@ namespace PowerLifting.Application.UserData
             var roleDb = await _userRoleRepository.FindAsync(t => t.UserId == userId && t.RoleId == (int)role);
             if (roleDb.Count != 0)
             {
-                await _userRoleRepository.DeleteAsync(roleDb.First());
+                _userRoleRepository.Delete(roleDb.First());
             }
         }
     }

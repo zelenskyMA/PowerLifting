@@ -3,9 +3,8 @@ using PowerLifting.Domain.Models;
 
 namespace PowerLifting.Domain.Interfaces
 {
-    public interface IDictionaryCommands
+    public interface IProcessDictionary
     {
-
         /// <summary>
         /// Get dictionary items by id list
         /// </summary>
@@ -26,7 +25,7 @@ namespace PowerLifting.Domain.Interfaces
         /// <returns>Dictionary types</returns>
         Task<List<DictionaryType>> GetTypesAsync();
 
-
+        /*
         /// <summary>
         /// Add new dictionary item
         /// </summary>
@@ -70,5 +69,6 @@ namespace PowerLifting.Domain.Interfaces
         /// <param name="item">Item to delete</param>
         /// <returns></returns>
         Task DeleteType(DictionaryType item);
+        */
     }
 }

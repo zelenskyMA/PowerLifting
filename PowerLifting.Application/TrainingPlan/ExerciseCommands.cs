@@ -17,14 +17,14 @@ namespace PowerLifting.Application.TrainingPlan
         private readonly IUserRoleCommands _userRoleCommands;
 
         private readonly ICrudRepo<ExerciseDb> _exerciseRepository;
-        private readonly IDictionaryCommands _dictionaryCommands;
+        private readonly IProcessDictionary _dictionaryCommands;
         private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public ExerciseCommands(
          IUserRoleCommands userRoleCommands,
          ICrudRepo<ExerciseDb> exerciseRepository,
-         IDictionaryCommands dictionaryCommands,
+         IProcessDictionary dictionaryCommands,
          IUserProvider user,
          IMapper mapper)
         {
@@ -105,7 +105,7 @@ namespace PowerLifting.Application.TrainingPlan
                 exerciseDb.ExerciseTypeId = targetExercise.ExerciseTypeId;
                 exerciseDb.ExerciseSubTypeId = targetExercise.ExerciseSubTypeId;
 
-                await _exerciseRepository.UpdateAsync(exerciseDb);
+                _exerciseRepository.Update(exerciseDb);
                 return;
             }
                         
@@ -132,7 +132,7 @@ namespace PowerLifting.Application.TrainingPlan
             }
 
             exerciseDb.Closed = true;
-            await _exerciseRepository.UpdateAsync(exerciseDb);
+            _exerciseRepository.Update(exerciseDb);
         }
       
         private async Task<List<Exercise>> GetAllowedExercises(int?[] allowedUserIds)

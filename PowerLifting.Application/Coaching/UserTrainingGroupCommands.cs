@@ -60,10 +60,10 @@ namespace PowerLifting.Application.Coaching
             var userGroupsDb = await _userTrainingGroupRepository.FindAsync(t => t.UserId == targetGroup.UserId && t.GroupId == targetGroup.GroupId);
             if (userGroupsDb.Any())
             {
-                await _userTrainingGroupRepository.DeleteAsync(userGroupsDb.First());
+                _userTrainingGroupRepository.Delete(userGroupsDb.First());
 
                 userInfo.CoachId = null;
-                await _userInfoRepository.UpdateAsync(userInfo);
+                _userInfoRepository.Update(userInfo);
             }
         }
 
@@ -79,13 +79,13 @@ namespace PowerLifting.Application.Coaching
             var userGroupDb = (await _userTrainingGroupRepository.FindAsync(t => t.UserId == _user.Id)).FirstOrDefault();
             if (userGroupDb != null)
             {
-                await _userTrainingGroupRepository.DeleteAsync(userGroupDb);
+                _userTrainingGroupRepository.Delete(userGroupDb);
             }
 
             await _trainingRequestCommands.RemoveRequestAsync(_user.Id);
 
             userInfoDb.CoachId = null;
-            await _userInfoRepository.UpdateAsync(userInfoDb);
+            _userInfoRepository.Update(userInfoDb);
         }
 
 
@@ -104,7 +104,7 @@ namespace PowerLifting.Application.Coaching
             }
 
             userGroupDb.GroupId = group.Id;
-            await _userTrainingGroupRepository.UpdateAsync(userGroupDb);
+            _userTrainingGroupRepository.Update(userGroupDb);
         }
 
 
@@ -130,7 +130,7 @@ namespace PowerLifting.Application.Coaching
                 });
 
                 userInfo.CoachId = _user.Id;
-                await _userInfoRepository.UpdateAsync(userInfo);
+                _userInfoRepository.Update(userInfo);
             }
             finally
             {

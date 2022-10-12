@@ -1,15 +1,12 @@
-﻿using PowerLifting.Infrastructure.Setup;
+﻿using PowerLifting.Domain.Interfaces.Common.Actions;
 
-namespace SportAssist.Common.Commands
+namespace PowerLifting.Infrastructure.Setup.Generic.AppActions
 {
     public class Command<TParam, TResult> : ICommand<TParam, TResult>
     {
         private readonly Func<ICommand<TParam, TResult>> _commandAccessor;
         private readonly IContextProvider _provider;
 
-        /// <summary> Initializes a new instance of the <see cref="Command{TParam, TResult}"/> class. </summary>
-        /// <param name="commandAccessor"><see cref="ICommand{TParam,TResult}"/></param>
-        /// <param name="provider"><see cref="IContextProvider"/></param>
         public Command(Func<ICommand<TParam, TResult>> commandAccessor, IContextProvider provider)
         {
             _commandAccessor = commandAccessor;
@@ -23,7 +20,7 @@ namespace SportAssist.Common.Commands
 
             TResult result = await _commandAccessor().ExecuteAsync(param);
 
-            _provider.CommitTransaction();
+            await _provider.CommitTransactionAsync();
 
             return result;
         }
