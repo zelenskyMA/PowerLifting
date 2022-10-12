@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
+using PowerLifting.Infrastructure.Setup;
 
 namespace PowerLifting.Infrastructure.Repositories.Common
 {
@@ -8,9 +9,9 @@ namespace PowerLifting.Infrastructure.Repositories.Common
         protected LiftingContext Context { get; }
         protected DbSet<T> DbSet { get; set; }
 
-        public BaseRepo(DbContextOptions<LiftingContext> provider)
+        public BaseRepo(IContextProvider provider)
         {
-            Context = new LiftingContext(provider);
+            Context = provider.Context;
             DbSet = Context.Set<T>();
         }
 

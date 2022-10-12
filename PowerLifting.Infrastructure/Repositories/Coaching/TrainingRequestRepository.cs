@@ -4,12 +4,13 @@ using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Enums;
 using PowerLifting.Domain.Interfaces.Coaching.Repositories;
 using PowerLifting.Infrastructure.Repositories.Common;
+using PowerLifting.Infrastructure.Setup;
 
 namespace PowerLifting.Infrastructure.Repositories.Coaching
 {
     public class TrainingRequestRepository : CrudRepo<TrainingRequestDb>, ITrainingRequestRepository
     {
-        public TrainingRequestRepository(DbContextOptions<LiftingContext> provider) : base(provider) { }
+        public TrainingRequestRepository(IContextProvider provider) : base(provider) { }
 
         /// <inheritdoc />
         public async Task<List<UserInfoDb>> GetCoachesAsync()

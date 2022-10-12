@@ -1,4 +1,8 @@
-﻿using PowerLifting.Domain.Interfaces.Common.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using PowerLifting.Domain.Interfaces.Common.Repositories;
+using PowerLifting.Infrastructure;
+using PowerLifting.Infrastructure.Setup;
+using SportAssist.Common.Commands;
 using System.Reflection;
 
 namespace PowerLifting.Service.Middleware
@@ -6,6 +10,7 @@ namespace PowerLifting.Service.Middleware
     public static class DiRegistration
     {
         public static void AddRepositoriesFromAssemblyOf<TAssembly>(this IServiceCollection services) => AddOperations<TAssembly>(services, typeof(ICrudRepo<>));
+        public static void AddCommandsFromAssemblyOf<TAssembly>(this IServiceCollection services) => AddOperations<TAssembly>(services, typeof(ICommand<,>), typeof(Command<,>));
 
         private static void AddOperations<TAssembly>(IServiceCollection services, Type openGenericOperationInterface, Type openGenericDecorator = null)
         {
@@ -28,8 +33,17 @@ namespace PowerLifting.Service.Middleware
             }
         }
 
-        private static Type GetOperationInterface(Type operationCandidateType, Type openGenericOperationInterface) =>
+        private static Type? GetOperationInterface(Type operationCandidateType, Type openGenericOperationInterface) =>
             operationCandidateType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == openGenericOperationInterface);
+
+
+        public static IServiceCollection AddConnectionProvider(this IServiceCollection services, string connectionString)
+        {
+            services.AddDbContext<LiftingContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IContextProvider, SqlContextProvider>();
+
+            return services;
+        }
     }
 
     /* public static IServiceCollection AddCommand<TParam, TResult, TCommand>(this IServiceCollection services)

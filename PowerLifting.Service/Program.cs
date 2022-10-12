@@ -21,7 +21,6 @@ using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application.Process;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Repositories;
 using PowerLifting.Domain.Interfaces.UserData.Application;
-using PowerLifting.Infrastructure;
 using PowerLifting.Infrastructure.Repositories.Coaching;
 using PowerLifting.Infrastructure.Repositories.TrainingPlan;
 using PowerLifting.Service.Middleware;
@@ -38,35 +37,13 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddHttpContextAccessor();
 
-        var connString = builder.Configuration.GetConnectionString("ConnectionDb");
-        builder.Services.AddDbContext<LiftingContext>(options => options.UseSqlServer(connString));
-
-        var mapperConfig = new MapperConfiguration(t => t.AddProfile(new MapperProfile()));
-        builder.Services.AddSingleton(mapperConfig.CreateMapper());
-
-        builder.Services.AddScoped<IUserProvider, UserProvider>();
+        builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ConnectionDb"));
+        builder.Services.AddSingleton(new MapperConfiguration(t => t.AddProfile(new MapperProfile())).CreateMapper());
 
         RegisterRepositories(builder);
         RegisterCommands(builder);
 
-        builder.Services.AddAuthentication(opt =>
-        {
-            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = ConfigurationManager.AppSetting["JWT:Issuer"],
-                    ValidAudience = ConfigurationManager.AppSetting["JWT:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]))
-                };
-            });
+        RegisterJwtAuth(builder);
 
         SetupApp(builder);
     }
@@ -102,6 +79,30 @@ internal class Program
         builder.Services.AddScoped<IPlanAnaliticsCommands, PlanAnaliticsCommands>();
 
         builder.Services.AddScoped<IDictionaryCommands, DictionaryCommands>();
+
+        builder.Services.AddScoped<IUserProvider, UserProvider>();
+    }
+
+    private static void RegisterJwtAuth(WebApplicationBuilder builder)
+    {
+        builder.Services.AddAuthentication(opt =>
+        {
+            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = ConfigurationManager.AppSetting["JWT:Issuer"],
+                        ValidAudience = ConfigurationManager.AppSetting["JWT:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]))
+                    };
+                });
     }
 
     private static void SetupApp(WebApplicationBuilder builder)
