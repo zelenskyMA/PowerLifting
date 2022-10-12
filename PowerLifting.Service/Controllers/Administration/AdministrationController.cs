@@ -1,21 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PowerLifting.Application.Administration.AdministrationCommands;
 using PowerLifting.Application.UserData.UserInfoCommands;
-using PowerLifting.Domain.Interfaces.Administration;
 using PowerLifting.Domain.Interfaces.Common.Actions;
 using PowerLifting.Domain.Models.UserData;
 
 namespace PowerLifting.Service.Controllers.Administration
 {
-    [Route("userAdministration")]
-    public class UserAdministration : BaseController
+    [Route("administration")]
+    public class AdministrationController : BaseController
     {
-        private readonly IUserAdministrationCommands _userAdministrationCommands;
-
-        public UserAdministration(IUserAdministrationCommands userAdministrationCommands)
-        {
-            _userAdministrationCommands = userAdministrationCommands;
-        }
-
         [HttpGet]
         [Route("getCard")]
         public async Task<UserCard> GetCard([FromServices] ICommand<UserInfoGetCardQuery.Param, UserCard> command, string? login, int userId = 0)
@@ -26,18 +19,18 @@ namespace PowerLifting.Service.Controllers.Administration
 
         [HttpPost]
         [Route("applyRoles")]
-        public async Task<bool> ApplyRoles(RolesInfo rolesInfo)
+        public async Task<bool> ApplyRoles([FromServices] ICommand<ApplyRolesCommand.Param, bool> command, ApplyRolesCommand.Param param)
         {
-            await _userAdministrationCommands.ApplyRolesAsync(rolesInfo);
-            return true;
+            var result = await command.ExecuteAsync(param);
+            return result;
         }
 
         [HttpPost]
         [Route("applyBlock")]
-        public async Task<bool> ApplyBlock(BlockInfo rolesInfo)
+        public async Task<bool> ApplyBlock([FromServices] ICommand<ApplyBlockCommand.Param, bool> command, ApplyBlockCommand.Param param)
         {
-            await _userAdministrationCommands.ApplyBlock(rolesInfo);
-            return true;
+            var result = await command.ExecuteAsync(param);
+            return result;
         }
     }
 }

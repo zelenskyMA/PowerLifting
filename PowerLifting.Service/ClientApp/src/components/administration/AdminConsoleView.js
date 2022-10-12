@@ -1,9 +1,9 @@
 ﻿import React, { Component } from 'react';
 import { TabControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
-import UserAdministrationPanel from "./UserAdministrationPanel";
-import DictionariesPanel from "./DictionariesPanel";
 import '../../styling/Common.css';
+import DictionariesPanel from "./DictionariesPanel";
+import UserAdministrationPanel from "./UserAdministrationPanel";
 
 class AdminConsoleView extends Component {
   constructor(props) {

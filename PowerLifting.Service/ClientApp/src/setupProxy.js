@@ -12,6 +12,7 @@ const context =  [
   "/user",
   "/userInfo",
 
+  "/administration",
   "/analitics",
   "/dictionary",
 

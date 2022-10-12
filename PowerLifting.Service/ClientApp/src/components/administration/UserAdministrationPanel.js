@@ -1,10 +1,10 @@
 ﻿import React, { Component } from 'react';
-import { Container, Col, Row, Button } from "reactstrap";
+import { Button, Col, Container, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { UserCardModal } from "../userData/UserCardModal";
-import { ErrorPanel, InfoPanel, InputNumber, InputText, InputCheckbox } from "../../common/controls/CustomControls";
+import { ErrorPanel, InfoPanel, InputCheckbox, InputNumber, InputText } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
+import { UserCardModal } from "../userData/UserCardModal";
 
 class UserAdministrationPanel extends Component {
   constructor(props) {
@@ -38,10 +38,10 @@ class UserAdministrationPanel extends Component {
 
       var cardData = null;
       if (searchId) {
-        cardData = await GetAsync(`/userAdministration/getCard?${searchId}`);
+        cardData = await GetAsync(`/administration/getCard?${searchId}`);
       }
       else {
-        if (searchLogin) { cardData = await GetAsync(`/userAdministration/getCard?${searchLogin}`); }
+        if (searchLogin) { cardData = await GetAsync(`/administration/getCard?${searchLogin}`); }
       }
 
       var blockReason = cardData?.blockReason?.reason == null ? '' : cardData?.blockReason?.reason;
@@ -68,7 +68,7 @@ class UserAdministrationPanel extends Component {
         reason: this.state.blockUser.reason
       }
 
-      await PostAsync('/userAdministration/applyBlock', blockInfo);
+      await PostAsync('/administration/applyBlock', blockInfo);
 
       this.setState({ success: 'Блокировка изменена успешно', error: '' });
     }
@@ -85,7 +85,7 @@ class UserAdministrationPanel extends Component {
         isCoach: this.state.userRoles.coach
       }
 
-      await PostAsync('/userAdministration/applyRoles', roleInfo);
+      await PostAsync('/administration/applyRoles', roleInfo);
       this.setState({ success: 'Роли изменены успешно', error: '' });
     }
     catch (error) {

@@ -2,7 +2,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using PowerLifting.Application.Administration;
 using PowerLifting.Application.Analitics;
 using PowerLifting.Application.Coaching;
 using PowerLifting.Application.Dictionaryies;
@@ -16,7 +15,6 @@ using PowerLifting.Application.UserData.UserAchivementCommands;
 using PowerLifting.Application.UserData.UserCommands;
 using PowerLifting.Application.UserData.UserInfoCommands;
 using PowerLifting.Domain.Interfaces;
-using PowerLifting.Domain.Interfaces.Administration;
 using PowerLifting.Domain.Interfaces.Analitics.Application;
 using PowerLifting.Domain.Interfaces.Coaching.Application;
 using PowerLifting.Domain.Interfaces.Coaching.Repositories;
@@ -78,8 +76,6 @@ internal class Program
         builder.Services.AddScoped<IProcessUser, ProcessUser>();        
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
-
-        builder.Services.AddScoped<IUserAdministrationCommands, UserAdministrationCommands>();
 
         builder.Services.AddScoped<ITrainingRequestCommands, TrainingRequestCommands>();
         builder.Services.AddScoped<ITrainingGroupCommands, TrainingGroupCommands>();
