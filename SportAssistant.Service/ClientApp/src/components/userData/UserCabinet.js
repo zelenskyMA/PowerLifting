@@ -1,5 +1,7 @@
 ﻿import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { Button, Row, Col, Label } from "reactstrap";
+import { updateUserInfo } from "../../stores/userStore/userActions";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { InputNumber, InputText } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
@@ -50,7 +52,7 @@ class UserCabinet extends Component {
   }
 
   confirmAsync = async () => {
-    await PostAsync(`/userInfo/update`, this.state.userInfo);
+    await this.props.updateUserInfo(this.state.userInfo);
     await PostAsync(`/userAchivement/create`, [this.state.pushAchivement, this.state.jerkAchivement]);
     this.props.navigate("/");
   }
@@ -58,14 +60,13 @@ class UserCabinet extends Component {
   render() {
     return (
       <>
-        <h3 className="spaceBottom">Кабинет пользователя</h3>
+        <h5 className="spaceBottom">Личный кабинет</h5>
 
-        <p>Личные данные</p>
         {this.personalInfoPanel()}
 
         <hr style={{ width: '75%', paddingTop: "2px", marginBottom: '30px' }} />
 
-        <p>Спортивные данные</p>
+        <p>Спортивные достижения</p>
         {this.sportInfoPanel()}
 
         <Button className="spaceTop" color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
@@ -78,10 +79,10 @@ class UserCabinet extends Component {
       <>
         <Row style={{ marginTop: '10px', marginBottom: '30px' }}>
           <Col xs={3}>
-            <InputText label="Фамилия:" propName="surname" onChange={this.onValueChange} initialValue={this.state.userInfo.surname} />
+            <InputText label="Имя:" propName="firstName" onChange={this.onValueChange} initialValue={this.state.userInfo.firstName} />
           </Col>
           <Col xs={3}>
-            <InputText label="Имя:" propName="firstName" onChange={this.onValueChange} initialValue={this.state.userInfo.firstName} />
+            <InputText label="Фамилия:" propName="surname" onChange={this.onValueChange} initialValue={this.state.userInfo.surname} />
           </Col>
           <Col xs={3}>
             <InputText label="Отчество:" propName="patronimic" onChange={this.onValueChange} initialValue={this.state.userInfo.patronimic} />
@@ -148,4 +149,10 @@ class UserCabinet extends Component {
 
 }
 
-export default WithRouter(UserCabinet)
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUserInfo: (userInfo) => updateUserInfo(userInfo, dispatch)
+  }
+}
+
+export default WithRouter(connect(null, mapDispatchToProps)(UserCabinet))

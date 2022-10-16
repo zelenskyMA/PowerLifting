@@ -5,13 +5,13 @@ import Planned from '../../../styling/icons/barbellPlanned.png';
 import Completed from '../../../styling/icons/barbellCompleted.png';
 
 export function ExerciseSettingsEditPanel({ percentage, settings }) {
-  var idPrefix = String("settings_" + percentage.id);
-
-  var settingsList = settings.filter(t => t.percentage.id === percentage.id);
+  var settingsList = settings.filter(t => t.percentage.id === percentage.id).sort((a, b) => a.weight - b.weight);
 
   if (settingsList.length === 0 || settingsList.filter(t => t.weight !== 0).length === 0) {
     return (<div> - </div>);
   }
+
+  var idPrefix = String(`settings_${percentage.id}_${settingsList[0].id}`);
 
   return (
     <>

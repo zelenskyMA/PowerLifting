@@ -67,7 +67,7 @@ class ExerciseEdit extends Component {
         <ErrorPanel errorMessage={this.state.error} />
 
         <Row className="spaceTop">
-          <Col xs={3}>
+          <Col xs={7}>
             <InputText label="Название:" propName="name" onChange={this.onValueChange} initialValue={this.state.exercise.name} />
           </Col>
         </Row>
@@ -83,7 +83,7 @@ class ExerciseEdit extends Component {
         </Row>
         <Row className="spaceTop">
           <Col xs={5}>
-            <InputTextArea onChange={this.onValueChange} propName="description" cols={95}
+            <InputTextArea onChange={this.onValueChange} propName="description" cols={98}
               label="Описание упражнения" initialValue={this.state.exercise.description} />
           </Col>
         </Row>

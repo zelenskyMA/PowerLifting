@@ -1,33 +1,29 @@
 import React, { Component } from 'react';
-import {
-  Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink,
-  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
-} from 'reactstrap';
+import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
-import { GetAsync } from "../common/ApiActions";
+import {
+    Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink,
+    UncontrolledDropdown
+} from 'reactstrap';
 import { GetToken, RemoveTokens } from '../common/TokenActions';
-import '../styling/NavMenu.css';
+import { setUserInfo } from "../stores/userStore/userActions";
+import WithRouter from "../common/extensions/WithRouter";
 import '../styling/Common.css';
+import '../styling/NavMenu.css';
 
-export class NavMenu extends Component {
+class NavMenu extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      collapsed: true,
-      userInfo: Object
+      collapsed: true
     };
   }
 
-  componentDidMount() { this.getUserInfo(); }
+  componentDidMount() { this.getInitData(); }
 
-  getUserInfo = async () => {
-    if (GetToken() == null) {
-      return;
-    }
-
-    var info = await GetAsync("/userInfo/get");
-    this.setState({ userInfo: info });
+  getInitData = async () => {
+    if (GetToken() != null) { await this.props.setUserInfo(); }
   }
 
   toggleNavbar = () => { this.setState({ collapsed: !this.state.collapsed }); }
@@ -40,23 +36,9 @@ export class NavMenu extends Component {
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
-
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
-              </NavItem>
-
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/exercises">Упражнения</NavLink>
-              </NavItem>
-
-              <NavItem className="spaceRight">
-                <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
-              </NavItem>
-
-              {this.coachGroupsLink()}
-
+              {this.mainMenu()}
+              {this.coachLink()}
               {this.adminLink()}
-
               {this.loginLink()}
             </ul>
           </Collapse>
@@ -65,8 +47,29 @@ export class NavMenu extends Component {
     );
   }
 
+  mainMenu() {
+    var legalName = this.props.userInfo?.legalName ?? '';
+    if (legalName === '') { return (<></>); }
+
+    return (
+      <>
+        <NavItem>
+          <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
+        </NavItem>
+
+        <NavItem>
+          <NavLink tag={Link} className="text-dark" to="/exercises">Упражнения</NavLink>
+        </NavItem>
+
+        <NavItem className="spaceRight">
+          <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
+        </NavItem>
+      </>
+    );
+  }
+
   loginLink() {
-    var legalName = this.state.userInfo?.legalName ?? '';
+    var legalName = this.props.userInfo?.legalName ?? '';
     if (legalName === '') {
       return (
         <NavItem>
@@ -88,7 +91,7 @@ export class NavMenu extends Component {
   }
 
   adminLink() {
-    if (!this.state.userInfo?.rolesInfo?.isAdmin) { return (<></>) }
+    if (!this.props.userInfo?.rolesInfo?.isAdmin) { return (<></>) }
 
     return (
       <NavItem style={{ marginRight: '20px' }}>
@@ -97,8 +100,8 @@ export class NavMenu extends Component {
     );
   }
 
-  coachGroupsLink() {
-    if (!this.state.userInfo?.rolesInfo?.isCoach) { return (<></>) }
+  coachLink() {
+    if (!this.props.userInfo?.rolesInfo?.isCoach) { return (<></>) }
 
     return (
       <NavItem style={{ marginRight: '20px' }}>
@@ -108,3 +111,17 @@ export class NavMenu extends Component {
   }
 
 }
+
+const mapStateToProps = store => {
+  return {
+    userInfo: store.currentUser.info,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setUserInfo: () => setUserInfo(dispatch)
+  }
+}
+
+export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(NavMenu))

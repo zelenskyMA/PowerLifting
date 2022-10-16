@@ -76,15 +76,15 @@ class GroupUserCardPanel extends Component {
           <Col xs={2}>Рекорд в рывке: {this.state.jerkAchivement?.result ?? 0}</Col>
         </Row>
         <Row className="spaceTop">
-          <Col xs={5}>
+          <Col xs={6}>
             <DropdownControl placeholder="Не задано" label="Укажите группу для перевода: "
               data={this.state.coachGroups} onChange={this.onGroupSelect} defaultValue={this.state.card.groupInfo.id} />
           </Col>
         </Row>
         <Row className="spaceTop">
-          <Col xs={3}>
-            <Button color="primary" onClick={() => this.changeGroup()}>Перевести в другую группу</Button>
-          </Col>         
+          <Col xs={1} className="spaceRight">
+            <Button color="primary" onClick={() => this.changeGroup()}>Перевести</Button>
+          </Col>     
           <Col xs={1}>
             <Button color="primary" onClick={() => this.removeUser()}>Удалить</Button>
           </Col>

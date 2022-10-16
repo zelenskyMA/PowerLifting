@@ -1,4 +1,4 @@
-import { GetAsync, PostAsync } from "../../common/ApiActions"
+import { PostAsync } from "../../common/ApiActions"
 
 export const RECEIVE_PLAN_ID = "RECEIVE_PLAN_ID";
 

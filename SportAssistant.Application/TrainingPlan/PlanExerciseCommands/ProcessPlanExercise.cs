@@ -55,7 +55,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
                 item.Exercise = exercises.First(t => t.Id == item.Exercise.Id).Clone();
                 item.Exercise.PlannedExerciseId = item.Id;
 
-                item.Settings = settings.Where(t => t.PlanExerciseId == item.Id).OrderBy(t => t.Percentage.MinValue).ToList();
+                item.Settings = settings.Where(t => t.PlanExerciseId == item.Id).OrderBy(t => t.Weight).ToList();
 
                 _planCountersSetup.SetPlanExerciseCounters(item);
             }
