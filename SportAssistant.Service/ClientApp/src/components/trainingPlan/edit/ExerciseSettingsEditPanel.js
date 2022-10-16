@@ -28,7 +28,7 @@ function Tooltip({ settingsList, idPrefix }) {
     <UncontrolledTooltip placement="top" target={idPrefix}>
       {settingsList.map(settings => {
         return (
-          <p key={idPrefix + settings.id}>
+          <p key={`tooltip_${idPrefix}`}>
             {
               `Вес: ${settings.weight} Подходы: ${settings.iterations} Повторы: ${settings.exercisePart1} | ${settings.exercisePart2} | ${settings.exercisePart3}`
             }
