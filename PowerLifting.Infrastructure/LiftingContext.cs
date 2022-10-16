@@ -26,7 +26,7 @@ namespace PowerLifting.Infrastructure
 
         public DbSet<TrainingRequestDb> TrainingRequests { get; set; }
         public DbSet<TrainingGroupDb> TrainingGroups { get; set; }
-        public DbSet<UserTrainingGroupDb> UserTrainingGroups { get; set; }
+        public DbSet<TrainingGroupUserDb> TrainingGroupUsers { get; set; }
 
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,7 +35,7 @@ namespace PowerLifting.Infrastructure
             modelBuilder.Entity<UserRoleDb>().HasKey(c => new { c.UserId, c.RoleId });
             modelBuilder.Entity<UserInfoDb>().HasKey(c => new { c.UserId });
 
-            modelBuilder.Entity<UserTrainingGroupDb>().HasKey(c => new { c.UserId, c.GroupId });
+            modelBuilder.Entity<TrainingGroupUserDb>().HasKey(c => new { c.UserId, c.GroupId });
         }
 
         public LiftingContext(DbContextOptions<LiftingContext> options) : base(options) { }

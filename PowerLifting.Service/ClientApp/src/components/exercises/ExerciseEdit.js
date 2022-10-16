@@ -23,8 +23,8 @@ class ExerciseEdit extends Component {
   async getInitData() {
     const [exerciseData, typesData, subTypesData] = await Promise.all([
       GetAsync(`exerciseInfo/get?id=${this.props.params.id ?? 0}`),
-      GetAsync(`dictionary/getListByType?id=1`),
-      GetAsync(`dictionary/getListByType?id=2`)
+      GetAsync(`dictionary/getListByType?typeId=1`),
+      GetAsync(`dictionary/getListByType?typeId=2`)
     ]);
 
     this.setState({ exercise: exerciseData, types: typesData, subTypes: subTypesData, loading: false });
@@ -32,7 +32,7 @@ class ExerciseEdit extends Component {
 
   onConfirm = async () => {
     try {
-      await PostAsync(`/exerciseInfo/updateExercise`, this.state.exercise);
+      await PostAsync(`/exerciseInfo/update`, this.state.exercise);
       this.props.navigate(`/exercises`);
     }
     catch (error) {
@@ -42,7 +42,7 @@ class ExerciseEdit extends Component {
 
   onDelete = async () => {
     try {
-      await PostAsync(`/exerciseInfo/deleteExercise?Id=${this.state.exercise.id}`);
+      await PostAsync(`/exerciseInfo/delete?Id=${this.state.exercise.id}`);
       this.props.navigate(`/exercises`);
     }
     catch (error) {

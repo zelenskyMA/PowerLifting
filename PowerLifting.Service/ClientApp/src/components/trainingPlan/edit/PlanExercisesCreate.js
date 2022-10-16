@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Button } from 'reactstrap';
+import { Button, Container } from 'reactstrap';
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
@@ -19,7 +19,7 @@ class PlanExercisesCreate extends Component {
   async getInitData() {
     const [settingsList, planExercises] = await Promise.all([
       GetAsync("/exerciseInfo/getPlanningList"),
-      GetAsync(`/trainingPlan/getPlanExercises?dayId=${this.props.params.id}`)
+      GetAsync(`/planExercise/getByDay?dayId=${this.props.params.id}`)
     ]);
 
     var planExercisesData = planExercises.map((item, i) => item.exercise);
@@ -27,7 +27,7 @@ class PlanExercisesCreate extends Component {
   }
 
   confirmExercisesAsync = async () => {
-    await PostAsync(`/trainingPlan/createPlanExercises?dayId=${this.props.params.id}`, this.state.selectedExercises);
+    await PostAsync('/planExercise/create', { dayId: this.props.params.id, exercises: this.state.selectedExercises });
     this.props.navigate(`/createPlanDay/${this.props.params.id}`);
   }
 

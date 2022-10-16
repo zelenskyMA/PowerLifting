@@ -16,13 +16,21 @@ namespace PowerLifting.Infrastructure.Setup.Generic.AppActions
         /// <inheritdoc />
         public async Task<TResult> ExecuteAsync(TParam param)
         {
-            _provider.BeginTransaction();
+            try
+            {
+                _provider.BeginTransaction();
 
-            TResult result = await _commandAccessor().ExecuteAsync(param);
+                TResult result = await _commandAccessor().ExecuteAsync(param);
 
-            await _provider.CommitTransactionAsync();
+                await _provider.CommitTransactionAsync();
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+                await _provider.RollbackAsync();
+                throw;
+            }
         }
     }
 }

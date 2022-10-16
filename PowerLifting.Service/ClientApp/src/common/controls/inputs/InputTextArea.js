@@ -1,6 +1,7 @@
 ﻿
 export function InputTextArea({ label, onChange, propName, initialValue, rows = 3, cols = 85 }) {
   label = '  ' + label;
+  initialValue = initialValue || '';
 
   return (
     <>

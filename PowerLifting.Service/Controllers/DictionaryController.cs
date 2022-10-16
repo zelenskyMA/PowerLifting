@@ -1,25 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PowerLifting.Domain.Enums;
-using PowerLifting.Domain.Interfaces;
+using PowerLifting.Application.Dictionaryies;
+using PowerLifting.Domain.Interfaces.Common.Actions;
 using PowerLifting.Domain.Models;
 
 namespace PowerLifting.Service.Controllers
 {
     [Route("dictionary")]
     public class DictionaryController : BaseController
-    {
-        private readonly IProcessDictionary _dictionaryCommands;
-
-        public DictionaryController(IProcessDictionary dictionaryCommands)
-        {
-            _dictionaryCommands = dictionaryCommands;
-        }
-
+    {       
         [HttpGet]
         [Route("getListByType")]
-        public async Task<List<DictionaryItem>> GetListByTypeAsync(DictionaryTypes id)
+        public async Task<List<DictionaryItem>> GetListByTypeAsync([FromServices] ICommand<DictionaryGetByTypeQuery.Param, List<DictionaryItem>> command, int typeId)
         {
-            var result = await _dictionaryCommands.GetItemsByTypeIdAsync(id);
+            var result = await command.ExecuteAsync(new DictionaryGetByTypeQuery.Param() {  TypeId = typeId });
             return result;
         }
     }

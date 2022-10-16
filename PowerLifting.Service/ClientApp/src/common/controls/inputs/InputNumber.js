@@ -1,11 +1,10 @@
 ﻿import { Input, InputGroup, InputGroupText } from "reactstrap";
 
 export function InputNumber({ label, onChange, propName, initialValue }) {
-
   return (
     <InputGroup>
       <InputGroupText>{label}</InputGroupText>
-      <Input pattern="[0-9]*" value={initialValue}
+      <Input pattern="[0-9]*" value={initialValue || 0}
         onChange={(e) => setValue(e, propName, onChange)}
         onFocus={(e) => onFocus(e)}
         onBlur={(e) => onFocusLost(e)} />
@@ -14,12 +13,11 @@ export function InputNumber({ label, onChange, propName, initialValue }) {
 }
 
 export function MultiNumberInput({ label, onChange, inputList }) {
-
   return (
     <InputGroup>
       <InputGroupText>{label}</InputGroupText>
       {inputList.map(item =>
-        <Input pattern="[0-9]*" value={item.initialValue}
+        <Input pattern="[0-9]*" value={item.initialValue || 0}
           onChange={(e) => setValue(e, item.propName, onChange)}
           onFocus={(e) => onFocus(e)}
           onBlur={(e) => onFocusLost(e)} />

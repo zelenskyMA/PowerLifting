@@ -44,7 +44,7 @@ class UserCabinet extends Component {
   }
 
   rejectCoach = async () => {
-    await PostAsync(`/trainingGroups/rejectCoach`);
+    await PostAsync(`/groupUser/reject`);
     var info = await GetAsync("/userInfo/get");
     this.setState({ userInfo: info });
   }

@@ -45,7 +45,7 @@ class GroupUserCardPanel extends Component {
   changeGroup = async () => {
     try {
       var userGroup = { userId: this.props.params.id, groupId: this.state.selectedGroupId };
-      await PostAsync(`/trainingGroups/updateUserGroup`, userGroup);
+      await PostAsync(`/groupUser/update`, userGroup);
     }
     catch (error) { this.setState({ error: error.message }); }
   }
@@ -53,7 +53,7 @@ class GroupUserCardPanel extends Component {
   removeUser = async () => {
     try {
       var userGroup = { userId: this.props.params.id, groupId: this.state.card?.groupInfo?.id };
-      await PostAsync(`/trainingGroups/removeFromGroup`, userGroup);
+      await PostAsync(`/groupUser/remove`, userGroup);
       this.props.navigate(`/coachConsole`);
     }
     catch (error) { this.setState({ error: error.message }); }
@@ -78,7 +78,7 @@ class GroupUserCardPanel extends Component {
         <Row className="spaceTop">
           <Col xs={5}>
             <DropdownControl placeholder="Не задано" label="Укажите группу для перевода: "
-              data={this.state.coachGroups} onChange={this.onGroupSelect} />
+              data={this.state.coachGroups} onChange={this.onGroupSelect} defaultValue={this.state.card.groupInfo.id} />
           </Col>
         </Row>
         <Row className="spaceTop">

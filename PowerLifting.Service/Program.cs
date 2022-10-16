@@ -2,12 +2,17 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using PowerLifting.Application.Analitics;
-using PowerLifting.Application.Coaching;
+using PowerLifting.Application.Coaching.TrainingGroupCommands;
+using PowerLifting.Application.Coaching.TrainingGroupUserCommands;
+using PowerLifting.Application.Coaching.TrainingRequestCommands;
+using PowerLifting.Application.Common;
 using PowerLifting.Application.Dictionaryies;
 using PowerLifting.Application.Mapper;
 using PowerLifting.Application.TrainingPlan;
-using PowerLifting.Application.TrainingPlan.Process;
+using PowerLifting.Application.TrainingPlan.ExerciseCommands;
+using PowerLifting.Application.TrainingPlan.PlanDayCommands;
+using PowerLifting.Application.TrainingPlan.PlanExerciseCommands;
+using PowerLifting.Application.TrainingPlan.PlanExerciseSettingsCommands;
 using PowerLifting.Application.UserData;
 using PowerLifting.Application.UserData.Auth;
 using PowerLifting.Application.UserData.Auth.Interfaces;
@@ -15,11 +20,10 @@ using PowerLifting.Application.UserData.UserAchivementCommands;
 using PowerLifting.Application.UserData.UserCommands;
 using PowerLifting.Application.UserData.UserInfoCommands;
 using PowerLifting.Domain.Interfaces;
-using PowerLifting.Domain.Interfaces.Analitics.Application;
 using PowerLifting.Domain.Interfaces.Coaching.Application;
 using PowerLifting.Domain.Interfaces.Coaching.Repositories;
+using PowerLifting.Domain.Interfaces.Common;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
-using PowerLifting.Domain.Interfaces.TrainingPlan.Application.Process;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Repositories;
 using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Infrastructure.Repositories.Coaching;
@@ -42,7 +46,7 @@ internal class Program
         builder.Services.AddSingleton(new MapperConfiguration(t => t.AddProfile(new MapperProfile())).CreateMapper());
 
         RegisterRepositories(builder);
-        RegisterCommands(builder);
+        RegisterApps(builder);
 
         RegisterJwtAuth(builder);
 
@@ -54,38 +58,31 @@ internal class Program
         builder.Services.AddRepositoriesFromAssemblyOf<PlanRepository>();
         builder.Services.AddScoped<IPlanExerciseSettingsRepository, PlanExerciseSettingsRepository>();
         builder.Services.AddScoped<ITrainingRequestRepository, TrainingRequestRepository>();
-        builder.Services.AddScoped<IUserTrainingGroupRepository, UserTrainingGroupRepository>();
+        builder.Services.AddScoped<ITrainingGroupUserRepository, TrainingGroupUserRepository>();
     }
 
-    private static void RegisterCommands(WebApplicationBuilder builder)
+    private static void RegisterApps(WebApplicationBuilder builder)
     {
         builder.Services.AddCommandsFromAssemblyOf<UserInfoGetQuery>();
 
-        //processes
+        builder.Services.AddScoped<IProcessPlanDay, ProcessPlanDay>();
         builder.Services.AddScoped<IProcessUserInfo, ProcessUserInfo>();
         builder.Services.AddScoped<IProcessDictionary, ProcessDictionary>();
-
-        //old apps
-        builder.Services.AddScoped<IPlanCommands, PlanCommands>();
-        builder.Services.AddScoped<IPlanExerciseCommands, PlanExerciseCommands>();
-        builder.Services.AddScoped<IPlanExerciseSettingsCommands, PlanExerciseSettingsCommands>();
-        builder.Services.AddScoped<IExerciseCommands, ExerciseCommands>();
+        builder.Services.AddScoped<IProcessPlanExercise, ProcessPlanExercise>();
+        builder.Services.AddScoped<IProcessPlanExerciseSettings, ProcessPlanExerciseSettings>();
+        builder.Services.AddScoped<IProcessExercise, ProcessExercise>();
         builder.Services.AddScoped<IPlanCountersSetup, PlanCountersSetup>();
-
         builder.Services.AddScoped<IProcessUserAchivements, ProcessUserAchivements>();
-        builder.Services.AddScoped<IProcessUser, ProcessUser>();        
+        builder.Services.AddScoped<IProcessUser, ProcessUser>();
+        builder.Services.AddScoped<IProcessTrainingRequest, ProcessTrainingRequest>();
+        builder.Services.AddScoped<IProcessTrainingGroup, ProcessTrainingGroup>();
+        builder.Services.AddScoped<IProcessTrainingGroupUser, ProcessTrainingGroupUser>();
+        
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
 
-        builder.Services.AddScoped<ITrainingRequestCommands, TrainingRequestCommands>();
-        builder.Services.AddScoped<ITrainingGroupCommands, TrainingGroupCommands>();
-        builder.Services.AddScoped<IUserTrainingGroupCommands, UserTrainingGroupCommands>();
-
-        builder.Services.AddScoped<IPlanAnaliticsCommands, PlanAnaliticsCommands>();
-
-        
         builder.Services.AddScoped<IUserProvider, UserProvider>();
-
+        builder.Services.AddScoped<IAllowedUserIds, AllowedUserIds>();        
     }
 
     private static void RegisterJwtAuth(WebApplicationBuilder builder)

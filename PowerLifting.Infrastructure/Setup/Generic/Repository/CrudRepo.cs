@@ -15,10 +15,28 @@ namespace PowerLifting.Infrastructure.Setup.Generic.Repository
         public Task<T?> FindOneAsync(Expression<Func<T, bool>> predicate) =>
             predicate == null ? DbSet.AsNoTracking().FirstOrDefaultAsync() : DbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
 
-        public async Task CreateListAsync(List<T> entities) => entities.Select(async t => await CreateAsync(t));
+        public async Task CreateListAsync(List<T> entities)
+        {
+            foreach (var item in entities)
+            {
+                await CreateAsync(item);
+            }
+        }
 
-        public void DeleteList(List<T> entities) => entities.Select(t => Delete(t));
-        
-        public void UpdateList(List<T> entities) => entities.Select(t => Update(t));
+        public void DeleteList(List<T> entities)
+        {
+            foreach (var item in entities)
+            {
+                Delete(item);
+            }
+        }
+
+        public void UpdateList(List<T> entities)
+        {
+            foreach (var item in entities)
+            {
+                Update(item);
+            }
+        }
     }
 }

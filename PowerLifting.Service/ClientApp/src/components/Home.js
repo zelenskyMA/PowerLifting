@@ -25,7 +25,7 @@ class Home extends Component {
       return;
     }
 
-    var data = await GetAsync("/trainingPlan/getCurrentDay");
+    var data = await GetAsync("/planDay/getCurrent");
     this.setState({ planDay: data, loggedUser: true, loading: false });
   }
 

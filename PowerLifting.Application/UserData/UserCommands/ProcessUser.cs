@@ -75,7 +75,7 @@ namespace PowerLifting.Application.UserData.UserCommands
 
             await _userRepository.CreateAsync(userDb);
 
-            await _provider.Context.SaveChangesAsync();
+            await _provider.AcceptChangesAsync();
 
             await _userInfoRepository.CreateAsync(new UserInfoDb() { UserId = userDb.Id });
 

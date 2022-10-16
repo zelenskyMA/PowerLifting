@@ -30,15 +30,14 @@ class PlanAnaliticsPanel extends Component {
     };
   }
 
-  componentDidMount() { this.getPlanAnalitics(); }
+  componentDidMount() { this.getInitData(); }
 
-  getPlanAnalitics = async () => {
+  getInitData = async () => {
     var utcStartDate = new Date(this.state.startDate.getTime() - this.state.startDate.getTimezoneOffset() * 60 * 1000);
     var utcFinishDate = new Date(this.state.finishDate.getTime() - this.state.finishDate.getTimezoneOffset() * 60 * 1000);
 
     var request = `startDate=${utcStartDate.toISOString()}&finishDate=${utcFinishDate.toISOString()}`;
     request = this.props.groupUserId ? request + `&userId=${this.props.groupUserId}` : request;
-
     var analiticsData = await GetAsync(`/analitics/getPlanAnalitics?${request}`);
 
     this.setState({ analitics: analiticsData, loading: false });
@@ -46,7 +45,7 @@ class PlanAnaliticsPanel extends Component {
 
   onValueChange = async (propName, value) => {
     this.setState({ [propName]: new Date(value) });
-    await this.getPlanAnalitics();
+    await this.getInitData();
   }
 
   render() {

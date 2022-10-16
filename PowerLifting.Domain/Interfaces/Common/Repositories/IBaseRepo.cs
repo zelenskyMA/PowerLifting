@@ -4,10 +4,10 @@
     {
         Task<IEnumerable<T>> GetAllAsync();
 
-        Task<bool> CreateAsync(T entity);
+        Task CreateAsync(T entity);
 
-        bool Update(T entity);
+        void Update(T entity);
 
-        bool Delete(T entity);
+        void Delete(T entity);
     }
 }

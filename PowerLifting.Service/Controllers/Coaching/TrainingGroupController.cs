@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PowerLifting.Application.Coaching;
-using PowerLifting.Domain.Interfaces.Coaching.Application;
+using PowerLifting.Application.Coaching.TrainingGroupCommands;
+using PowerLifting.Domain.Interfaces.Common.Actions;
 using PowerLifting.Domain.Models.Coaching;
 
 namespace PowerLifting.Service.Controllers.Coaching
@@ -8,77 +8,44 @@ namespace PowerLifting.Service.Controllers.Coaching
     [Route("trainingGroups")]
     public class TrainingGroupController : BaseController
     {
-        private readonly ITrainingGroupCommands _trainingGroupCommands;
-        private readonly IUserTrainingGroupCommands _userTrainingGroupCommands;
-
-        public TrainingGroupController(ITrainingGroupCommands trainingGroupCommands, IUserTrainingGroupCommands userTrainingGroupCommands)
-        {
-            _trainingGroupCommands = trainingGroupCommands;
-            _userTrainingGroupCommands = userTrainingGroupCommands;
-        }
-
         [HttpGet]
         [Route("getList")]
-        public async Task<List<TrainingGroup>> GetCoachGroupsAsync()
+        public async Task<List<TrainingGroup>> GetListAsync([FromServices] ICommand<TrainingGroupGetListQuery.Param, List<TrainingGroup>> command)
         {
-            var result = await _trainingGroupCommands.GetListAsync();
+            var result = await command.ExecuteAsync(new TrainingGroupGetListQuery.Param() { });
             return result;
         }
 
         [HttpGet]
         [Route("get")]
-        public async Task<TrainingGroupInfo> GetGroupInfoAsync(int id)
+        public async Task<TrainingGroupInfo> GetAsync([FromServices] ICommand<TrainingGroupGetByIdQuery.Param, TrainingGroupInfo> command, int id)
         {
-            var result = await _trainingGroupCommands.GetAsync(id);
+            var result = await command.ExecuteAsync(new TrainingGroupGetByIdQuery.Param() { Id = id });
             return result;
         }
 
         [HttpPost]
         [Route("create")]
-        public async Task<bool> CreateAsync(TrainingGroup group)
+        public async Task<bool> CreateAsync([FromServices] ICommand<TrainingGroupCreateCommand.Param, bool> command, TrainingGroup group)
         {
-            await _trainingGroupCommands.CreateAsync(group);
-            return true;
+            var result = await command.ExecuteAsync(new TrainingGroupCreateCommand.Param() { Group = group });
+            return result;
         }
 
         [HttpPost]
         [Route("update")]
-        public async Task<bool> UpdateAsync(TrainingGroup group)
+        public async Task<bool> UpdateAsync([FromServices] ICommand<TrainingGroupUpdateCommand.Param, bool> command, TrainingGroup group)
         {
-            await _trainingGroupCommands.UpdateAsync(group);
-            return true;
+            var result = await command.ExecuteAsync(new TrainingGroupUpdateCommand.Param() { Group = group });
+            return result;
         }
 
         [HttpPost]
         [Route("delete")]
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync([FromServices] ICommand<TrainingGroupDeleteCommand.Param, bool> command, int id)
         {
-            await _trainingGroupCommands.DeleteAsync(id);
-            return true;
+            var result = await command.ExecuteAsync(new TrainingGroupDeleteCommand.Param() { Id = id });
+            return result;
         }
-
-        [HttpPost]
-        [Route("rejectCoach")]
-        public async Task<bool> RejectCoach() {
-            await _userTrainingGroupCommands.RejectCoach();
-            return true;
-        }
-
-        [HttpPost]
-        [Route("updateUserGroup")]
-        public async Task<bool> UpdateUserGroupAsync(UserTrainingGroup targetGroup)
-        {
-            await _userTrainingGroupCommands.UpdateUserGroup(targetGroup);
-            return true;
-        }
-
-        [HttpPost]
-        [Route("removeFromGroup")]
-        public async Task<bool> RemoveUserFromGroup(UserTrainingGroup targetGroup)
-        {
-            await _userTrainingGroupCommands.RemoveUserFromGroup(targetGroup);
-            return true;
-        }
-
     }
 }

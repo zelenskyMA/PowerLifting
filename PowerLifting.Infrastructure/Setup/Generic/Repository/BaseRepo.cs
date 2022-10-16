@@ -16,7 +16,7 @@ namespace PowerLifting.Infrastructure.Setup.Generic.Repository
 
         public async Task<IEnumerable<T>> GetAllAsync() => await DbSet.AsNoTracking().ToListAsync();
 
-        public async Task<bool> CreateAsync(T entity)
+        public async Task CreateAsync(T entity)
         {
             var dbEntityEntry = Context.Entry(entity);
             if (dbEntityEntry.State != EntityState.Detached)
@@ -27,11 +27,9 @@ namespace PowerLifting.Infrastructure.Setup.Generic.Repository
             {
                 await DbSet.AddAsync(entity);
             }
-
-            return true;
         }
 
-        public bool Update(T entity)
+        public void Update(T entity)
         {
             var dbEntityEntry = Context.Entry(entity);
             if (dbEntityEntry.State == EntityState.Detached)
@@ -39,17 +37,13 @@ namespace PowerLifting.Infrastructure.Setup.Generic.Repository
                 DbSet.Attach(entity);
             }
             dbEntityEntry.State = EntityState.Modified;
-
-            return true;
         }
 
-        public bool Delete(T entity)
+        public void Delete(T entity)
         {
             var dbEntityEntry = Context.Entry(entity);
             dbEntityEntry.State = EntityState.Deleted;
             DbSet.Remove(entity);
-
-            return true;
         }
     }
 }

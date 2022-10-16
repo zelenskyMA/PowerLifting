@@ -19,7 +19,7 @@ class PlanDayCreate extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    var data = await GetAsync(`/trainingPlan/getPlanDay?dayId=${this.props.params.id}`);
+    var data = await GetAsync(`/planDay/get?id=${this.props.params.id}`);
     this.setState({ planDay: data, loading: false });
   }
 

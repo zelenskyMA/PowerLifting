@@ -10,10 +10,7 @@ namespace PowerLifting.Infrastructure.Setup
 
         public LiftingContext Context { get; }
 
-        public SqlContextProvider(DbContextOptions<LiftingContext> contextOptions)
-        {
-            Context = new LiftingContext(contextOptions);
-        }
+        public SqlContextProvider(DbContextOptions<LiftingContext> contextOptions) => Context = new LiftingContext(contextOptions);
 
         /// <inheritdoc/>
         public IDbContextTransaction BeginTransaction()
@@ -36,14 +33,21 @@ namespace PowerLifting.Infrastructure.Setup
         /// <inheritdoc/>
         public async Task CommitTransactionAsync()
         {
-            if (Context.Database.CurrentTransaction == null)
+            if (_transaction == null)
             {
                 throw new InvalidOperationException("Отсутствует открытая транзакция.");
             }
 
-            await Context.Database.CommitTransactionAsync();
             await Context.SaveChangesAsync();
+            await _transaction.CommitAsync();
         }
+
+        /// <inheritdoc/>
+        public async Task RollbackAsync() => await _transaction.RollbackAsync();
+
+        /// <inheritdoc/>
+        public Task AcceptChangesAsync() => Context.SaveChangesAsync();
+
 
         /// <inheritdoc/>
         public void Dispose()

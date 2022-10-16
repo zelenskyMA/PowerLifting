@@ -15,27 +15,25 @@ namespace PowerLifting.Application.UserData.UserInfoCommands
     {
         private readonly IUserBlockCommands _userBlockCommands;
         private readonly IUserRoleCommands _userRoleCommands;
-        private readonly IProcessUserAchivements _userAchivementCommands;
-        private readonly ITrainingGroupCommands _trainingGroupCommands;
-
+        private readonly IProcessUserAchivements _processUserAchivements;
+        private readonly IProcessTrainingGroup _processTrainingGroups;
         private readonly IProcessUserInfo _processUserInfo;
-
         private readonly ICrudRepo<UserDb> _userRepository;
         private readonly IUserProvider _user;
 
         public UserInfoGetCardQuery(
             IUserBlockCommands userBlockCommands,
             IUserRoleCommands userRoleCommands,
-            IProcessUserAchivements userAchivementCommands,
-            ITrainingGroupCommands trainingGroupCommands,
+            IProcessUserAchivements processUserAchivements,
+            IProcessTrainingGroup processTrainingGroups,
             IProcessUserInfo processUserInfo,
             ICrudRepo<UserDb> userRepository,
             IUserProvider user)
         {
             _userBlockCommands = userBlockCommands;
             _userRoleCommands = userRoleCommands;
-            _userAchivementCommands = userAchivementCommands;
-            _trainingGroupCommands = trainingGroupCommands;
+            _processUserAchivements = processUserAchivements;
+            _processTrainingGroups = processTrainingGroups;
 
             _processUserInfo = processUserInfo;
 
@@ -77,8 +75,8 @@ namespace PowerLifting.Application.UserData.UserInfoCommands
                 UserName = Naming.GetLegalFullName(info),
                 Login = userDb.Email,
                 BaseInfo = info,
-                GroupInfo = await _trainingGroupCommands.GetUserGroupAsync(param.UserId),
-                Achivements = await _userAchivementCommands.GetAsync(param.UserId)
+                GroupInfo = await _processTrainingGroups.GetUserGroupAsync(param.UserId),
+                Achivements = await _processUserAchivements.GetAsync(param.UserId)
             };
 
             if (userDb.Blocked)

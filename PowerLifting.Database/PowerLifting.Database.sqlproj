@@ -92,7 +92,7 @@
     <Build Include="Tables\dbo\PlanExerciseSettings.sql" />
     <Build Include="Tables\dbo\Plans.sql" />
     <Build Include="Tables\trn\TrainingGroups.sql" />
-    <Build Include="Tables\trn\UserTrainingGroups.sql" />
+    <Build Include="Tables\trn\TrainingGroupUsers.sql" />
     <Build Include="Tables\usr\UserAchivements.sql" />
     <Build Include="Tables\usr\UserBlockHistory.sql" />
     <Build Include="Tables\usr\UserInfo.sql" />

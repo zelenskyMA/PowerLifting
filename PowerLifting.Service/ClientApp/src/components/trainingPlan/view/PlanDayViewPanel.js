@@ -19,7 +19,7 @@ export function PlanDayViewPanel({ planDay }) {
   const [completedExercises, setCompleted] = useState(completed);
 
   const completeExercise = async (modalData) => {
-    await PostAsync("/trainingPlan/completeExercises", modalData.settings.map(a => a.id));
+    await PostAsync("/planExercise/complete", modalData.settings.map(a => a.id));
 
     var current = completedExercises.find(t => t.id === modalData.id);
     current.state = true;

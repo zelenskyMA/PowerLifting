@@ -28,7 +28,7 @@ class PlanExerciseSettingsEdit extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    var planExerciseData = await GetAsync(`/trainingPlan/getPlanExercise?id=${this.props.params.id}`);
+    var planExerciseData = await GetAsync(`/planExercise/get?id=${this.props.params.id}`);
     var achivementData = await GetAsync(`/userAchivement/getByExercise?userId=${this.props.groupUserId}&exerciseTypeId=${planExerciseData?.exercise?.exerciseTypeId}`);
 
     this.setState({ planExercise: planExerciseData, settingsList: planExerciseData.settings, achivement: achivementData, loading: false });
@@ -39,7 +39,7 @@ class PlanExerciseSettingsEdit extends Component {
       var planExercise = this.state.planExercise;
       planExercise.settings = this.state.settingsList;
 
-      await PostAsync(`/trainingPlan/updatePlanExercise/${this.props.groupUserId}`, planExercise);
+      await PostAsync('/planExercise/update', { userId: this.props.groupUserId, planExercise: planExercise });
       this.props.navigate(`/createPlanDay/${planExercise.planDayId}`);
     }
     catch (error) {

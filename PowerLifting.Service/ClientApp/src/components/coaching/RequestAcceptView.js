@@ -41,7 +41,7 @@ class RequestAcceptView extends Component {
   acceptRequest = async () => {
     try {
       var userGroup = { userId: this.state.request.userId, groupId: this.state.selectedGroupId };
-      await PostAsync(`/trainingGroups/updateUserGroup`, userGroup);
+      await PostAsync(`/groupUser/update`, userGroup);
       this.props.navigate(`/coachConsole`);
     }
     catch (error) { this.setState({ error: error.message }); }

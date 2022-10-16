@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PowerLifting.Application.UserData.UserCommands;
 using PowerLifting.Application.UserData.UserCommands.UserCommands;
 using PowerLifting.Domain.Interfaces.Common.Actions;
-using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Domain.Models.UserData.Auth;
 
 namespace PowerLifting.Service.Controllers.UserData
