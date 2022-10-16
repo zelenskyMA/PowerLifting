@@ -1,4 +1,4 @@
-﻿using PowerLifting.Domain.Interfaces.Common.Actions;
+﻿using PowerLifting.Domain.Interfaces.Common.Operations;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Models.TrainingPlan;
 

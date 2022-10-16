@@ -7,7 +7,6 @@ using PowerLifting.Application.Coaching.TrainingGroupUserCommands;
 using PowerLifting.Application.Coaching.TrainingRequestCommands;
 using PowerLifting.Application.Common;
 using PowerLifting.Application.Dictionaryies;
-using PowerLifting.Application.Mapper;
 using PowerLifting.Application.TrainingPlan;
 using PowerLifting.Application.TrainingPlan.ExerciseCommands;
 using PowerLifting.Application.TrainingPlan.PlanDayCommands;
@@ -74,9 +73,9 @@ internal class Program
         builder.Services.AddScoped<IPlanCountersSetup, PlanCountersSetup>();
         builder.Services.AddScoped<IProcessUserAchivements, ProcessUserAchivements>();
         builder.Services.AddScoped<IProcessUser, ProcessUser>();
-        builder.Services.AddScoped<IProcessTrainingRequest, ProcessTrainingRequest>();
-        builder.Services.AddScoped<IProcessTrainingGroup, ProcessTrainingGroup>();
-        builder.Services.AddScoped<IProcessTrainingGroupUser, ProcessTrainingGroupUser>();
+        builder.Services.AddScoped<IProcessRequest, ProcessRequest>();
+        builder.Services.AddScoped<IProcessGroup, ProcessGroup>();
+        builder.Services.AddScoped<IProcessGroupUser, ProcessGroupUser>();
         
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();

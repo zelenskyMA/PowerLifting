@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PowerLifting.Application.UserData.UserInfoCommands;
-using PowerLifting.Domain.Interfaces.Common.Actions;
+using PowerLifting.Domain.Interfaces.Common.Operations;
 using PowerLifting.Domain.Models.UserData;
 
 namespace PowerLifting.Service.Controllers.UserData

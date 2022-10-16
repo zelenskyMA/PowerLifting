@@ -4,7 +4,7 @@ using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Enums;
 using PowerLifting.Domain.Interfaces.Coaching.Application;
-using PowerLifting.Domain.Interfaces.Common.Actions;
+using PowerLifting.Domain.Interfaces.Common.Operations;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Domain.Models.UserData;
@@ -16,7 +16,7 @@ namespace PowerLifting.Application.UserData.UserInfoCommands
         private readonly IUserBlockCommands _userBlockCommands;
         private readonly IUserRoleCommands _userRoleCommands;
         private readonly IProcessUserAchivements _processUserAchivements;
-        private readonly IProcessTrainingGroup _processTrainingGroups;
+        private readonly IProcessGroup _processTrainingGroups;
         private readonly IProcessUserInfo _processUserInfo;
         private readonly ICrudRepo<UserDb> _userRepository;
         private readonly IUserProvider _user;
@@ -25,7 +25,7 @@ namespace PowerLifting.Application.UserData.UserInfoCommands
             IUserBlockCommands userBlockCommands,
             IUserRoleCommands userRoleCommands,
             IProcessUserAchivements processUserAchivements,
-            IProcessTrainingGroup processTrainingGroups,
+            IProcessGroup processTrainingGroups,
             IProcessUserInfo processUserInfo,
             ICrudRepo<UserDb> userRepository,
             IUserProvider user)

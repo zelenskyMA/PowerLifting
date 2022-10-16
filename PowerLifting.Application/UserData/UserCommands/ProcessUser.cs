@@ -5,7 +5,7 @@ using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Domain.Models.UserData;
-using PowerLifting.Infrastructure.Setup;
+using PowerLifting.Infrastructure.DataContext;
 using System.Net.Mail;
 
 namespace PowerLifting.Application.UserData.UserCommands

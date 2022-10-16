@@ -3,3 +3,6 @@ GO
 
 CREATE SCHEMA [trn]
 GO
+
+CREATE SCHEMA [plan]
+GO

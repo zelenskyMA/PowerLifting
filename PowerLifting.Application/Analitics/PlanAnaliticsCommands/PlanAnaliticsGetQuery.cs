@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.DbModels.TrainingPlan;
-using PowerLifting.Domain.Interfaces.Common.Actions;
+using PowerLifting.Domain.Interfaces.Common.Operations;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.TrainingPlan.Application;
 using PowerLifting.Domain.Models.Analitics;

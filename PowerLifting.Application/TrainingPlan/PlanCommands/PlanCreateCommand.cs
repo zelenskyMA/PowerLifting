@@ -1,9 +1,9 @@
 ﻿using PowerLifting.Application.UserData.Auth.Interfaces;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.TrainingPlan;
-using PowerLifting.Domain.Interfaces.Common.Actions;
+using PowerLifting.Domain.Interfaces.Common.Operations;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
-using PowerLifting.Infrastructure.Setup;
+using PowerLifting.Infrastructure.DataContext;
 
 namespace PowerLifting.Application.TrainingPlan.PlanCommands
 {

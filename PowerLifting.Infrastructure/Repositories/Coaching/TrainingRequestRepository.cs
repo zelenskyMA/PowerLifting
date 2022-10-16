@@ -3,8 +3,8 @@ using PowerLifting.Domain.DbModels.Coaching;
 using PowerLifting.Domain.DbModels.UserData;
 using PowerLifting.Domain.Enums;
 using PowerLifting.Domain.Interfaces.Coaching.Repositories;
-using PowerLifting.Infrastructure.Setup;
-using PowerLifting.Infrastructure.Setup.Generic.Repository;
+using PowerLifting.Infrastructure.Common;
+using PowerLifting.Infrastructure.DataContext;
 
 namespace PowerLifting.Infrastructure.Repositories.Coaching
 {

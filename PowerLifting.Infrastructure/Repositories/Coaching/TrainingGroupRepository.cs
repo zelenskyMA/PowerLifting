@@ -1,6 +1,6 @@
 ﻿using PowerLifting.Domain.DbModels.Coaching;
-using PowerLifting.Infrastructure.Setup;
-using PowerLifting.Infrastructure.Setup.Generic.Repository;
+using PowerLifting.Infrastructure.Common;
+using PowerLifting.Infrastructure.DataContext;
 
 namespace PowerLifting.Infrastructure.Repositories.Coaching
 {

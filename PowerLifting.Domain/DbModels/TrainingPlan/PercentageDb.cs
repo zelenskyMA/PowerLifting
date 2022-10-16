@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerLifting.Domain.DbModels.TrainingPlan
 {
-    [Table("Percentages", Schema = "dbo")]
+    [Table("Percentages", Schema = "plan")]
     public class PercentageDb : NamedEntityDb
     {
         public int MinValue { get; set; } = 0;

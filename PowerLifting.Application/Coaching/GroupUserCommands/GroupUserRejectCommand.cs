@@ -1,0 +1,57 @@
+﻿using PowerLifting.Application.UserData.Auth.Interfaces;
+using PowerLifting.Domain.CustomExceptions;
+using PowerLifting.Domain.DbModels.UserData;
+using PowerLifting.Domain.Interfaces.Coaching.Application;
+using PowerLifting.Domain.Interfaces.Coaching.Repositories;
+using PowerLifting.Domain.Interfaces.Common.Operations;
+using PowerLifting.Domain.Interfaces.Common.Repositories;
+
+namespace PowerLifting.Application.Coaching.TrainingGroupUserCommands
+{
+    /// <summary>
+    /// Отказ спортсмена от тренера. Если есть заявка - ее отмена автором.
+    /// </summary>
+    public class GroupUserRejectCommand : ICommand<GroupUserRejectCommand.Param, bool>
+    {
+        private readonly IProcessRequest _processTrainingRequest;
+        private readonly ITrainingGroupUserRepository _trainingGroupUserRepository;
+        private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
+        private readonly IUserProvider _user;
+
+        public GroupUserRejectCommand(
+         IProcessRequest processTrainingRequest,
+         ITrainingGroupUserRepository trainingGroupUserRepository,
+         ICrudRepo<UserInfoDb> userInfoRepository,
+         IUserProvider user)
+        {
+            _processTrainingRequest = processTrainingRequest;
+            _trainingGroupUserRepository = trainingGroupUserRepository;
+            _userInfoRepository = userInfoRepository;
+            _user = user;
+        }
+
+        public async Task<bool> ExecuteAsync(Param param)
+        {
+            var userInfoDb = (await _userInfoRepository.FindAsync(t => t.UserId == _user.Id)).FirstOrDefault();
+            if (userInfoDb == null)
+            {
+                throw new BusinessException("Пользователь не найден");
+            }
+
+            var userGroupDb = (await _trainingGroupUserRepository.FindAsync(t => t.UserId == _user.Id)).FirstOrDefault();
+            if (userGroupDb != null)
+            {
+                _trainingGroupUserRepository.Delete(userGroupDb);
+            }
+
+            await _processTrainingRequest.RemoveAsync(_user.Id);
+
+            userInfoDb.CoachId = null;
+            _userInfoRepository.Update(userInfoDb);
+
+            return true;
+        }
+
+        public class Param { }
+    }
+}

@@ -65,6 +65,7 @@
     <Folder Include="Tables\dbo" />
     <Folder Include="Tables\trn" />
     <Folder Include="Tables\usr" />
+    <Folder Include="Tables\plan" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploy\A_master.PostDeployment.sql" />
@@ -85,19 +86,19 @@
   <ItemGroup>
     <Build Include="Tables\dbo\Dictionaries.sql" />
     <Build Include="Tables\dbo\DictionaryTypes.sql" />
-    <Build Include="Tables\dbo\Exercises.sql" />
-    <Build Include="Tables\dbo\Percentages.sql" />
-    <Build Include="Tables\dbo\PlanDays.sql" />
-    <Build Include="Tables\dbo\PlanExercises.sql" />
-    <Build Include="Tables\dbo\PlanExerciseSettings.sql" />
-    <Build Include="Tables\dbo\Plans.sql" />
     <Build Include="Tables\trn\TrainingGroups.sql" />
     <Build Include="Tables\trn\TrainingGroupUsers.sql" />
     <Build Include="Tables\usr\UserAchivements.sql" />
+    <Build Include="Tables\trn\TrainingRequests.sql" />
+    <Build Include="Tables\plan\PlanDays.sql" />
+    <Build Include="Tables\plan\PlanExercises.sql" />
+    <Build Include="Tables\plan\PlanExerciseSettings.sql" />
+    <Build Include="Tables\plan\Plans.sql" />
+    <Build Include="Tables\plan\Exercises.sql" />
+    <Build Include="Tables\plan\Percentages.sql" />
     <Build Include="Tables\usr\UserBlockHistory.sql" />
     <Build Include="Tables\usr\UserInfo.sql" />
     <Build Include="Tables\usr\UserRoles.sql" />
     <Build Include="Tables\usr\Users.sql" />
-    <Build Include="Tables\trn\TrainingRequests.sql" />
   </ItemGroup>
 </Project>

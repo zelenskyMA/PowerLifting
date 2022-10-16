@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PowerLifting.Application.Analitics.PlanAnaliticsCommands;
-using PowerLifting.Domain.Interfaces.Common.Actions;
+using PowerLifting.Domain.Interfaces.Common.Operations;
 using PowerLifting.Domain.Models.Analitics;
 
 namespace PowerLifting.Service.Controllers

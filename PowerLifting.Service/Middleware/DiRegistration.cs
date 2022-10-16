@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PowerLifting.Domain.Interfaces.Common.Actions;
+using PowerLifting.Domain.Interfaces.Common.Operations;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
-using PowerLifting.Infrastructure;
-using PowerLifting.Infrastructure.Setup;
+using PowerLifting.Infrastructure.DataContext;
 using PowerLifting.Infrastructure.Setup.Generic.AppActions;
 using System.Reflection;
 
@@ -18,7 +17,7 @@ namespace PowerLifting.Service.Middleware
         /// <returns></returns>
         public static IServiceCollection AddConnectionProvider(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<LiftingContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<SportContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IContextProvider, SqlContextProvider>();
 
             return services;
@@ -47,7 +46,7 @@ namespace PowerLifting.Service.Middleware
                 .ToList())
             {
                 // Регистрируем операцию, обернутую в указанный декоратор под интерфейсом, который она реализует
-                if (openGenericDecorator == typeof(Command<,>))
+                if (openGenericDecorator == typeof(Command<,>) && operationType.Name != "Command`2")
                 {
                     Type paramType = operationInterface.GetGenericArguments()[0];
                     Type resultType = operationInterface.GetGenericArguments()[1];

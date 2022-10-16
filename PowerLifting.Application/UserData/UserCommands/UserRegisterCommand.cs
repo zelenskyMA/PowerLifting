@@ -2,7 +2,7 @@
 using PowerLifting.Application.UserData.Auth;
 using PowerLifting.Domain.CustomExceptions;
 using PowerLifting.Domain.DbModels.UserData;
-using PowerLifting.Domain.Interfaces.Common.Actions;
+using PowerLifting.Domain.Interfaces.Common.Operations;
 using PowerLifting.Domain.Interfaces.Common.Repositories;
 using PowerLifting.Domain.Interfaces.UserData.Application;
 using PowerLifting.Domain.Models.UserData.Auth;

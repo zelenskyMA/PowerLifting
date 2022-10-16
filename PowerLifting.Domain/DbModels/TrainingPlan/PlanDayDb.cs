@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerLifting.Domain.DbModels.TrainingPlan
 {
-    [Table("PlanDays", Schema = "dbo")]
+    [Table("PlanDays", Schema = "plan")]
     public class PlanDayDb : EntityDb
     {
         public int PlanId { get; set; }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PowerLifting.Application.TrainingPlan.PlanExerciseCommands;
 using PowerLifting.Application.TrainingPlan.PlanExerciseSettingsCommands;
-using PowerLifting.Domain.Interfaces.Common.Actions;
+using PowerLifting.Domain.Interfaces.Common.Operations;
 using PowerLifting.Domain.Models.TrainingPlan;
 
 namespace PowerLifting.Service.Controllers.TrainingPlan
