@@ -1,10 +1,10 @@
 ﻿import React from "react";
 import { connect } from "react-redux";
-import { Container, Button, Row, Col } from "reactstrap";
+import { Button, Col, Container, Row } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
-import { setGroupUserId } from "../../../stores/coachingStore/coachActions";
-import { Locale, DateToLocal } from "../../../common/Localization";
 import WithRouter from "../../../common/extensions/WithRouter";
+import { DateToLocal, Locale } from "../../../common/Localization";
+import { setGroupUserId } from "../../../stores/coachingStore/coachActions";
 
 const mapStateToProps = store => {
   return {
@@ -38,6 +38,10 @@ class PlanDaysCreate extends React.Component {
 
   onSetExercises = (dayId) => { this.props.navigate(`/createPlanExercises/${dayId}`); }
 
+  onDeletePlan = (url) => {
+
+    this.props.navigate(url);
+  }
 
   render() {
     const days = this.state.plannedDays;
@@ -49,36 +53,35 @@ class PlanDaysCreate extends React.Component {
         <br />
         <Row>
           <Col xs={3} md={{ offset: 4 }}><strong>Назначьте упражнения на дни недели.</strong></Col>
-          <Col>{this.confirmButtonPanel()}</Col>
         </Row>
         <br />
         <Container fluid>
           <Row>
-            <Col>{days.length === 0 ? placeHolder : this.plannedDayPanel(days[0])}</Col>
-            <Col>{days.length === 0 ? placeHolder : this.plannedDayPanel(days[1])}</Col>
-            <Col>{days.length === 0 ? placeHolder : this.plannedDayPanel(days[2])}</Col>
+            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[0])}</Col>
+            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[1])}</Col>
+            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[2])}</Col>
           </Row>
           <Row style={{ marginTop: '100px' }}>
-            <Col>{days.length === 0 ? placeHolder : this.plannedDayPanel(days[3])}</Col>
-            <Col>{days.length === 0 ? placeHolder : this.plannedDayPanel(days[4])}</Col>
-            <Col>{days.length === 0 ? placeHolder : this.plannedDayPanel(days[5])}</Col>
+            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[3])}</Col>
+            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[4])}</Col>
+            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[5])}</Col>
           </Row>
           <Row style={{ marginTop: '100px', marginBottom: '50px' }}>
-            <Col>{days.length === 0 ? placeHolder : this.plannedDayPanel(days[6])}</Col>
+            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[6])}</Col>
 
             <Col>
               <div><strong>Всего упражнений</strong></div>
-              {this.exerciseCountersPanel(this.state.typeCounters)}
+              {this.countersPanel(this.state.typeCounters)}
             </Col>
 
-            <Col></Col>
+            <Col>{this.buttonPanel()}</Col>
           </Row>
         </Container>
       </>
     );
   }
 
-  plannedDayPanel(day) {
+  dayPanel(day) {
     var dateName = new Date(day.activityDate).toLocaleString(Locale, { weekday: 'long' });
     dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
 
@@ -95,13 +98,13 @@ class PlanDaysCreate extends React.Component {
         </Row>
         <hr style={{ width: '60%', paddingTop: "2px" }} />
         <Row>
-          <Col>{this.exerciseCountersPanel(day.exerciseTypeCounters)}</Col>
+          <Col>{this.countersPanel(day.exerciseTypeCounters)}</Col>
         </Row>
       </Container>
     );
   }
 
-  exerciseCountersPanel(counters) {
+  countersPanel(counters) {
     var fontSize = "0.85rem";
 
     if (counters.length == 0) {
@@ -122,16 +125,18 @@ class PlanDaysCreate extends React.Component {
     );
   }
 
-  confirmButtonPanel() {
-    if (this.state.typeCounters.length == 0) {
-      return (<></>);
-    }
+  buttonPanel() {
+    if (this.state.typeCounters.length == 0) { return (<></>); }
 
     var url = this.props.groupUserId ? `/groupUser/${this.props.groupUserId}` : "/plansList";
 
-    return (<Col>
-      <Button color="primary" onClick={async () => this.props.navigate(url)}>Завершить</Button>
-    </Col>);
+    return (
+      <Col>
+        <Button color="primary" onClick={async () => this.props.navigate(url)}>Завершить назначение плана</Button>
+        <p></p>
+        <Button color="primary" outline onClick={async () => this.onDeletePlan(url)}>Удалить план</Button>
+      </Col>
+    );
   }
 
 }

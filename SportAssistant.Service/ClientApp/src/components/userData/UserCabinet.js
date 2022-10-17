@@ -1,11 +1,17 @@
 ﻿import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Button, Row, Col, Label } from "reactstrap";
-import { updateUserInfo } from "../../stores/appStore/appActions";
+import { Button, Col, Label, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { InputNumber, InputText } from "../../common/controls/CustomControls";
+import { InputNumber, InputText, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
+import { updateUserInfo } from "../../stores/appStore/appActions";
 import '../../styling/Common.css';
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUserInfo: (userInfo) => updateUserInfo(userInfo, dispatch)
+  }
+}
 
 class UserCabinet extends Component {
   constructor(props) {
@@ -15,7 +21,8 @@ class UserCabinet extends Component {
       userInfo: Object,
       trainingRequest: Object,
       pushAchivement: Object, // толчок, id = 1
-      jerkAchivement: Object // рывок, id = 2
+      jerkAchivement: Object, // рывок, id = 2
+      loading: true
     };
   }
 
@@ -31,7 +38,7 @@ class UserCabinet extends Component {
     var push = achivementsData.find(t => t.exerciseTypeId === 1);
     var jerk = achivementsData.find(t => t.exerciseTypeId === 2);
 
-    this.setState({ userInfo: info, trainingRequest: trainingRequestData, pushAchivement: push, jerkAchivement: jerk });
+    this.setState({ userInfo: info, trainingRequest: trainingRequestData, pushAchivement: push, jerkAchivement: jerk, loading: false });
   }
 
   onValueChange = (propName, value) => { this.setState(prevState => ({ userInfo: { ...prevState.userInfo, [propName]: value } })); }
@@ -58,6 +65,8 @@ class UserCabinet extends Component {
   }
 
   render() {
+    if (this.state.loading) { return (<LoadingPanel />); }
+
     return (
       <>
         <h5 className="spaceBottom">Личный кабинет</h5>
@@ -147,12 +156,6 @@ class UserCabinet extends Component {
     return (<Button color="primary" onClick={() => this.createRequest()}>Выбрать</Button>);
   }
 
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    updateUserInfo: (userInfo) => updateUserInfo(userInfo, dispatch)
-  }
 }
 
 export default WithRouter(connect(null, mapDispatchToProps)(UserCabinet))

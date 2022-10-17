@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
-import { Button, Row, Col } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { DropdownControl, InputText, InputTextArea, ErrorPanel } from "../../common/controls/CustomControls";
+import { DropdownControl, ErrorPanel, InputText, InputTextArea, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
@@ -52,14 +52,10 @@ class ExerciseEdit extends Component {
 
   onTypeSelect = (id) => { this.onValueChange("exerciseTypeId", id); }
   onSubtypeSelect = (id) => { this.onValueChange("exerciseSubTypeId", id); }
-
-  onValueChange = (propName, value) => {
-    this.setState({ error: '' });
-    this.setState(prevState => ({ exercise: { ...prevState.exercise, [propName]: value } }));
-  }
+  onValueChange = (propName, value) => { this.setState(prevState => ({ error: '', exercise: { ...prevState.exercise, [propName]: value } })); }
 
   render() {
-    if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
+    if (this.state.loading) { return (<LoadingPanel />); }
 
     return (
       <>

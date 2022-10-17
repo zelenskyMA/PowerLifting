@@ -1,9 +1,28 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { Container } from 'reactstrap';
+import { initApp } from "../stores/appStore/appActions";
+import { GetToken } from '../common/TokenActions';
 import NavMenu from './NavMenu';
 
-export class Layout extends Component {
-  static displayName = Layout.name;
+const mapDispatchToProps = dispatch => {
+  return {
+    initApp: () => initApp(dispatch)
+  }
+}
+
+class Layout extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() { this.getInitData(); }
+
+  getInitData = async () => {
+    if (GetToken() != null) {
+      await this.props.initApp();
+    }
+  }
 
   render() {
     return (
@@ -16,3 +35,5 @@ export class Layout extends Component {
     );
   }
 }
+
+export default connect(null, mapDispatchToProps)(Layout);

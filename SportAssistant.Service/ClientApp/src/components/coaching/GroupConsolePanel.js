@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Button, Row, Col } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { ErrorPanel, InputText, InputTextArea, TableControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
@@ -17,22 +17,19 @@ class GroupConsolePanel extends Component {
     };
   }
 
-  componentDidMount() { this.getGroupsData(); }
+  componentDidMount() { this.getInitData(); }
 
-  getGroupsData = async () => {
+  getInitData = async () => {
     var myGroupsData = await GetAsync("/trainingGroups/getList");
     this.setState({ myGroups: myGroupsData, newGroup: { name: '', description: '' } });
   }
 
-  newGroupChange = (propName, value) => {
-    this.setState({ error: '' });
-    this.setState(prevState => ({ newGroup: { ...prevState.newGroup, [propName]: value } }));
-  }
+  newGroupChange = (propName, value) => { this.setState(prevState => ({ error: '', newGroup: { ...prevState.newGroup, [propName]: value } })); }
 
   createGroup = async () => {
     try {
       await PostAsync(`/trainingGroups/create`, this.state.newGroup);
-      await this.getGroupsData();
+      await this.getInitData();
     }
     catch (error) {
       this.setState({ error: error.message });
@@ -57,13 +54,13 @@ class GroupConsolePanel extends Component {
           <TableControl columnsInfo={columns} data={this.state.myGroups} rowClick={this.onRowClick} />
         )}
 
-        <hr style={{paddingTop: "2px" }} />
+        <hr style={{ paddingTop: "2px" }} />
         <ErrorPanel errorMessage={this.state.error} />
-        
+
         <Row>
           <Col xs={5}>
             <InputText label="Название новой группы" propName="name" onChange={this.newGroupChange} initialValue={this.state.newGroup.name} />
-          </Col>        
+          </Col>
           <Col xs={4}>
             <InputTextArea label="Описание" propName="description" rows="2" onChange={this.newGroupChange} initialValue={this.state.newGroup.description} />
           </Col>

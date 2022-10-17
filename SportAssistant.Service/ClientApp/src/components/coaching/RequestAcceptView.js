@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
-import { Button, Row, Col } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { ErrorPanel, DropdownControl } from "../../common/controls/CustomControls";
+import { DropdownControl, ErrorPanel, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
@@ -28,7 +28,7 @@ class RequestAcceptView extends Component {
     this.setState({ request: requestData, coachGroups: coachGroupsData, error: '', loading: false });
   }
 
-  onGroupSelect = (id) => { this.setState({ error: '' }); this.setState({ selectedGroupId: id }); }
+  onGroupSelect = (id) => { this.setState({ error: '', selectedGroupId: id }); }
 
   rejectRequest = async () => {
     try {
@@ -48,7 +48,7 @@ class RequestAcceptView extends Component {
   }
 
   render() {
-    if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
+    if (this.state.loading) { return (<LoadingPanel />); }
 
     return (
       <>

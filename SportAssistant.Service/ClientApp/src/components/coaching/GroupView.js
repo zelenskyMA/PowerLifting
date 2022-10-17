@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Button } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { ErrorPanel, TableControl } from "../../common/controls/CustomControls";
+import { ErrorPanel, LoadingPanel, TableControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
@@ -38,7 +38,7 @@ class GroupView extends Component {
 
 
   render() {
-    if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
+    if (this.state.loading) { return (<LoadingPanel />); }
 
     const columns = [
       { Header: 'Id', accessor: 'id' },

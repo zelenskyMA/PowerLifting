@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Button } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
-import { DateToLocal } from "../../../common/Localization";
-import { ExerciseSettingsEditPanel } from "./ExerciseSettingsEditPanel";
+import { LoadingPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
+import { DateToLocal } from "../../../common/Localization";
 import '../../../styling/Common.css';
+import { ExerciseSettingsEditPanel } from "./ExerciseSettingsEditPanel";
 
 class PlanDayCreate extends Component {
   constructor() {
@@ -28,9 +29,9 @@ class PlanDayCreate extends Component {
   confirmAsync = () => { this.props.navigate("/createPlanDays"); }
 
   render() {
-    var dateView = DateToLocal(this.state.planDay.activityDate);
+    if (this.state.loading) { return (<LoadingPanel />); }
 
-    if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
+    var dateView = DateToLocal(this.state.planDay.activityDate);
 
     return (
       <>
@@ -77,7 +78,8 @@ class PlanDayCreate extends Component {
           </tfoot>
         </table>
 
-        <Button className="spaceTop" color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
+        <Button className="spaceRight" color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
+        <Button color="primary" outline onClick={() => this.props.navigate(`/createPlanExercises/${this.props.params.id}`)}>Назад</Button>
       </>
     );
   }

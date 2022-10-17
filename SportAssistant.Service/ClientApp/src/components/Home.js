@@ -3,6 +3,7 @@ import { GetAsync } from "../common/ApiActions";
 import { GetToken } from '../common/TokenActions';
 import { PlanDayViewPanel } from "./trainingPlan/view/PlanDayViewPanel";
 import { DateToLocal } from "../common/Localization";
+import { LoadingPanel } from "../common/controls/CustomControls";
 import WithRouter from "../common/extensions/WithRouter";
 import '../styling/Common.css';
 
@@ -17,9 +18,9 @@ class Home extends Component {
     };
   }
 
-  componentDidMount() { this.loadPlanDay(); }
+  componentDidMount() { this.getInitData(); }
 
-  async loadPlanDay() {
+  async getInitData() {
     if (GetToken() == null) {
       this.setState({ loading: false });
       return;
@@ -29,31 +30,28 @@ class Home extends Component {
     this.setState({ planDay: data, loggedUser: true, loading: false });
   }
 
-
   render() {
     return (
       <>
         <h3>Спортивный ассистент</h3>
-
         {this.planDayPanel()}
       </>
     );
   }
 
   planDayPanel = () => {
-    if (this.state.loggedUser === false) { return (this.noUserPanel()); }
-    if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
+    if (this.state.loggedUser === false) { return (this.startScreenPanel()); }
+    if (this.state.loading) { return (<LoadingPanel />); }
 
     return (
       <>
         <p className="spaceBottom" >Ваш план на <strong>{DateToLocal(new Date())}</strong></p>
-
         {this.state.planDay.id ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>У вас нет тренировок на сегодня</em></p>}
       </>
     );
   }
 
-  noUserPanel = () => {
+  startScreenPanel = () => {
     return (<>
       <p className="spaceBottom" >Ведение тренировок для спортсменов. <strong>{DateToLocal(new Date())}</strong></p>
       <p>Войдите в свой кабинет, или создайте нового пользователя чтобы запланировать тренировку</p>
