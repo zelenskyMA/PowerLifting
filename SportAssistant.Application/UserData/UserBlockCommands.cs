@@ -6,7 +6,6 @@ using SportAssistant.Domain.Enums;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Domain.Models.UserData;
-using SportAssistant.Infrastructure.Repositories.UserData;
 
 namespace SportAssistant.Application.UserData
 {
@@ -51,7 +50,10 @@ namespace SportAssistant.Application.UserData
                 throw new BusinessException($"Причина блокировки пользователя обязательна");
             }
 
-            await _userRoleCommands.IHaveRole(UserRoles.Admin);
+            if (!await _userRoleCommands.IHaveRole(UserRoles.Admin))
+            {
+                throw new RoleException();
+            }
 
             var users = await _userRepository.FindAsync(t => t.Id == userId);
             if (users.Count == 0)
@@ -84,7 +86,10 @@ namespace SportAssistant.Application.UserData
 
         public async Task UnblockUser(int userId)
         {
-            await _userRoleCommands.IHaveRole(UserRoles.Admin);
+            if (!await _userRoleCommands.IHaveRole(UserRoles.Admin))
+            {
+                throw new RoleException();
+            }
 
             var users = await _userRepository.FindAsync(t => t.Id == userId);
             if (users.Count == 0)

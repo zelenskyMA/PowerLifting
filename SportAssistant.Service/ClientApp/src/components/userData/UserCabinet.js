@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Button, Row, Col, Label } from "reactstrap";
-import { updateUserInfo } from "../../stores/userStore/userActions";
+import { updateUserInfo } from "../../stores/appStore/appActions";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { InputNumber, InputText } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
@@ -19,9 +19,9 @@ class UserCabinet extends Component {
     };
   }
 
-  componentDidMount() { this.getUserInfo(); }
+  componentDidMount() { this.getInitData(); }
 
-  getUserInfo = async () => {
+  getInitData = async () => {
     const [info, achivementsData, trainingRequestData] = await Promise.all([
       GetAsync("/userInfo/get"),
       GetAsync("/userAchivement/get"),
@@ -77,7 +77,7 @@ class UserCabinet extends Component {
   personalInfoPanel() {
     return (
       <>
-        <Row style={{ marginTop: '10px', marginBottom: '30px' }}>
+        <Row className="spaceBottom" style={{ marginTop: '10px' }}>
           <Col xs={3}>
             <InputText label="Имя:" propName="firstName" onChange={this.onValueChange} initialValue={this.state.userInfo.firstName} />
           </Col>
@@ -88,7 +88,7 @@ class UserCabinet extends Component {
             <InputText label="Отчество:" propName="patronimic" onChange={this.onValueChange} initialValue={this.state.userInfo.patronimic} />
           </Col>
         </Row>
-        <Row style={{ marginBottom: '30px' }}>
+        <Row className="spaceBottom">
           <Col xs={3}>
             <InputNumber label="Вес:" propName="weight" onChange={this.onValueChange} initialValue={this.state.userInfo.weight} />
           </Col>

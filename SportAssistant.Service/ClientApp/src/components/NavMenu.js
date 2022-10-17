@@ -5,9 +5,9 @@ import {
     Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink,
     UncontrolledDropdown
 } from 'reactstrap';
-import { GetToken, RemoveTokens } from '../common/TokenActions';
-import { setUserInfo } from "../stores/userStore/userActions";
 import WithRouter from "../common/extensions/WithRouter";
+import { GetToken, RemoveTokens } from '../common/TokenActions';
+import { initApp } from "../stores/appStore/appActions";
 import '../styling/Common.css';
 import '../styling/NavMenu.css';
 
@@ -23,7 +23,7 @@ class NavMenu extends Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    if (GetToken() != null) { await this.props.setUserInfo(); }
+    if (GetToken() != null) { await this.props.initApp(); }
   }
 
   toggleNavbar = () => { this.setState({ collapsed: !this.state.collapsed }); }
@@ -114,13 +114,13 @@ class NavMenu extends Component {
 
 const mapStateToProps = store => {
   return {
-    userInfo: store.currentUser.info,
+    userInfo: store.app.myInfo,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    setUserInfo: () => setUserInfo(dispatch)
+    initApp: () => initApp(dispatch)
   }
 }
 

@@ -9,6 +9,7 @@ import '../../../styling/Common.css';
 const mapStateToProps = store => {
   return {
     groupUserId: store.coach.groupUserId,
+    appSettings: store.app.settings,
   }
 }
 
@@ -68,12 +69,12 @@ class PlanExerciseSettingsEdit extends Component {
     this.setState({ error: '', settingsList: resultList });
   }
 
-  addLiftCounter = () => {
+  addLiftItem = () => {
     var template = structuredClone(this.state.planExercise.settingsTemplate);
 
-    var maxCount = 10;
-    if (this.state.settingsList.length >= maxCount) {
-      this.setState({ error: `Не более ${maxCount}.` });
+    var maxLiftItems = this.props.appSettings.maxLiftItems;
+    if (this.state.settingsList.length >= maxLiftItems) {
+      this.setState({ error: `Не более ${maxLiftItems}.` });
       return;
     }
 
@@ -112,7 +113,7 @@ class PlanExerciseSettingsEdit extends Component {
         </Row>
 
         <Button className="spaceTop spaceRight" color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
-        <Button className="spaceTop" color="primary" outline onClick={() => this.addLiftCounter()}>Добавить поднятие</Button>
+        <Button className="spaceTop" color="primary" outline onClick={() => this.addLiftItem()}>Добавить поднятие</Button>
       </>
     );
   }

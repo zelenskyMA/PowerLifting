@@ -5,5 +5,6 @@
         ExerciseType = 1,
         ExerciseSubType = 2,
         UserRole = 3,
+        Settings = 4,
     }
 }

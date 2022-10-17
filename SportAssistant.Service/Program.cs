@@ -7,6 +7,7 @@ using SportAssistant.Application.Coaching.TrainingGroupUserCommands;
 using SportAssistant.Application.Coaching.TrainingRequestCommands;
 using SportAssistant.Application.Common;
 using SportAssistant.Application.Dictionaryies;
+using SportAssistant.Application.Settings;
 using SportAssistant.Application.TrainingPlan;
 using SportAssistant.Application.TrainingPlan.ExerciseCommands;
 using SportAssistant.Application.TrainingPlan.PlanDayCommands;
@@ -22,6 +23,7 @@ using SportAssistant.Domain.Interfaces;
 using SportAssistant.Domain.Interfaces.Coaching.Application;
 using SportAssistant.Domain.Interfaces.Coaching.Repositories;
 using SportAssistant.Domain.Interfaces.Common;
+using SportAssistant.Domain.Interfaces.Settings.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Repositories;
 using SportAssistant.Domain.Interfaces.UserData.Application;
@@ -76,6 +78,7 @@ internal class Program
         builder.Services.AddScoped<IProcessRequest, ProcessRequest>();
         builder.Services.AddScoped<IProcessGroup, ProcessGroup>();
         builder.Services.AddScoped<IProcessGroupUser, ProcessGroupUser>();
+        builder.Services.AddScoped<IProcessSettings, ProcessSettings>();
         
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();

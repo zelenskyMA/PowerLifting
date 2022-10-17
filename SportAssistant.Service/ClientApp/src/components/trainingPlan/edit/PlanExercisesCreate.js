@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { Button, Container } from 'reactstrap';
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
-import { TableControl } from "../../../common/controls/CustomControls";
+import { TableControl, ErrorPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
+
+const mapStateToProps = store => {
+  return {
+    appSettings: store.app.settings,
+  }
+}
+
 
 class PlanExercisesCreate extends Component {
   constructor() {
@@ -10,7 +18,8 @@ class PlanExercisesCreate extends Component {
 
     this.state = {
       exercises: [],
-      selectedExercises: []
+      selectedExercises: [],
+      error: ''
     };
   }
 
@@ -32,21 +41,22 @@ class PlanExercisesCreate extends Component {
   }
 
   onRowDblClick = row => {
-    const maxExercises = 10;
+    const maxExercises = this.props.appSettings.maxExercises;
     if (this.state.selectedExercises.length >= maxExercises) {
-      alert(`Максимум ${maxExercises} упражнений для одной тренировки.`);
+      this.setState({ error: `Максимум ${maxExercises} упражнений для одной тренировки.` });
       return;
     }
 
     var element = row.values;
     this.setState(previousState => ({
+      error: '',
       selectedExercises: [...previousState.selectedExercises, element]
     }));
   }
 
   rowRemove = (index) => {
     var data = this.state.selectedExercises.filter((v, i) => i !== index);
-    this.setState({ selectedExercises: data })
+    this.setState({ error: '', selectedExercises: data })
   }
 
   rowMoveUp = (index) => {
@@ -57,7 +67,7 @@ class PlanExercisesCreate extends Component {
     data[index - 1] = data[index];
     data[index] = temp;
 
-    this.setState({ selectedExercises: data })
+    this.setState({ error: '', selectedExercises: data })
   }
 
   rowMoveDown = (index) => {
@@ -68,7 +78,7 @@ class PlanExercisesCreate extends Component {
     data[index + 1] = data[index];
     data[index] = temp;
 
-    this.setState({ selectedExercises: data })
+    this.setState({ error: '', selectedExercises: data })
   }
 
   render() {
@@ -81,11 +91,13 @@ class PlanExercisesCreate extends Component {
 
     return (
       <>
-        <h3>Упражнения</h3>
+        <h4>Упражнения</h4>
         <p><strong>Список упражнений.</strong> Выбрать двойным нажатием.</p>
         <TableControl columnsInfo={columns} data={this.state.exercises} rowDblClick={this.onRowDblClick} />
 
         <p><strong>Выбранные упражнения.</strong> Убрать лишнее двойным нажатием.</p>
+        <ErrorPanel errorMessage={this.state.error} />
+
         <Container fluid>
           <table className="table table-striped" aria-labelledby="tabelLabel">
             <thead>
@@ -122,4 +134,4 @@ class PlanExercisesCreate extends Component {
   }
 }
 
-export default WithRouter(PlanExercisesCreate);
+export default WithRouter(connect(mapStateToProps, null)(PlanExercisesCreate));
