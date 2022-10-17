@@ -35,4 +35,17 @@ IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 53)
 IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 54)
   INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 54, 2, 'ОФП', '');
 
-SET IDENTITY_INSERT Dictionaries OFF 
+SET IDENTITY_INSERT Dictionaries OFF
+
+
+SET IDENTITY_INSERT Settings ON
+
+IF NOT EXISTS (SELECT * FROM Settings WHERE [Id] = 1)
+  INSERT INTO Settings (Id, Name, Value, Description) VALUES ( 1, 'Максимум упражнений в день', 10,
+  'Предел упражнений, которые можно назначить на один день');
+
+IF NOT EXISTS (SELECT * FROM Settings WHERE [Id] = 2)
+  INSERT INTO Settings (Id, Name, Value, Description) VALUES ( 2, 'Максимум поднятий в упражнении', 10,
+  'Предел поднятий, которые можно назначить в одно упражнение');
+
+SET IDENTITY_INSERT Settings OFF 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SportAssistant.Domain.DbModels;
+using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.DbModels.UserData;
@@ -17,6 +17,7 @@ namespace SportAssistant.Infrastructure.DataContext
 
         public DbSet<DictionaryDb> Dictionaries { get; set; }
         public DbSet<DictionaryTypeDb> DictionaryTypes { get; set; }
+        public DbSet<SettingsDb> Settings { get; set; }
 
         public DbSet<UserDb> Users { get; set; }
         public DbSet<UserInfoDb> UsersInfo { get; set; }

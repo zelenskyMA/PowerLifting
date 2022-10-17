@@ -100,5 +100,6 @@
     <Build Include="Tables\usr\UserInfo.sql" />
     <Build Include="Tables\usr\UserRoles.sql" />
     <Build Include="Tables\usr\Users.sql" />
+    <Build Include="Tables\dbo\Settings.sql" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SportAssistant.Domain.DbModels;
+using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.Enums;
 using SportAssistant.Domain.Interfaces;
 using SportAssistant.Domain.Interfaces.Common.Repositories;

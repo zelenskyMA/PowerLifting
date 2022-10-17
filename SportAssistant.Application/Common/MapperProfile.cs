@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SportAssistant.Domain.DbModels;
+using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.DbModels.UserData;

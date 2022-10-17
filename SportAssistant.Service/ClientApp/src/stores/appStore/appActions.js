@@ -1,6 +1,7 @@
 ﻿import { GetAsync, PostAsync } from "../../common/ApiActions";
 
 export const RECEIVE_USER_INFO = "RECEIVE_USER_INFO";
+export const RECEIVE_SETTINGS = "RECEIVE_SETTINGS";
 
 export async function updateUserInfo(userInfo, dispatch) {
   await PostAsync(`/userInfo/update`, userInfo);
@@ -10,4 +11,11 @@ export async function updateUserInfo(userInfo, dispatch) {
 export async function setUserInfo(dispatch) {
   const response = await GetAsync("/userInfo/get");
   dispatch({ type: RECEIVE_USER_INFO, result: response });
+}
+
+export async function initApp(dispatch) {
+  const response = await GetAsync("/appSettings/get");
+  dispatch({ type: RECEIVE_SETTINGS, result: response });
+
+  setUserInfo(dispatch);
 }
