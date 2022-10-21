@@ -10,6 +10,7 @@ using SportAssistant.Application.Dictionaryies;
 using SportAssistant.Application.Settings;
 using SportAssistant.Application.TrainingPlan;
 using SportAssistant.Application.TrainingPlan.ExerciseCommands;
+using SportAssistant.Application.TrainingPlan.PlanCommands;
 using SportAssistant.Application.TrainingPlan.PlanDayCommands;
 using SportAssistant.Application.TrainingPlan.PlanExerciseCommands;
 using SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands;
@@ -79,7 +80,9 @@ internal class Program
         builder.Services.AddScoped<IProcessGroup, ProcessGroup>();
         builder.Services.AddScoped<IProcessGroupUser, ProcessGroupUser>();
         builder.Services.AddScoped<IProcessSettings, ProcessSettings>();
-        
+        builder.Services.AddScoped<IProcessPlan, ProcessPlan>();        
+
+
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
 

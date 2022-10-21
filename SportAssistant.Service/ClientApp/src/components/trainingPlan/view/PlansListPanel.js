@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { Button } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
-import { TabControl, TableControl } from "../../../common/controls/CustomControls";
+import { LoadingPanel, TabControl, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal } from "../../../common/Localization";
 import { setTrainingPlan } from "../../../stores/trainingPlanStore/planActions";
@@ -31,9 +31,9 @@ class PlansListPanel extends Component {
     };
   }
 
-  componentDidMount() { this.getPlans(); }
+  componentDidMount() { this.getInitData(); }
 
-  getPlans = async () => {
+  getInitData = async () => {
     var request = this.props.groupUserId ? `?userId=${this.props.groupUserId}` : "";
 
     var plans = await GetAsync(`/trainingPlan/getList${request}`);
@@ -49,7 +49,7 @@ class PlansListPanel extends Component {
   confirmAsync = async () => { this.props.navigate("/"); }
 
   render() {
-    if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
+    if (this.state.loading) { return (<LoadingPanel />); }
 
     const columns = [
       { Header: 'Id', accessor: 'id' },

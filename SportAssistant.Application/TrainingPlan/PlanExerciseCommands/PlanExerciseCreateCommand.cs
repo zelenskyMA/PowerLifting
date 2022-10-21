@@ -11,14 +11,17 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
     /// </summary>
     public class PlanExerciseCreateCommand : ICommand<PlanExerciseCreateCommand.Param, bool>
     {
-        private readonly IProcessPlanExerciseSettings _processPlanExerciseSettings;
+        private readonly IProcessPlan _processPlan;
+        private readonly IProcessPlanExercise _processPlanExercise;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
 
         public PlanExerciseCreateCommand(
-            IProcessPlanExerciseSettings processPlanExerciseSettings,
+            IProcessPlan processPlan,
+            IProcessPlanExercise processPlanExercise,
             ICrudRepo<PlanExerciseDb> plannedExerciseRepository)
         {
-            _processPlanExerciseSettings = processPlanExerciseSettings;
+            _processPlan = processPlan;
+            _processPlanExercise = processPlanExercise;
             _planExerciseRepository = plannedExerciseRepository;
         }
 
@@ -29,6 +32,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
                 return false;
             }
 
+            await _processPlan.PlanningAllowedForUserAsync(param.UserId);
+
             //удаляем лишние записи вместе со связями
             var planExercisesDb = await _planExerciseRepository.FindAsync(t => t.PlanDayId == param.DayId);
             if (planExercisesDb.Count > 0)
@@ -36,9 +41,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
                 var itemsToDelete = planExercisesDb.Where(t => !param.Exercises.Select(t => t.PlannedExerciseId).Contains(t.Id)).ToList();
                 if (itemsToDelete.Count > 0)
                 {
-                    await _processPlanExerciseSettings.DeleteByPlanExerciseIdAsync(itemsToDelete.Select(t => t.Id).ToList());
-                    _planExerciseRepository.DeleteList(itemsToDelete);
-
+                    await _processPlanExercise.DeletePlanExercisesAsync(itemsToDelete);
                     foreach (var item in itemsToDelete)
                     {
                         planExercisesDb.Remove(item);
@@ -76,6 +79,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
             public int DayId { get; set; }
 
             public List<Exercise> Exercises { get; set; }
+
+            public int UserId { get; set; }
         }
     }
 }

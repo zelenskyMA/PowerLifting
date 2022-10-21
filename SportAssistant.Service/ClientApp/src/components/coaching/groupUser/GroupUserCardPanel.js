@@ -1,10 +1,17 @@
 ﻿import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { Button, Row, Col } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, DropdownControl } from "../../../common/controls/CustomControls";
+import { changeModalVisibility } from "../../../stores/appStore/appActions";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
 
+const mapDispatchToProps = dispatch => {
+  return {
+    changeModalVisibility: (modalInfo) => changeModalVisibility(modalInfo, dispatch)
+  }
+}
 
 class GroupUserCardPanel extends Component {
   constructor(props) {
@@ -50,13 +57,23 @@ class GroupUserCardPanel extends Component {
     catch (error) { this.setState({ error: error.message }); }
   }
 
-  removeUser = async () => {
+  confirmRemoveUser = async () => {
     try {
       var userGroup = { userId: this.props.params.id, groupId: this.state.card?.groupInfo?.id };
       await PostAsync(`/groupUser/remove`, userGroup);
       this.props.navigate(`/coachConsole`);
     }
     catch (error) { this.setState({ error: error.message }); }
+  }
+
+  removeUser = async () => {
+    var modalInfo = {
+      isVisible: true,
+      headerText: "Запрос подтверждения",
+      buttons: [{ name: "Подтвердить", onClick: this.confirmRemoveUser, color: "success" }],
+      body: () => { return (<p>Подтвердите удаление спортсмена</p>) }
+    };
+    this.props.changeModalVisibility(modalInfo);
   }
 
   render() {
@@ -84,7 +101,7 @@ class GroupUserCardPanel extends Component {
         <Row className="spaceTop">
           <Col xs={1} className="spaceRight">
             <Button color="primary" onClick={() => this.changeGroup()}>Перевести</Button>
-          </Col>     
+          </Col>
           <Col xs={1}>
             <Button color="primary" onClick={() => this.removeUser()}>Удалить</Button>
           </Col>
@@ -94,4 +111,4 @@ class GroupUserCardPanel extends Component {
   }
 }
 
-export default WithRouter(GroupUserCardPanel)
+export default WithRouter(connect(null, mapDispatchToProps)(GroupUserCardPanel))

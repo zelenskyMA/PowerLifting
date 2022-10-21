@@ -1,10 +1,10 @@
 ﻿import React from "react";
-import { Container, Button, Row, Col, NavLink } from "reactstrap";
 import { Link } from 'react-router-dom';
+import { Button, Col, Container, NavLink, Row } from "reactstrap";
 import { PostAsync } from "../../../common/ApiActions";
-import { SetToken } from "../../../common/TokenActions";
 import { ErrorPanel, InputEmail, InputPassword } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
+import { SetToken } from "../../../common/TokenActions";
 
 class LoginUser extends React.Component {
 
@@ -13,7 +13,7 @@ class LoginUser extends React.Component {
     error: ''
   }
 
-  onValueChange = (propName, value) => { this.setState(prevState => ({ auth: { ...prevState.auth, [propName]: value } })); }
+  onValueChange = (propName, value) => { this.setState(prevState => ({ error: '', auth: { ...prevState.auth, [propName]: value } })); }
 
   onLogin = async () => {
     try {

@@ -30,6 +30,14 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
         {
             var result = await command.ExecuteAsync(param);
             return result;
-        }       
+        }
+
+        [HttpPost]
+        [Route("delete")]
+        public async Task<bool> DeleteAsync([FromServices] ICommand<PlanDeleteCommand.Param, bool> command, PlanDeleteCommand.Param param)
+        {
+            var result = await command.ExecuteAsync(param);
+            return result;
+        }
     }
 }

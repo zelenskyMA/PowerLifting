@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.Common;
+using SportAssistant.Application.Common.Actions;
 using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.Interfaces.Coaching.Repositories;
 using SportAssistant.Domain.Interfaces.Common.Operations;
@@ -40,7 +40,7 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
             foreach (var item in requests)
             {
                 var userInfoDb = usersInfoDb.First(t => t.UserId == item.UserId);
-                item.UserName = Naming.GetLegalFullName(userInfoDb.FirstName, userInfoDb.Surname, userInfoDb.Patronimic);
+                item.UserName = UserNaming.GetLegalFullName(userInfoDb.FirstName, userInfoDb.Surname, userInfoDb.Patronimic);
             }
 
             return requests;

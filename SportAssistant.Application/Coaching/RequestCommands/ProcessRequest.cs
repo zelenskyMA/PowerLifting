@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.Common;
+using SportAssistant.Application.Common.Actions;
 using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Interfaces.Coaching.Application;
@@ -34,7 +34,7 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
         {
             var infoDb = (await _userInfoRepository.FindAsync(t => t.UserId == userId)).FirstOrDefault();
             var info = _mapper.Map<UserInfo>(infoDb);
-            return Naming.GetLegalShortName(info.FirstName, info.Surname, info.Patronimic, "Аноним");
+            return UserNaming.GetLegalShortName(info.FirstName, info.Surname, info.Patronimic, "Аноним");
         }
 
         /// <inheritdoc />

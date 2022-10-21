@@ -1,35 +1,88 @@
-﻿import React, { useState } from 'react';
-import { Button, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, UncontrolledTooltip } from 'reactstrap';
+﻿import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { Col, Row, UncontrolledTooltip } from 'reactstrap';
 import { PostAsync } from "../../../common/ApiActions";
+import { LoadingPanel } from "../../../common/controls/CustomControls";
+import WithRouter from "../../../common/extensions/WithRouter";
+import { changeModalVisibility } from "../../../stores/appStore/appActions";
 import '../../../styling/Common.css';
 import Completed from '../../../styling/icons/barbellCompleted.png';
 import Planned from '../../../styling/icons/barbellPlanned.png';
 
-export function PlanDayViewPanel({ planDay }) {
-  const [modal, setModal] = useState(false);
-  const [modalData, setModalData] = useState(Object);
+const mapDispatchToProps = dispatch => {
+  return {
+    changeModalVisibility: (modalInfo) => changeModalVisibility(modalInfo, dispatch)
+  }
+}
 
-  var completed = [];
-  planDay.exercises.map((planExercise, i) => {
-    planDay.percentages.map(percentage => {
-      var state = planExercise.settings.filter(t => t.percentage.id === percentage.id).some(r => r.completed);
-      completed = [...completed, { id: planExercise.id + "_" + percentage.id, state: state }];
-    })
-  });
-  const [completedExercises, setCompleted] = useState(completed);
+class PlanDayViewPanel extends Component {
+  constructor(props) {
+    super(props);
 
-  const completeExercise = async (modalData) => {
-    await PostAsync("/planExercise/complete", modalData.settings.map(a => a.id));
-
-    var current = completedExercises.find(t => t.id === modalData.id);
-    current.state = true;
-    setCompleted([...completedExercises.filter(t => t.id !== modalData.id), current]);
+    this.state = {
+      selectedModalData: Object,
+      completedExercises: [],
+    };
   }
 
-  const toggle = () => setModal(!modal);
+  componentDidMount() { this.getInitData(); }
 
-  return (
-    <>
+  getInitData = async () => {
+    var completed = [];
+    var planDay = this.props.planDay;
+
+    planDay.exercises.map((planExercise, i) => {
+      planDay.percentages.map(percentage => {
+        var state = planExercise.settings.filter(t => t.percentage.id === percentage.id).some(r => r.completed);
+        completed = [...completed, { id: planExercise.id + "_" + percentage.id, state: state }];
+      })
+    });
+
+    this.setState({ completedExercises: completed });
+  }
+
+  onCompleteExercise = async () => {
+    await PostAsync("/planExercise/complete", this.state.selectedModalData.settings.map(a => a.id));
+
+    var current = this.state.completedExercises.find(t => t.id === this.state.selectedModalData.id);
+    current.state = true;
+
+    var newValue = [...this.state.completedExercises.filter(t => t.id !== this.state.selectedModalData.id), current]
+    this.setState({ completedExercises: newValue });
+  }
+
+  onShowExerciseModal = (modalData) => {
+    this.setState({ selectedModalData: modalData });
+
+    var modalInfo = {
+      isVisible: true,
+      headerText: modalData.name,
+      buttons: [{ name: "Подтвердить выполнение", onClick: this.onCompleteExercise, color: "success" }],
+      body: () => {
+        return (
+          modalData.settings?.map((item, index) => {
+            return (
+              <Row className="spaceBottom" key={item.id}>
+                <Col>
+                  <span className="spaceRight"><strong>Поднятие {(index + 1)}:</strong></span>
+                  <span className="spaceRight"><i>Вес:</i>{' ' + item.weight}</span>
+                  <span className="spaceRight"><i>Подходы:</i>{' ' + item.iterations}</span>
+                  <span><i>Повторы:</i>{' '}{item.exercisePart1}{' | '}{item.exercisePart2}{' | '}{item.exercisePart3}</span>
+                </Col>
+              </Row>
+            );
+          }))
+      }
+    };
+    this.props.changeModalVisibility(modalInfo);
+  }
+
+  render() {
+    if (this.state.loading) { return (<LoadingPanel />); }
+
+    var planDay = this.props.planDay;
+
+    return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
@@ -46,9 +99,9 @@ export function PlanDayViewPanel({ planDay }) {
               <td id={'exercise' + planExercise.id}>{planExercise.exercise.name}</td>
               <ExerciseTooltip planExercise={planExercise} idPrefix={'exercise' + planExercise.id} />
 
-              {planDay.percentages.map(item =>
-                <td key={item.id} className="text-center">
-                  <ExerciseSettingsViewPanel percentage={item} planExercise={planExercise} setModalData={setModalData} toggle={toggle} completedExercises={completedExercises} />
+              {planDay.percentages.map(percentage =>
+                <td key={percentage.id} className="text-center">
+                  {this.exerciseSettingsPanel(percentage, planExercise)}
                 </td>
               )}
               <td className="text-center"><strong>{planExercise.liftCounter}</strong></td>
@@ -69,54 +122,34 @@ export function PlanDayViewPanel({ planDay }) {
           </tr>
         </tfoot>
       </table>
-
-      <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>{modalData.name}</ModalHeader>
-        <ModalBody>
-          {modalData.settings?.map((item, index) => {
-            return (
-              <Row className="spaceBottom" key={item.id}>
-                <Col>
-                  <span className="spaceRight"><strong>Поднятие {(index + 1)}:</strong></span>
-                  <span className="spaceRight"><i>Вес:</i>{' ' + item.weight}</span>
-                  <span className="spaceRight"><i>Подходы:</i>{' ' + item.iterations}</span>
-                  <span><i>Повторы:</i>{' '}{item.exercisePart1}{' | '}{item.exercisePart2}{' | '}{item.exercisePart3}</span>
-                </Col>
-              </Row>
-            );
-          })}
-        </ModalBody>
-        <ModalFooter>
-          <Button color="success" className="spaceRight" onClick={() => { completeExercise(modalData); toggle(); }}>Подтвердить выполнение</Button>
-          <Button color="primary" onClick={toggle}>Закрыть</Button>
-        </ModalFooter>
-      </Modal>
-
-    </>
-  );
-}
-
-
-function ExerciseSettingsViewPanel({ percentage, planExercise, completedExercises, setModalData, toggle }) {
-  var idPrefix = String("settings_" + percentage.id);
-
-  var settingsList = planExercise.settings.filter(t => t.percentage.id === percentage.id);
-  if (settingsList.length === 0 || settingsList.filter(t => t.weight !== 0).length === 0) {
-    return (<div> - </div>);
+    );
   }
 
-  var modalData = { id: planExercise.id + "_" + percentage.id, settings: settingsList };
-  var exerciseState = completedExercises.find(t => t.id === modalData.id).state;
+  exerciseSettingsPanel = (percentage, planExercise) => {
+    if (this.state.completedExercises.length === 0) { return (<></>); }
 
-  return (
-    <>
-      <div role="button" className="text-center" id={idPrefix} onClick={() => { setModalData(modalData); toggle(); }}>
-        <img src={exerciseState ? Completed : Planned} width="30" height="35" className="rounded mx-auto d-block" />
-      </div>
-      <SettingsTooltip settingsList={settingsList} idPrefix={idPrefix} />
-    </>
-  );
+    var itemId = `${planExercise.id}_${percentage.id}`;
+    var idPrefix = `settings_${itemId}`;
+
+    var settingsList = planExercise.settings.filter(t => t.percentage.id === percentage.id);
+    if (settingsList.length === 0 || settingsList.filter(t => t.weight !== 0).length === 0) {
+      return (<div> - </div>);
+    }
+
+    var modalData = { id: itemId, name: planExercise.exercise.name, settings: settingsList };
+    var exerciseState = this.state.completedExercises.find(t => t.id === modalData.id).state;
+
+    return (
+      <>
+        <div role="button" className="text-center" id={idPrefix} onClick={() => this.onShowExerciseModal(modalData)}>
+          <img src={exerciseState ? Completed : Planned} width="30" height="35" className="rounded mx-auto d-block" />
+        </div>
+        <SettingsTooltip settingsList={settingsList} idPrefix={idPrefix} />
+      </>
+    );
+  }
 }
+
 
 function SettingsTooltip({ settingsList, idPrefix }) {
   return (
@@ -136,7 +169,6 @@ function SettingsTooltip({ settingsList, idPrefix }) {
 
 function ExerciseTooltip({ planExercise, idPrefix }) {
   var text = planExercise.comments;
-
   if (!text) { return (<></>); }
 
   return (
@@ -145,3 +177,5 @@ function ExerciseTooltip({ planExercise, idPrefix }) {
     </UncontrolledTooltip>
   );
 }
+
+export default WithRouter(connect(null, mapDispatchToProps)(PlanDayViewPanel));

@@ -1,7 +1,7 @@
 ﻿import React from "react";
-import { Container, Button, Row, Col } from "reactstrap";
+import { Button, Col, Container, Row } from "reactstrap";
 import { PostAsync } from "../../../common/ApiActions";
-import { ErrorPanel, InputPassword, InputEmail } from "../../../common/controls/CustomControls";
+import { ErrorPanel, InputEmail, InputPassword } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 
 class ChangeUserPassword extends React.Component {
@@ -11,7 +11,7 @@ class ChangeUserPassword extends React.Component {
     error: ''
   }
 
-  onValueChange = (propName, value) => { this.setState(prevState => ({ auth: { ...prevState.auth, [propName]: value } })); }
+  onValueChange = (propName, value) => { this.setState(prevState => ({ error: '', auth: { ...prevState.auth, [propName]: value } })); }
 
   onRegister = async () => {
     try {

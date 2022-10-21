@@ -5,7 +5,7 @@ import AdminRoutes from "./AdminRoutes";
 import CoachRoutes from "./CoachRoutes";
 import ExerciseRoutes from "./ExerciseRoutes";
 
-import Home from "../components/Home";
+import Home from "../components/main/Home";
 
 const AppRoutes = [
   { index: true, element: <Home /> },

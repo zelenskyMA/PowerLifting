@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.Common;
+using SportAssistant.Application.Common.Actions;
 using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.UserData.Application;
@@ -33,7 +33,7 @@ namespace SportAssistant.Application.UserData.UserInfoCommands
             }
 
             var info = _mapper.Map<UserInfo>(infoDb);
-            info.LegalName = Naming.GetLegalShortName(info.FirstName, info.Surname, info.Patronimic, "Кабинет");
+            info.LegalName = UserNaming.GetLegalShortName(info.FirstName, info.Surname, info.Patronimic, "Кабинет");
             info.RolesInfo = await _userRoleCommands.GetUserRoles(userId);
 
             if (info.CoachId > 0)

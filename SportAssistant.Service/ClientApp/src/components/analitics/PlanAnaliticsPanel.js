@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { Col, Row } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
-import { InputDate, LineChartControl, TabControl } from "../../common/controls/CustomControls";
+import { InputDate, LineChartControl, TabControl, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
@@ -49,7 +49,7 @@ class PlanAnaliticsPanel extends Component {
   }
 
   render() {
-    if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
+    if (this.state.loading) { return (<LoadingPanel />); }
 
     return (
       <>

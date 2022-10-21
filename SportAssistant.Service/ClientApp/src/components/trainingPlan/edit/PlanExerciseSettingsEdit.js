@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { Button, Col, Label, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
-import { ErrorPanel, InputNumber, InputTextArea, MultiNumberInput } from "../../../common/controls/CustomControls";
+import { ErrorPanel, InputNumber, InputTextArea, LoadingPanel, MultiNumberInput } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
 
@@ -88,7 +88,7 @@ class PlanExerciseSettingsEdit extends Component {
 
 
   render() {
-    if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
+    if (this.state.loading) { return (<LoadingPanel />); }
 
     return (
       <>

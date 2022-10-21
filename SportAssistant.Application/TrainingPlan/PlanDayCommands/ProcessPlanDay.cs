@@ -3,6 +3,7 @@ using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
+using SportAssistant.Infrastructure.DataContext;
 
 namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
 {
@@ -10,18 +11,24 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
     {
         private readonly IProcessPlanExercise _processPlanExercise;
         private readonly IPlanCountersSetup _planCountersSetup;
+        private readonly IContextProvider _contextProvider;
         private readonly ICrudRepo<PlanDayDb> _planDayRepository;
+        private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
         private readonly IMapper _mapper;
 
         public ProcessPlanDay(
             IProcessPlanExercise processPlanExercise,
             IPlanCountersSetup planCountersSetup,
-            ICrudRepo<PlanDayDb> trainingDayRepository,
+            IContextProvider contextProvider,
+            ICrudRepo<PlanDayDb> planDayRepository,
+            ICrudRepo<PlanExerciseDb> planExerciseRepository,
             IMapper mapper)
         {
             _processPlanExercise = processPlanExercise;
             _planCountersSetup = planCountersSetup;
-            _planDayRepository = trainingDayRepository;
+            _contextProvider = contextProvider;
+            _planDayRepository = planDayRepository;
+            _planExerciseRepository = planExerciseRepository;
             _mapper = mapper;
         }
 
@@ -50,6 +57,24 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
             _planCountersSetup.SetPlanDayCounters(planDay);
 
             return planDay;
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteByPlanIdAsync(int planId)
+        {
+            var planDaysDb = await _planDayRepository.FindAsync(t => t.PlanId == planId);
+            if (planDaysDb.Count == 0)
+            {
+                return;
+            }
+
+            var dayIds = planDaysDb.Select(t => t.Id);
+            var planExercisesDb = await _planExerciseRepository.FindAsync(t => dayIds.Contains(t.PlanDayId));
+            await _processPlanExercise.DeletePlanExercisesAsync(planExercisesDb);
+
+            _planDayRepository.DeleteList(planDaysDb);
+
+            await _contextProvider.AcceptChangesAsync();
         }
     }
 }

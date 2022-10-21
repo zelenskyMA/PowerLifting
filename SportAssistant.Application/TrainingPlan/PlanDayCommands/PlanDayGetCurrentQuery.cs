@@ -13,19 +13,19 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
     public class PlanDayGetCurrentQuery : ICommand<PlanDayGetCurrentQuery.Param, PlanDay>
     {
         private readonly IProcessPlanDay _processPlanDay;
-        private readonly ICrudRepo<PlanDb> _trainingPlanRepository;
-        private readonly ICrudRepo<PlanDayDb> _trainingDayRepository;
+        private readonly ICrudRepo<PlanDb> _planRepository;
+        private readonly ICrudRepo<PlanDayDb> _planDayRepository;
         private readonly IUserProvider _user;
 
         public PlanDayGetCurrentQuery(
             IProcessPlanDay processPlanDay,
-            ICrudRepo<PlanDb> trainingPlanRepository,
-            ICrudRepo<PlanDayDb> trainingDayRepository,
+            ICrudRepo<PlanDb> planRepository,
+            ICrudRepo<PlanDayDb> planDayRepository,
             IUserProvider user)
         {
             _processPlanDay = processPlanDay;
-            _trainingPlanRepository = trainingPlanRepository;
-            _trainingDayRepository = trainingDayRepository;
+            _planRepository = planRepository;
+            _planDayRepository = planDayRepository;
             _user = user;
         }
 
@@ -34,7 +34,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
             var now = DateTime.Now.Date;
             var emptyDay = new PlanDay();
 
-            var dbPlans = await _trainingPlanRepository.FindAsync(t =>
+            var dbPlans = await _planRepository.FindAsync(t =>
                 t.UserId == _user.Id &&
                 t.StartDate <= now && t.StartDate >= now.AddDays(-6));
             if (!dbPlans.Any())
@@ -43,7 +43,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
             }
 
             var planId = dbPlans.First().Id;
-            var planDayDb = (await _trainingDayRepository.FindAsync(t => t.PlanId == planId && t.ActivityDate.Date == now)).FirstOrDefault();
+            var planDayDb = (await _planDayRepository.FindAsync(t => t.PlanId == planId && t.ActivityDate.Date == now)).FirstOrDefault();
             if (planDayDb == null)
             {
                 return emptyDay;

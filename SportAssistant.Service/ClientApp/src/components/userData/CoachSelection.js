@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { TableControl } from "../../common/controls/CustomControls";
+import { TableControl, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 
 class CoachSelection extends Component {
@@ -26,9 +26,7 @@ class CoachSelection extends Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return (<p><em>Загрузка...</em></p>);
-    }
+    if (this.state.loading) { return (<LoadingPanel />); }
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
@@ -40,7 +38,7 @@ class CoachSelection extends Component {
       <>
         <h3>Тренеры</h3>
         <p>Подайте заявку тренеру дважды нажав на его строку.</p>
-        <TableControl columnsInfo={columns} data={this.state.coaches} rowDblClick={this.onRowDblClick} />
+        <TableControl columnsInfo={columns} data={this.state.coaches} rowClick={this.onRowDblClick} />
       </>
     );
   }

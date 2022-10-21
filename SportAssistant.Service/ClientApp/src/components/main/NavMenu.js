@@ -5,11 +5,16 @@ import {
     Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink,
     UncontrolledDropdown
 } from 'reactstrap';
-import WithRouter from "../common/extensions/WithRouter";
-import { GetToken, RemoveTokens } from '../common/TokenActions';
-import { initApp } from "../stores/appStore/appActions";
-import '../styling/Common.css';
-import '../styling/NavMenu.css';
+import WithRouter from "../../common/extensions/WithRouter";
+import { RemoveTokens } from '../../common/TokenActions';
+import '../../styling/Common.css';
+import '../../styling/NavMenu.css';
+
+const mapStateToProps = store => {
+  return {
+    userInfo: store.app.myInfo,
+  }
+}
 
 class NavMenu extends Component {
   constructor(props) {
@@ -19,13 +24,7 @@ class NavMenu extends Component {
       collapsed: true
     };
   }
-
-  componentDidMount() { this.getInitData(); }
-
-  getInitData = async () => {
-    if (GetToken() != null) { await this.props.initApp(); }
-  }
-
+   
   toggleNavbar = () => { this.setState({ collapsed: !this.state.collapsed }); }
 
   render() {
@@ -112,16 +111,4 @@ class NavMenu extends Component {
 
 }
 
-const mapStateToProps = store => {
-  return {
-    userInfo: store.app.myInfo,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    initApp: () => initApp(dispatch)
-  }
-}
-
-export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(NavMenu))
+export default WithRouter(connect(mapStateToProps, null)(NavMenu))

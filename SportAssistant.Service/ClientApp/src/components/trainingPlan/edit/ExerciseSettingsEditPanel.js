@@ -1,8 +1,8 @@
 ﻿import React from 'react';
 import { UncontrolledTooltip } from "reactstrap";
 import '../../../styling/Common.css';
-import Planned from '../../../styling/icons/barbellPlanned.png';
 import Completed from '../../../styling/icons/barbellCompleted.png';
+import Planned from '../../../styling/icons/barbellPlanned.png';
 
 export function ExerciseSettingsEditPanel({ percentage, settings }) {
   var settingsList = settings.filter(t => t.percentage.id === percentage.id).sort((a, b) => a.weight - b.weight);

@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Button, Container } from 'reactstrap';
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
-import { TableControl, ErrorPanel } from "../../../common/controls/CustomControls";
+import { ErrorPanel, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {
+    groupUserId: store.coach.groupUserId,
     appSettings: store.app.settings,
   }
 }
-
 
 class PlanExercisesCreate extends Component {
   constructor() {
@@ -36,7 +36,7 @@ class PlanExercisesCreate extends Component {
   }
 
   confirmExercisesAsync = async () => {
-    await PostAsync('/planExercise/create', { dayId: this.props.params.id, exercises: this.state.selectedExercises });
+    await PostAsync('/planExercise/create', { dayId: this.props.params.id, exercises: this.state.selectedExercises, userId: this.props.groupUserId });
     this.props.navigate(`/createPlanDay/${this.props.params.id}`);
   }
 
@@ -48,10 +48,7 @@ class PlanExercisesCreate extends Component {
     }
 
     var element = row.values;
-    this.setState(previousState => ({
-      error: '',
-      selectedExercises: [...previousState.selectedExercises, element]
-    }));
+    this.setState(previousState => ({ error: '', selectedExercises: [...previousState.selectedExercises, element] }));
   }
 
   rowRemove = (index) => {
@@ -127,7 +124,8 @@ class PlanExercisesCreate extends Component {
             </tbody>
           </table>
 
-          <Button color="primary" onClick={() => this.confirmExercisesAsync()}>Подтвердить</Button>
+          <Button color="primary" className="spaceRight" onClick={() => this.confirmExercisesAsync()}>Подтвердить</Button>
+          <Button color="primary" outline onClick={() => this.props.navigate("/createPlanDays")}>Назад</Button>
         </Container>
       </>
     );

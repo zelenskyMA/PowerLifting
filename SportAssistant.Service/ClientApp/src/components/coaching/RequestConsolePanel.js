@@ -1,8 +1,8 @@
 ﻿import React, { Component } from 'react';
-import { TableControl } from "../../common/controls/CustomControls";
 import { GetAsync } from "../../common/ApiActions";
-import { DateToLocal } from "../../common/Localization";
+import { TableControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
+import { DateToLocal } from "../../common/Localization";
 import '../../styling/Common.css';
 
 class RequestConsolePanel extends Component {
@@ -14,16 +14,14 @@ class RequestConsolePanel extends Component {
     };
   }
 
-  componentDidMount() { this.getRequestsData(); }
+  componentDidMount() { this.getInitData(); }
 
-  getRequestsData = async () => {
+  getInitData = async () => {
     var myRequestsData = await GetAsync("/trainingRequests/getCoachRequests");
     this.setState({ myRequests: myRequestsData });
   }
 
-  onRowlClick = row => {
-    this.props.navigate(`/acceptRequest/${row.values.id}`);
-  }
+  onRowlClick = row => { this.props.navigate(`/acceptRequest/${row.values.id}`); }
 
   render() {
     if (this.state.myRequests.length === 0) {

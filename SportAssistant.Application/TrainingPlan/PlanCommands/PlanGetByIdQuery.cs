@@ -15,27 +15,27 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         private readonly IProcessPlanExercise _processPlanExercise;
         private readonly IPlanCountersSetup _planCountersSetup;
 
-        private readonly ICrudRepo<PlanDb> _trainingPlanRepository;
-        private readonly ICrudRepo<PlanDayDb> _trainingDayRepository;
+        private readonly ICrudRepo<PlanDb> _planRepository;
+        private readonly ICrudRepo<PlanDayDb> _planDayRepository;
         private readonly IMapper _mapper;
 
         public PlanGetByIdQuery(
             IProcessPlanExercise processPlanExercise,
             IPlanCountersSetup planCountersSetup,
-            ICrudRepo<PlanDb> trainingPlanRepository,
-            ICrudRepo<PlanDayDb> trainingDayRepository,
+            ICrudRepo<PlanDb> planRepository,
+            ICrudRepo<PlanDayDb> planDayRepository,
             IMapper mapper)
         {
             _processPlanExercise = processPlanExercise;
             _planCountersSetup = planCountersSetup;
-            _trainingPlanRepository = trainingPlanRepository;
-            _trainingDayRepository = trainingDayRepository;
+            _planRepository = planRepository;
+            _planDayRepository = planDayRepository;
             _mapper = mapper;
         }
 
         public async Task<Plan> ExecuteAsync(Param param)
         {
-            var dbPlan = (await _trainingPlanRepository.FindAsync(t => t.Id == param.Id)).FirstOrDefault();
+            var dbPlan = (await _planRepository.FindAsync(t => t.Id == param.Id)).FirstOrDefault();
             if (dbPlan == null)
             {
                 return new Plan();
@@ -43,7 +43,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
 
             var plan = _mapper.Map<Plan>(dbPlan);
 
-            var planDays = (await _trainingDayRepository.FindAsync(t => t.PlanId == dbPlan.Id)).Select(t => _mapper.Map<PlanDay>(t)).ToList();
+            var planDays = (await _planDayRepository.FindAsync(t => t.PlanId == dbPlan.Id)).Select(t => _mapper.Map<PlanDay>(t)).ToList();
             var planExercises = await _processPlanExercise.GetByDaysAsync(planDays.Select(t => t.Id).ToList());
             foreach (var planDay in planDays)
             {

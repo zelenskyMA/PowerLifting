@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.Common;
+using SportAssistant.Application.Common.Actions;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
@@ -48,7 +48,7 @@ namespace SportAssistant.Application.Coaching.TrainingGroupCommands
             var users = usersInfoDb.Select(t => new GroupUser()
             {
                 Id = t.UserId,
-                FullName = Naming.GetLegalFullName(t.FirstName, t.Surname, t.Patronimic),
+                FullName = UserNaming.GetLegalFullName(t.FirstName, t.Surname, t.Patronimic),
                 ActivePlansCount = allActivePlans.Count(t => t.UserId == t.UserId),
             }).OrderBy(t => t.FullName).ToList();
 

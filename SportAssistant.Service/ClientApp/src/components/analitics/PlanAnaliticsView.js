@@ -13,7 +13,6 @@ const mapDispatchToProps = dispatch => {
 class PlanAnaliticsView extends Component {
   constructor(props) {
     super(props);
-
     this.props.setGroupUserId(0);
   }
 
