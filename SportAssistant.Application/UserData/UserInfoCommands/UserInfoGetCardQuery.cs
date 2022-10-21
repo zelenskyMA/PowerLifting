@@ -1,4 +1,4 @@
-﻿using SportAssistant.Application.Common;
+﻿using SportAssistant.Application.Common.Actions;
 using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.UserData;
@@ -72,7 +72,7 @@ namespace SportAssistant.Application.UserData.UserInfoCommands
             var card = new UserCard()
             {
                 UserId = userDb.Id,
-                UserName = Naming.GetLegalFullName(info),
+                UserName = UserNaming.GetLegalFullName(info),
                 Login = userDb.Email,
                 BaseInfo = info,
                 GroupInfo = await _processTrainingGroups.GetUserGroupAsync(param.UserId),

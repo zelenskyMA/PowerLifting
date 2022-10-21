@@ -1,5 +1,4 @@
-﻿using SportAssistant.Application.UserData.Auth.Interfaces;
-using SportAssistant.Domain.CustomExceptions;
+﻿using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -14,21 +13,21 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
     /// </summary>
     public class PlanExerciseUpdateCommand : ICommand<PlanExerciseUpdateCommand.Param, bool>
     {
+        private readonly IProcessPlan _processPlan;
         private readonly IProcessPlanExerciseSettings _processPlanExerciseSettings;
         private readonly IProcessUserAchivements _processUserAchivements;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
-        private readonly IUserProvider _user;
 
         public PlanExerciseUpdateCommand(
-         IProcessPlanExerciseSettings processPlanExerciseSettings,
-         IProcessUserAchivements processUserAchivements,
-         ICrudRepo<PlanExerciseDb> plannedExerciseRepository,
-         IUserProvider user)
+            IProcessPlan processPlan,
+            IProcessPlanExerciseSettings processPlanExerciseSettings,
+            IProcessUserAchivements processUserAchivements,
+            ICrudRepo<PlanExerciseDb> plannedExerciseRepository)
         {
+            _processPlan = processPlan;
             _processPlanExerciseSettings = processPlanExerciseSettings;
             _processUserAchivements = processUserAchivements;
             _planExerciseRepository = plannedExerciseRepository;
-            _user = user;
         }
 
         public async Task<bool> ExecuteAsync(Param param)
@@ -39,13 +38,14 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
                 throw new BusinessException("Не найдено упражнение для обновления");
             }
 
+            var userId = await _processPlan.PlanningAllowedForUserAsync(param.UserId);
+
             if (planExerciseDb.Comments != param.PlanExercise.Comments)
             {
                 planExerciseDb.Comments = param.PlanExercise.Comments;
                 _planExerciseRepository.Update(planExerciseDb);
             }
 
-            var userId = param.UserId == 0 ? _user.Id : param.UserId;
             var achivement = await _processUserAchivements.GetByExerciseTypeAsync(userId, param.PlanExercise.Exercise.ExerciseTypeId);
             if (achivement == null || achivement.Result == 0)
             {
@@ -64,6 +64,9 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
             /// </summary>
             public int UserId { get; set; }
 
+            /// <summary>
+            /// Упражнение, для которого планируются поднятия
+            /// </summary>
             public PlanExercise PlanExercise { get; set; }
         }
     }

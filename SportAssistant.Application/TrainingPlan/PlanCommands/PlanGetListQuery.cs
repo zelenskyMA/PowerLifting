@@ -12,16 +12,16 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
     /// </summary>
     public class PlanGetListQuery : ICommand<PlanGetListQuery.Param, Plans>
     {
-        private readonly ICrudRepo<PlanDb> _trainingPlanRepository;
+        private readonly ICrudRepo<PlanDb> _planRepository;
         private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public PlanGetListQuery(
-            ICrudRepo<PlanDb> trainingPlanRepository,
+            ICrudRepo<PlanDb> planRepository,
             IUserProvider user,
             IMapper mapper)
         {
-            _trainingPlanRepository = trainingPlanRepository;
+            _planRepository = planRepository;
             _user = user;
             _mapper = mapper;
         }
@@ -30,7 +30,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         {
             var userId = param.UserId == 0 ? _user.Id : param.UserId;
 
-            var plansDb = await _trainingPlanRepository.FindAsync(t => t.UserId == userId);
+            var plansDb = await _planRepository.FindAsync(t => t.UserId == userId);
             var plansList = plansDb.Select(t => _mapper.Map<Plan>(t)).ToList();
 
             var plans = new Plans()

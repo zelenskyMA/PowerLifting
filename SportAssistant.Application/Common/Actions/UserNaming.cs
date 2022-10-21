@@ -1,8 +1,8 @@
 ﻿using SportAssistant.Domain.Models.UserData;
 
-namespace SportAssistant.Application.Common
+namespace SportAssistant.Application.Common.Actions
 {
-    public static class Naming
+    public static class UserNaming
     {
         public static string GetLegalShortName(string? firstName, string? surname, string? patronimic, string defaultValue = "")
         {

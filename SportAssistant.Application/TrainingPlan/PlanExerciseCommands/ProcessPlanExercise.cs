@@ -3,6 +3,7 @@ using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
+using SportAssistant.Infrastructure.DataContext;
 
 namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
 {
@@ -10,6 +11,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
     {
         private readonly IProcessPlanExerciseSettings _processPlanExerciseSettings;
         private readonly IProcessExercise _processExercise;
+        private readonly IContextProvider _contextProvider;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
         private readonly IPlanCountersSetup _planCountersSetup;
         private readonly IMapper _mapper;
@@ -17,12 +19,14 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
         public ProcessPlanExercise(
             IProcessPlanExerciseSettings processPlanExerciseSettings,
             IProcessExercise processExercise,
+            IContextProvider contextProvider,
             ICrudRepo<PlanExerciseDb> plannedExerciseRepository,
             IPlanCountersSetup planCountersSetup,
             IMapper mapper)
         {
             _processPlanExerciseSettings = processPlanExerciseSettings;
             _processExercise = processExercise;
+            _contextProvider = contextProvider;
             _planExerciseRepository = plannedExerciseRepository;
             _planCountersSetup = planCountersSetup;
             _mapper = mapper;
@@ -61,6 +65,20 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
             }
 
             return planExercises;
+        }
+
+        /// <inheritdoc />
+        public async Task DeletePlanExercisesAsync(List<PlanExerciseDb> planExercises)
+        {
+            if (planExercises.Count == 0)
+            {
+                return;
+            }
+
+            await _processPlanExerciseSettings.DeleteByPlanExerciseIdsAsync(planExercises.Select(t => t.Id).ToList());
+            _planExerciseRepository.DeleteList(planExercises);
+
+            await _contextProvider.AcceptChangesAsync();
         }
     }
 }

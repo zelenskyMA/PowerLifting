@@ -1,17 +1,17 @@
 ﻿namespace SportAssistant.Application.UserData.Auth.Interfaces
 {
     /// <summary>
-    /// Provider of user data from JWT, passed within authorization procedure
+    /// Провайдер данный пользователя из JWT (передается при запросах), и из БД
     /// </summary>
     public interface IUserProvider
     {
         /// <summary>
-        /// User Id
+        /// Ид пользователя
         /// </summary>
         int Id { get; }
 
         /// <summary>
-        /// User email (login)
+        /// Почта (логин) пользователя
         /// </summary>
         string Email { get; }
     }

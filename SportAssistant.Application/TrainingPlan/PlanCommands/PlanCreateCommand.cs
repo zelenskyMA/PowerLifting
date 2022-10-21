@@ -1,8 +1,11 @@
 ﻿using SportAssistant.Application.UserData.Auth.Interfaces;
+using SportAssistant.Application.UserData.UserInfoCommands;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
+using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
+using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Infrastructure.DataContext;
 
 namespace SportAssistant.Application.TrainingPlan.PlanCommands
@@ -12,35 +15,30 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
     /// </summary>
     public class PlanCreateCommand : ICommand<PlanCreateCommand.Param, int>
     {
-        private readonly ICrudRepo<PlanDb> _trainingPlanRepository;
-        private readonly ICrudRepo<PlanDayDb> _trainingDayRepository;
+        private readonly IProcessPlan _processPlan;
+        private readonly ICrudRepo<PlanDb> _planRepository;
+        private readonly ICrudRepo<PlanDayDb> _planDayRepository;
         private readonly IContextProvider _provider;
-        private readonly IUserProvider _user;
 
         public PlanCreateCommand(
-            ICrudRepo<PlanDb> trainingPlanRepository,
-            ICrudRepo<PlanDayDb> trainingDayRepository,
-            IContextProvider provider,
-            IUserProvider user)
+            IProcessPlan processPlan,
+            ICrudRepo<PlanDb> planRepository,
+            ICrudRepo<PlanDayDb> planDayRepository,
+            IContextProvider provider)
         {
-            _trainingPlanRepository = trainingPlanRepository;
-            _trainingDayRepository = trainingDayRepository;
+            _processPlan = processPlan;
+            _planRepository = planRepository;
+            _planDayRepository = planDayRepository;
             _provider = provider;
-            _user = user;
         }
 
         public async Task<int> ExecuteAsync(Param param)
         {
-            var userId = _user.Id;
-            if (param.UserId != 0)
-            {
-                // проверяем что _user.Id - тренер указанного UserId
-                userId = param.UserId;
-            }
+            var userId = await _processPlan.PlanningAllowedForUserAsync(param.UserId);
 
             var prevPlanDate = param.CreationDate.AddDays(-6);
             var nextPlanDate = param.CreationDate.AddDays(6);
-            var preventingPlans = await _trainingPlanRepository.FindAsync(t =>
+            var preventingPlans = await _planRepository.FindAsync(t =>
                 t.UserId == userId &&
                 t.StartDate >= prevPlanDate &&
                 t.StartDate <= nextPlanDate);
@@ -52,13 +50,13 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             }
 
             var plan = new PlanDb() { StartDate = param.CreationDate, UserId = userId };
-            await _trainingPlanRepository.CreateAsync(plan);
+            await _planRepository.CreateAsync(plan);
             await _provider.AcceptChangesAsync();
 
             for (int i = 0; i < 7; i++) // 7 days standard plan
             {
                 var trainingDay = new PlanDayDb() { PlanId = plan.Id, ActivityDate = param.CreationDate.AddDays(i) };
-                await _trainingDayRepository.CreateAsync(trainingDay);
+                await _planDayRepository.CreateAsync(trainingDay);
             }
 
             return plan.Id;

@@ -1,9 +1,10 @@
 ﻿import React from "react";
 import { connect } from "react-redux";
 import { Button, Col, Container, Row } from "reactstrap";
-import { GetAsync } from "../../../common/ApiActions";
+import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal, Locale } from "../../../common/Localization";
+import { ErrorPanel } from "../../../common/controls/CustomControls";
 import { setGroupUserId } from "../../../stores/coachingStore/coachActions";
 
 const mapStateToProps = store => {
@@ -25,7 +26,8 @@ class PlanDaysCreate extends React.Component {
 
     this.state = {
       plannedDays: [],
-      typeCounters: []
+      typeCounters: [],
+      error: ''
     };
   }
 
@@ -38,9 +40,14 @@ class PlanDaysCreate extends React.Component {
 
   onSetExercises = (dayId) => { this.props.navigate(`/createPlanExercises/${dayId}`); }
 
-  onDeletePlan = (url) => {
-
-    this.props.navigate(url);
+  onDeletePlan = async (url) => {
+    try {
+      await PostAsync("/trainingPlan/delete", { id: this.props.planId, userId: this.props.groupUserId });
+      this.props.navigate(url);
+    }
+    catch (error) {
+      this.setState({ error: error.message });
+    }
   }
 
   render() {
@@ -51,6 +58,8 @@ class PlanDaysCreate extends React.Component {
       <>
         <h3>Запланированные дни тренировок</h3>
         <br />
+        <ErrorPanel errorMessage={this.state.error} />
+
         <Row>
           <Col xs={3} md={{ offset: 4 }}><strong>Назначьте упражнения на дни недели.</strong></Col>
         </Row>

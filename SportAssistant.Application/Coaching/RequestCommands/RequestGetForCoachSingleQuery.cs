@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.Common;
+using SportAssistant.Application.Common.Actions;
 using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.Interfaces.Coaching.Repositories;
@@ -39,7 +39,7 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
 
             var request = requestsDb.Select(t => _mapper.Map<TrainingRequest>(t)).First();
             var userInfoDb = usersInfoDb.First(t => t.UserId == request.UserId);
-            request.UserName = Naming.GetLegalFullName(userInfoDb.FirstName, userInfoDb.Surname, userInfoDb.Patronimic);
+            request.UserName = UserNaming.GetLegalFullName(userInfoDb.FirstName, userInfoDb.Surname, userInfoDb.Patronimic);
             request.UserWeight = userInfoDb.Weight ?? 0;
             request.UserHeight = userInfoDb.Height ?? 0;
             request.UserAge = userInfoDb.Age ?? 0;

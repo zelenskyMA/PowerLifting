@@ -3,21 +3,25 @@ using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Repositories;
 using SportAssistant.Domain.Models.TrainingPlan;
+using SportAssistant.Infrastructure.DataContext;
 
 namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
 {
     public class ProcessPlanExerciseSettings : IProcessPlanExerciseSettings
     {
         private readonly IPlanExerciseSettingsRepository _exerciseSettingsRepository;
+        private readonly IContextProvider _contextProvider;
         private readonly IMapper _mapper;
-
+        
         public ProcessPlanExerciseSettings(
             IPlanExerciseSettingsRepository exerciseSettingsRepository,
+            IContextProvider contextProvider,
             IMapper mapper)
         {
             _exerciseSettingsRepository = exerciseSettingsRepository;
+            _contextProvider = contextProvider;
             _mapper = mapper;
-        }       
+        }
 
         /// <inheritdoc />
         public async Task<List<PlanExerciseSettings>> GetAsync(List<int> planExerciseIds)
@@ -77,13 +81,20 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
 
             await _exerciseSettingsRepository.CreateListAsync(settingsListDb.Where(t => t.Id == 0).ToList());
             _exerciseSettingsRepository.UpdateList(settingsListDb.Where(t => t.Id != 0).ToList());
-        }       
+        }
 
         /// <inheritdoc />
-        public async Task DeleteByPlanExerciseIdAsync(List<int> planExerciseIds)
+        public async Task DeleteByPlanExerciseIdsAsync(List<int> planExerciseIds)
         {
+            if (planExerciseIds.Count == 0)
+            {
+                return;
+            }
+
             var settingsDb = await _exerciseSettingsRepository.FindAsync(t => planExerciseIds.Contains(t.PlanExerciseId));
             _exerciseSettingsRepository.DeleteList(settingsDb.Select(t => _mapper.Map<PlanExerciseSettingsDb>(t)).ToList());
+
+            await _contextProvider.AcceptChangesAsync();
         }
 
         /// <inheritdoc />

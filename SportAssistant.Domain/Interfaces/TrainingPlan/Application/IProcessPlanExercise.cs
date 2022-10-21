@@ -18,5 +18,12 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         /// <param name="planExercisesDb">Данные по упражнению из БД</param>
         /// <returns></returns>
         Task<List<PlanExercise>> PrepareExerciseDataAsync(List<PlanExerciseDb> planExercisesDb);
+
+        /// <summary>
+        /// Удаление запланированных упражнений вместе с поднятиями (exerciseSettings)
+        /// </summary>
+        /// <param name="planExercises">Список для удаления</param>
+        /// <returns></returns>
+        Task DeletePlanExercisesAsync(List<PlanExerciseDb> planExercises);
     }
 }

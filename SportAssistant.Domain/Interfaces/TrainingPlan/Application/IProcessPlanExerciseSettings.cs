@@ -25,7 +25,7 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         /// </summary>
         /// <param name="settings">Settings for deleting</param>
         /// <returns></returns>
-        Task DeleteByPlanExerciseIdAsync(List<int> planExerciseIds);
+        Task DeleteByPlanExerciseIdsAsync(List<int> planExerciseIds);
 
         /// <summary>
         /// Get full list of current planDay percentages
