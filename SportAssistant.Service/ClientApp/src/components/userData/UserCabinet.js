@@ -4,12 +4,13 @@ import { Button, Col, Label, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
 import { InputNumber, InputText, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
-import { updateUserInfo } from "../../stores/appStore/appActions";
+import { changeModalVisibility, updateUserInfo } from "../../stores/appStore/appActions";
 import '../../styling/Common.css';
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateUserInfo: (userInfo) => updateUserInfo(userInfo, dispatch)
+    updateUserInfo: (userInfo) => updateUserInfo(userInfo, dispatch),
+    changeModalVisibility: (modalInfo) => changeModalVisibility(modalInfo, dispatch)
   }
 }
 
@@ -52,10 +53,20 @@ class UserCabinet extends Component {
     this.setState({ trainingRequest: trainingRequestData });
   }
 
-  rejectCoach = async () => {
+  onConfirmRejectCoach = async () => {
     await PostAsync(`/groupUser/reject`);
     var info = await GetAsync("/userInfo/get");
     this.setState({ userInfo: info });
+  }
+
+  rejectCoach = async () => {
+    var modalInfo = {
+      isVisible: true,
+      headerText: "Запрос подтверждения",
+      buttons: [{ name: "Подтвердить", onClick: this.onConfirmRejectCoach, color: "success" }],
+      body: () => { return (<p>Подтвердите отказ от работы с вашим тренером</p>) }
+    };
+    this.props.changeModalVisibility(modalInfo);
   }
 
   confirmAsync = async () => {

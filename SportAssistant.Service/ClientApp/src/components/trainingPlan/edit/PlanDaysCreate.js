@@ -2,9 +2,10 @@
 import { connect } from "react-redux";
 import { Button, Col, Container, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { ErrorPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal, Locale } from "../../../common/Localization";
-import { ErrorPanel } from "../../../common/controls/CustomControls";
+import { changeModalVisibility } from "../../../stores/appStore/appActions";
 import { setGroupUserId } from "../../../stores/coachingStore/coachActions";
 
 const mapStateToProps = store => {
@@ -16,7 +17,8 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setGroupUserId: (userId) => setGroupUserId(userId, dispatch)
+    setGroupUserId: (userId) => setGroupUserId(userId, dispatch),
+    changeModalVisibility: (modalInfo) => changeModalVisibility(modalInfo, dispatch)
   }
 }
 
@@ -27,6 +29,7 @@ class PlanDaysCreate extends React.Component {
     this.state = {
       plannedDays: [],
       typeCounters: [],
+      backUrl: '',
       error: ''
     };
   }
@@ -35,19 +38,31 @@ class PlanDaysCreate extends React.Component {
 
   getInitData = async () => {
     var plan = await GetAsync(`/trainingPlan/get?Id=${this.props.planId}`);
-    this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum });
+    var url = this.props.groupUserId ? `/groupUser/${this.props.groupUserId}` : "/plansList";
+
+    this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum, backUrl: url });
   }
 
   onSetExercises = (dayId) => { this.props.navigate(`/createPlanExercises/${dayId}`); }
 
-  onDeletePlan = async (url) => {
+  onConfirmDelete = async () => {
     try {
       await PostAsync("/trainingPlan/delete", { id: this.props.planId, userId: this.props.groupUserId });
-      this.props.navigate(url);
+      this.props.navigate(this.state.backUrl);
     }
     catch (error) {
       this.setState({ error: error.message });
     }
+  }
+
+  onDeletePlan = async () => {
+    var modalInfo = {
+      isVisible: true,
+      headerText: "Запрос подтверждения",
+      buttons: [{ name: "Подтвердить", onClick: this.onConfirmDelete, color: "success" }],
+      body: () => { return (<p>Подтвердите удаление плана</p>) }
+    };
+    this.props.changeModalVisibility(modalInfo);
   }
 
   render() {
@@ -137,13 +152,11 @@ class PlanDaysCreate extends React.Component {
   buttonPanel() {
     if (this.state.typeCounters.length == 0) { return (<></>); }
 
-    var url = this.props.groupUserId ? `/groupUser/${this.props.groupUserId}` : "/plansList";
-
     return (
       <Col>
-        <Button color="primary" onClick={async () => this.props.navigate(url)}>Завершить назначение плана</Button>
+        <Button color="primary" onClick={async () => this.props.navigate(this.state.backUrl)}>Завершить назначение плана</Button>
         <p></p>
-        <Button color="primary" outline onClick={async () => this.onDeletePlan(url)}>Удалить план</Button>
+        <Button color="primary" outline onClick={async () => this.onDeletePlan()}>Удалить план</Button>
       </Col>
     );
   }

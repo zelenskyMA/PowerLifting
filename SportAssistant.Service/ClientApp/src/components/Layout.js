@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { Container } from 'reactstrap';
 import { initApp } from "../stores/appStore/appActions";
 import { GetToken } from '../common/TokenActions';
-import NavMenu from './NavMenu';
+import NavMenu from './main/NavMenu';
+import GlobalModalDialogPanel from './main/GlobalModalDialogPanel';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -28,6 +29,7 @@ class Layout extends Component {
     return (
       <div>
         <NavMenu />
+        <GlobalModalDialogPanel />
         <Container>
           {this.props.children}
         </Container>

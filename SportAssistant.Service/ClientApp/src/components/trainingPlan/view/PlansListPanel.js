@@ -31,9 +31,9 @@ class PlansListPanel extends Component {
     };
   }
 
-  componentDidMount() { this.getPlans(); }
+  componentDidMount() { this.getInitData(); }
 
-  getPlans = async () => {
+  getInitData = async () => {
     var request = this.props.groupUserId ? `?userId=${this.props.groupUserId}` : "";
 
     var plans = await GetAsync(`/trainingPlan/getList${request}`);

@@ -5,10 +5,10 @@ import {
     Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink,
     UncontrolledDropdown
 } from 'reactstrap';
-import WithRouter from "../common/extensions/WithRouter";
-import { RemoveTokens } from '../common/TokenActions';
-import '../styling/Common.css';
-import '../styling/NavMenu.css';
+import WithRouter from "../../common/extensions/WithRouter";
+import { RemoveTokens } from '../../common/TokenActions';
+import '../../styling/Common.css';
+import '../../styling/NavMenu.css';
 
 const mapStateToProps = store => {
   return {

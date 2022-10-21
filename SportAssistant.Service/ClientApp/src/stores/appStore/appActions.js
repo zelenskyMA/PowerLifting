@@ -2,6 +2,7 @@
 
 export const RECEIVE_USER_INFO = "RECEIVE_USER_INFO";
 export const RECEIVE_SETTINGS = "RECEIVE_SETTINGS";
+export const CHANGE_MODAL_VISIBILITY = "CHANGE_MODAL_VISIBILITY";
 
 export async function updateUserInfo(userInfo, dispatch) {
   await PostAsync(`/userInfo/update`, userInfo);
@@ -19,3 +20,8 @@ export async function initApp(dispatch) {
 
   setUserInfo(dispatch);
 }
+
+export async function changeModalVisibility(modalInfo, dispatch) {
+  dispatch({ type: CHANGE_MODAL_VISIBILITY, result: modalInfo });
+}
+

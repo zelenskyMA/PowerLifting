@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { GetAsync } from "../common/ApiActions";
-import { GetToken } from '../common/TokenActions';
-import { PlanDayViewPanel } from "./trainingPlan/view/PlanDayViewPanel";
-import { DateToLocal } from "../common/Localization";
-import { LoadingPanel } from "../common/controls/CustomControls";
-import WithRouter from "../common/extensions/WithRouter";
-import '../styling/Common.css';
+import { GetAsync } from "../../common/ApiActions";
+import { LoadingPanel } from "../../common/controls/CustomControls";
+import WithRouter from "../../common/extensions/WithRouter";
+import { DateToLocal } from "../../common/Localization";
+import { GetToken } from '../../common/TokenActions';
+import '../../styling/Common.css';
+import PlanDayViewPanel from "../trainingPlan/view/PlanDayViewPanel";
 
 class Home extends Component {
   constructor() {

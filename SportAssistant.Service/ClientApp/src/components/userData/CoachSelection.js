@@ -38,7 +38,7 @@ class CoachSelection extends Component {
       <>
         <h3>Тренеры</h3>
         <p>Подайте заявку тренеру дважды нажав на его строку.</p>
-        <TableControl columnsInfo={columns} data={this.state.coaches} rowDblClick={this.onRowDblClick} />
+        <TableControl columnsInfo={columns} data={this.state.coaches} rowClick={this.onRowDblClick} />
       </>
     );
   }
