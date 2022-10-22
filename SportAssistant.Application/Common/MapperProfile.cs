@@ -2,10 +2,12 @@
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
+using SportAssistant.Domain.DbModels.TraininTemplate;
 using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models;
 using SportAssistant.Domain.Models.Coaching;
 using SportAssistant.Domain.Models.TrainingPlan;
+using SportAssistant.Domain.Models.TraininTemplate;
 using SportAssistant.Domain.Models.UserData;
 
 namespace SportAssistant.Application.Common
@@ -17,6 +19,7 @@ namespace SportAssistant.Application.Common
             PlanProfile();
             UserProfile();
             CoachProfile();
+            TemplateProfile();
 
             CreateMap<DictionaryDb, DictionaryItem>().ReverseMap();
             CreateMap<DictionaryTypeDb, DictionaryType>().ReverseMap();
@@ -50,6 +53,17 @@ namespace SportAssistant.Application.Common
 
             CreateMap<UserInfoDb, CoachInfo>()
                 .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
+                .ReverseMap();
+        }
+
+        private void TemplateProfile()
+        {
+            CreateMap<TemplateSetDb, TemplateSet>().ReverseMap();
+            CreateMap<TemplatePlanDb, TemplatePlan>().ReverseMap();
+            CreateMap<TemplateDayDb, TemplateDay>().ReverseMap();
+            CreateMap<TemplateExerciseSettingsDb, TemplateExerciseSettings>().ReverseMap();
+            CreateMap<TemplateExerciseDb, TemplateExercise>()
+                .ForPath(dest => dest.Exercise.Id, opt => opt.MapFrom(src => src.ExerciseId))
                 .ReverseMap();
         }
     }

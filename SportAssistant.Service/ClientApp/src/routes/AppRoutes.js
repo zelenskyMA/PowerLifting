@@ -1,4 +1,5 @@
 import TrainingPlanRoutes from "./TrainingPlanRoutes";
+import TrainingTemplateRoutes from "./TrainingTemplateRoutes";
 import UserRoutes from "./UserRoutes";
 import AnaliticsRoutes from "./AnaliticsRoutes";
 import AdminRoutes from "./AdminRoutes";
@@ -11,6 +12,7 @@ const AppRoutes = [
   { index: true, element: <Home /> },
 
   ...TrainingPlanRoutes,
+  ...TrainingTemplateRoutes,
   ...UserRoutes,
   ...AnaliticsRoutes,
   ...AdminRoutes,

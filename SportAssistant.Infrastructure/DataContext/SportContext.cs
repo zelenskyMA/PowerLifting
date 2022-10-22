@@ -2,6 +2,7 @@
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
+using SportAssistant.Domain.DbModels.TraininTemplate;
 using SportAssistant.Domain.DbModels.UserData;
 
 namespace SportAssistant.Infrastructure.DataContext
@@ -14,6 +15,12 @@ namespace SportAssistant.Infrastructure.DataContext
         public DbSet<PlanExerciseSettingsDb> PlanExerciseSettings { get; set; }
         public DbSet<ExerciseDb> Exercises { get; set; }
         public DbSet<PercentageDb> Percentages { get; set; }
+
+        public DbSet<TemplateSetDb> TemplateSets { get; set; }
+        public DbSet<TemplatePlanDb> TemplatePlans { get; set; }
+        public DbSet<TemplateDayDb> TemplateDays { get; set; }
+        public DbSet<TemplateExerciseDb> TemplateExercises { get; set; }
+        public DbSet<TemplateExerciseSettingsDb> TemplateExerciseSettings { get; set; }
 
         public DbSet<DictionaryDb> Dictionaries { get; set; }
         public DbSet<DictionaryTypeDb> DictionaryTypes { get; set; }

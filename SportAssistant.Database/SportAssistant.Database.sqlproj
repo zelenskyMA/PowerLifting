@@ -101,5 +101,10 @@
     <Build Include="Tables\usr\UserRoles.sql" />
     <Build Include="Tables\usr\Users.sql" />
     <Build Include="Tables\dbo\Settings.sql" />
+    <Build Include="Tables\plan\TemplateSets.sql" />
+    <Build Include="Tables\plan\TemplatePlans.sql" />
+    <Build Include="Tables\plan\TemplateDays.sql" />
+    <Build Include="Tables\plan\TemplateExercises.sql" />
+    <Build Include="Tables\plan\TemplateExerciseSettings.sql" />
   </ItemGroup>
 </Project>

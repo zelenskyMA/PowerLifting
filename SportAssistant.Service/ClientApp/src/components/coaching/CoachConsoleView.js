@@ -4,6 +4,7 @@ import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 import GroupConsolePanel from "./GroupConsolePanel";
 import RequestConsolePanel from "./RequestConsolePanel";
+import TemplateSetListView from "../trainingTemplate/view/TemplateSetListView";
 
 class CoachConsoleView extends Component {
   constructor(props) {
@@ -13,10 +14,11 @@ class CoachConsoleView extends Component {
   render() {
     return (
       <>
-        <h3 className="spaceBottom">Тренерский кабинет</h3>
+        <h5 className="spaceBottom">Тренерский кабинет</h5>
         <TabControl data={[
           { id: 1, label: 'Группы', renderContent: () => this.groupsContent() },
-          { id: 2, label: 'Заявки', renderContent: () => this.requestsContent() },
+          { id: 2, label: 'Тренировочные циклы', renderContent: () => this.templateSetsContent() },
+          { id: 3, label: 'Заявки', renderContent: () => this.requestsContent() },
         ]}
         />
       </>
@@ -24,6 +26,7 @@ class CoachConsoleView extends Component {
   }
 
   groupsContent = () => { return (<GroupConsolePanel />); }
+  templateSetsContent = () => { return (<TemplateSetListView />); }
   requestsContent = () => { return (<RequestConsolePanel />); }
 }
 

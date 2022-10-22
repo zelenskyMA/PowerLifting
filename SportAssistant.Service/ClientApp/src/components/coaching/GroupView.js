@@ -28,7 +28,7 @@ class GroupView extends Component {
 
   deleteGroup = async () => {
     try {
-      await PostAsync(`/trainingGroups/delete?id=${this.props.params.groupId}`);
+      await PostAsync("/trainingGroups/delete", { id: this.props.params.groupId });
       this.props.navigate(`/coachConsole`);
     }
     catch (error) {
@@ -57,7 +57,7 @@ class GroupView extends Component {
         {!hasData && (
           <>
             <p><em>В группе нет спортсменов</em></p>
-            <Button className="spaceTop" color="primary" onClick={() => this.deleteGroup()}>Удалить</Button>
+            <Button color="primary" className="spaceTop spaceRight" onClick={() => this.deleteGroup()}>Удалить группу</Button>
           </>
         )}
         {hasData && (
@@ -66,6 +66,8 @@ class GroupView extends Component {
             <TableControl columnsInfo={columns} data={this.state.users} rowClick={this.onRowClick} />
           </>
         )}
+
+        <Button color="primary" className="spaceTop" outline onClick={() => this.props.navigate('/coachConsole')}>Назад</Button>
       </>
     );
   }
