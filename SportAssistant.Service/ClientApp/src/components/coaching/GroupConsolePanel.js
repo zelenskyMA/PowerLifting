@@ -58,14 +58,14 @@ class GroupConsolePanel extends Component {
         <ErrorPanel errorMessage={this.state.error} />
 
         <Row>
-          <Col xs={5}>
+          <Col xs={8}>
             <InputText label="Название новой группы" propName="name" onChange={this.newGroupChange} initialValue={this.state.newGroup.name} />
           </Col>
           <Col xs={4}>
-            <InputTextArea label="Описание" propName="description" rows="2" onChange={this.newGroupChange} initialValue={this.state.newGroup.description} />
+            <InputTextArea label="Описание" propName="description" rows="2" cols="45" onChange={this.newGroupChange} initialValue={this.state.newGroup.description} />
           </Col>
         </Row>
-        <Button color="primary" onClick={() => this.createGroup()}>Создать</Button>
+        <Button color="primary" onClick={() => this.createGroup()}>Создать группу</Button>
       </div>
     );
   }

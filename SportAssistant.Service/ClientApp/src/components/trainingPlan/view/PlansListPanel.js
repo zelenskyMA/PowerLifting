@@ -20,6 +20,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
+/*Используется в нескольких компонентах */
 class PlansListPanel extends Component {
   constructor(props) {
     super(props);

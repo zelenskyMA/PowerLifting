@@ -8,8 +8,6 @@ namespace SportAssistant.Domain.Models.TrainingPlan
 
         public DateTime StartDate { get; set; }
 
-        public string? Comments { get; set; }
-
         /// <summary>
         /// Расчетные данные. Количество упражнений по подтипам в сумме за все дни плана.
         /// </summary>

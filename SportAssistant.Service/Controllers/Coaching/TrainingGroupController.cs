@@ -42,9 +42,9 @@ namespace SportAssistant.Service.Controllers.Coaching
 
         [HttpPost]
         [Route("delete")]
-        public async Task<bool> DeleteAsync([FromServices] ICommand<GroupDeleteCommand.Param, bool> command, int id)
+        public async Task<bool> DeleteAsync([FromServices] ICommand<GroupDeleteCommand.Param, bool> command, GroupDeleteCommand.Param param)
         {
-            var result = await command.ExecuteAsync(new GroupDeleteCommand.Param() { Id = id });
+            var result = await command.ExecuteAsync(param);
             return result;
         }
     }

@@ -34,7 +34,5 @@ namespace SportAssistant.Domain.Models.TrainingPlan
         public int ExercisePart3 { get; set; }
 
         public Percentage? Percentage { get; set; }
-
-        public Exercise? Exercise { get; set; } = new Exercise();
     }
 }
