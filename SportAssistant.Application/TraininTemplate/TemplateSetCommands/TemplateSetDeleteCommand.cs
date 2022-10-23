@@ -6,6 +6,9 @@ using SportAssistant.Domain.Interfaces.Common.Repositories;
 
 namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 {
+    /// <summary>
+    /// Удаление тренировочного цикла
+    /// </summary>
     public class TemplateSetDeleteCommand : ICommand<TemplateSetDeleteCommand.Param, bool>
     {
         private readonly ICrudRepo<TemplateSetDb> _templateSetRepository;

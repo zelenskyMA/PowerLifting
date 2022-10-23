@@ -7,7 +7,7 @@ import { DateToLocal } from "../../../common/Localization";
 import '../../../styling/Common.css';
 import { ExerciseSettingsEditPanel } from "./ExerciseSettingsEditPanel";
 
-class PlanDayCreate extends Component {
+class PlanDayEdit extends Component {
   constructor() {
     super();
 
@@ -24,9 +24,9 @@ class PlanDayCreate extends Component {
     this.setState({ planDay: data, loading: false });
   }
 
-  editSettings = (planExercise) => { this.props.navigate(`/editPlanExerciseSettings/${planExercise.id}`); }
+  editSettings = (planExercise) => { this.props.navigate(`/editPlanExerciseSettings/${this.props.params.planId}/${planExercise.id}`); }
 
-  confirmAsync = () => { this.props.navigate("/createPlanDays"); }
+  confirmAsync = () => { this.props.navigate(`/editPlanDays/${this.props.params.planId}`); }
 
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
@@ -35,7 +35,7 @@ class PlanDayCreate extends Component {
 
     return (
       <>
-        <h3 className="spaceBottom">План тренировок на {dateView}</h3>
+        <h4 className="spaceBottom">План тренировок на {dateView}</h4>
 
         <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
@@ -79,11 +79,11 @@ class PlanDayCreate extends Component {
         </table>
 
         <Button className="spaceRight" color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
-        <Button color="primary" outline onClick={() => this.props.navigate(`/createPlanExercises/${this.props.params.id}`)}>Назад</Button>
+        <Button color="primary" outline onClick={() => this.props.navigate(`/editPlanExercises/${this.props.params.planId}/${this.props.params.id}`)}>Назад</Button>
       </>
     );
   }
 
 }
 
-export default WithRouter(PlanDayCreate);
+export default WithRouter(PlanDayEdit);

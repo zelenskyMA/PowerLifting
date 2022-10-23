@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row, Container } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, InputText, LoadingPanel, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
@@ -54,17 +54,19 @@ class TemplateSetListView extends Component {
           <TableControl columnsInfo={columns} data={this.state.templateSets} rowClick={this.onRowClick} />
         )}
 
-        <hr style={{ paddingTop: "2px" }} />
-        <ErrorPanel errorMessage={this.state.error} />
+        <Container fluid>
+          <hr style={{ paddingTop: "2px" }} />
+          <ErrorPanel errorMessage={this.state.error} />
 
-        <Row>
-          <Col xs={8}>
-            <InputText label="Название нового цикла" propName="name" onChange={this.onValueChange} initialValue={this.state.newSet.name} />
-          </Col>
-          <Col xs={2}>
-            <Button color="primary" onClick={() => this.createTemplateSet()}>Создать</Button>
-          </Col>
-        </Row>
+          <Row>
+            <Col xs={8}>
+              <InputText label="Название нового цикла" propName="name" onChange={this.onValueChange} initialValue={this.state.newSet.name} />
+            </Col>
+            <Col xs={2}>
+              <Button color="primary" onClick={() => this.createTemplateSet()}>Создать</Button>
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

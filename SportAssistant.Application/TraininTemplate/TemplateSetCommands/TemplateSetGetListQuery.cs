@@ -6,6 +6,9 @@ using SportAssistant.Domain.Interfaces.Common.Repositories;
 
 namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 {
+    /// <summary>
+    /// Получение списка циклов для тренера
+    /// </summary>
     public class TemplateSetGetListQuery : ICommand<TemplateSetGetListQuery.Param, List<TemplateSet>>
     {
         private readonly ICrudRepo<TemplateSetDb> _templateSetRepository;

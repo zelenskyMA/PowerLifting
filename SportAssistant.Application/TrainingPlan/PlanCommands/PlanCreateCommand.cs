@@ -1,11 +1,8 @@
-﻿using SportAssistant.Application.UserData.Auth.Interfaces;
-using SportAssistant.Application.UserData.UserInfoCommands;
-using SportAssistant.Domain.CustomExceptions;
+﻿using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
-using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Infrastructure.DataContext;
 
 namespace SportAssistant.Application.TrainingPlan.PlanCommands
@@ -53,7 +50,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             await _planRepository.CreateAsync(plan);
             await _provider.AcceptChangesAsync();
 
-            for (int i = 0; i < 7; i++) // 7 days standard plan
+            for (int i = 0; i < 7; i++) // 7 дней в плане. Завязано в ui
             {
                 var trainingDay = new PlanDayDb() { PlanId = plan.Id, ActivityDate = param.CreationDate.AddDays(i) };
                 await _planDayRepository.CreateAsync(trainingDay);

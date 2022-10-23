@@ -7,12 +7,11 @@ import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {
-    groupUserId: store.coach.groupUserId,
     appSettings: store.app.settings,
   }
 }
 
-class PlanExercisesCreate extends Component {
+class TemplateExercisesEdit extends Component {
   constructor() {
     super();
 
@@ -23,6 +22,9 @@ class PlanExercisesCreate extends Component {
     };
   }
 
+  render() { return (<></>); }
+
+  /*
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
@@ -37,7 +39,7 @@ class PlanExercisesCreate extends Component {
 
   confirmExercisesAsync = async () => {
     await PostAsync('/planExercise/create', { dayId: this.props.params.id, exercises: this.state.selectedExercises, userId: this.props.groupUserId });
-    this.props.navigate(`/createPlanDay/${this.props.params.id}`);
+    this.props.navigate(`/editPlanDay/${this.props.params.id}`);
   }
 
   onRowDblClick = row => {
@@ -125,11 +127,12 @@ class PlanExercisesCreate extends Component {
           </table>
 
           <Button color="primary" className="spaceRight" onClick={() => this.confirmExercisesAsync()}>Подтвердить</Button>
-          <Button color="primary" outline onClick={() => this.props.navigate("/createPlanDays")}>Назад</Button>
+          <Button color="primary" outline onClick={() => this.props.navigate("/editPlanDays")}>Назад</Button>
         </Container>
       </>
     );
   }
+  */
 }
 
-export default WithRouter(connect(mapStateToProps, null)(PlanExercisesCreate));
+export default WithRouter(connect(mapStateToProps, null)(TemplateExercisesEdit));

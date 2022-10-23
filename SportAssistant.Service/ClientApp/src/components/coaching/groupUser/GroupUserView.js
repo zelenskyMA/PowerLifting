@@ -36,7 +36,7 @@ class GroupUserView extends Component {
   render() {
     return (
       <>
-        <h3>{this.state.userName}</h3>
+        <h4>{this.state.userName}</h4>
         <TabControl data={[
           { id: 1, label: 'Планы', renderContent: () => this.plansContent() },
           { id: 2, label: 'Карточка', renderContent: () => this.userCardContent() },

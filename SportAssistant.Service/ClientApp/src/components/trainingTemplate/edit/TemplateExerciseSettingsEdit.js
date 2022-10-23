@@ -8,12 +8,11 @@ import '../../../styling/Common.css';
 
 const mapStateToProps = store => {
   return {
-    groupUserId: store.coach.groupUserId,
     appSettings: store.app.settings,
   }
 }
 
-class PlanExerciseSettingsEdit extends Component {
+class TemplateExerciseSettingsEdit extends Component {
   constructor() {
     super();
 
@@ -26,6 +25,9 @@ class PlanExerciseSettingsEdit extends Component {
     };
   }
 
+  render() { return (<></>); }
+
+  /*
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
@@ -41,7 +43,7 @@ class PlanExerciseSettingsEdit extends Component {
       planExercise.settings = this.state.settingsList;
 
       await PostAsync('/planExercise/update', { userId: this.props.groupUserId, planExercise: planExercise });
-      this.props.navigate(`/editPlanDay/${this.props.params.planId}/${planExercise.planDayId}`);
+      this.props.navigate(`/editPlanDay/${planExercise.planDayId}`);
     }
     catch (error) {
       this.setState({ error: error.message });
@@ -142,7 +144,7 @@ class PlanExerciseSettingsEdit extends Component {
       </>
     );
   }
-
+*/
 }
 
-export default WithRouter(connect(mapStateToProps, null)(PlanExerciseSettingsEdit))
+export default WithRouter(connect(mapStateToProps, null)(TemplateExerciseSettingsEdit))

@@ -26,7 +26,7 @@ class ChangeUserPassword extends React.Component {
   render() {
     return (
       <>
-        <h3>Смена пароля</h3>
+        <h4>Смена пароля</h4>
 
         <Container fluid>
           <ErrorPanel errorMessage={this.state.error} />

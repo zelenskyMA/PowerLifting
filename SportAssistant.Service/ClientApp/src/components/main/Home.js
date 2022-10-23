@@ -33,7 +33,7 @@ class Home extends Component {
   render() {
     return (
       <>
-        <h3>Спортивный ассистент</h3>
+        <h4>Спортивный ассистент</h4>
         {this.planDayPanel()}
       </>
     );

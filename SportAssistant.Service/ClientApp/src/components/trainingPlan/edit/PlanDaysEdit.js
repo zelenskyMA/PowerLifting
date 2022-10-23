@@ -10,7 +10,6 @@ import { setGroupUserId } from "../../../stores/coachingStore/coachActions";
 
 const mapStateToProps = store => {
   return {
-    planId: store.trainingPlan.planId,
     groupUserId: store.coach.groupUserId,
   }
 }
@@ -22,7 +21,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-class PlanDaysCreate extends React.Component {
+class PlanDaysEdit extends React.Component {
   constructor(props) {
     super(props);
 
@@ -37,17 +36,17 @@ class PlanDaysCreate extends React.Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var plan = await GetAsync(`/trainingPlan/get?Id=${this.props.planId}`);
+    var plan = await GetAsync(`/trainingPlan/get?Id=${this.props.params.planId}`);
     var url = this.props.groupUserId ? `/groupUser/${this.props.groupUserId}` : "/plansList";
 
     this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum, backUrl: url });
   }
 
-  onSetExercises = (dayId) => { this.props.navigate(`/createPlanExercises/${dayId}`); }
+  onSetExercises = (dayId) => { this.props.navigate(`/editPlanExercises/${this.props.params.planId}/${dayId}`); }
 
   onConfirmDelete = async () => {
     try {
-      await PostAsync("/trainingPlan/delete", { id: this.props.planId, userId: this.props.groupUserId });
+      await PostAsync("/trainingPlan/delete", { id: this.props.params.planId, userId: this.props.groupUserId });
       this.props.navigate(this.state.backUrl);
     }
     catch (error) {
@@ -71,7 +70,7 @@ class PlanDaysCreate extends React.Component {
 
     return (
       <>
-        <h3>Запланированные дни тренировок</h3>
+        <h4>Запланированные дни тренировок</h4>
         <br />
         <ErrorPanel errorMessage={this.state.error} />
 
@@ -133,7 +132,7 @@ class PlanDaysCreate extends React.Component {
 
     if (counters.length == 0) {
       return (
-        <span style={{ fontSize: fontSize }}>Нет назначенных тренировок</span>
+        <span style={{ fontSize: fontSize }}>Нет назначенных упражнений</span>
       );
     }
 
@@ -150,8 +149,6 @@ class PlanDaysCreate extends React.Component {
   }
 
   buttonPanel() {
-    if (this.state.typeCounters.length == 0) { return (<></>); }
-
     return (
       <Col>
         <Button color="primary" onClick={async () => this.props.navigate(this.state.backUrl)}>Завершить назначение плана</Button>
@@ -163,4 +160,4 @@ class PlanDaysCreate extends React.Component {
 
 }
 
-export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(PlanDaysCreate))
+export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(PlanDaysEdit))

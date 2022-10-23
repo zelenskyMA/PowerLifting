@@ -16,8 +16,8 @@ export function MultiNumberInput({ label, onChange, inputList }) {
   return (
     <InputGroup>
       <InputGroupText>{label}</InputGroupText>
-      {inputList.map(item =>
-        <Input pattern="[0-9]*" value={item.initialValue || 0}
+      {inputList.map((item, i) =>
+        <Input key={'multiInput_' + item.propName + i} pattern="[0-9]*" value={item.initialValue || 0}
           onChange={(e) => setValue(e, item.propName, onChange)}
           onFocus={(e) => onFocus(e)}
           onBlur={(e) => onFocusLost(e)} />
