@@ -12,6 +12,6 @@ namespace SportAssistant.Domain.DbModels.TraininTemplate
         /// </summary>
         public List<ValueEntity> TypeCountersSum { get; set; } = new List<ValueEntity>();
 
-        public List<TemplateDay> Days { get; set; } = new List<TemplateDay>();
+        public List<TemplateDay> TrainingDays { get; set; } = new List<TemplateDay>();
     }
 }

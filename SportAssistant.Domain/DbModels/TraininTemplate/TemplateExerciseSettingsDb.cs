@@ -6,6 +6,8 @@ namespace SportAssistant.Domain.DbModels.TrainingPlan
     [Table("TemplateExerciseSettings", Schema = "plan")]
     public class TemplateExerciseSettingsDb : EntityDb
     {
+        public int PercentageId { get; set; }
+
         public int TemplateExerciseId { get; set; }
 
         public int WeightPercentage { get; set; }

@@ -13,7 +13,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
     public class PlanGetByIdQuery : ICommand<PlanGetByIdQuery.Param, Plan>
     {
         private readonly IProcessPlanExercise _processPlanExercise;
-        private readonly IPlanCountersSetup _planCountersSetup;
+        private readonly ITrainingCountersSetup _planCountersSetup;
 
         private readonly ICrudRepo<PlanDb> _planRepository;
         private readonly ICrudRepo<PlanDayDb> _planDayRepository;
@@ -21,7 +21,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
 
         public PlanGetByIdQuery(
             IProcessPlanExercise processPlanExercise,
-            IPlanCountersSetup planCountersSetup,
+            ITrainingCountersSetup planCountersSetup,
             ICrudRepo<PlanDb> planRepository,
             ICrudRepo<PlanDayDb> planDayRepository,
             IMapper mapper)
@@ -48,7 +48,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             foreach (var planDay in planDays)
             {
                 planDay.Exercises = planExercises.Where(t => t.PlanDayId == planDay.Id).OrderBy(t => t.Order).ToList();
-                _planCountersSetup.SetPlanDayCounters(planDay);
+                _planCountersSetup.SetDayCounters(planDay);
             }
 
             plan.TrainingDays = planDays;

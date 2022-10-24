@@ -15,7 +15,7 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
     public class PlanAnaliticsGetQuery : ICommand<PlanAnaliticsGetQuery.Param, PlanAnalitics>
     {
         private readonly IProcessPlanExercise _processPlanExercise;
-        private readonly IPlanCountersSetup _planCountersSetup;
+        private readonly ITrainingCountersSetup _trainingCountersSetup;
 
         private readonly ICrudRepo<PlanDb> _trainingPlanRepository;
         private readonly ICrudRepo<PlanDayDb> _trainingDayRepository;
@@ -24,14 +24,14 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
 
         public PlanAnaliticsGetQuery(
             IProcessPlanExercise processPlanExercise,
-            IPlanCountersSetup planCountersSetup,
+            ITrainingCountersSetup trainingCountersSetup,
             ICrudRepo<PlanDb> trainingPlanRepository,
             ICrudRepo<PlanDayDb> trainingDayRepository,
             IUserProvider user,
             IMapper mapper)
         {
             _processPlanExercise = processPlanExercise;
-            _planCountersSetup = planCountersSetup;
+            _trainingCountersSetup = trainingCountersSetup;
             _trainingPlanRepository = trainingPlanRepository;
             _trainingDayRepository = trainingDayRepository;
             _user = user;
@@ -108,13 +108,13 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
             foreach (var planDay in planDays)
             {
                 planDay.Exercises = planExercises.Where(t => t.PlanDayId == planDay.Id).OrderBy(t => t.Order).ToList();
-                _planCountersSetup.SetPlanDayCounters(planDay);
+                _trainingCountersSetup.SetDayCounters(planDay);
             }
 
             foreach (var plan in plans)
             {
                 plan.TrainingDays = planDays.Where(t => t.PlanId == plan.Id).ToList();
-                _planCountersSetup.SetPlanCounters(plan);
+                _trainingCountersSetup.SetPlanCounters(plan);
             }
 
             return plans;

@@ -28,7 +28,7 @@ class TemplatePlanEdit extends React.Component {
 
   getInitData = async () => {
     var planData = await GetAsync(`/templatePlan/get?Id=${this.props.params.id}`);
-    this.setState({ plan: planData, days: planData.days, typeCounters: planData.typeCountersSum  });
+    this.setState({ plan: planData, days: planData.trainingDays, typeCounters: planData.typeCountersSum  });
   }
 
   onPlanChange = (propName, value) => { this.setState(prevState => ({ error: '', plan: { ...prevState.plan, [propName]: value } })); }

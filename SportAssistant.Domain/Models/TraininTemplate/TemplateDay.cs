@@ -10,6 +10,16 @@ namespace SportAssistant.Domain.Models.TraininTemplate
         public int DayNumber { get; set; }
 
         /// <summary>
+        /// Расчетное поле. Сумма КПШ по всем упражнениям за день.
+        /// </summary>
+        public int LiftCounterSum { get; set; }
+
+        /// <summary>
+        /// Расчетное поле. Суммарный процент Нагрузок по всем упражнениям за день.
+        /// </summary>
+        public int WeightLoadPercentageSum { get; set; }
+
+        /// <summary>
         /// Расчетные данные. Количество упражнений по подтипам.
         /// </summary>
         public List<ValueEntity> ExerciseTypeCounters { get; set; } = new List<ValueEntity>();

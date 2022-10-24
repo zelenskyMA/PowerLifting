@@ -5,32 +5,26 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
     public interface IProcessPlanExerciseSettings
     {
         /// <summary>
-        /// Get exercise settings for a list of planned exercises by Id
+        /// Получение поднятий в упражнениях по списку Ид упражнений
         /// </summary>
-        /// <param name="planExerciseId">List of planned exercise Ids</param>
+        /// <param name="exerciseIds">Список Ид запланированных упражнений</param>
         /// <returns></returns>
-        Task<List<PlanExerciseSettings>> GetAsync(List<int> planExerciseIds);
+        Task<List<PlanExerciseSettings>> GetAsync(List<int> exerciseIds);
 
         /// <summary>
-        /// Update exercise settings for plan exercise
+        /// Обновление поднятий по списку в упражнении
         /// </summary>
-        /// <param name="planExerciseId">Plan exercise Id</param>
-        /// <param name="achivement">User achivement in target exercise type</param>
-        /// <param name="settingsList">List of plan exercise settings to update</param>
+        /// <param name="planExerciseId">Ид плана</param>
+        /// <param name="achivement">Рекорд пользователя по ипу упражнения</param>
+        /// <param name="settingsList">Список поднятий</param>
         /// <returns></returns>
         Task UpdateAsync(int planExerciseId, int achivement, List<PlanExerciseSettings> settingsList);
-    
-        /// <summary>
-        /// Delete all supplied items
-        /// </summary>
-        /// <param name="settings">Settings for deleting</param>
-        /// <returns></returns>
-        Task DeleteByPlanExerciseIdsAsync(List<int> planExerciseIds);
 
         /// <summary>
-        /// Get full list of current planDay percentages
+        /// Удаление поднятий в упражнениях из списка
         /// </summary>
+        /// <param name="exerciseIds">Поднятия для удаления</param>
         /// <returns></returns>
-        Task<List<Percentage>> GetPercentageListAsync();
+        Task DeleteByPlanExerciseIdsAsync(List<int> exerciseIds);       
     }
 }

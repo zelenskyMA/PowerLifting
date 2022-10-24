@@ -6,9 +6,9 @@ using SportAssistant.Application.Coaching.TrainingGroupCommands;
 using SportAssistant.Application.Coaching.TrainingGroupUserCommands;
 using SportAssistant.Application.Coaching.TrainingRequestCommands;
 using SportAssistant.Application.Common;
+using SportAssistant.Application.Common.Actions.TrainingCounters;
 using SportAssistant.Application.Dictionaryies;
 using SportAssistant.Application.Settings;
-using SportAssistant.Application.TrainingPlan;
 using SportAssistant.Application.TrainingPlan.ExerciseCommands;
 using SportAssistant.Application.TrainingPlan.PlanCommands;
 using SportAssistant.Application.TrainingPlan.PlanDayCommands;
@@ -26,7 +26,6 @@ using SportAssistant.Domain.Interfaces.Coaching.Repositories;
 using SportAssistant.Domain.Interfaces.Common;
 using SportAssistant.Domain.Interfaces.Settings.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
-using SportAssistant.Domain.Interfaces.TrainingPlan.Repositories;
 using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Infrastructure.Repositories.Coaching;
 using SportAssistant.Infrastructure.Repositories.TrainingPlan;
@@ -58,7 +57,6 @@ internal class Program
     private static void RegisterRepositories(WebApplicationBuilder builder)
     {
         builder.Services.AddRepositoriesFromAssemblyOf<PlanRepository>();
-        builder.Services.AddScoped<IPlanExerciseSettingsRepository, PlanExerciseSettingsRepository>();
         builder.Services.AddScoped<ITrainingRequestRepository, TrainingRequestRepository>();
         builder.Services.AddScoped<ITrainingGroupUserRepository, TrainingGroupUserRepository>();
     }
@@ -73,7 +71,7 @@ internal class Program
         builder.Services.AddScoped<IProcessPlanExercise, ProcessPlanExercise>();
         builder.Services.AddScoped<IProcessPlanExerciseSettings, ProcessPlanExerciseSettings>();
         builder.Services.AddScoped<IProcessExercise, ProcessExercise>();
-        builder.Services.AddScoped<IPlanCountersSetup, PlanCountersSetup>();
+        builder.Services.AddScoped<ITrainingCountersSetup, TrainingCountersSetup>();
         builder.Services.AddScoped<IProcessUserAchivements, ProcessUserAchivements>();
         builder.Services.AddScoped<IProcessUser, ProcessUser>();
         builder.Services.AddScoped<IProcessRequest, ProcessRequest>();

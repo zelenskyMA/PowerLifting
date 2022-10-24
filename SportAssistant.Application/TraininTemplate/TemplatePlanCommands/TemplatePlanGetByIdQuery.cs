@@ -15,7 +15,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
     /// </summary>
     public class TemplatePlanGetByIdQuery : ICommand<TemplatePlanGetByIdQuery.Param, TemplatePlan>
     {
-        private readonly IPlanCountersSetup _planCountersSetup;
+        private readonly ITrainingCountersSetup _trainingCountersSetup;
 
         private readonly ICrudRepo<TemplateSetDb> _templateSetRepository;
         private readonly ICrudRepo<TemplatePlanDb> _templatePlanRepository;
@@ -24,14 +24,14 @@ namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
         private readonly IMapper _mapper;
 
         public TemplatePlanGetByIdQuery(
-            IPlanCountersSetup planCountersSetup,
+            ITrainingCountersSetup trainingCountersSetup,
             ICrudRepo<TemplateSetDb> templateSetRepository,
             ICrudRepo<TemplatePlanDb> templatePlanRepository,
             ICrudRepo<TemplateDayDb> templateDayRepository,
             IUserProvider user,
             IMapper mapper)
         {
-            _planCountersSetup = planCountersSetup;
+            _trainingCountersSetup = trainingCountersSetup;
             _templateSetRepository = templateSetRepository;
             _templatePlanRepository = templatePlanRepository;
             _templateDayRepository = templateDayRepository;
@@ -49,7 +49,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
 
             var templatePlan = _mapper.Map<TemplatePlan>(templatePlanDb);
 
-            templatePlan.Days = (await _templateDayRepository.FindAsync(t => t.TemplatePlanId == param.Id)).Select(t => _mapper.Map<TemplateDay>(t)).ToList();
+            templatePlan.TrainingDays = (await _templateDayRepository.FindAsync(t => t.TemplatePlanId == param.Id)).Select(t => _mapper.Map<TemplateDay>(t)).ToList();
             templatePlan.TypeCountersSum = new List<Domain.Models.Common.ValueEntity>();
 
             return templatePlan;

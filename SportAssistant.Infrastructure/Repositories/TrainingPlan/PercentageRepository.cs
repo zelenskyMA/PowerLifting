@@ -4,9 +4,9 @@ using SportAssistant.Infrastructure.DataContext;
 
 namespace SportAssistant.Infrastructure.Repositories.TrainingPlan
 {
-    public class PlanExerciseSettingsRepository : CrudRepo<PlanExerciseSettingsDb>
+    public class PercentageRepository : CrudRepo<PercentageDb>
     {
-        public PlanExerciseSettingsRepository(IContextProvider provider) : base(provider)
+        public PercentageRepository(IContextProvider provider) : base(provider)
         {
         }
     }

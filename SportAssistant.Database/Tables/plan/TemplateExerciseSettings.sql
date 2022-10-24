@@ -2,6 +2,7 @@
 (
     [Id] INT IDENTITY (1, 1) NOT NULL,
     [TemplateExerciseId] INT NOT NULL,
+    [PercentageId] INT NOT NULL,
     [WeightPercentage] INT NOT NULL,
     [Iterations] INT NOT NULL DEFAULT 0,
     [ExercisePart1] INT NOT NULL DEFAULT 0,
