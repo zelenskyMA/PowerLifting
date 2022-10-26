@@ -10,7 +10,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
     public class ProcessPlanDay : IProcessPlanDay
     {
         private readonly IProcessPlanExercise _processPlanExercise;
-        private readonly IPlanCountersSetup _planCountersSetup;
+        private readonly ITrainingCountersSetup _trainingCountersSetup;
         private readonly IContextProvider _contextProvider;
         private readonly ICrudRepo<PlanDayDb> _planDayRepository;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
@@ -18,14 +18,14 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
 
         public ProcessPlanDay(
             IProcessPlanExercise processPlanExercise,
-            IPlanCountersSetup planCountersSetup,
+            ITrainingCountersSetup trainingCountersSetup,
             IContextProvider contextProvider,
             ICrudRepo<PlanDayDb> planDayRepository,
             ICrudRepo<PlanExerciseDb> planExerciseRepository,
             IMapper mapper)
         {
             _processPlanExercise = processPlanExercise;
-            _planCountersSetup = planCountersSetup;
+            _trainingCountersSetup = trainingCountersSetup;
             _contextProvider = contextProvider;
             _planDayRepository = planDayRepository;
             _planExerciseRepository = planExerciseRepository;
@@ -54,7 +54,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
                 .OrderBy(t => t.MinValue)
                 .ToList();
 
-            _planCountersSetup.SetPlanDayCounters(planDay);
+            _trainingCountersSetup.SetDayCounters(planDay);
 
             return planDay;
         }

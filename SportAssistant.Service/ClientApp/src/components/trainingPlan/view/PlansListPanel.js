@@ -5,18 +5,10 @@ import { GetAsync } from "../../../common/ApiActions";
 import { LoadingPanel, TabControl, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal } from "../../../common/Localization";
-import { setTrainingPlan } from "../../../stores/trainingPlanStore/planActions";
-
 
 const mapStateToProps = store => {
   return {
     groupUserId: store.coach.groupUserId,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setTrainingPlan: (planId) => setTrainingPlan(planId, dispatch)
   }
 }
 
@@ -41,12 +33,7 @@ class PlansListPanel extends Component {
     this.setState({ activePlans: plans.activePlans, expiredPlans: plans.expiredPlans, loading: false });
   }
 
-  onRowClick = async (row) => {
-    var element = row.values;
-    await this.props.setTrainingPlan(element.id);
-    this.props.navigate("/createPlanDays");
-  }
-
+  onRowClick = async (row) => { this.props.navigate(`/editPlanDays/${row.values.id}`); }
   confirmAsync = async () => { this.props.navigate("/"); }
 
   render() {
@@ -59,7 +46,7 @@ class PlansListPanel extends Component {
     ];
 
     return (
-      <>        
+      <>
         <TabControl data={[
           { id: 1, label: 'Действующие', renderContent: () => this.activePlansContent(columns) },
           { id: 2, label: 'История', renderContent: () => this.historyPlansContent(columns) }
@@ -85,4 +72,4 @@ class PlansListPanel extends Component {
   }
 }
 
-export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(PlansListPanel));
+export default WithRouter(connect(mapStateToProps, null)(PlansListPanel));

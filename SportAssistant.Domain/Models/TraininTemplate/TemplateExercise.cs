@@ -5,11 +5,21 @@ namespace SportAssistant.Domain.Models.TraininTemplate
 {
     public class TemplateExercise : Entity
     {
-        public int ExerciseId { get; set; }
+        public int TemplateDayId { get; set; }
 
         public int Order { get; set; }
 
         public string? Comments { get; set; }
+
+        /// <summary>
+        /// Расчетное поле. КПШ по упражнению. Количество Поднятий Штанги
+        /// </summary>
+        public int LiftCounter { get; set; } = 0;
+
+        /// <summary>
+        /// Расчетное поле. Нагрузка. Процент общего поднятого веса при выполнении упражнения.
+        /// </summary>
+        public int WeightLoadPercentage { get; set; } = 0;        
 
         public Exercise? Exercise { get; set; } = new Exercise();
 

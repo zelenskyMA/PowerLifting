@@ -14,7 +14,7 @@ class AdminConsoleView extends Component {
   render() {
     return (
       <>
-        <h3 className="spaceBottom">Административная консоль</h3>
+        <h4 className="spaceBottom">Административная консоль</h4>
         <TabControl data={[
           { id: 1, label: 'Ползователи', renderContent: () => this.usersContent() },
           { id: 2, label: 'Справочники', renderContent: () => this.dictionaryContent() },

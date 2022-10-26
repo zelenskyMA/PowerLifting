@@ -20,7 +20,7 @@ class PlansListView extends Component {
   render() {
     return (
       <>
-        <h3 className="spaceBottom">Тренировочные планы</h3>
+        <h4 className="spaceBottom">Тренировочные планы</h4>
         <PlansListPanel />
       </>
     );

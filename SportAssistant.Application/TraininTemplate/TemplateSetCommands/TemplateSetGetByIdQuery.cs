@@ -7,6 +7,9 @@ using SportAssistant.Domain.Interfaces.Common.Repositories;
 
 namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 {
+    /// <summary>
+    /// Получение тренировочного цикла по Ид
+    /// </summary>
     public class TemplateSetGetByIdQuery : ICommand<TemplateSetGetByIdQuery.Param, TemplateSet>
     {
         private readonly ICrudRepo<TemplateSetDb> _templateSetRepository;
@@ -35,7 +38,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
             }
 
             var templateSet = _mapper.Map<TemplateSet>(templateSetDb);
-            templateSet.Plans = (await _templatePlanRepository.FindAsync(t => t.TemplateSetId == templateSet.Id))
+            templateSet.Templates = (await _templatePlanRepository.FindAsync(t => t.TemplateSetId == templateSet.Id))
                 .Select(t => _mapper.Map<TemplatePlan>(t)).ToList();
 
             return templateSet;

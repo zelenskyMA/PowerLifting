@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SportAssistant.Domain.DbModels.TrainingPlan;
+using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
-using SportAssistant.Domain.Interfaces.TrainingPlan.Repositories;
 using SportAssistant.Domain.Models.TrainingPlan;
 using SportAssistant.Infrastructure.DataContext;
 
@@ -9,26 +9,29 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
 {
     public class ProcessPlanExerciseSettings : IProcessPlanExerciseSettings
     {
-        private readonly IPlanExerciseSettingsRepository _exerciseSettingsRepository;
+        private readonly ICrudRepo<PercentageDb> _precentageRepository;
+        private readonly ICrudRepo<PlanExerciseSettingsDb> _exerciseSettingsRepository;
         private readonly IContextProvider _contextProvider;
         private readonly IMapper _mapper;
         
         public ProcessPlanExerciseSettings(
-            IPlanExerciseSettingsRepository exerciseSettingsRepository,
+            ICrudRepo<PercentageDb> precentageRepository,
+            ICrudRepo<PlanExerciseSettingsDb> exerciseSettingsRepository,
             IContextProvider contextProvider,
             IMapper mapper)
         {
+            _precentageRepository = precentageRepository;
             _exerciseSettingsRepository = exerciseSettingsRepository;
             _contextProvider = contextProvider;
             _mapper = mapper;
         }
 
         /// <inheritdoc />
-        public async Task<List<PlanExerciseSettings>> GetAsync(List<int> planExerciseIds)
+        public async Task<List<PlanExerciseSettings>> GetAsync(List<int> exerciseIds)
         {
             var percentages = await GetPercentageListAsync();
 
-            var settingsDb = await _exerciseSettingsRepository.FindAsync(t => planExerciseIds.Contains(t.PlanExerciseId));
+            var settingsDb = await _exerciseSettingsRepository.FindAsync(t => exerciseIds.Contains(t.PlanExerciseId));
             var settings = settingsDb.Select(t => _mapper.Map<PlanExerciseSettings>(t)).ToList();
 
             foreach (var item in settings)
@@ -52,7 +55,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
             var newIds = settingsList.Select(t => t.Id);
             _exerciseSettingsRepository.DeleteList(existingSettingsDb.Where(t => !newIds.Contains(t.Id)).ToList());
 
-            var percentages = await _exerciseSettingsRepository.GetPercentagesAsync();
+            var percentages = await GetPercentageListAsync();
             var settingsListDb = existingSettingsDb
                 .Where(t => newIds.Contains(t.Id))
                 .Union(settingsList.Where(t => t.Id == 0).Select(t => _mapper.Map<PlanExerciseSettingsDb>(t)))
@@ -84,21 +87,21 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
         }
 
         /// <inheritdoc />
-        public async Task DeleteByPlanExerciseIdsAsync(List<int> planExerciseIds)
+        public async Task DeleteByPlanExerciseIdsAsync(List<int> exerciseIds)
         {
-            if (planExerciseIds.Count == 0)
+            if (exerciseIds.Count == 0)
             {
                 return;
             }
 
-            var settingsDb = await _exerciseSettingsRepository.FindAsync(t => planExerciseIds.Contains(t.PlanExerciseId));
+            var settingsDb = await _exerciseSettingsRepository.FindAsync(t => exerciseIds.Contains(t.PlanExerciseId));
             _exerciseSettingsRepository.DeleteList(settingsDb.Select(t => _mapper.Map<PlanExerciseSettingsDb>(t)).ToList());
 
             await _contextProvider.AcceptChangesAsync();
         }
 
         /// <inheritdoc />
-        public async Task<List<Percentage>> GetPercentageListAsync() => (await _exerciseSettingsRepository.GetPercentagesAsync())
+        private async Task<List<Percentage>> GetPercentageListAsync() => (await _precentageRepository.GetAllAsync())
             .Select(t => _mapper.Map<Percentage>(t)).OrderBy(t => t.MinValue).ToList();
     }
 }

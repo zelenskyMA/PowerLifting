@@ -11,6 +11,7 @@ class TemplateSetView extends Component {
 
     this.state = {
       templateSet: Object,
+      newTemplatePlan: { setId: parseInt(this.props.params.id, 10), name: '' },
       error: '',
       loading: true
     };
@@ -20,12 +21,14 @@ class TemplateSetView extends Component {
 
   getGroupData = async () => {
     var templateSetData = await GetAsync(`/templateSet/get?id=${this.props.params.id}`);
+
     this.setState({ templateSet: templateSetData, loading: false });
   }
 
-  onRowClick = async (row) => { alert('Переход к шаблону ' + row.values.id); /*this.props.navigate(`/groupUser/${row.values.id}`);*/ }
+  onRowClick = async (row) => { this.props.navigate(`/editTemplatePlan/${row.values.id}`); }
 
   onValueChange = (propName, value) => { this.setState(prevState => ({ error: '', templateSet: { ...prevState.templateSet, [propName]: value } })); }
+  onPlanChange = (propName, value) => { this.setState(prevState => ({ error: '', newTemplatePlan: { ...prevState.newTemplatePlan, [propName]: value } })); }
 
   onDeleteTemplateSet = async () => {
     try {
@@ -40,7 +43,13 @@ class TemplateSetView extends Component {
   onUpdateTemplateSet = async () => { await PostAsync("/templateSet/update", this.state.templateSet); }
 
   onCreateTemplatePlan = async () => {
-    alert('Создание шаблона ');
+    try {
+      var templatePlanId = await PostAsync("/templatePlan/create", this.state.newTemplatePlan);
+      this.props.navigate(`/editTemplatePlan/${templatePlanId}`);
+    }
+    catch (error) {
+      this.setState({ error: error.message });
+    }
   }
 
   render() {
@@ -51,35 +60,34 @@ class TemplateSetView extends Component {
       { Header: 'Имя', accessor: 'name' },
     ];
 
-    var hasData = this.state.templateSet.plans && this.state.templateSet.plans.length > 0;
+    var hasData = this.state.templateSet.templates && this.state.templateSet.templates.length > 0;
 
     return (
       <>
-        <h5>{this.state.templateSet.name}</h5>
         <ErrorPanel errorMessage={this.state.error} />
 
         <Row className="spaceTop spaceBottom">
           <Col xs={5}>
             <InputText label="Название цикла" propName="name" onChange={this.onValueChange} initialValue={this.state.templateSet.name} />
           </Col>
-          <Col xs={3}>
-            <Button color="primary" onClick={() => this.onUpdateTemplateSet()}>Обновить</Button>
+          <Col xs={4}>
+            <Button color="primary" className="spaceRight" onClick={() => this.onUpdateTemplateSet()}>Сохранить</Button>
+            <Button color="primary" onClick={() => this.onDeleteTemplateSet()}>Удалить</Button>
           </Col>
         </Row>
 
-        {!hasData && (
-          <>
-            <p><em>В цикле нет тренировочных планов</em></p>
-            <Button color="primary" className="spaceTop spaceRight" onClick={() => this.onDeleteTemplateSet()}>Удалить цикл</Button>
-          </>
-        )}
-        {hasData && (
-          <>
-            <p>Список тренировочных планов</p>
-            <TableControl columnsInfo={columns} data={this.state.templateSet.plans} rowClick={this.onRowClick} />
-            <Button color="primary" className="spaceTop spaceRight" onClick={() => this.onCreateTemplatePlan()}>Удалить цикл</Button>
-          </>
-        )}        
+        {!hasData && (<p><em>В цикле нет шаблонов</em></p>)}
+        {hasData && (<TableControl columnsInfo={columns} data={this.state.templateSet.templates} rowClick={this.onRowClick} />)}
+
+        <hr className="spaceTop" style={{ paddingTop: "2px" }} />
+        <Row>
+          <Col xs={8}>
+            <InputText label="Название нового шаблона" propName="name" onChange={this.onPlanChange} initialValue={this.state.newTemplatePlan.name} />
+          </Col>
+          <Col xs={2}>
+            <Button color="primary" onClick={() => this.onCreateTemplatePlan()}>Создать</Button>
+          </Col>
+        </Row>
 
         <Button color="primary" className="spaceTop" outline onClick={() => this.props.navigate('/templateSetList')}>Назад</Button>
       </>

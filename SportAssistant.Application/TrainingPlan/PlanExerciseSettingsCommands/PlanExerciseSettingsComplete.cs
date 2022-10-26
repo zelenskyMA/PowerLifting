@@ -1,16 +1,17 @@
-﻿using SportAssistant.Domain.Interfaces.Common.Operations;
-using SportAssistant.Domain.Interfaces.TrainingPlan.Repositories;
+﻿using SportAssistant.Domain.DbModels.TrainingPlan;
+using SportAssistant.Domain.Interfaces.Common.Operations;
+using SportAssistant.Domain.Interfaces.Common.Repositories;
 
 namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
 {
     /// <summary>
-    /// Complete planned exercises in a single percentage span.
+    /// Завершение упражнения в процентной колонке.
     /// </summary>
     public class PlanExerciseSettingsComplete : ICommand<PlanExerciseSettingsComplete.Param, bool>
     {
-        private readonly IPlanExerciseSettingsRepository _exerciseSettingsRepository;
+        private readonly ICrudRepo<PlanExerciseSettingsDb> _exerciseSettingsRepository;
 
-        public PlanExerciseSettingsComplete(IPlanExerciseSettingsRepository exerciseSettingsRepository)
+        public PlanExerciseSettingsComplete(ICrudRepo<PlanExerciseSettingsDb> exerciseSettingsRepository)
         {
             _exerciseSettingsRepository = exerciseSettingsRepository;
         }

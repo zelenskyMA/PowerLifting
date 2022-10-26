@@ -7,6 +7,9 @@ using SportAssistant.Domain.Interfaces.Common.Repositories;
 
 namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 {
+    /// <summary>
+    /// Обновление данных тренировочного цикла
+    /// </summary>
     public class TemplateSetUpdateCommand : ICommand<TemplateSetUpdateCommand.Param, bool>
     {
         private readonly ICrudRepo<TemplateSetDb> _templateSetRepository;

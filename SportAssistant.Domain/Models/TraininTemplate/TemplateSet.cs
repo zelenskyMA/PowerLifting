@@ -8,6 +8,6 @@ namespace SportAssistant.Domain.DbModels.TraininTemplate
 
         public string Name { get; set; }
 
-        public List<TemplatePlan> Plans { get; set; } = new List<TemplatePlan>();
+        public List<TemplatePlan> Templates { get; set; } = new List<TemplatePlan>();
     }
 }

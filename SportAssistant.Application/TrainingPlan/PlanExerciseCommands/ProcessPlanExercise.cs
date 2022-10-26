@@ -13,7 +13,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
         private readonly IProcessExercise _processExercise;
         private readonly IContextProvider _contextProvider;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
-        private readonly IPlanCountersSetup _planCountersSetup;
+        private readonly ITrainingCountersSetup _trainingCountersSetup;
         private readonly IMapper _mapper;
 
         public ProcessPlanExercise(
@@ -21,14 +21,14 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
             IProcessExercise processExercise,
             IContextProvider contextProvider,
             ICrudRepo<PlanExerciseDb> plannedExerciseRepository,
-            IPlanCountersSetup planCountersSetup,
+            ITrainingCountersSetup trainingCountersSetup,
             IMapper mapper)
         {
             _processPlanExerciseSettings = processPlanExerciseSettings;
             _processExercise = processExercise;
             _contextProvider = contextProvider;
             _planExerciseRepository = plannedExerciseRepository;
-            _planCountersSetup = planCountersSetup;
+            _trainingCountersSetup = trainingCountersSetup;
             _mapper = mapper;
         }
 
@@ -61,7 +61,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
 
                 item.Settings = settings.Where(t => t.PlanExerciseId == item.Id).OrderBy(t => t.Weight).ToList();
 
-                _planCountersSetup.SetPlanExerciseCounters(item);
+                _trainingCountersSetup.SetExerciseCounters(item);
             }
 
             return planExercises;

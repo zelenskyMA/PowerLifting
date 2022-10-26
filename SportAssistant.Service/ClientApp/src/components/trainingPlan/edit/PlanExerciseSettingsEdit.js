@@ -41,7 +41,7 @@ class PlanExerciseSettingsEdit extends Component {
       planExercise.settings = this.state.settingsList;
 
       await PostAsync('/planExercise/update', { userId: this.props.groupUserId, planExercise: planExercise });
-      this.props.navigate(`/createPlanDay/${planExercise.planDayId}`);
+      this.props.navigate(`/editPlanDay/${this.props.params.planId}/${planExercise.planDayId}`);
     }
     catch (error) {
       this.setState({ error: error.message });

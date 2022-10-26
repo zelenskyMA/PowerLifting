@@ -7,6 +7,11 @@ namespace SportAssistant.Domain.DbModels.TraininTemplate
     {
         public string Name { get; set; }
 
-        public List<TemplateDay> Days { get; set; } = new List<TemplateDay>();
+        /// <summary>
+        /// Расчетные данные. Количество упражнений по подтипам в сумме за все дни плана.
+        /// </summary>
+        public List<ValueEntity> TypeCountersSum { get; set; } = new List<ValueEntity>();
+
+        public List<TemplateDay> TrainingDays { get; set; } = new List<TemplateDay>();
     }
 }

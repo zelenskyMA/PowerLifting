@@ -1,20 +1,28 @@
-﻿using SportAssistant.Application.UserData.Auth.Interfaces;
+﻿using SportAssistant.Application.TraininTemplate.TemplatePlanCommands;
+using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TraininTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
+using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 
 namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 {
+    /// <summary>
+    /// Удаление тренировочного цикла
+    /// </summary>
     public class TemplateSetDeleteCommand : ICommand<TemplateSetDeleteCommand.Param, bool>
     {
+        private readonly IProcessTemplatePlan _processTemplatePlan;
         private readonly ICrudRepo<TemplateSetDb> _templateSetRepository;
         private readonly IUserProvider _user;
 
         public TemplateSetDeleteCommand(
+            IProcessTemplatePlan processTemplatePlan,
             ICrudRepo<TemplateSetDb> templateSetRepository,
             IUserProvider user)
         {
+            _processTemplatePlan = processTemplatePlan;
             _templateSetRepository = templateSetRepository;
             _user = user;
         }
@@ -27,6 +35,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
                 throw new BusinessException($"У вас нет тренировочного цикла с ид {param.Id}");
             }
 
+            await _processTemplatePlan.DeleteByTemplateSetIdAsync(param.Id);
             _templateSetRepository.Delete(templateSetDb);
 
             return true;

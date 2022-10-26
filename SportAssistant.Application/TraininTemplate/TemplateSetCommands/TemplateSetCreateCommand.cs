@@ -6,6 +6,9 @@ using SportAssistant.Domain.Interfaces.Common.Repositories;
 
 namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 {
+    /// <summary>
+    /// Создание тренировочного цикла
+    /// </summary>
     public class TemplateSetCreateCommand : ICommand<TemplateSetCreateCommand.Param, int>
     {
         private readonly ICrudRepo<TemplateSetDb> _templateSetRepository;

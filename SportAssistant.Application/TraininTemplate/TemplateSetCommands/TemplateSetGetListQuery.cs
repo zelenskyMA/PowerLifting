@@ -6,6 +6,9 @@ using SportAssistant.Domain.Interfaces.Common.Repositories;
 
 namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 {
+    /// <summary>
+    /// Получение списка циклов для тренера
+    /// </summary>
     public class TemplateSetGetListQuery : ICommand<TemplateSetGetListQuery.Param, List<TemplateSet>>
     {
         private readonly ICrudRepo<TemplateSetDb> _templateSetRepository;
@@ -32,7 +35,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 
             foreach (var item in sets)
             {
-                item.Plans = (await _templatePlanRepository.FindAsync(t => t.TemplateSetId == item.Id))
+                item.Templates = (await _templatePlanRepository.FindAsync(t => t.TemplateSetId == item.Id))
                     .Select(t => _mapper.Map<TemplatePlan>(t)).ToList();
             }
 

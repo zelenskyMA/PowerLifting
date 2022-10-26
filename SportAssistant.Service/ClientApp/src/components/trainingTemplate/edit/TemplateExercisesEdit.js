@@ -7,12 +7,11 @@ import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {
-    groupUserId: store.coach.groupUserId,
     appSettings: store.app.settings,
   }
 }
 
-class PlanExercisesCreate extends Component {
+class TemplateExercisesEdit extends Component {
   constructor() {
     super();
 
@@ -26,24 +25,24 @@ class PlanExercisesCreate extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    const [settingsList, planExercises] = await Promise.all([
+    const [exerciseList, templateExercises] = await Promise.all([
       GetAsync("/exerciseInfo/getPlanningList"),
-      GetAsync(`/planExercise/getByDay?dayId=${this.props.params.id}`)
+      GetAsync(`/templateExercise/getByDay?dayId=${this.props.params.dayId}`)
     ]);
 
-    var planExercisesData = planExercises.map((item, i) => item.exercise);
-    this.setState({ exercises: settingsList, selectedExercises: planExercisesData });
+    var templateExercisesData = templateExercises.map((item, i) => item.exercise);
+    this.setState({ exercises: exerciseList, selectedExercises: templateExercisesData });
   }
 
   confirmExercisesAsync = async () => {
-    await PostAsync('/planExercise/create', { dayId: this.props.params.id, exercises: this.state.selectedExercises, userId: this.props.groupUserId });
-    this.props.navigate(`/createPlanDay/${this.props.params.id}`);
+    await PostAsync('/templateExercise/create', { dayId: this.props.params.dayId, exercises: this.state.selectedExercises });
+    this.props.navigate(`/editTemplateDay/${this.props.params.templateId}/${this.props.params.dayId}`);
   }
 
   onRowDblClick = row => {
     const maxExercises = this.props.appSettings.maxExercises;
     if (this.state.selectedExercises.length >= maxExercises) {
-      this.setState({ error: `Максимум ${maxExercises} упражнений для одной тренировки.` });
+      this.setState({ error: `Максимум ${maxExercises} упражнений в день.` });
       return;
     }
 
@@ -125,11 +124,12 @@ class PlanExercisesCreate extends Component {
           </table>
 
           <Button color="primary" className="spaceRight" onClick={() => this.confirmExercisesAsync()}>Подтвердить</Button>
-          <Button color="primary" outline onClick={() => this.props.navigate("/createPlanDays")}>Назад</Button>
+          <Button color="primary" outline onClick={() => this.props.navigate(`/editTemplatePlan/${this.props.params.templateId}`)}>Назад</Button>
         </Container>
       </>
     );
   }
+ 
 }
 
-export default WithRouter(connect(mapStateToProps, null)(PlanExercisesCreate));
+export default WithRouter(connect(mapStateToProps, null)(TemplateExercisesEdit));
