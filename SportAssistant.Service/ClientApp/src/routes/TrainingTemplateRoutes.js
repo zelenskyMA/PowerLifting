@@ -8,9 +8,9 @@ import TemplateSetView from "../components/trainingTemplate/view/TemplateSetView
 
 const TrainingTemplateRoutes = [
   { path: '/editTemplatePlan/:id', element: <TemplatePlanEdit /> },
-  { path: '/editTemplateDay/:id', element: <TemplateDayEdit /> },
-  { path: '/editTemplateExercises/:dayId', element: <TemplateExercisesEdit /> },
-  { path: '/editTemplateExerciseSettings/:id', element: <TemplateExerciseSettingsEdit /> },
+  { path: '/editTemplateDay/:templateId/:id', element: <TemplateDayEdit /> },
+  { path: '/editTemplateExercises/:templateId/:dayId', element: <TemplateExercisesEdit /> },
+  { path: '/editTemplateExerciseSettings/:templateId/:id', element: <TemplateExerciseSettingsEdit /> },
 
   { path: '/templateSetList', element: <TemplateSetListView /> },
   { path: '/templateSet/:id', element: <TemplateSetView /> },

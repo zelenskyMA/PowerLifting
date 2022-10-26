@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TraininTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
+using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 using SportAssistant.Domain.Models.TraininTemplate;
-using SportAssistant.Infrastructure.Repositories.TrainingPlan;
 
 namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
 {
@@ -16,26 +15,22 @@ namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
     public class TemplatePlanGetByIdQuery : ICommand<TemplatePlanGetByIdQuery.Param, TemplatePlan>
     {
         private readonly ITrainingCountersSetup _trainingCountersSetup;
-
-        private readonly ICrudRepo<TemplateSetDb> _templateSetRepository;
+        private readonly IProcessTemplateExercise _processTemplateExercise;
         private readonly ICrudRepo<TemplatePlanDb> _templatePlanRepository;
         private readonly ICrudRepo<TemplateDayDb> _templateDayRepository;
-        private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public TemplatePlanGetByIdQuery(
             ITrainingCountersSetup trainingCountersSetup,
-            ICrudRepo<TemplateSetDb> templateSetRepository,
+            IProcessTemplateExercise processTemplateExercise,
             ICrudRepo<TemplatePlanDb> templatePlanRepository,
             ICrudRepo<TemplateDayDb> templateDayRepository,
-            IUserProvider user,
             IMapper mapper)
         {
             _trainingCountersSetup = trainingCountersSetup;
-            _templateSetRepository = templateSetRepository;
+            _processTemplateExercise = processTemplateExercise;
             _templatePlanRepository = templatePlanRepository;
             _templateDayRepository = templateDayRepository;
-            _user = user;
             _mapper = mapper;
         }
 
@@ -49,8 +44,16 @@ namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
 
             var templatePlan = _mapper.Map<TemplatePlan>(templatePlanDb);
 
-            templatePlan.TrainingDays = (await _templateDayRepository.FindAsync(t => t.TemplatePlanId == param.Id)).Select(t => _mapper.Map<TemplateDay>(t)).ToList();
-            templatePlan.TypeCountersSum = new List<Domain.Models.Common.ValueEntity>();
+            var days = (await _templateDayRepository.FindAsync(t => t.TemplatePlanId == templatePlanDb.Id)).Select(t => _mapper.Map<TemplateDay>(t)).ToList();
+            var exercises = await _processTemplateExercise.GetByDaysAsync(days.Select(t => t.Id).ToList());
+            foreach (var day in days)
+            {
+                day.Exercises = exercises.Where(t => t.TemplateDayId == day.Id).OrderBy(t => t.Order).ToList();
+                _trainingCountersSetup.SetDayCounters(day);
+            }
+
+            templatePlan.TrainingDays = days;
+            _trainingCountersSetup.SetPlanCounters(templatePlan);
 
             return templatePlan;
         }

@@ -44,7 +44,7 @@ class TemplateSetListView extends Component {
     const columns = [
       { Header: 'Id', accessor: 'id' },
       { Header: 'Название', accessor: 'name' },
-      { Header: 'Кол-во недель в цикле', accessor: 'plans', Cell: t => t?.length || 0 }
+      { Header: 'Кол-во недель в цикле', accessor: data => { return String(data.templates.length); } }
     ];
 
     return (

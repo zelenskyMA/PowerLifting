@@ -17,40 +17,35 @@ class TemplateExerciseSettingsEdit extends Component {
     super();
 
     this.state = {
-      planExercise: Object,
-      achivement: Object,
+      templateExercise: Object,
       settingsList: [],
       error: '',
       loading: true
     };
   }
 
-  render() { return (<></>); }
-
-  /*
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    var planExerciseData = await GetAsync(`/planExercise/get?id=${this.props.params.id}`);
-    var achivementData = await GetAsync(`/userAchivement/getByExercise?userId=${this.props.groupUserId}&exerciseTypeId=${planExerciseData?.exercise?.exerciseTypeId}`);
+    var templateExerciseData = await GetAsync(`/templateExercise/get?id=${this.props.params.id}`);
 
-    this.setState({ planExercise: planExerciseData, settingsList: planExerciseData.settings, achivement: achivementData, loading: false });
+    this.setState({ templateExercise: templateExerciseData, settingsList: templateExerciseData.settings, loading: false });
   }
 
   confirmAsync = async () => {
     try {
-      var planExercise = this.state.planExercise;
-      planExercise.settings = this.state.settingsList;
+      var templateExercise = this.state.templateExercise;
+      templateExercise.settings = this.state.settingsList;
 
-      await PostAsync('/planExercise/update', { userId: this.props.groupUserId, planExercise: planExercise });
-      this.props.navigate(`/editPlanDay/${planExercise.planDayId}`);
+      await PostAsync('/templateExercise/update', { templateExercise: templateExercise });
+      this.props.navigate(`/editTemplateDay/${this.props.params.templateId}/${templateExercise.templateDayId}`);
     }
     catch (error) {
       this.setState({ error: error.message });
     }
   }
 
-  onExerciseChange = (propName, value) => { this.setState(prevState => ({ error: '', planExercise: { ...prevState.planExercise, [propName]: value } })); }
+  onExerciseChange = (propName, value) => { this.setState(prevState => ({ error: '', templateExercise: { ...prevState.templateExercise, [propName]: value } })); }
 
   onValueChange = (propName, value) => {
     var propElement = propName.split('|');
@@ -72,7 +67,7 @@ class TemplateExerciseSettingsEdit extends Component {
   }
 
   addLiftItem = () => {
-    var template = structuredClone(this.state.planExercise.settingsTemplate);
+    var template = structuredClone(this.state.templateExercise.settingsTemplate);
 
     var maxLiftItems = this.props.appSettings.maxLiftItems;
     if (this.state.settingsList.length >= maxLiftItems) {
@@ -94,17 +89,13 @@ class TemplateExerciseSettingsEdit extends Component {
 
     return (
       <>
-        <h4><i>{this.state.planExercise.exercise.name}</i></h4>
+        <h4><i>{this.state.templateExercise.exercise.name}</i></h4>
         <ErrorPanel errorMessage={this.state.error} />
-
-        <Row style={{ marginTop: '5px', marginBottom: '25px' }}>
-          <Col xs={6}>Рекорд спортсмена в данном типе упражнений: {this.state.achivement.result}</Col>
-        </Row>
 
         <Row className="spaceTop">
           <Col xs={5}>
-            <InputTextArea onChange={this.onExerciseChange} propName="comments" cols={85}
-              label="Оставьте комментарий для выполняющего упражнение" initialValue={this.state.planExercise.comments} />
+            <InputTextArea onChange={this.onExerciseChange} propName="comments" cols={93}
+              label="Оставьте комментарий для выполняющего упражнение" initialValue={this.state.templateExercise.comments} />
           </Col>
         </Row>
 
@@ -127,8 +118,8 @@ class TemplateExerciseSettingsEdit extends Component {
       <>
         <Label key={'l' + key} for={key} sm={2}><Button close onClick={() => this.onSettingsDelete(index)} /> {' '} Поднятие {(index + 1)}:</Label>
         <Row key={'row' + key} id={key}>
-          <Col xs={2}>
-            <InputNumber label="Вес:" propName={index + '|weight'} onChange={this.onValueChange} initialValue={settings.weight} />
+          <Col xs={3}>
+            <InputNumber label="Процент:" propName={index + '|weightPercentage'} onChange={this.onValueChange} initialValue={settings.weightPercentage} />
           </Col>
           <Col xs={3}>
             <InputNumber label="Подходы:" propName={index + '|iterations'} onChange={this.onValueChange} initialValue={settings.iterations} />
@@ -144,7 +135,7 @@ class TemplateExerciseSettingsEdit extends Component {
       </>
     );
   }
-*/
+
 }
 
 export default WithRouter(connect(mapStateToProps, null)(TemplateExerciseSettingsEdit))

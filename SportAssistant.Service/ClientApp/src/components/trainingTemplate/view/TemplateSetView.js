@@ -60,7 +60,7 @@ class TemplateSetView extends Component {
       { Header: 'Имя', accessor: 'name' },
     ];
 
-    var hasData = this.state.templateSet.plans && this.state.templateSet.plans.length > 0;
+    var hasData = this.state.templateSet.templates && this.state.templateSet.templates.length > 0;
 
     return (
       <>
@@ -77,12 +77,7 @@ class TemplateSetView extends Component {
         </Row>
 
         {!hasData && (<p><em>В цикле нет шаблонов</em></p>)}
-        {hasData && (
-          <>
-            <p>Список шаблонов</p>
-            <TableControl columnsInfo={columns} data={this.state.templateSet.plans} rowClick={this.onRowClick} />
-          </>
-        )}
+        {hasData && (<TableControl columnsInfo={columns} data={this.state.templateSet.templates} rowClick={this.onRowClick} />)}
 
         <hr className="spaceTop" style={{ paddingTop: "2px" }} />
         <Row>

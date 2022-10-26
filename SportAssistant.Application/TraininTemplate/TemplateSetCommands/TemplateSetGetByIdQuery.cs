@@ -38,7 +38,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
             }
 
             var templateSet = _mapper.Map<TemplateSet>(templateSetDb);
-            templateSet.Plans = (await _templatePlanRepository.FindAsync(t => t.TemplateSetId == templateSet.Id))
+            templateSet.Templates = (await _templatePlanRepository.FindAsync(t => t.TemplateSetId == templateSet.Id))
                 .Select(t => _mapper.Map<TemplatePlan>(t)).ToList();
 
             return templateSet;

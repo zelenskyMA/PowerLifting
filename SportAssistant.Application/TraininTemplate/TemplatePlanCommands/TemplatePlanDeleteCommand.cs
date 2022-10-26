@@ -3,6 +3,7 @@ using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TraininTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
+using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 
 namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
 {
@@ -11,15 +12,18 @@ namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
     /// </summary>
     public class TemplatePlanDeleteCommand : ICommand<TemplatePlanDeleteCommand.Param, int>
     {
+        private readonly IProcessTemplatePlan _processTemplatePlan;
         private readonly ICrudRepo<TemplateSetDb> _templateSetRepository;
         private readonly ICrudRepo<TemplatePlanDb> _templatePlanRepository;
         private readonly IUserProvider _user;
 
         public TemplatePlanDeleteCommand(
+            IProcessTemplatePlan processTemplatePlan,
             ICrudRepo<TemplatePlanDb> templatePlanRepository,
             ICrudRepo<TemplateSetDb> templateSetRepository,
             IUserProvider user)
         {
+            _processTemplatePlan = processTemplatePlan;
             _templateSetRepository = templateSetRepository;
             _templatePlanRepository = templatePlanRepository;
             _user = user;
@@ -30,18 +34,18 @@ namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
             var templatePlanDb = await _templatePlanRepository.FindOneAsync(t => t.Id == param.Id);
             if (templatePlanDb == null)
             {
-                throw new BusinessException($"У вас нет шаблона с ид {param.Id}");
+                throw new BusinessException($"Шаблон с ид {param.Id} не найден");
             }
 
             var templateSetDb = await _templateSetRepository.FindOneAsync(t => t.Id == templatePlanDb.TemplateSetId && t.CoachId == _user.Id);
             if (templateSetDb == null)
             {
-                throw new BusinessException($"У вас нет прав на удаление выбранного шаблона");
+                throw new BusinessException($"У вас нет прав на удаление шаблона '{templatePlanDb.Name}'");
             }
 
-            _templatePlanRepository.Delete(templatePlanDb);
+            await _processTemplatePlan.DeleteTemplate(templatePlanDb);
 
-            return templatePlanDb.TemplateSetId;
+            return templateSetDb.Id;
         }
 
         public class Param

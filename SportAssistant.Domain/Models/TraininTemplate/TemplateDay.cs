@@ -32,6 +32,6 @@ namespace SportAssistant.Domain.Models.TraininTemplate
         /// <summary>
         /// Процентовки, которые задействованы в плане на день
         /// </summary>
-        public List<Percentage> Percentages { get; set; }
+        public List<Percentage>? Percentages { get; set; }
     }
 }

@@ -74,8 +74,6 @@ namespace SportAssistant.Application.TraininTemplate.TemplateExerciseCommands
             public int DayId { get; set; }
 
             public List<Exercise> Exercises { get; set; }
-
-            public int UserId { get; set; }
         }
     }
 }

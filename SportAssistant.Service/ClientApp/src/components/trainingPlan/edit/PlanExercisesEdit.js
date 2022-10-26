@@ -26,13 +26,13 @@ class PlanExercisesEdit extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    const [settingsList, planExercises] = await Promise.all([
+    const [exerciseList, planExercises] = await Promise.all([
       GetAsync("/exerciseInfo/getPlanningList"),
       GetAsync(`/planExercise/getByDay?dayId=${this.props.params.id}`)
     ]);
 
     var planExercisesData = planExercises.map((item, i) => item.exercise);
-    this.setState({ exercises: settingsList, selectedExercises: planExercisesData });
+    this.setState({ exercises: exerciseList, selectedExercises: planExercisesData });
   }
 
   confirmExercisesAsync = async () => {
@@ -43,7 +43,7 @@ class PlanExercisesEdit extends Component {
   onRowDblClick = row => {
     const maxExercises = this.props.appSettings.maxExercises;
     if (this.state.selectedExercises.length >= maxExercises) {
-      this.setState({ error: `Максимум ${maxExercises} упражнений для одной тренировки.` });
+      this.setState({ error: `Максимум ${maxExercises} упражнений в день.` });
       return;
     }
 

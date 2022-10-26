@@ -33,7 +33,7 @@ class TemplatePlanEdit extends React.Component {
 
   onPlanChange = (propName, value) => { this.setState(prevState => ({ error: '', plan: { ...prevState.plan, [propName]: value } })); }
 
-  onSetExercises = (dayId) => { this.props.navigate(`/editTemplateExercises/${dayId}`); }
+  onSetExercises = (dayId) => { this.props.navigate(`/editTemplateExercises/${this.props.params.id}/${dayId}`); }
 
   onConfirmPlan = async () => {
     var setId = await PostAsync("/templatePlan/update", this.state.plan);

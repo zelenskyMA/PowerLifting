@@ -14,6 +14,10 @@ using SportAssistant.Application.TrainingPlan.PlanCommands;
 using SportAssistant.Application.TrainingPlan.PlanDayCommands;
 using SportAssistant.Application.TrainingPlan.PlanExerciseCommands;
 using SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands;
+using SportAssistant.Application.TraininTemplate.TemplateDayCommands;
+using SportAssistant.Application.TraininTemplate.TemplateExerciseCommands;
+using SportAssistant.Application.TraininTemplate.TemplateExerciseSettingsCommands;
+using SportAssistant.Application.TraininTemplate.TemplatePlanCommands;
 using SportAssistant.Application.UserData;
 using SportAssistant.Application.UserData.Auth;
 using SportAssistant.Application.UserData.Auth.Interfaces;
@@ -26,6 +30,7 @@ using SportAssistant.Domain.Interfaces.Coaching.Repositories;
 using SportAssistant.Domain.Interfaces.Common;
 using SportAssistant.Domain.Interfaces.Settings.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
+using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Infrastructure.Repositories.Coaching;
 using SportAssistant.Infrastructure.Repositories.TrainingPlan;
@@ -65,27 +70,32 @@ internal class Program
     {
         builder.Services.AddCommandsFromAssemblyOf<UserInfoGetQuery>();
 
+        builder.Services.AddScoped<IProcessPlan, ProcessPlan>();
         builder.Services.AddScoped<IProcessPlanDay, ProcessPlanDay>();
-        builder.Services.AddScoped<IProcessUserInfo, ProcessUserInfo>();
-        builder.Services.AddScoped<IProcessDictionary, ProcessDictionary>();
         builder.Services.AddScoped<IProcessPlanExercise, ProcessPlanExercise>();
         builder.Services.AddScoped<IProcessPlanExerciseSettings, ProcessPlanExerciseSettings>();
         builder.Services.AddScoped<IProcessExercise, ProcessExercise>();
         builder.Services.AddScoped<ITrainingCountersSetup, TrainingCountersSetup>();
-        builder.Services.AddScoped<IProcessUserAchivements, ProcessUserAchivements>();
-        builder.Services.AddScoped<IProcessUser, ProcessUser>();
-        builder.Services.AddScoped<IProcessRequest, ProcessRequest>();
+
+        builder.Services.AddScoped<IProcessTemplatePlan, ProcessTemplatePlan>();
+        builder.Services.AddScoped<IProcessTemplateDay, ProcessTemplateDay>();
+        builder.Services.AddScoped<IProcessTemplateExercise, ProcessTemplateExercise>();
+        builder.Services.AddScoped<IProcessTemplateExerciseSettings, ProcessTemplateExerciseSettings>();
+
         builder.Services.AddScoped<IProcessGroup, ProcessGroup>();
         builder.Services.AddScoped<IProcessGroupUser, ProcessGroupUser>();
-        builder.Services.AddScoped<IProcessSettings, ProcessSettings>();
-        builder.Services.AddScoped<IProcessPlan, ProcessPlan>();        
+        builder.Services.AddScoped<IProcessRequest, ProcessRequest>();
+        builder.Services.AddScoped<IAllowedUserIds, AllowedUserIds>();
 
-
+        builder.Services.AddScoped<IProcessUser, ProcessUser>();
+        builder.Services.AddScoped<IProcessUserInfo, ProcessUserInfo>();
+        builder.Services.AddScoped<IProcessUserAchivements, ProcessUserAchivements>();
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
 
+        builder.Services.AddScoped<IProcessDictionary, ProcessDictionary>();
+        builder.Services.AddScoped<IProcessSettings, ProcessSettings>();
         builder.Services.AddScoped<IUserProvider, UserProvider>();
-        builder.Services.AddScoped<IAllowedUserIds, AllowedUserIds>();        
     }
 
     private static void RegisterJwtAuth(WebApplicationBuilder builder)
