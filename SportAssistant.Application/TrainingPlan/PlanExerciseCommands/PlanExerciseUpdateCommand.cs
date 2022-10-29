@@ -3,7 +3,6 @@ using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
-using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
 
 namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
@@ -15,18 +14,15 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
     {
         private readonly IProcessPlan _processPlan;
         private readonly IProcessPlanExerciseSettings _processPlanExerciseSettings;
-        private readonly IProcessUserAchivements _processUserAchivements;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
 
         public PlanExerciseUpdateCommand(
             IProcessPlan processPlan,
             IProcessPlanExerciseSettings processPlanExerciseSettings,
-            IProcessUserAchivements processUserAchivements,
             ICrudRepo<PlanExerciseDb> plannedExerciseRepository)
         {
             _processPlan = processPlan;
             _processPlanExerciseSettings = processPlanExerciseSettings;
-            _processUserAchivements = processUserAchivements;
             _planExerciseRepository = plannedExerciseRepository;
         }
 
@@ -46,13 +42,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
                 _planExerciseRepository.Update(planExerciseDb);
             }
 
-            var achivement = await _processUserAchivements.GetByExerciseTypeAsync(userId, param.PlanExercise.Exercise.ExerciseTypeId);
-            if (achivement == null || achivement.Result == 0)
-            {
-                throw new BusinessException("Рекорд спортсмена не указан. Нельзя запланировать тренировку.");
-            }
-
-            await _processPlanExerciseSettings.UpdateAsync(param.PlanExercise.Id, achivement.Result, param.PlanExercise.Settings);
+            await _processPlanExerciseSettings.UpdateAsync(userId, param.PlanExercise.Id, param.PlanExercise.Exercise.ExerciseTypeId, param.PlanExercise.Settings);
 
             return true;
         }

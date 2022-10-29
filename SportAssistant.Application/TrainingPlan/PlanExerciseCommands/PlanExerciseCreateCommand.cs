@@ -60,15 +60,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
                     continue;
                 }
 
-                // добавление нового упражнения
-                planExercise = new PlanExerciseDb()
-                {
-                    PlanDayId = param.DayId,
-                    ExerciseId = param.Exercises[i - 1].Id,
-                    Order = i
-                };
-
-                await _planExerciseRepository.CreateAsync(planExercise);
+                await _processPlanExercise.CreateAsync(param.UserId, param.DayId, param.Exercises[i - 1].Id, i);
             }
 
             return true;

@@ -5,6 +5,7 @@ import TemplateExerciseSettingsEdit from "../components/trainingTemplate/edit/Te
 
 import TemplateSetListView from "../components/trainingTemplate/view/TemplateSetListView";
 import TemplateSetView from "../components/trainingTemplate/view/TemplateSetView";
+import TemplateSetAssignView from "../components/trainingTemplate/view/TemplateSetAssignView";
 
 const TrainingTemplateRoutes = [
   { path: '/editTemplatePlan/:id', element: <TemplatePlanEdit /> },
@@ -14,6 +15,7 @@ const TrainingTemplateRoutes = [
 
   { path: '/templateSetList', element: <TemplateSetListView /> },
   { path: '/templateSet/:id', element: <TemplateSetView /> },
+  { path: '/assignTemplateSet/:grouId', element: <TemplateSetAssignView /> },  
 ];
 
 export default TrainingTemplateRoutes;

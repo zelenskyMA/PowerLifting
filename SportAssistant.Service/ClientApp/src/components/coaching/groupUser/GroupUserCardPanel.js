@@ -47,7 +47,7 @@ class GroupUserCardPanel extends Component {
     });
   }
 
-  onGroupSelect = (id) => { this.setState({ error: '' }); this.setState({ selectedGroupId: id }); }
+  onGroupSelect = (id) => { this.setState({ error: '', selectedGroupId: id }); }
 
   changeGroup = async () => {
     try {

@@ -6,7 +6,7 @@ import { PostAsync } from "../../../common/ApiActions";
 import { Button, Container } from "reactstrap";
 import { ErrorPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
-import { Locale } from "../../../common/Localization";
+import { Locale, DateToUtc } from "../../../common/Localization";
 import '../../../styling/Common.css';
 
 const mapStateToProps = store => {
@@ -29,9 +29,7 @@ class PlanCreate extends React.Component {
 
   onPlanCreate = async () => {
     try {
-      var utcDate = new Date(this.state.date.getTime() - this.state.date.getTimezoneOffset() * 60 * 1000);
-
-      const planId = await PostAsync("trainingPlan/create", { creationDate: utcDate, userId: this.props.groupUserId });
+      const planId = await PostAsync("trainingPlan/create", { creationDate: DateToUtc(this.state.date), userId: this.props.groupUserId });
       this.props.navigate(`/editPlanDays/${planId}`);
     }
     catch (error) {

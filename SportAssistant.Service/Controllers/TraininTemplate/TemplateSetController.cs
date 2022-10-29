@@ -47,5 +47,13 @@ namespace SportAssistant.Service.Controllers.TraininTemplate
             var result = await command.ExecuteAsync(param);
             return result;
         }
+
+        [HttpPost]
+        [Route("assign")]
+        public async Task<bool> AssignAsync([FromServices] ICommand<TemplateSetAssignCommand.Param, bool> command, TemplateSetAssignCommand.Param param)
+        {
+            var result = await command.ExecuteAsync(param);
+            return result;
+        }
     }
 }
