@@ -42,6 +42,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             {
                 await _processPlanDay.DeleteByPlanIdAsync(planDb.Id);
                 _planRepository.Delete(planDb);
+                await _provider.AcceptChangesAsync();
             }
            
             var plan = new PlanDb() { StartDate = creationDate, UserId = userId };

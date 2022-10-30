@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.UserData.UserAchivementCommands;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
-using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.UserData.Application;

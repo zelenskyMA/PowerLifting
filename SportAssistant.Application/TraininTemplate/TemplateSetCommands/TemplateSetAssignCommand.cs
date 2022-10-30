@@ -39,13 +39,21 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
         {
             (List<TemplatePlanDb> templates, TrainingGroupInfo groupInfo) = await ValidateAssignmentAsync(param);
 
-            foreach (var userId in groupInfo.Users.Select(t => t.Id).ToList())
+            foreach (var user in groupInfo.Users)
             {
-                var creationDate = param.StartDate;
-                foreach (var item in templates)
+                try
                 {
-                    var planId = _processPlan.AssignPlanAsync(item.Id, creationDate, userId);
-                    creationDate = creationDate.AddDays(6);
+                    var creationDate = param.StartDate;
+                    foreach (var item in templates)
+                    {
+                        var planId = await _processPlan.AssignPlanAsync(item.Id, creationDate, user.Id);
+                        creationDate = creationDate.AddDays(6);
+                    }
+                }
+                catch (BusinessException ex)
+                {
+
+                    throw new BusinessException($"Назначение спортсмену '{user.FullName}' не удалось. {ex.Message}");
                 }
             }
 

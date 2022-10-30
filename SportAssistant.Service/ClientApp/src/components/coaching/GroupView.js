@@ -66,7 +66,7 @@ class GroupView extends Component {
           </>
         )}
 
-        <Button color="primary" className="spaceRight spaceTop" onClick={() => this.props.navigate(`/assignTemplateSet/${this.props.params.groupId}`)}>Запланировать тренировки</Button>
+        <Button color="primary" className="spaceRight spaceTop" disabled={!hasData} onClick={() => this.props.navigate(`/assignTemplateSet/${this.props.params.groupId}`)}>Запланировать тренировки</Button>
         <Button color="primary" className="spaceTop" outline onClick={() => this.props.navigate('/coachConsole')}>Назад</Button>
       </>
     );

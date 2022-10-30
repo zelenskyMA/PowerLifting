@@ -15,7 +15,7 @@ const TrainingTemplateRoutes = [
 
   { path: '/templateSetList', element: <TemplateSetListView /> },
   { path: '/templateSet/:id', element: <TemplateSetView /> },
-  { path: '/assignTemplateSet/:grouId', element: <TemplateSetAssignView /> },  
+  { path: '/assignTemplateSet/:groupId', element: <TemplateSetAssignView /> },  
 ];
 
 export default TrainingTemplateRoutes;

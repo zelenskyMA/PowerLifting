@@ -1,17 +1,11 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.UserData.UserAchivementCommands;
-using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
-using SportAssistant.Domain.DbModels.TraininTemplate;
-using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
 using SportAssistant.Domain.Models.TraininTemplate;
 using SportAssistant.Infrastructure.DataContext;
-using SportAssistant.Infrastructure.Repositories.TrainingPlan;
-using System.Security.AccessControl;
 
 namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
 {
@@ -126,7 +120,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
             var templateExerciseSettingsDb = await _templateExerciseSettingsRepository.FindAsync(t => t.TemplateExerciseId == templateExercise.Id);
             List<PlanExerciseSettings> settings = templateExerciseSettingsDb.Select(t => new PlanExerciseSettings()
             {
-                Weight = t.WeightPercentage * achivement?.Result ?? 0 / 100,
+                Weight = (t.WeightPercentage * achivement?.Result ?? 0) / 100,
                 Iterations = t.Iterations,
                 ExercisePart1 = t.ExercisePart1,
                 ExercisePart2 = t.ExercisePart2,
