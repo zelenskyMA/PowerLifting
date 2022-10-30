@@ -13,36 +13,29 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
     public class PlanCreateCommand : ICommand<PlanCreateCommand.Param, int>
     {
         private readonly IProcessPlan _processPlan;
+        private readonly IProcessPlanDay _processPlanDay;
         private readonly ICrudRepo<PlanDb> _planRepository;
-        private readonly ICrudRepo<PlanDayDb> _planDayRepository;
         private readonly IContextProvider _provider;
 
         public PlanCreateCommand(
             IProcessPlan processPlan,
+            IProcessPlanDay processPlanDay,
             ICrudRepo<PlanDb> planRepository,
-            ICrudRepo<PlanDayDb> planDayRepository,
             IContextProvider provider)
         {
             _processPlan = processPlan;
             _planRepository = planRepository;
-            _planDayRepository = planDayRepository;
+            _processPlanDay = processPlanDay;
             _provider = provider;
         }
 
         public async Task<int> ExecuteAsync(Param param)
         {
             var userId = await _processPlan.PlanningAllowedForUserAsync(param.UserId);
-
-            var prevPlanDate = param.CreationDate.AddDays(-6);
-            var nextPlanDate = param.CreationDate.AddDays(6);
-            var preventingPlans = await _planRepository.FindAsync(t =>
-                t.UserId == userId &&
-                t.StartDate >= prevPlanDate &&
-                t.StartDate <= nextPlanDate);
-
-            if (preventingPlans.Any())
+            var crossingPlansDb = await _processPlan.GetCrossingPlansAsync(param.CreationDate, userId);
+            if (crossingPlansDb.Any())
             {
-                string errorDates = string.Join(", ", preventingPlans.Select(t => t.StartDate.ToString("dd/MM/yyyy")));
+                string errorDates = string.Join(", ", crossingPlansDb.Select(t => t.StartDate.ToString("dd/MM/yyyy")));
                 throw new BusinessException($"Найдены пересекающийся по датам планы. Даты начала: {errorDates}");
             }
 
@@ -52,8 +45,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
 
             for (int i = 0; i < 7; i++) // 7 дней в плане. Завязано в ui
             {
-                var trainingDay = new PlanDayDb() { PlanId = plan.Id, ActivityDate = param.CreationDate.AddDays(i) };
-                await _planDayRepository.CreateAsync(trainingDay);
+                await _processPlanDay.CreateAsync(userId, plan.Id, param.CreationDate.AddDays(i));
             }
 
             return plan.Id;

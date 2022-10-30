@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SportAssistant.Application.Common.Actions;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.Interfaces.Coaching.Application;
@@ -40,5 +41,31 @@ public class ProcessGroup : IProcessGroup
         }
 
         return _mapper.Map<TrainingGroup>(groupDb);
-    }   
+    }
+
+    public async Task<TrainingGroupInfo> GetGroupInfoByIdAsync(int id)
+    {
+        var groupsDb = await _trainingGroupRepository.FindAsync(t => t.Id == id);
+        if (!groupsDb.Any())
+        {
+            throw new BusinessException("Группа не найдена");
+        }
+
+        var usersInfoDb = await _trainingGroupUserRepository.GetGroupUsersAsync(id);
+        var userIds = usersInfoDb.Select(t => t.UserId).ToList();
+
+        var users = usersInfoDb.Select(t => new GroupUser()
+        {
+            Id = t.UserId,
+            FullName = UserNaming.GetLegalFullName(t.FirstName, t.Surname, t.Patronimic)
+        }).OrderBy(t => t.FullName).ToList();
+
+        var groupInfo = new TrainingGroupInfo()
+        {
+            Group = _mapper.Map<TrainingGroup>(groupsDb.First()),
+            Users = users
+        };
+
+        return groupInfo;
+    }
 }

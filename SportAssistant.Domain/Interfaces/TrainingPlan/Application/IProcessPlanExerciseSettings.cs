@@ -14,11 +14,12 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         /// <summary>
         /// Обновление поднятий по списку в упражнении
         /// </summary>
+        /// <param name="userId">Ид целевого спортсмена</param>
         /// <param name="planExerciseId">Ид плана</param>
-        /// <param name="achivement">Рекорд пользователя по ипу упражнения</param>
+        /// <param name="exerciseTypeId">Ид типа упражнения</param>
         /// <param name="settingsList">Список поднятий</param>
         /// <returns></returns>
-        Task UpdateAsync(int planExerciseId, int achivement, List<PlanExerciseSettings> settingsList);
+        Task UpdateAsync(int userId, int planExerciseId, int exerciseTypeId, List<PlanExerciseSettings> settingsList);
 
         /// <summary>
         /// Удаление поднятий в упражнениях из списка

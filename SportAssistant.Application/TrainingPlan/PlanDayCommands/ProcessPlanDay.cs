@@ -2,6 +2,7 @@
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
+using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
 using SportAssistant.Infrastructure.DataContext;
 
@@ -10,18 +11,22 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
     public class ProcessPlanDay : IProcessPlanDay
     {
         private readonly IProcessPlanExercise _processPlanExercise;
+        private readonly IProcessTemplateExercise _processTemplateExercise;
         private readonly ITrainingCountersSetup _trainingCountersSetup;
         private readonly IContextProvider _contextProvider;
         private readonly ICrudRepo<PlanDayDb> _planDayRepository;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
+        private readonly IContextProvider _provider;
         private readonly IMapper _mapper;
 
         public ProcessPlanDay(
             IProcessPlanExercise processPlanExercise,
+            IProcessTemplateExercise processTemplateExercise,
             ITrainingCountersSetup trainingCountersSetup,
             IContextProvider contextProvider,
             ICrudRepo<PlanDayDb> planDayRepository,
             ICrudRepo<PlanExerciseDb> planExerciseRepository,
+            IContextProvider provider,
             IMapper mapper)
         {
             _processPlanExercise = processPlanExercise;
@@ -29,6 +34,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
             _contextProvider = contextProvider;
             _planDayRepository = planDayRepository;
             _planExerciseRepository = planExerciseRepository;
+            _processTemplateExercise = processTemplateExercise;
+            _provider = provider;
             _mapper = mapper;
         }
 
@@ -57,6 +64,25 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
             _trainingCountersSetup.SetDayCounters(planDay);
 
             return planDay;
+        }
+
+        /// <inheritdoc />
+        public async Task<int> CreateAsync(int userId, int planId, DateTime activitydate, int templateDayId)
+        {
+            var trainingDay = new PlanDayDb() { PlanId = planId, ActivityDate = activitydate };
+            await _planDayRepository.CreateAsync(trainingDay);
+
+            if (templateDayId != 0)
+            {
+                await _provider.AcceptChangesAsync();
+                var templateExercises = await _processTemplateExercise.GetByDaysAsync(new List<int>() { templateDayId });
+                foreach (var templateExercise in templateExercises)
+                {
+                    await _processPlanExercise.CreateAsync(userId, trainingDay.Id, templateExercise.Exercise.Id, templateExercise.Order, templateExercise);
+                }
+            }
+
+            return trainingDay.Id;
         }
 
         /// <inheritdoc />

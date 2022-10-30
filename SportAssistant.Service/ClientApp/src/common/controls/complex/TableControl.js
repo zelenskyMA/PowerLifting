@@ -43,7 +43,7 @@ export function TableControl({ columnsInfo, data,
   }
 
   return (
-    <Container fluid>
+    <>
       <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} hideFilter={hideFilter} />
       <table className="table table-striped" aria-labelledby="tabelLabel" {...getTableProps()}>
         <thead>
@@ -74,7 +74,7 @@ export function TableControl({ columnsInfo, data,
       <PaginationPanel
         canPreviousPage={canPreviousPage} canNextPage={canNextPage} pageOptions={pageOptions} pageCount={pageCount}
         gotoPage={gotoPage} nextPage={nextPage} previousPage={previousPage} pageIndex={pageIndex} />
-    </Container>
+    </>
   )
 }
 
@@ -120,7 +120,7 @@ function PaginationPanel({
 
   return (
     <Row>
-      <Col xs={4} md={{ offset: 8 }}>
+      <Col xs={8}>
         <ul className="pagination">
           <li className="page-item" role="button" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
             <a className="page-link ">{'<<'}</a>
