@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { Button, Col, Label, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { InputNumber, InputText, LoadingPanel } from "../../common/controls/CustomControls";
+import { InputNumber, InputCheckbox, InputText, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import { changeModalVisibility, updateUserInfo } from "../../stores/appStore/appActions";
 import '../../styling/Common.css';
@@ -81,7 +81,6 @@ class UserCabinet extends Component {
     return (
       <>
         <h5 className="spaceBottom">Личный кабинет</h5>
-
         {this.personalInfoPanel()}
 
         <hr style={{ width: '75%', paddingTop: "2px", marginBottom: '30px' }} />
@@ -119,6 +118,14 @@ class UserCabinet extends Component {
             <InputNumber label="Возраст:" propName="age" onChange={this.onValueChange} initialValue={this.state.userInfo.age} />
           </Col>
         </Row>
+
+        {(this.state.userInfo?.rolesInfo?.isCoach || false) &&
+          <Row className="spaceBottom">
+            <Col xs={3}>
+              <InputCheckbox label="Я не тренируюсь" propName="coachOnly" onChange={this.onValueChange} initialValue={this.state.userInfo.coachOnly} />
+            </Col>
+          </Row>
+        }
       </>
     );
   }
