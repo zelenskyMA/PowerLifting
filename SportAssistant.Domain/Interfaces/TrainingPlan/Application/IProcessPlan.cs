@@ -5,13 +5,6 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
     public interface IProcessPlan
     {
         /// <summary>
-        /// Проверка допустимости создавать / менять план пользователя текущему пользователю.
-        /// </summary>
-        /// <param name="userIdForCheck">Ид пользователя, которому принадлежит план</param>
-        /// <returns></returns>
-        Task<int> PlanningAllowedForUserAsync(int userIdForCheck);
-
-        /// <summary>
         /// Создание тренировочного плана с днями по шаблону
         /// </summary>
         /// <param name="templateId">Ид шаблона палана</param>
@@ -19,6 +12,20 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         /// <param name="userId">Ид спортсмена, для которого создается план</param>
         /// <returns></returns>
         Task<int> AssignPlanAsync(int templateId, DateTime creationDate, int userId);
+
+        /// <summary>
+        /// Проверка допустимости создавать / менять план пользователя текущему пользователю.
+        /// </summary>
+        /// <param name="userIdForCheck">Ид пользователя, которому принадлежит план</param>
+        /// <returns></returns>
+        Task<int> PlanningAllowedForUserAsync(int userIdForCheck);
+
+        /// <summary>
+        /// проверка количества активных планов. Не позволяем планировать слишком много.
+        /// </summary>
+        /// <param name="userId">Ид спортсмена</param>
+        /// <returns></returns>
+        Task CheckActivePlansLimitAsync(int userId);
 
         /// <summary>
         /// Получение планов, пересекающихся по датам с указанной датой для спортсмена

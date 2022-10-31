@@ -2,7 +2,8 @@
 {
     public enum DictionarySettings
     {
-        MaxExercises = 1,
-        MaxLiftItems = 2
+        MaxActivePlans = 1,
+        MaxExercises = 2,
+        MaxLiftItems = 3,
     }
 }

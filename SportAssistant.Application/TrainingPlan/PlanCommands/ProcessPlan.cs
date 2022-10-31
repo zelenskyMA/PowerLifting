@@ -3,6 +3,7 @@ using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.DbModels.TraininTemplate;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
+using SportAssistant.Domain.Interfaces.Settings.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Infrastructure.DataContext;
@@ -13,6 +14,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
     {
         private readonly IProcessUserInfo _processUserInfo;
         private readonly IProcessPlanDay _processPlanDay;
+        private readonly IProcessSettings _processSettings;
         private readonly ICrudRepo<PlanDb> _planRepository;
         private readonly ICrudRepo<TemplateDayDb> _templateDayRepository;
         private readonly IContextProvider _provider;
@@ -21,6 +23,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         public ProcessPlan(
             IProcessUserInfo processUserInfo,
             IProcessPlanDay processPlanDay,
+            IProcessSettings processSettings,
             ICrudRepo<PlanDb> planRepository,
             ICrudRepo<TemplateDayDb> templateDayRepository,
             IContextProvider provider,
@@ -28,6 +31,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         {
             _processUserInfo = processUserInfo;
             _processPlanDay = processPlanDay;
+            _processSettings = processSettings;
             _planRepository = planRepository;
             _templateDayRepository = templateDayRepository;
             _provider = provider;
@@ -37,6 +41,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         /// <inheritdoc />
         public async Task<int> AssignPlanAsync(int templateId, DateTime creationDate, int userId)
         {
+            await CheckActivePlansLimitAsync(userId);
+
             var crossingPlansDb = await GetCrossingPlansAsync(creationDate, userId);
             foreach (var planDb in crossingPlansDb)
             {
@@ -44,7 +50,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
                 _planRepository.Delete(planDb);
                 await _provider.AcceptChangesAsync();
             }
-           
+
             var plan = new PlanDb() { StartDate = creationDate, UserId = userId };
             await _planRepository.CreateAsync(plan);
             await _provider.AcceptChangesAsync();
@@ -71,8 +77,20 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             {
                 throw new BusinessException("У вас нет права планировать тренировки данного пользователя");
             }
-
             return userIdForCheck;
+        }
+
+        /// <inheritdoc />
+        public async Task CheckActivePlansLimitAsync(int userId)
+        {
+            var startDate = DateTime.Now.Date.AddDays(-7);
+            var activePlans = await _planRepository.FindAsync(t => t.UserId == userId && t.StartDate > startDate);
+
+            var settings = await _processSettings.GetAsync();
+            if (activePlans.Count() > settings.MaxActivePlans)
+            {
+                throw new BusinessException($"Уже запланировано больше {settings.MaxActivePlans} недель. Дождитесь выполнения хотя бы одного плана.");
+            }
         }
 
         /// <inheritdoc />
