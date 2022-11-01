@@ -1,6 +1,8 @@
-﻿using SportAssistant.Domain.DbModels.TrainingPlan;
+﻿using SportAssistant.Domain.CustomExceptions;
+using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
+using SportAssistant.Domain.Interfaces.Settings.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
 
@@ -13,15 +15,18 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
     {
         private readonly IProcessPlan _processPlan;
         private readonly IProcessPlanExercise _processPlanExercise;
+        private readonly IProcessSettings _processSettings;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
 
         public PlanExerciseCreateCommand(
             IProcessPlan processPlan,
             IProcessPlanExercise processPlanExercise,
+            IProcessSettings processSettings,
             ICrudRepo<PlanExerciseDb> plannedExerciseRepository)
         {
             _processPlan = processPlan;
             _processPlanExercise = processPlanExercise;
+            _processSettings = processSettings;
             _planExerciseRepository = plannedExerciseRepository;
         }
 
@@ -32,38 +37,54 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
                 return false;
             }
 
+            var settings = await _processSettings.GetAsync();
+            if (param.Exercises.Count > settings.MaxExercises)
+            {
+                throw new BusinessException("Лимит упражнений в день превышен.");
+            }
+
             await _processPlan.PlanningAllowedForUserAsync(param.UserId);
 
-            //удаляем лишние записи вместе со связями
             var planExercisesDb = await _planExerciseRepository.FindAsync(t => t.PlanDayId == param.DayId);
-            if (planExercisesDb.Count > 0)
-            {
-                var itemsToDelete = planExercisesDb.Where(t => !param.Exercises.Select(t => t.PlannedExerciseId).Contains(t.Id)).ToList();
-                if (itemsToDelete.Count > 0)
-                {
-                    await _processPlanExercise.DeletePlanExercisesAsync(itemsToDelete);
-                    foreach (var item in itemsToDelete)
-                    {
-                        planExercisesDb.Remove(item);
-                    }
-                }
-            }
+            await RemoveDeletedExercisesAsync(planExercisesDb, param);
 
             for (int i = 1; i <= param.Exercises.Count; i++)
             {
-                // обновление существующего упражнения
-                var planExercise = planExercisesDb.FirstOrDefault(t => t.Id == param.Exercises[i - 1].PlannedExerciseId);
-                if (planExercise != null)
+                if (!UpdateExercise(planExercisesDb, param, i))
                 {
-                    planExercise.Order = i;
-                    _planExerciseRepository.Update(planExercise);
-                    continue;
+                    await _processPlanExercise.CreateAsync(param.UserId, param.DayId, param.Exercises[i - 1].Id, i);
                 }
-
-                await _processPlanExercise.CreateAsync(param.UserId, param.DayId, param.Exercises[i - 1].Id, i);
             }
 
             return true;
+        }
+
+        private async Task RemoveDeletedExercisesAsync(List<PlanExerciseDb> planExercisesDb, Param param)
+        {
+            var itemsToDelete = planExercisesDb.Where(t => !param.Exercises.Select(t => t.PlannedExerciseId).Contains(t.Id)).ToList();
+            if (itemsToDelete.Count == 0)
+            {
+                return;
+            }
+
+            await _processPlanExercise.DeletePlanExercisesAsync(itemsToDelete);
+            foreach (var item in itemsToDelete)
+            {
+                planExercisesDb.Remove(item);
+            }
+        }
+
+        private bool UpdateExercise(List<PlanExerciseDb> planExercisesDb, Param param, int orderIndex)
+        {
+            var planExercise = planExercisesDb.FirstOrDefault(t => t.Id == param.Exercises[orderIndex - 1].PlannedExerciseId);
+            if (planExercise != null)
+            {
+                planExercise.Order = orderIndex;
+                _planExerciseRepository.Update(planExercise);
+                return true;
+            }
+
+            return false;
         }
 
         public class Param

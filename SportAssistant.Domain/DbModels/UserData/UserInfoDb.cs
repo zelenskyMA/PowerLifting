@@ -20,5 +20,7 @@ namespace SportAssistant.Domain.DbModels.UserData
         public int? Age { get; set; }
 
         public int? CoachId { get; set; }
+
+        public bool CoachOnly { get; set; }
     }
 }

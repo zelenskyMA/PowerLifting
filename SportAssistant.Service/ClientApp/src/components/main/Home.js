@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { GetAsync } from "../../common/ApiActions";
 import { LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import { DateToLocal } from "../../common/Localization";
 import { GetToken } from '../../common/TokenActions';
 import '../../styling/Common.css';
+import CoachHomePanel from "../coaching/CoachHomePanel";
 import PlanDayViewPanel from "../trainingPlan/view/PlanDayViewPanel";
+
+const mapStateToProps = store => {
+  return {
+    userInfo: store.app.myInfo,
+  }
+}
 
 class Home extends Component {
   constructor() {
@@ -34,19 +42,21 @@ class Home extends Component {
     return (
       <>
         <h4>Спортивный ассистент</h4>
-        {this.planDayPanel()}
+        {this.mainPanel()}
       </>
     );
   }
 
-  planDayPanel = () => {
+  mainPanel = () => {
     if (this.state.loggedUser === false) { return (this.startScreenPanel()); }
     if (this.state.loading) { return (<LoadingPanel />); }
 
     return (
       <>
         <p className="spaceBottom" >Ваш план на <strong>{DateToLocal(new Date())}</strong></p>
-        {this.state.planDay.id ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>У вас нет тренировок на сегодня</em></p>}
+        {this.props.userInfo?.coachOnly ?
+          <CoachHomePanel userInfo={this.props.userInfo} /> :
+          (this.state.planDay.id ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>У вас нет тренировок на сегодня</em></p>)}
       </>
     );
   }
@@ -60,4 +70,4 @@ class Home extends Component {
 
 }
 
-export default WithRouter(Home);
+export default WithRouter(connect(mapStateToProps, null)(Home));

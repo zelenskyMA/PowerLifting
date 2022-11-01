@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using SportAssistant.Application.Settings;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
+using SportAssistant.Domain.Interfaces.Settings.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
@@ -12,6 +14,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
     public class ProcessPlanExerciseSettings : IProcessPlanExerciseSettings
     {
         private readonly IProcessUserAchivements _processUserAchivements;
+        private readonly IProcessSettings _processSettings;
         private readonly ICrudRepo<PercentageDb> _precentageRepository;
         private readonly ICrudRepo<PlanExerciseSettingsDb> _exerciseSettingsRepository;
         private readonly IContextProvider _contextProvider;
@@ -19,12 +22,14 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
         
         public ProcessPlanExerciseSettings(
             IProcessUserAchivements processUserAchivements,
+            IProcessSettings processSettings,
             ICrudRepo<PercentageDb> precentageRepository,
             ICrudRepo<PlanExerciseSettingsDb> exerciseSettingsRepository,
             IContextProvider contextProvider,
             IMapper mapper)
         {
             _processUserAchivements = processUserAchivements;
+            _processSettings = processSettings;
             _precentageRepository = precentageRepository;
             _exerciseSettingsRepository = exerciseSettingsRepository;
             _contextProvider = contextProvider;
@@ -51,6 +56,12 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
         /// <inheritdoc />
         public async Task UpdateAsync(int userId, int planExerciseId, int exerciseTypeId, List<PlanExerciseSettings> settingsList)
         {
+            var settings = await _processSettings.GetAsync();
+            if (settingsList.Count > settings.MaxLiftItems)
+            {
+                throw new BusinessException("Лимит поднятий в упражнении превышен.");
+            }
+
             var existingSettingsDb = await _exerciseSettingsRepository.FindAsync(t => t.PlanExerciseId == planExerciseId);
             if (existingSettingsDb.Count() == 0 && (settingsList == null || settingsList.Count == 0))
             {

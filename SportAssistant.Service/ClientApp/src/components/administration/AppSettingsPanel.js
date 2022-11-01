@@ -48,6 +48,9 @@ class AppSettingsPanel extends Component {
 
         <Row className="spaceBottom">
           <Col xs={3}>
+            <InputNumber label="Предел акт. планов:" propName="maxActivePlans" onChange={this.onValueChange} initialValue={this.state.settings.maxActivePlans} />
+          </Col>
+          <Col xs={3}>
             <InputNumber label="Предел упражнений:" propName="maxExercises" onChange={this.onValueChange} initialValue={this.state.settings.maxExercises} />
           </Col>
           <Col xs={3}>

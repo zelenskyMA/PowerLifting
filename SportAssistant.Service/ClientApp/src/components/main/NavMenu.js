@@ -1,3 +1,5 @@
+import { CoachTopMenu } from "./menu/CoachTopMenu";
+import { CommonTopMenu } from "./menu/CommonTopMenu";
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
@@ -24,7 +26,7 @@ class NavMenu extends Component {
       collapsed: true
     };
   }
-   
+
   toggleNavbar = () => { this.setState({ collapsed: !this.state.collapsed }); }
 
   render() {
@@ -35,35 +37,14 @@ class NavMenu extends Component {
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
-              {this.mainMenu()}
-              {this.coachLink()}
-              {this.adminLink()}
+              {this.props.userInfo?.coachOnly ?
+                <CoachTopMenu userInfo={this.props.userInfo} /> :
+                <CommonTopMenu userInfo={this.props.userInfo} />}
               {this.loginLink()}
             </ul>
           </Collapse>
         </Navbar>
       </header>
-    );
-  }
-
-  mainMenu() {
-    var legalName = this.props.userInfo?.legalName ?? '';
-    if (legalName === '') { return (<></>); }
-
-    return (
-      <>
-        <NavItem>
-          <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
-        </NavItem>
-
-        <NavItem>
-          <NavLink tag={Link} className="text-dark" to="/exercises">Упражнения</NavLink>
-        </NavItem>
-
-        <NavItem className="spaceRight">
-          <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
-        </NavItem>
-      </>
     );
   }
 
@@ -82,33 +63,11 @@ class NavMenu extends Component {
         <DropdownToggle nav caret>{legalName}</DropdownToggle>
         <DropdownMenu end>
           <DropdownItem className="text-dark" tag={Link} to="/userCabinet" >Личный кабинет</DropdownItem>
-          <DropdownItem className="text-dark" >Финансы</DropdownItem>
           <DropdownItem className="text-dark" onClick={() => RemoveTokens()} >Выход</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     );
   }
-
-  adminLink() {
-    if (!this.props.userInfo?.rolesInfo?.isAdmin) { return (<></>) }
-
-    return (
-      <NavItem style={{ marginRight: '20px' }}>
-        <NavLink tag={Link} className="text-dark" to="/adminConsole">Администрирование</NavLink>
-      </NavItem>
-    );
-  }
-
-  coachLink() {
-    if (!this.props.userInfo?.rolesInfo?.isCoach) { return (<></>) }
-
-    return (
-      <NavItem style={{ marginRight: '20px' }}>
-        <NavLink tag={Link} className="text-dark" to="/coachConsole">Тренерская</NavLink>
-      </NavItem>
-    );
-  }
-
 }
 
 export default WithRouter(connect(mapStateToProps, null)(NavMenu))

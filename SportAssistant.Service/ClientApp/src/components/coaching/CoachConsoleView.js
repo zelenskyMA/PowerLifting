@@ -2,9 +2,9 @@
 import { TabControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
-import GroupConsolePanel from "./GroupConsolePanel";
-import RequestConsolePanel from "./RequestConsolePanel";
 import TemplateSetListView from "../trainingTemplate/view/TemplateSetListView";
+import GroupConsoleView from "./GroupConsoleView";
+import RequestConsoleView from "./RequestConsoleView";
 
 class CoachConsoleView extends Component {
   constructor(props) {
@@ -25,9 +25,9 @@ class CoachConsoleView extends Component {
     );
   }
 
-  groupsContent = () => { return (<GroupConsolePanel />); }
+  groupsContent = () => { return (<GroupConsoleView />); }
   templateSetsContent = () => { return (<TemplateSetListView />); }
-  requestsContent = () => { return (<RequestConsolePanel />); }
+  requestsContent = () => { return (<RequestConsoleView />); }
 }
 
 export default WithRouter(CoachConsoleView)

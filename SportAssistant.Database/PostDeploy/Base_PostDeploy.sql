@@ -41,11 +41,15 @@ SET IDENTITY_INSERT Dictionaries OFF
 SET IDENTITY_INSERT Settings ON
 
 IF NOT EXISTS (SELECT * FROM Settings WHERE [Id] = 1)
-  INSERT INTO Settings (Id, Name, Value, Description) VALUES ( 1, 'Максимум упражнений в день', 10,
-  'Предел упражнений, которые можно назначить на один день');
+  INSERT INTO Settings (Id, Name, Value, Description) VALUES ( 1, 'Максимум активных планов', 30,
+  'Предел активных планов, которые можно назначить');
 
 IF NOT EXISTS (SELECT * FROM Settings WHERE [Id] = 2)
-  INSERT INTO Settings (Id, Name, Value, Description) VALUES ( 2, 'Максимум поднятий в упражнении', 10,
+  INSERT INTO Settings (Id, Name, Value, Description) VALUES ( 2, 'Максимум упражнений в день', 10,
+  'Предел упражнений, которые можно назначить на один день');
+
+IF NOT EXISTS (SELECT * FROM Settings WHERE [Id] = 3)
+  INSERT INTO Settings (Id, Name, Value, Description) VALUES ( 3, 'Максимум поднятий в упражнении', 10,
   'Предел поднятий, которые можно назначить в одно упражнение');
 
 SET IDENTITY_INSERT Settings OFF 

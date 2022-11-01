@@ -6,7 +6,7 @@ import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
 
-class GroupConsolePanel extends Component {
+class GroupConsoleView extends Component {
   constructor(props) {
     super(props);
 
@@ -71,4 +71,4 @@ class GroupConsolePanel extends Component {
   }
 }
 
-export default WithRouter(GroupConsolePanel)
+export default WithRouter(GroupConsoleView)

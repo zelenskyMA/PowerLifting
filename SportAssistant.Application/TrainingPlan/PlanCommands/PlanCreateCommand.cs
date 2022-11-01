@@ -32,6 +32,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         public async Task<int> ExecuteAsync(Param param)
         {
             var userId = await _processPlan.PlanningAllowedForUserAsync(param.UserId);
+            await _processPlan.CheckActivePlansLimitAsync(userId);
+
             var crossingPlansDb = await _processPlan.GetCrossingPlansAsync(param.CreationDate, userId);
             if (crossingPlansDb.Any())
             {

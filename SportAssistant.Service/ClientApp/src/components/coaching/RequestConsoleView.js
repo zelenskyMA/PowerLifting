@@ -5,7 +5,7 @@ import WithRouter from "../../common/extensions/WithRouter";
 import { DateToLocal } from "../../common/Localization";
 import '../../styling/Common.css';
 
-class RequestConsolePanel extends Component {
+class RequestConsoleView extends Component {
   constructor(props) {
     super(props);
 
@@ -43,4 +43,4 @@ class RequestConsolePanel extends Component {
   }
 }
 
-export default WithRouter(RequestConsolePanel)
+export default WithRouter(RequestConsoleView)
