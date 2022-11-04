@@ -14,6 +14,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
         private readonly IProcessTemplateExercise _processTemplateExercise;
         private readonly ITrainingCountersSetup _trainingCountersSetup;
         private readonly IContextProvider _contextProvider;
+        private readonly ICrudRepo<PlanDb> _planRepository;
         private readonly ICrudRepo<PlanDayDb> _planDayRepository;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
         private readonly IContextProvider _provider;
@@ -24,6 +25,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
             IProcessTemplateExercise processTemplateExercise,
             ITrainingCountersSetup trainingCountersSetup,
             IContextProvider contextProvider,
+            ICrudRepo<PlanDb> planRepository,
             ICrudRepo<PlanDayDb> planDayRepository,
             ICrudRepo<PlanExerciseDb> planExerciseRepository,
             IContextProvider provider,
@@ -32,6 +34,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
             _processPlanExercise = processPlanExercise;
             _trainingCountersSetup = trainingCountersSetup;
             _contextProvider = contextProvider;
+            _planRepository = planRepository;
             _planDayRepository = planDayRepository;
             _planExerciseRepository = planExerciseRepository;
             _processTemplateExercise = processTemplateExercise;
@@ -83,6 +86,29 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
             }
 
             return trainingDay.Id;
+        }
+
+        /// <inheritdoc />
+        public async Task<PlanDay?> GetCurrentDay(int userId)
+        {
+            var now = DateTime.Now.Date;;
+
+            var dbPlans = await _planRepository.FindAsync(t =>
+                t.UserId == userId &&
+                t.StartDate <= now && t.StartDate >= now.AddDays(-6));
+            if (!dbPlans.Any())
+            {
+                return null;
+            }
+
+            var planId = dbPlans.First().Id;
+            var planDayDb = (await _planDayRepository.FindAsync(t => t.PlanId == planId && t.ActivityDate.Date == now)).FirstOrDefault();
+            if (planDayDb == null)
+            {
+                return null;
+            }
+
+            return await GetAsync(planDayDb.Id);
         }
 
         /// <inheritdoc />

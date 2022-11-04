@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SportAssistant.Application.Coaching.GroupCommands;
 using SportAssistant.Application.Coaching.TrainingGroupCommands;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Models.Coaching;
@@ -23,6 +24,15 @@ namespace SportAssistant.Service.Controllers.Coaching
             var result = await command.ExecuteAsync(new GroupGetByIdQuery.Param() { Id = id });
             return result;
         }
+
+        [HttpGet]
+        [Route("getExercisesList")]
+        public async Task<List<TrainingGroupExercises>> GetAsync([FromServices] ICommand<GroupExercisesGetListQuery.Param, List<TrainingGroupExercises>> command)
+        {
+            var result = await command.ExecuteAsync(new GroupExercisesGetListQuery.Param() { });
+            return result;
+        }
+
 
         [HttpPost]
         [Route("create")]

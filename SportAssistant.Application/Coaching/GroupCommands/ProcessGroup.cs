@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SportAssistant.Application.Common.Actions;
+using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.Interfaces.Coaching.Application;
@@ -13,15 +14,18 @@ public class ProcessGroup : IProcessGroup
 {
     private readonly ICrudRepo<TrainingGroupDb> _trainingGroupRepository;
     private readonly ITrainingGroupUserRepository _trainingGroupUserRepository;
+    private readonly IUserProvider _user;
     private readonly IMapper _mapper;
 
     public ProcessGroup(
      ICrudRepo<TrainingGroupDb> trainingGroupRepository,
      ITrainingGroupUserRepository trainingGroupUserRepository,
+     IUserProvider user,
      IMapper mapper)
     {
         _trainingGroupRepository = trainingGroupRepository;
         _trainingGroupUserRepository = trainingGroupUserRepository;
+        _user = user;
         _mapper = mapper;
     }
     
@@ -67,5 +71,22 @@ public class ProcessGroup : IProcessGroup
         };
 
         return groupInfo;
+    }
+
+    public async Task<List<TrainingGroup>> GetGroupsListAsync()
+    {
+        var groupsDb = await _trainingGroupRepository.FindAsync(t => t.CoachId == _user.Id);
+        if (!groupsDb.Any())
+        {
+            return new List<TrainingGroup>();
+        }
+
+        var groups = groupsDb.Select(t => _mapper.Map<TrainingGroup>(t)).OrderBy(t => t.Name).ToList();
+        foreach (var item in groups)
+        {
+            item.ParticipantsCount = (await _trainingGroupUserRepository.FindAsync(t => t.GroupId == item.Id)).Count();
+        }
+
+        return groups;
     }
 }

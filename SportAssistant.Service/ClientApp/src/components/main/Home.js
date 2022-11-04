@@ -53,7 +53,7 @@ class Home extends Component {
 
     return (
       <>
-        <p className="spaceBottom" >Ваш план на <strong>{DateToLocal(new Date())}</strong></p>
+        <p className="spaceBottom" >План на <strong>{DateToLocal(new Date())}</strong></p>
         {this.props.userInfo?.coachOnly ?
           <CoachHomePanel userInfo={this.props.userInfo} /> :
           (this.state.planDay.id ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>У вас нет тренировок на сегодня</em></p>)}
