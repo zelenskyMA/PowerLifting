@@ -1,9 +1,5 @@
-﻿using AutoMapper;
-using SportAssistant.Application.UserData.Auth.Interfaces;
-using SportAssistant.Domain.DbModels.Coaching;
-using SportAssistant.Domain.Interfaces.Coaching.Repositories;
+﻿using SportAssistant.Domain.Interfaces.Coaching.Application;
 using SportAssistant.Domain.Interfaces.Common.Operations;
-using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Models.Coaching;
 
 namespace SportAssistant.Application.Coaching.TrainingGroupCommands
@@ -13,37 +9,17 @@ namespace SportAssistant.Application.Coaching.TrainingGroupCommands
     /// </summary>
     public class GroupGetListQuery : ICommand<GroupGetListQuery.Param, List<TrainingGroup>>
     {
-        private readonly ICrudRepo<TrainingGroupDb> _trainingGroupRepository;
-        private readonly ITrainingGroupUserRepository _trainingGroupUserRepository;
-        private readonly IUserProvider _user;
-        private readonly IMapper _mapper;
+        private readonly IProcessGroup _processGroup;
 
         public GroupGetListQuery(
-         ICrudRepo<TrainingGroupDb> trainingGroupRepository,
-         ITrainingGroupUserRepository trainingGroupUserRepository,
-         IUserProvider user,
-         IMapper mapper)
+         IProcessGroup processGroup)
         {
-            _trainingGroupRepository = trainingGroupRepository;
-            _trainingGroupUserRepository = trainingGroupUserRepository;
-            _user = user;
-            _mapper = mapper;
+            _processGroup = processGroup;
         }
 
         public async Task<List<TrainingGroup>> ExecuteAsync(Param param)
         {
-            var groupsDb = await _trainingGroupRepository.FindAsync(t => t.CoachId == _user.Id);
-            if (!groupsDb.Any())
-            {
-                return new List<TrainingGroup>();
-            }
-
-            var groups = groupsDb.Select(t => _mapper.Map<TrainingGroup>(t)).OrderBy(t => t.Name).ToList();
-            foreach (var item in groups)
-            {
-                item.ParticipantsCount = (await _trainingGroupUserRepository.FindAsync(t => t.GroupId == item.Id)).Count();
-            }
-
+            var groups = await _processGroup.GetGroupsListAsync();
             return groups.OrderBy(t => t.Name).ToList();
         }
 

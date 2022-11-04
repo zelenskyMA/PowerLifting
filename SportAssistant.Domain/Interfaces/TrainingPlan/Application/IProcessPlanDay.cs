@@ -5,6 +5,13 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
     public interface IProcessPlanDay
     {
         /// <summary>
+        /// Получение Ид текущего тренировочного дня для переданного пользователя
+        /// </summary>
+        /// <param name="userId">Ид спортсмена</param>
+        /// <returns></returns>
+        Task<PlanDay?> GetCurrentDay(int userId);
+
+        /// <summary>
         /// Получение запланированного дня по Ид
         /// </summary>
         /// <param name="id"></param>

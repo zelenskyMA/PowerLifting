@@ -17,5 +17,11 @@ namespace SportAssistant.Domain.Interfaces.Coaching.Application
         /// <param name="id">Ид группы</param>
         /// <returns></returns>
         Task<TrainingGroupInfo> GetGroupInfoByIdAsync(int id);
+
+        /// <summary>
+        /// Получение списка групп для текущего тренера
+        /// </summary>
+        /// <returns>Список групп</returns>
+        Task<List<TrainingGroup>> GetGroupsListAsync();
     }
 }
