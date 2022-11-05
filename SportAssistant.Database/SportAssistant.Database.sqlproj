@@ -73,11 +73,8 @@
     <None Include="PostDeploy\User_PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SportAssistant.Azure.publish.xml" />
     <None Include="SportAssistant.publish.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="SportAssistant.Azure.refactorlog" />
+    <None Include="SportAssistant.1gb.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PostDeploy\Plan_PostDeployment.sql" />
