@@ -93,7 +93,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
                     item.ExercisePart1 = updatedSettings.ExercisePart1;
                     item.ExercisePart2 = updatedSettings.ExercisePart2;
                     item.ExercisePart3 = updatedSettings.ExercisePart3;
-                    item.Completed = false;
+                    item.Completed = updatedSettings.Completed;
                 }
 
                 var result = item.Weight * 100 / achivement.Result;

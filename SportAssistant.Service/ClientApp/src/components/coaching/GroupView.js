@@ -59,12 +59,7 @@ class GroupView extends Component {
             <Button color="primary" className="spaceTop spaceRight" onClick={() => this.deleteGroup()}>Удалить группу</Button>
           </>
         )}
-        {hasData && (
-          <>
-            <p>Список участников</p>
-            <TableControl columnsInfo={columns} data={this.state.users} rowClick={this.onRowClick} />
-          </>
-        )}
+        {hasData && <TableControl columnsInfo={columns} data={this.state.users} rowClick={this.onRowClick} />}
 
         <Button color="primary" className="spaceRight spaceTop" disabled={!hasData} onClick={() => this.props.navigate(`/assignTemplateSet/${this.props.params.groupId}`)}>Запланировать тренировки</Button>
         <Button color="primary" className="spaceTop" outline onClick={() => this.props.navigate('/coachConsole')}>Назад</Button>

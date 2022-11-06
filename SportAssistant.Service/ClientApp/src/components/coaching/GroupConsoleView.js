@@ -51,7 +51,7 @@ class GroupConsoleView extends Component {
       <div className="spaceTop">
         {!hasData && (<p><em>У вас нет групп</em></p>)}
         {hasData && (
-          <TableControl columnsInfo={columns} data={this.state.myGroups} rowClick={this.onRowClick} />
+          <TableControl columnsInfo={columns} data={this.state.myGroups} rowClick={this.onRowClick} pageSize={10} />
         )}
 
         <hr style={{ paddingTop: "2px" }} />

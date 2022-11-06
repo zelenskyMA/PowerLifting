@@ -36,7 +36,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             var plans = new Plans()
             {
                 ActivePlans = plansList.Where(t => t.StartDate.AddDays(7) >= DateTime.Now.Date)
-                    .OrderByDescending(t => t.StartDate).ToList(),
+                    .OrderBy(t => t.StartDate).ToList(),
 
                 ExpiredPlans = plansList.Where(t => t.StartDate.AddDays(7) < DateTime.Now.Date)
                     .OrderByDescending(t => t.StartDate).ToList(),

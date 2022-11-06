@@ -10,9 +10,7 @@ class GroupUserAnaliticsPanel extends Component {
 
   render() {
     return (
-      <>
-        <PlansListPanel />
-      </>
+      <PlansListPanel />
     );
   }
 }

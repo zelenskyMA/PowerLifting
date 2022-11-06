@@ -96,7 +96,10 @@ class PlanDayViewPanel extends Component {
         <tbody>
           {planDay.exercises.map((planExercise, i) =>
             <tr key={'planTr' + i}>
-              <td id={'exercise' + planExercise.id}>{planExercise.exercise.name}</td>
+              <td id={'exercise' + planExercise.id}>
+                {planExercise.exercise.name}
+                {planExercise.comments && <strong style={{ color: '#9706EF' }}> * {' '}</strong>}
+              </td>
               <ExerciseTooltip planExercise={planExercise} idPrefix={'exercise' + planExercise.id} />
 
               {planDay.percentages.map(percentage =>

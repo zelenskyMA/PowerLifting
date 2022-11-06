@@ -1,7 +1,7 @@
-import React from "react";
-import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, usePagination } from 'react-table'
-import { Col, Container, InputGroup, Row, Input, InputGroupText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+import { useAsyncDebounce, useFilters, useGlobalFilter, usePagination, useTable } from 'react-table';
+import { Col, Input, InputGroup, InputGroupText, Row } from 'reactstrap';
 
 function defaultRowClick(row) { }
 function defaultRowDblClick(row) { }
@@ -44,7 +44,10 @@ export function TableControl({ columnsInfo, data,
 
   return (
     <>
-      <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} hideFilter={hideFilter} />
+      {data?.length > pageSize &&
+        <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} hideFilter={hideFilter} />
+      }
+
       <table className="table table-striped" aria-labelledby="tabelLabel" {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -71,9 +74,12 @@ export function TableControl({ columnsInfo, data,
           })}
         </tbody>
       </table>
-      <PaginationPanel
-        canPreviousPage={canPreviousPage} canNextPage={canNextPage} pageOptions={pageOptions} pageCount={pageCount}
-        gotoPage={gotoPage} nextPage={nextPage} previousPage={previousPage} pageIndex={pageIndex} />
+
+      {data?.length > pageSize &&
+        <PaginationPanel
+          canPreviousPage={canPreviousPage} canNextPage={canNextPage} pageOptions={pageOptions} pageCount={pageCount}
+          gotoPage={gotoPage} nextPage={nextPage} previousPage={previousPage} pageIndex={pageIndex} />
+      }
     </>
   )
 }

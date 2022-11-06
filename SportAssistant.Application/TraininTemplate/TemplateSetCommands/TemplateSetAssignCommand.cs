@@ -47,7 +47,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
                     foreach (var item in templates)
                     {
                         var planId = await _processPlan.AssignPlanAsync(item.Id, creationDate, user.Id);
-                        creationDate = creationDate.AddDays(6);
+                        creationDate = creationDate.AddDays(7);
                     }
                 }
                 catch (BusinessException ex)

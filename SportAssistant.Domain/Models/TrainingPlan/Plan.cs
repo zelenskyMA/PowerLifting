@@ -15,6 +15,6 @@ namespace SportAssistant.Domain.Models.TrainingPlan
 
         public List<PlanDay> TrainingDays { get; set; } = new List<PlanDay>();
 
-        public DateTime FinishDate => StartDate.Date.AddDays(7);
+        public DateTime FinishDate => StartDate.Date.AddDays(6);
     }
 }
