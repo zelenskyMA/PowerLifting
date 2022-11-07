@@ -44,9 +44,8 @@ export function TableControl({ columnsInfo, data,
 
   return (
     <>
-      {data?.length > pageSize &&
-        <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} hideFilter={hideFilter} />
-      }
+      <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage}
+        hideFilter={data?.length <= pageSize || hideFilter} />
 
       <table className="table table-striped" aria-labelledby="tabelLabel" {...getTableProps()}>
         <thead>
@@ -64,8 +63,7 @@ export function TableControl({ columnsInfo, data,
           {page.map((row, index) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} key={index} role="button"
-                onDoubleClick={() => rowDblClick(row)} onClick={() => rowClick(row)}>
+              <tr key={index} {...row.getRowProps()} role="button" onDoubleClick={() => rowDblClick(row)} onClick={() => rowClick(row)}>
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
@@ -94,9 +92,7 @@ function FilterPanel({ globalFilter, setGlobalFilter, gotoPage, hideFilter }) {
     <Row>
       <Col xs={6} md={{ offset: 6 }}>
         <InputGroup>
-          <InputGroupText>
-            Фильтр списка:
-          </InputGroupText>
+          <InputGroupText>Фильтр списка:</InputGroupText>
           <Input xs={2}
             className="form-control"
             value={value || ""}

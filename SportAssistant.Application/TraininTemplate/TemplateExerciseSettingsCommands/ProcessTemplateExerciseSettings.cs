@@ -75,7 +75,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateExerciseSettingsCom
                 }
 
                 var result = item.WeightPercentage;
-                var percentage = percentages.FirstOrDefault(t => t.MinValue < result && t.MaxValue > result);
+                var percentage = percentages.FirstOrDefault(t => t.MinValue <= result && t.MaxValue > result);
                 percentage ??= percentages.OrderByDescending(t => t.MaxValue).First();
 
                 item.TemplateExerciseId = templateExerciseId;

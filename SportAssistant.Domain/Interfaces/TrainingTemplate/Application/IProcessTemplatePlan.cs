@@ -17,6 +17,6 @@ namespace SportAssistant.Domain.Interfaces.TrainingTemplate.Application
         /// </summary>
         /// <param name="entity">Шаблон</param>
         /// <returns></returns>
-        Task DeleteTemplate(TemplatePlanDb entity);
+        Task DeleteTemplateAsync(TemplatePlanDb entity);
     }
 }

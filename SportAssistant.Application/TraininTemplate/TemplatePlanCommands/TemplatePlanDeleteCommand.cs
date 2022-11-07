@@ -43,7 +43,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
                 throw new BusinessException($"У вас нет прав на удаление шаблона '{templatePlanDb.Name}'");
             }
 
-            await _processTemplatePlan.DeleteTemplate(templatePlanDb);
+            await _processTemplatePlan.DeleteTemplateAsync(templatePlanDb);
 
             return templateSetDb.Id;
         }
