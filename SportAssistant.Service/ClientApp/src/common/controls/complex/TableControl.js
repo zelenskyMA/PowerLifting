@@ -1,7 +1,7 @@
-import React from "react";
-import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, usePagination } from 'react-table'
-import { Col, Container, InputGroup, Row, Input, InputGroupText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+import { useAsyncDebounce, useFilters, useGlobalFilter, usePagination, useTable } from 'react-table';
+import { Col, Input, InputGroup, InputGroupText, Row } from 'reactstrap';
 
 function defaultRowClick(row) { }
 function defaultRowDblClick(row) { }
@@ -44,7 +44,9 @@ export function TableControl({ columnsInfo, data,
 
   return (
     <>
-      <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage} hideFilter={hideFilter} />
+      <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage}
+        hideFilter={data?.length <= pageSize || hideFilter} />
+
       <table className="table table-striped" aria-labelledby="tabelLabel" {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -61,8 +63,7 @@ export function TableControl({ columnsInfo, data,
           {page.map((row, index) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} key={index} role="button"
-                onDoubleClick={() => rowDblClick(row)} onClick={() => rowClick(row)}>
+              <tr key={index} {...row.getRowProps()} role="button" onDoubleClick={() => rowDblClick(row)} onClick={() => rowClick(row)}>
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
@@ -71,9 +72,12 @@ export function TableControl({ columnsInfo, data,
           })}
         </tbody>
       </table>
-      <PaginationPanel
-        canPreviousPage={canPreviousPage} canNextPage={canNextPage} pageOptions={pageOptions} pageCount={pageCount}
-        gotoPage={gotoPage} nextPage={nextPage} previousPage={previousPage} pageIndex={pageIndex} />
+
+      {data?.length > pageSize &&
+        <PaginationPanel
+          canPreviousPage={canPreviousPage} canNextPage={canNextPage} pageOptions={pageOptions} pageCount={pageCount}
+          gotoPage={gotoPage} nextPage={nextPage} previousPage={previousPage} pageIndex={pageIndex} />
+      }
     </>
   )
 }
@@ -88,9 +92,7 @@ function FilterPanel({ globalFilter, setGlobalFilter, gotoPage, hideFilter }) {
     <Row>
       <Col xs={6} md={{ offset: 6 }}>
         <InputGroup>
-          <InputGroupText>
-            Фильтр списка:
-          </InputGroupText>
+          <InputGroupText>Фильтр списка:</InputGroupText>
           <Input xs={2}
             className="form-control"
             value={value || ""}

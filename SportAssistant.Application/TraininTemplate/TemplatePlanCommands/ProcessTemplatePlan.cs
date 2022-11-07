@@ -39,12 +39,16 @@ namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
                 throw new BusinessException($"У вас нет прав на удаление сета '{templateSetDb.Name}'");
             }
 
-            await Task.WhenAll(templatePlansDb.Select(t => DeleteTemplate(t)).ToArray());
+            foreach (var item in templatePlansDb)
+            {
+                await DeleteTemplateAsync(item);
+            }
+
             await _contextProvider.AcceptChangesAsync();
         }
 
         /// <inheritdoc />
-        public async Task DeleteTemplate(TemplatePlanDb entity)
+        public async Task DeleteTemplateAsync(TemplatePlanDb entity)
         {
             await _processTemplateDay.DeleteByTemplateIdAsync(entity.Id);
             _templatePlanRepository.Delete(entity);

@@ -32,7 +32,7 @@ namespace SportAssistant.Application.Coaching.TrainingGroupCommands
 
             foreach (var user in groupInfo.Users)
             {
-                user.ActivePlansCount = allActivePlans.Count(t => t.UserId == t.UserId);
+                user.ActivePlansCount = allActivePlans.Count(t => t.UserId == user.Id);
             }
 
             return groupInfo;

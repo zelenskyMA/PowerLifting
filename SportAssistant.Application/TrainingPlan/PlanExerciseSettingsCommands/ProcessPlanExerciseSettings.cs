@@ -93,11 +93,11 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
                     item.ExercisePart1 = updatedSettings.ExercisePart1;
                     item.ExercisePart2 = updatedSettings.ExercisePart2;
                     item.ExercisePart3 = updatedSettings.ExercisePart3;
-                    item.Completed = false;
+                    item.Completed = updatedSettings.Completed;
                 }
 
                 var result = item.Weight * 100 / achivement.Result;
-                var percentage = percentages.FirstOrDefault(t => t.MinValue < result && t.MaxValue > result);
+                var percentage = percentages.FirstOrDefault(t => t.MinValue <= result && t.MaxValue > result);
                 percentage ??= percentages.OrderByDescending(t => t.MaxValue).First();
 
                 item.PlanExerciseId = planExerciseId;

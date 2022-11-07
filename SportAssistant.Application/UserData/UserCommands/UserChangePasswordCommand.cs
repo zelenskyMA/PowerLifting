@@ -17,12 +17,11 @@ namespace SportAssistant.Application.UserData.UserCommands
 
         public UserChangePasswordCommand(
             IProcessUser processUser,
-            ICrudRepo<UserDb> userRepository,
-            PasswordManager passwordManager)
+            ICrudRepo<UserDb> userRepository)
         {
             _processUser = processUser;
             _userRepository = userRepository;
-            _passwordManager = passwordManager;
+            _passwordManager = new PasswordManager();
         }
 
         /// <inheritdoc />

@@ -36,7 +36,7 @@ function setValue(event, propName, onChange) {
   //вызываем переданный хендлер, в который уходит: 1) имя свойства в стейте, 2)значение, которое в него надо положить.
   var val = event.target.value;
   if (val == '') {
-    onChange(propName, val);
+    onChange(propName, 0);
     return;
   }
 
