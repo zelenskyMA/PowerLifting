@@ -1,4 +1,5 @@
-﻿using SportAssistant.Domain.CustomExceptions;
+﻿using SportAssistant.Application.TrainingPlan.PlanCommands;
+using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -15,17 +16,20 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
     {
         private readonly IProcessPlan _processPlan;
         private readonly IProcessPlanExercise _processPlanExercise;
+        private readonly IProcessPlanUserId _processPlanUserId;
         private readonly IProcessSettings _processSettings;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
 
         public PlanExerciseCreateCommand(
             IProcessPlan processPlan,
             IProcessPlanExercise processPlanExercise,
+            IProcessPlanUserId processPlanUserId,
             IProcessSettings processSettings,
             ICrudRepo<PlanExerciseDb> plannedExerciseRepository)
         {
             _processPlan = processPlan;
             _processPlanExercise = processPlanExercise;
+            _processPlanUserId = processPlanUserId;
             _processSettings = processSettings;
             _planExerciseRepository = plannedExerciseRepository;
         }
@@ -43,7 +47,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
                 throw new BusinessException("Лимит упражнений в день превышен.");
             }
 
-            await _processPlan.PlanningAllowedForUserAsync(param.UserId);
+            var userId = await GetAndCheckUserId(param.DayId);
 
             var planExercisesDb = await _planExerciseRepository.FindAsync(t => t.PlanDayId == param.DayId);
             await RemoveDeletedExercisesAsync(planExercisesDb, param);
@@ -52,7 +56,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
             {
                 if (!UpdateExercise(planExercisesDb, param, i))
                 {
-                    await _processPlanExercise.CreateAsync(param.UserId, param.DayId, param.Exercises[i - 1].Id, i);
+                    await _processPlanExercise.CreateAsync(userId, param.DayId, param.Exercises[i - 1].Id, i);
                 }
             }
 
@@ -87,13 +91,18 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
             return false;
         }
 
+        private async Task<int> GetAndCheckUserId(int dayId)
+        {
+            var userId = await _processPlanUserId.GetByDayId(dayId);
+
+            return await _processPlan.PlanningAllowedForUserAsync(userId);
+        }
+
         public class Param
         {
             public int DayId { get; set; }
 
             public List<Exercise> Exercises { get; set; }
-
-            public int UserId { get; set; }
         }
     }
 }

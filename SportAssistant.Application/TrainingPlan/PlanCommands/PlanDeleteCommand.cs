@@ -26,15 +26,15 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
 
         public async Task<bool> ExecuteAsync(Param param)
         {
-            var userId = await _processPlan.PlanningAllowedForUserAsync(param.UserId);
-
-            var dbPlan = (await _planRepository.FindAsync(t => t.Id == param.Id && t.UserId == userId)).FirstOrDefault();
+            var dbPlan = (await _planRepository.FindAsync(t => t.Id == param.Id)).FirstOrDefault();
             if (dbPlan == null)
             {
                 return true;
             }
 
-            await _processPlanDay.DeleteByPlanIdAsync(param.Id);
+            var userId = await _processPlan.PlanningAllowedForUserAsync(dbPlan.UserId);
+
+            await _processPlanDay.DeletePlanByIdAsync(param.Id);
             _planRepository.Delete(dbPlan);
 
             return true;
@@ -46,11 +46,6 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             /// Ид плана
             /// </summary>
             public int Id { get; set; }
-
-            /// <summary>
-            /// Ид пользователя, владельца плана
-            /// </summary>
-            public int UserId { get; set; }
         }
     }
 }

@@ -27,7 +27,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
 
         public async Task<int> ExecuteAsync(Param param)
         {
-            if (string.IsNullOrEmpty(param.Name))
+            if (string.IsNullOrWhiteSpace(param.Name))
             {
                 throw new BusinessException("Необходимо указать название шаблона");
             }

@@ -24,7 +24,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 
         public async Task<int> ExecuteAsync(Param param)
         {
-            if (string.IsNullOrEmpty(param.Name))
+            if (string.IsNullOrWhiteSpace(param.Name))
             {
                 throw new BusinessException("Необходимо указать название цикла");
             }

@@ -11,7 +11,7 @@ class GroupUserAnaliticsPanel extends Component {
   render() {
     return (
       <>
-        <PlanAnaliticsPanel />
+        <PlanAnaliticsPanel groupUserId={this.props.groupUserId} />
       </>
     );
   }

@@ -33,6 +33,6 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         /// </summary>
         /// <param name="planId">Ид тренировочного плана</param>
         /// <returns></returns>
-        Task DeleteByPlanIdAsync(int planId);
+        Task DeletePlanByIdAsync(int planId);
     }
 }

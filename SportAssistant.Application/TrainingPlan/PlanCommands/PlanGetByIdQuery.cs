@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -14,9 +15,9 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
     {
         private readonly IProcessPlanExercise _processPlanExercise;
         private readonly ITrainingCountersSetup _planCountersSetup;
-
         private readonly ICrudRepo<PlanDb> _planRepository;
         private readonly ICrudRepo<PlanDayDb> _planDayRepository;
+        private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public PlanGetByIdQuery(
@@ -24,12 +25,14 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             ITrainingCountersSetup planCountersSetup,
             ICrudRepo<PlanDb> planRepository,
             ICrudRepo<PlanDayDb> planDayRepository,
+            IUserProvider user,
             IMapper mapper)
         {
             _processPlanExercise = processPlanExercise;
             _planCountersSetup = planCountersSetup;
             _planRepository = planRepository;
             _planDayRepository = planDayRepository;
+            _user = user;
             _mapper = mapper;
         }
 
@@ -52,6 +55,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             }
 
             plan.TrainingDays = planDays;
+            plan.IsMyPlan = plan.UserId == _user.Id;
             _planCountersSetup.SetPlanCounters(plan);
 
             return plan;

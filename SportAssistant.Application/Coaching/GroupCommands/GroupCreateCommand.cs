@@ -25,6 +25,11 @@ namespace SportAssistant.Application.Coaching.TrainingGroupCommands
 
         public async Task<bool> ExecuteAsync(Param param)
         {
+            if (string.IsNullOrWhiteSpace(param.Group.Name))
+            {
+                throw new BusinessException($"Название группы обязательно");
+            }
+
             var groupDb = await _trainingGroupRepository.FindAsync(t => t.Name == param.Group.Name && t.CoachId == _user.Id);
             if (groupDb.Any())
             {

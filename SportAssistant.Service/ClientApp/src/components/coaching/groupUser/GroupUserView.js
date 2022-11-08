@@ -1,25 +1,15 @@
 ﻿import React, { Component } from 'react';
-import { connect } from "react-redux";
+import { GetAsync } from "../../../common/ApiActions";
 import { TabControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
-import { GetAsync } from "../../../common/ApiActions";
-import { setGroupUserId } from "../../../stores/coachingStore/coachActions";
 import '../../../styling/Common.css';
 import GroupUserAnaliticsPanel from "./GroupUserAnaliticsPanel";
 import GroupUserCardPanel from "./GroupUserCardPanel";
 import GroupUserPlansPanel from "./GroupUserPlansPanel";
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setGroupUserId: (userId) => setGroupUserId(userId, dispatch)
-  }
-}
-
 class GroupUserView extends Component {
   constructor(props) {
     super(props);
-
-    this.props.setGroupUserId(parseInt(this.props.params.id, 10));
 
     this.state = {
       userName: ''
@@ -48,8 +38,8 @@ class GroupUserView extends Component {
   }
 
   userCardContent = () => { return (<GroupUserCardPanel />); }
-  plansContent = () => { return (<GroupUserPlansPanel />); }
-  analiticsContent = () => { return (<GroupUserAnaliticsPanel />); }
+  plansContent = () => { return (<GroupUserPlansPanel groupUserId={this.props.params.id} />); }
+  analiticsContent = () => { return (<GroupUserAnaliticsPanel groupUserId={this.props.params.id} />); }
 }
 
-export default WithRouter(connect(null, mapDispatchToProps)(GroupUserView));
+export default WithRouter(GroupUserView);
