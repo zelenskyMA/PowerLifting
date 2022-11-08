@@ -19,9 +19,16 @@ namespace SportAssistant.Service.Controllers.UserData
 
         [HttpGet]
         [Route("getByExercise")]
-        public async Task<UserAchivement> GetByExerciseAsync([FromServices] ICommand<UserAchivementsGetByExerciseQuery.Param, UserAchivement> command, int userId, int exerciseTypeId)
+        public async Task<UserAchivement> GetByExerciseAsync(
+            [FromServices] ICommand<UserAchivementsGetByExerciseQuery.Param, UserAchivement> command,
+            int planExerciseId,
+            int exerciseTypeId)
         {
-            var result = await command.ExecuteAsync(new UserAchivementsGetByExerciseQuery.Param() { UserId = userId, ExerciseTypeId = exerciseTypeId });
+            var result = await command.ExecuteAsync(new UserAchivementsGetByExerciseQuery.Param()
+            {
+                PlanExerciseId = planExerciseId,
+                ExerciseTypeId = exerciseTypeId
+            });
             return result;
         }
 

@@ -8,7 +8,6 @@ import '../../../styling/Common.css';
 
 const mapStateToProps = store => {
   return {
-    groupUserId: store.coach.groupUserId,
     appSettings: store.app.settings,
   }
 }
@@ -29,10 +28,12 @@ class PlanExerciseSettingsEdit extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    var planExerciseData = await GetAsync(`/planExercise/get?id=${this.props.params.id}`);
-    var achivementData = await GetAsync(`/userAchivement/getByExercise?userId=${this.props.groupUserId}&exerciseTypeId=${planExerciseData?.exercise?.exerciseTypeId}`);
+    var data = await GetAsync(`/planExercise/get?id=${this.props.params.id}`);
 
-    this.setState({ planExercise: planExerciseData, settingsList: planExerciseData.settings, achivement: achivementData, loading: false });
+    var request = `?planExerciseId=${data.id}&exerciseTypeId=${data?.exercise?.exerciseTypeId}`;
+    var achivementData = await GetAsync(`/userAchivement/getByExercise${request}`);
+
+    this.setState({ planExercise: data, settingsList: data.settings, achivement: achivementData, loading: false });
   }
 
   confirmAsync = async () => {
@@ -40,7 +41,7 @@ class PlanExerciseSettingsEdit extends Component {
       var planExercise = this.state.planExercise;
       planExercise.settings = this.state.settingsList;
 
-      await PostAsync('/planExercise/update', { userId: this.props.groupUserId, planExercise: planExercise });
+      await PostAsync('/planExercise/update', { planExercise: planExercise });
       this.props.navigate(`/editPlanDay/${this.props.params.planId}/${planExercise.planDayId}`);
     }
     catch (error) {

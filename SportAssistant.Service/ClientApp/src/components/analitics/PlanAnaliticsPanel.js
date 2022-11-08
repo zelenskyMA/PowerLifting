@@ -1,16 +1,9 @@
 ﻿import React, { Component } from 'react';
-import { connect } from "react-redux";
 import { Col, Row } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
-import { InputDate, LineChartControl, TabControl, LoadingPanel } from "../../common/controls/CustomControls";
+import { InputDate, LineChartControl, LoadingPanel, TabControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
-
-const mapStateToProps = store => {
-  return {
-    groupUserId: store.coach.groupUserId,
-  }
-}
 
 class PlanAnaliticsPanel extends Component {
   constructor(props) {
@@ -36,8 +29,7 @@ class PlanAnaliticsPanel extends Component {
     var utcStartDate = new Date(this.state.startDate.getTime() - this.state.startDate.getTimezoneOffset() * 60 * 1000);
     var utcFinishDate = new Date(this.state.finishDate.getTime() - this.state.finishDate.getTimezoneOffset() * 60 * 1000);
 
-    var request = `startDate=${utcStartDate.toISOString()}&finishDate=${utcFinishDate.toISOString()}`;
-    request = this.props.groupUserId ? request + `&userId=${this.props.groupUserId}` : request;
+    var request = `startDate=${utcStartDate.toISOString()}&finishDate=${utcFinishDate.toISOString()}&userId=${this.props.groupUserId}`;
     var analiticsData = await GetAsync(`/analitics/getPlanAnalitics?${request}`);
 
     this.setState({ analitics: analiticsData, loading: false });
@@ -94,4 +86,4 @@ class PlanAnaliticsPanel extends Component {
 
 }
 
-export default WithRouter(connect(mapStateToProps, null)(PlanAnaliticsPanel))
+export default WithRouter(PlanAnaliticsPanel);

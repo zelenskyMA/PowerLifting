@@ -7,7 +7,8 @@ import PlanExerciseSettingsEdit from "../components/trainingPlan/edit/PlanExerci
 import PlansListView from "../components/trainingPlan/view/PlansListView";
 
 const TrainingPlanRoutes = [
-  { path: '/createPlan', element: <PlanCreate /> },
+  { path: '/createPlan/:groupUserId', element: <PlanCreate /> },  
+
   { path: '/editPlanDays/:planId', element: <PlanDaysEdit /> },
   { path: '/editPlanDay/:planId/:id', element: <PlanDayEdit /> },
   { path: '/editPlanExercises/:planId/:id', element: <PlanExercisesEdit /> },

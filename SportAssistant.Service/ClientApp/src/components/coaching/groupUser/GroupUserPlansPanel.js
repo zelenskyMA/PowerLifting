@@ -3,16 +3,16 @@ import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
 import PlansListPanel from "../../trainingPlan/view/PlansListPanel";
 
-class GroupUserAnaliticsPanel extends Component {
+class GroupUserPlansPanel extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <PlansListPanel />
+      <PlansListPanel groupUserId={this.props.groupUserId} />
     );
   }
 }
 
-export default WithRouter(GroupUserAnaliticsPanel)
+export default WithRouter(GroupUserPlansPanel)

@@ -14,15 +14,18 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
     {
         private readonly IProcessPlan _processPlan;
         private readonly IProcessPlanExerciseSettings _processPlanExerciseSettings;
+        private readonly IProcessPlanUserId _processPlanUserId;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
 
         public PlanExerciseUpdateCommand(
             IProcessPlan processPlan,
             IProcessPlanExerciseSettings processPlanExerciseSettings,
+            IProcessPlanUserId processPlanUserId,
             ICrudRepo<PlanExerciseDb> plannedExerciseRepository)
         {
             _processPlan = processPlan;
             _processPlanExerciseSettings = processPlanExerciseSettings;
+            _processPlanUserId = processPlanUserId;
             _planExerciseRepository = plannedExerciseRepository;
         }
 
@@ -34,7 +37,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
                 throw new BusinessException("Не найдено упражнение для обновления");
             }
 
-            var userId = await _processPlan.PlanningAllowedForUserAsync(param.UserId);
+            var userId = await GetAndCheckUserId(planExerciseDb.Id);
 
             if (planExerciseDb.Comments != param.PlanExercise.Comments)
             {
@@ -47,13 +50,15 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
             return true;
         }
 
+        private async Task<int> GetAndCheckUserId(int planExerciseId)
+        {
+            var userId = await _processPlanUserId.GetByPlanExerciseId(planExerciseId);
+
+            return await _processPlan.PlanningAllowedForUserAsync(userId);
+        }
+
         public class Param
         {
-            /// <summary>
-            /// Пользователь, для которого идет планирование.
-            /// </summary>
-            public int UserId { get; set; }
-
             /// <summary>
             /// Упражнение, для которого планируются поднятия
             /// </summary>

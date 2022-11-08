@@ -6,17 +6,9 @@ import { ErrorPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal, Locale } from "../../../common/Localization";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
-import { setGroupUserId } from "../../../stores/coachingStore/coachActions";
-
-const mapStateToProps = store => {
-  return {
-    groupUserId: store.coach.groupUserId,
-  }
-}
 
 const mapDispatchToProps = dispatch => {
   return {
-    setGroupUserId: (userId) => setGroupUserId(userId, dispatch),
     changeModalVisibility: (modalInfo) => changeModalVisibility(modalInfo, dispatch)
   }
 }
@@ -37,7 +29,7 @@ class PlanDaysEdit extends React.Component {
 
   getInitData = async () => {
     var plan = await GetAsync(`/trainingPlan/get?Id=${this.props.params.planId}`);
-    var url = this.props.groupUserId ? `/groupUser/${this.props.groupUserId}` : "/plansList";
+    var url = plan.isMyPlan ? `/plansList` : `/groupUser/${plan.userId}`;
 
     this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum, backUrl: url });
   }
@@ -46,7 +38,7 @@ class PlanDaysEdit extends React.Component {
 
   onConfirmDelete = async () => {
     try {
-      await PostAsync("/trainingPlan/delete", { id: this.props.params.planId, userId: this.props.groupUserId });
+      await PostAsync("/trainingPlan/delete", { id: this.props.params.planId });
       this.props.navigate(this.state.backUrl);
     }
     catch (error) {
@@ -160,4 +152,4 @@ class PlanDaysEdit extends React.Component {
 
 }
 
-export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(PlanDaysEdit))
+export default WithRouter(connect(null, mapDispatchToProps)(PlanDaysEdit))

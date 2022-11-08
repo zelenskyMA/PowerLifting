@@ -45,7 +45,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             await _planRepository.CreateAsync(plan);
             await _provider.AcceptChangesAsync();
 
-            for (int i = 0; i < 7; i++) // 7 дней в плане. Завязано в ui
+            for (int i = 0; i < 7; i++)
             {
                 await _processPlanDay.CreateAsync(userId, plan.Id, param.CreationDate.AddDays(i));
             }

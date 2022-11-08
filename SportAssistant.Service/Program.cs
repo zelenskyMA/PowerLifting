@@ -71,6 +71,7 @@ internal class Program
         builder.Services.AddCommandsFromAssemblyOf<UserInfoGetQuery>();
 
         builder.Services.AddScoped<IProcessPlan, ProcessPlan>();
+        builder.Services.AddScoped<IProcessPlanUserId, ProcessPlanUserId>();
         builder.Services.AddScoped<IProcessPlanDay, ProcessPlanDay>();
         builder.Services.AddScoped<IProcessPlanExercise, ProcessPlanExercise>();
         builder.Services.AddScoped<IProcessPlanExerciseSettings, ProcessPlanExerciseSettings>();

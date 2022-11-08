@@ -7,7 +7,6 @@ import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
   return {
-    groupUserId: store.coach.groupUserId,
     appSettings: store.app.settings,
   }
 }
@@ -36,7 +35,7 @@ class PlanExercisesEdit extends Component {
   }
 
   confirmExercisesAsync = async () => {
-    await PostAsync('/planExercise/create', { dayId: this.props.params.id, exercises: this.state.selectedExercises, userId: this.props.groupUserId });
+    await PostAsync('/planExercise/create', { dayId: this.props.params.id, exercises: this.state.selectedExercises });
     this.props.navigate(`/editPlanDay/${this.props.params.planId}/${this.props.params.id}`);
   }
 

@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from "react";
-import { useAsyncDebounce, useFilters, useGlobalFilter, usePagination, useTable } from 'react-table';
+import { useFilters, useGlobalFilter, usePagination, useTable } from 'react-table';
 import { Col, Input, InputGroup, InputGroupText, Row } from 'reactstrap';
 
 function defaultRowClick(row) { }
@@ -24,9 +24,7 @@ export function TableControl({ columnsInfo, data,
     gotoPage,
     nextPage,
     previousPage,
-    state,
     state: { pageIndex },
-    setGlobalFilter,
   } = useTable(
     {
       columns,
@@ -42,10 +40,11 @@ export function TableControl({ columnsInfo, data,
     return (<p><em>Нет записей</em></p>);
   }
 
+  var filterColumn = headerGroups[0].headers.find(t => t.id === 'name');
+
   return (
     <>
-      <FilterPanel globalFilter={state.globalFilter} setGlobalFilter={setGlobalFilter} gotoPage={gotoPage}
-        hideFilter={data?.length <= pageSize || hideFilter} />
+      <FilterPanel column={filterColumn} gotoPage={gotoPage} hideFilter={data?.length <= pageSize || !filterColumn || hideFilter} />
 
       <table className="table table-striped" aria-labelledby="tabelLabel" {...getTableProps()}>
         <thead>
@@ -82,9 +81,7 @@ export function TableControl({ columnsInfo, data,
   )
 }
 
-function FilterPanel({ globalFilter, setGlobalFilter, gotoPage, hideFilter }) {
-  const [value, setValue] = React.useState(globalFilter);
-  const onChange = useAsyncDebounce(value => { setGlobalFilter(value || undefined) }, 200);
+function FilterPanel({ column: { filterValue, setFilter }, gotoPage, hideFilter }) {
 
   if (hideFilter) { return (<></>); }
 
@@ -95,10 +92,9 @@ function FilterPanel({ globalFilter, setGlobalFilter, gotoPage, hideFilter }) {
           <InputGroupText>Фильтр списка:</InputGroupText>
           <Input xs={2}
             className="form-control"
-            value={value || ""}
+            value={filterValue || ""}
             onChange={e => {
-              setValue(e.target.value);
-              onChange(e.target.value);
+              setFilter(e.target.value || undefined);
               gotoPage(0);
             }}
             placeholder={`введите строку или ее часть`}
@@ -160,3 +156,32 @@ function PaginationPanel({
     </Row>
   );
 }
+
+/*
+function GlobalFilterPanel({ globalFilter, setGlobalFilter, gotoPage, hideFilter }) {
+  const [value, setValue] = React.useState(globalFilter);
+  const onChange = useAsyncDebounce(value => { setGlobalFilter(value || undefined) }, 200);
+
+  if (hideFilter) { return (<></>); }
+
+  return (
+    <Row>
+      <Col xs={6} md={{ offset: 6 }}>
+        <InputGroup>
+          <InputGroupText>Фильтр списка:</InputGroupText>
+          <Input xs={2}
+            className="form-control"
+            value={value || ""}
+            onChange={e => {
+              setValue(e.target.value);
+              onChange(e.target.value);
+              gotoPage(0);
+            }}
+            placeholder={`введите строку или ее часть`}
+          />
+        </InputGroup>
+      </Col>
+    </Row>
+  );
+}
+*/
