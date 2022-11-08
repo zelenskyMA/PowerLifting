@@ -81,7 +81,7 @@ export function TableControl({ columnsInfo, data,
   )
 }
 
-function FilterPanel({ column: { filterValue, setFilter }, gotoPage, hideFilter }) {
+function FilterPanel({ column, gotoPage, hideFilter }) {
 
   if (hideFilter) { return (<></>); }
 
@@ -92,9 +92,9 @@ function FilterPanel({ column: { filterValue, setFilter }, gotoPage, hideFilter 
           <InputGroupText>Фильтр списка:</InputGroupText>
           <Input xs={2}
             className="form-control"
-            value={filterValue || ""}
+            value={column.filterValue || ""}
             onChange={e => {
-              setFilter(e.target.value || undefined);
+              column.setFilter(e.target.value || undefined);
               gotoPage(0);
             }}
             placeholder={`введите строку или ее часть`}
