@@ -33,9 +33,9 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
 
         public async Task<bool> ExecuteAsync(Param param)
         {
-            if (param.TargetDate < DateTime.Now)
+            if (param.TargetDate == null)
             {
-                throw new BusinessException("Целевой день не указан или находится в прошлом.");
+                throw new BusinessException("Целевой день не указан.");
             }
 
             var oldExercisesDb = await _planExerciseRepository.FindAsync(t => t.PlanDayId == param.Id);
@@ -83,7 +83,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
 
             public int Id { get; set; }
 
-            public DateTime TargetDate { get; set; }
+            public DateTime? TargetDate { get; set; }
         }
     }
 }
