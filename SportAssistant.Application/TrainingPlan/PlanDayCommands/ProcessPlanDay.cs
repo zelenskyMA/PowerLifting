@@ -112,7 +112,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
         }
 
         /// <inheritdoc />
-        public async Task DeletePlanByIdAsync(int planId)
+        public async Task DeleteDayByPlanIdAsync(int planId)
         {
             var planDaysDb = await _planDayRepository.FindAsync(t => t.PlanId == planId);
             if (planDaysDb.Count == 0)
