@@ -34,7 +34,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
 
             var userId = await _processPlan.PlanningAllowedForUserAsync(dbPlan.UserId);
 
-            await _processPlanDay.DeletePlanByIdAsync(param.Id);
+            await _processPlanDay.DeleteDayByPlanIdAsync(param.Id);
             _planRepository.Delete(dbPlan);
 
             return true;

@@ -108,7 +108,8 @@ class PlanDaysEdit extends React.Component {
             <div>{DateToLocal(day.activityDate)}</div>
           </Col>
           <Col style={{ paddingTop: '7px' }} >
-            <Button color="primary" outline onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
+            <Button color="primary" outline title="Назначить упражнения" style={{ width: '40px',  marginRight: '10px' }} onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
+            <Button color="primary" outline title="Перенести упражнения" style={{ width: '40px'}} disabled={day.exerciseTypeCounters.length == 0} onClick={() => this.props.navigate(`/movePlanDay/${this.props.params.planId}/${day.id}`)} >{' - '}</Button>
           </Col>
         </Row>
         <hr style={{ width: '60%', paddingTop: "2px" }} />

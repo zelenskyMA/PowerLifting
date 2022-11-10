@@ -1,0 +1,52 @@
+﻿using SportAssistant.Domain.DbModels.TrainingPlan;
+using SportAssistant.Domain.Interfaces.Common.Operations;
+using SportAssistant.Domain.Interfaces.Common.Repositories;
+using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
+
+namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
+{
+    /// <summary>
+    /// Удаление упражнений из тренировочного дня.
+    /// </summary>
+    public class PlanDayClearCommand : ICommand<PlanDayClearCommand.Param, bool>
+    {
+        private readonly IProcessPlan _processPlan;
+        private readonly IProcessPlanExercise _processPlanExercise;
+        private readonly IProcessPlanUserId _processPlanUserId;
+        private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
+
+        public PlanDayClearCommand(
+            IProcessPlan processPlan,
+            IProcessPlanExercise processPlanExercise,
+            IProcessPlanUserId processPlanUserId,
+            ICrudRepo<PlanExerciseDb> planExerciseRepository)
+        {
+            _processPlan = processPlan;
+            _processPlanExercise = processPlanExercise;
+            _processPlanUserId = processPlanUserId;
+            _planExerciseRepository = planExerciseRepository;
+        }
+
+        public async Task<bool> ExecuteAsync(Param param)
+        {
+            await GetAndCheckUserId(param.Id);
+
+            var planExercisesDb = await _planExerciseRepository.FindAsync(t => t.PlanDayId == param.Id);
+            await _processPlanExercise.DeletePlanExercisesAsync(planExercisesDb);
+
+            return true;
+        }
+
+        private async Task<int> GetAndCheckUserId(int dayId)
+        {
+            var userId = await _processPlanUserId.GetByDayId(dayId);
+
+            return await _processPlan.PlanningAllowedForUserAsync(userId);
+        }
+
+        public class Param
+        {
+            public int Id { get; set; }
+        }
+    }
+}

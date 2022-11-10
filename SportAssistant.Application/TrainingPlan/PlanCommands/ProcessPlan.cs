@@ -46,7 +46,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             var crossingPlansDb = await GetCrossingPlansAsync(creationDate, userId);
             foreach (var planDb in crossingPlansDb)
             {
-                await _processPlanDay.DeletePlanByIdAsync(planDb.Id);
+                await _processPlanDay.DeleteDayByPlanIdAsync(planDb.Id);
                 _planRepository.Delete(planDb);
                 await _provider.AcceptChangesAsync();
             }
