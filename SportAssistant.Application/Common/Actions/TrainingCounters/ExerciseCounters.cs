@@ -13,7 +13,7 @@ namespace SportAssistant.Application.Common.Actions.TrainingCounters
             }
 
             exercise.WeightLoad = exercise.Settings.Sum(t => t.Weight * t.Iterations * (t.ExercisePart1 + t.ExercisePart2 + t.ExercisePart3));
-            exercise.LiftCounter = exercise.Settings.Sum(t => t.ExercisePart1 + t.ExercisePart2 + t.ExercisePart3);
+            exercise.LiftCounter = exercise.Settings.Sum(t => t.Iterations * (t.ExercisePart1 + t.ExercisePart2 + t.ExercisePart3));
             exercise.Intensity = exercise.LiftCounter == 0 ? 0 : exercise.WeightLoad / exercise.LiftCounter;
 
             exercise.LiftIntensities = ExerciseIntensity(exercise.Settings);
@@ -26,7 +26,7 @@ namespace SportAssistant.Application.Common.Actions.TrainingCounters
                 return;
             }
 
-            exercise.LiftCounter = exercise.Settings.Sum(t => t.ExercisePart1 + t.ExercisePart2 + t.ExercisePart3);
+            exercise.LiftCounter = exercise.Settings.Sum(t => t.Iterations * (t.ExercisePart1 + t.ExercisePart2 + t.ExercisePart3));
             exercise.WeightLoadPercentage = exercise.Settings.Sum(t => t.WeightPercentage);
         }
 
