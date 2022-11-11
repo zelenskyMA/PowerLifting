@@ -147,27 +147,9 @@ class PlanDayViewPanel extends Component {
         <div role="button" className="text-center" id={idPrefix} onClick={() => this.onShowExerciseModal(modalData)}>
           <img src={exerciseState ? Completed : Planned} width="30" height="35" className="rounded mx-auto d-block" />
         </div>
-        <SettingsTooltip settingsList={settingsList} idPrefix={idPrefix} />
       </>
     );
   }
-}
-
-
-function SettingsTooltip({ settingsList, idPrefix }) {
-  return (
-    <UncontrolledTooltip placement="top" target={idPrefix}>
-      {settingsList.map(settings => {
-        return (
-          <p key={idPrefix + settings.id}>
-            {
-              `Вес: ${settings.weight} Подходы: ${settings.iterations} Повторы: ${settings.exercisePart1} | ${settings.exercisePart2} | ${settings.exercisePart3}`
-            }
-          </p>
-        );
-      })}
-    </UncontrolledTooltip>
-  );
 }
 
 function ExerciseTooltip({ planExercise, idPrefix }) {
