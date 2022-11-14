@@ -28,14 +28,12 @@ namespace SportAssistant.Application.Common.Actions.EmailNotifications
         }
 
         /// <inheritdoc />
-        public void Send(EmailMessage message)
+        public async Task SendAsync(EmailMessage message)
         {
             var smtpClient = SetupClient();
             var mailMessage = CreateMessage(message);
 
-            // smtpClient.Send(mailMessage);
-
-            smtpClient.Send(mailMessage.From.Address, mailMessage.To[0].Address, mailMessage.Subject, mailMessage.Body);
+            await smtpClient.SendMailAsync(mailMessage);
         }
 
         /// <inheritdoc />

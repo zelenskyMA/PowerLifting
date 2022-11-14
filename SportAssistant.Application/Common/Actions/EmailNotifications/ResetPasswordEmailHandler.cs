@@ -21,7 +21,7 @@ namespace SportAssistant.Application.Common.Actions.EmailNotifications
             message.Body = string.Format(message.Body, password);
             message.Address = email;
 
-            _processEmail.Send(message);
+            await _processEmail.SendAsync(message);
         }
     }
 }

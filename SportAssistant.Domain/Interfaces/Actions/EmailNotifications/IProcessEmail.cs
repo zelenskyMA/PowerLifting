@@ -10,7 +10,7 @@ namespace SportAssistant.Domain.Interfaces.Actions.EmailNotifications
         /// </summary>
         /// <param name="message">Сообщение для отправки</param>
         /// <returns></returns>
-        void Send(EmailMessage message);
+        Task SendAsync(EmailMessage message);
 
         /// <summary>
         /// Получение шаблона почтового сообщения
