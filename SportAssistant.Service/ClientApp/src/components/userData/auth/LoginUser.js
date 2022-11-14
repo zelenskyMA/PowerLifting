@@ -5,6 +5,7 @@ import { PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, InputEmail, InputPassword } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { SetToken } from "../../../common/TokenActions";
+import '../../../styling/Common.css';
 
 class LoginUser extends React.Component {
 
@@ -35,7 +36,7 @@ class LoginUser extends React.Component {
         <Container onKeyPress={async (e) => e.key === 'Enter' && await this.onLogin()} fluid>
           <ErrorPanel errorMessage={this.state.error} />
 
-          <Row style={{ marginTop: '30px' }}>
+          <Row className="spaceTop spaceBottom">
             <Col xs={3}>
               <InputEmail label="Логин:" propName="login" onChange={this.onValueChange} />
             </Col>
@@ -44,8 +45,9 @@ class LoginUser extends React.Component {
             </Col>
           </Row>
 
-          <NavLink style={{ width: '160px', marginLeft: '-15px', marginTop: '10px' }} tag={Link} to="/register">Зарегистрироваться</NavLink>
-          <NavLink style={{ width: '160px', marginLeft: '-15px', }} tag={Link} to="/changePassword">Сменить пароль</NavLink>
+          <NavLink className="inlineLink" tag={Link} to="/register">Зарегистрироваться</NavLink>
+          <NavLink className="inlineLink" tag={Link} to="/changePassword">Сменить пароль</NavLink>
+          <NavLink className="inlineLink" tag={Link} to="/resetPassword">Забыли пароль?</NavLink>
 
           <Button color="primary" style={{ marginTop: '30px' }} onClick={() => this.onLogin()}>Войти</Button>
         </Container>

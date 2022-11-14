@@ -6,6 +6,7 @@ using SportAssistant.Application.Coaching.TrainingGroupCommands;
 using SportAssistant.Application.Coaching.TrainingGroupUserCommands;
 using SportAssistant.Application.Coaching.TrainingRequestCommands;
 using SportAssistant.Application.Common;
+using SportAssistant.Application.Common.Actions.EmailNotifications;
 using SportAssistant.Application.Common.Actions.TrainingCounters;
 using SportAssistant.Application.Dictionaryies;
 using SportAssistant.Application.Settings;
@@ -25,6 +26,7 @@ using SportAssistant.Application.UserData.UserAchivementCommands;
 using SportAssistant.Application.UserData.UserCommands;
 using SportAssistant.Application.UserData.UserInfoCommands;
 using SportAssistant.Domain.Interfaces;
+using SportAssistant.Domain.Interfaces.Actions.EmailNotifications;
 using SportAssistant.Domain.Interfaces.Coaching.Application;
 using SportAssistant.Domain.Interfaces.Coaching.Repositories;
 using SportAssistant.Domain.Interfaces.Common;
@@ -93,6 +95,9 @@ internal class Program
         builder.Services.AddScoped<IProcessUserAchivements, ProcessUserAchivements>();
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
+        
+        builder.Services.AddScoped<IProcessEmail, ProcessEmail>();
+        builder.Services.AddScoped<IResetPasswordEmailHandler, ResetPasswordEmailHandler>();
 
         builder.Services.AddScoped<IProcessDictionary, ProcessDictionary>();
         builder.Services.AddScoped<IProcessSettings, ProcessSettings>();

@@ -103,5 +103,6 @@
     <Build Include="Tables\plan\TemplateDays.sql" />
     <Build Include="Tables\plan\TemplateExercises.sql" />
     <Build Include="Tables\plan\TemplateExerciseSettings.sql" />
+    <Build Include="Tables\dbo\EmailMessages.sql" />
   </ItemGroup>
 </Project>
