@@ -51,12 +51,12 @@ class Home extends Component {
     if (this.state.loggedUser === false) { return (this.startScreenPanel()); }
     if (this.state.loading) { return (<LoadingPanel />); }
 
+    if (this.props.userInfo?.coachOnly) { return (<CoachHomePanel userInfo={this.props.userInfo} />); }
+
     return (
       <>
         <p className="spaceBottom" >План на <strong>{DateToLocal(new Date())}</strong></p>
-        {this.props.userInfo?.coachOnly ?
-          <CoachHomePanel userInfo={this.props.userInfo} /> :
-          (this.state.planDay?.exercises?.length > 0 ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>У вас нет тренировок на сегодня</em></p>)}
+        {this.state.planDay?.exercises?.length > 0 ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>У вас нет тренировок на сегодня</em></p>}
       </>
     );
   }

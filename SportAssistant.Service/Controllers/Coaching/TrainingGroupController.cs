@@ -26,10 +26,10 @@ namespace SportAssistant.Service.Controllers.Coaching
         }
 
         [HttpGet]
-        [Route("getExercisesList")]
-        public async Task<List<TrainingGroupExercises>> GetAsync([FromServices] ICommand<GroupExercisesGetListQuery.Param, List<TrainingGroupExercises>> command)
+        [Route("getWorkoutList")]
+        public async Task<List<TrainingGroupWorkout>> GetAsync([FromServices] ICommand<GroupWorkoutGetListQuery.Param, List<TrainingGroupWorkout>> command)
         {
-            var result = await command.ExecuteAsync(new GroupExercisesGetListQuery.Param() { });
+            var result = await command.ExecuteAsync(new GroupWorkoutGetListQuery.Param() { });
             return result;
         }
 
