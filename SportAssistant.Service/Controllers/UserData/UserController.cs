@@ -35,6 +35,14 @@ namespace SportAssistant.Service.Controllers.UserData
             return result;
         }
 
+        [HttpPost]
+        [Route("resetPassword")]
+        public async Task<bool> ResetPasswordAsync([FromServices] ICommand<UserResetPasswordCommand.Param, bool> command, UserResetPasswordCommand.Param registrationModel)
+        {
+            var result = await command.ExecuteAsync(registrationModel);
+            return result;
+        }
+                
         [HttpGet, Authorize]
         [Route("refreshToken")]
         public async Task<TokenModel> RefreshTokenAsync([FromServices] ICommand<UserRefreshTokenCommand.Param, TokenModel> command)

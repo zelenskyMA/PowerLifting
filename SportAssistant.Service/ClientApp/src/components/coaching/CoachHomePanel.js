@@ -1,7 +1,9 @@
-﻿import React, { Component } from 'react';
-import { Col, Container, Row } from "reactstrap";
+﻿/// <reference path="../trainingplan/view/plandayviewpanel.js" />
+import React, { Component } from 'react';
+import { Button } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
-import { LoadingPanel } from "../../common/controls/CustomControls";
+import PlanDayViewPanel from "../trainingPlan/view/PlanDayViewPanel";
+import { LoadingPanel, TableControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
@@ -10,7 +12,9 @@ class CoachHomePanel extends Component {
     super(props);
 
     this.state = {
-      groupExercises: [],
+      userGroups: [],
+      selectedUser: Object,
+      showDetails: false,
       loading: true
     };
   }
@@ -18,70 +22,42 @@ class CoachHomePanel extends Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var data = await GetAsync("/trainingGroups/getExercisesList");
-
-    this.setState({ groupExercises: data, loading: false });
+    var data = await GetAsync("/trainingGroups/getWorkoutList");
+    this.setState({ userGroups: data, loading: false });
   }
+
+  onRowClick = async (row) => {
+    var item = this.state.userGroups.find(t => t.id == row.values.id);
+    this.setState({ selectedUser: item, showDetails: true });
+  }
+
+  onGoToUser = () => { this.props.navigate(`/groupUser/${this.state.selectedUser.id}`); }
 
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
+    if (this.state.userGroups.length === 0) { return (<p><em>Сегодня никто из ваших спортсменов не тренируется</em></p>); }
 
-    const groups = this.state.groupExercises;
-
-    return (
-      <>
-        <Row>
-          <Col xs={4}>{groups.length > 0 && this.groupPanel(groups[0])}</Col>
-          <Col xs={4}>{groups.length > 1 && this.groupPanel(groups[1])}</Col>
-          <Col xs={4}>{groups.length > 2 && this.groupPanel(groups[2])}</Col>
-        </Row>
-        <Row style={{ marginTop: '100px' }}>
-          <Col xs={4}>{groups.length > 3 && this.groupPanel(groups[3])}</Col>
-          <Col xs={4}>{groups.length > 4 && this.groupPanel(groups[4])}</Col>
-          <Col xs={4}>{groups.length > 5 && this.groupPanel(groups[5])}</Col>
-        </Row>
-        <Row style={{ marginTop: '100px' }}>
-          <Col xs={4}>{groups.length > 6 && this.groupPanel(groups[6])}</Col>
-          <Col xs={4}>{groups.length > 7 && this.groupPanel(groups[7])}</Col>
-          <Col xs={4}>{groups.length > 8 && this.groupPanel(groups[8])}</Col>
-        </Row>
-      </>
-    );
-  }
-
-  groupPanel(group) {
-    return (
-      <Container fluid>
-        <Row>
-          <Col className="text-center">
-            <div><strong>{group.name}</strong></div>
-          </Col>
-        </Row>
-        <hr style={{ width: '100%', paddingTop: "2px" }} />
-        <Row>
-          <Col>{this.countersPanel(group.exerciseTypeCounters)}</Col>
-        </Row>
-      </Container>
-    );
-  }
-
-  countersPanel(counters) {
-    var fontSize = "0.85rem";
-
-    if (counters.length == 0) {
+    const columns = [
+      { Header: 'Id', accessor: 'id' },
+      { Header: 'Спортсмен', accessor: 'name' },
+      { Header: 'Группа', accessor: 'groupName' },
+    ];
+    if (!this.state.showDetails) {
       return (
-        <span style={{ fontSize: fontSize }}>Нет назначенных упражнений</span>
+        <>
+          <p>Кто тренируется сегодня:</p>
+          <TableControl columnsInfo={columns} data={this.state.userGroups} rowClick={this.onRowClick} pageSize={15} />
+        </>
       );
     }
 
     return (
       <>
-        {counters.map((item, i) =>
-          <Row key={i} style={{ fontSize: fontSize }}>
-            <Col>{item.name}</Col>
-            <Col>{item.value}</Col>
-          </Row>
-        )}
+        <h4 className="spaceBottom">План на сегодня для {this.state.selectedUser.name}</h4>
+        <PlanDayViewPanel planDay={this.state.selectedUser.planDay} />
+
+        <Button className="spaceTop spaceRight" color="primary" onClick={() => this.onGoToUser()}>К карточке спортсмена</Button>
+        <Button className="spaceTop" color="primary" onClick={() => this.setState({ showDetails: false })}>Назад</Button>
       </>
     );
   }

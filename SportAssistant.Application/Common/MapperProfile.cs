@@ -5,6 +5,7 @@ using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.DbModels.TraininTemplate;
 using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models;
+using SportAssistant.Domain.Models.Basic;
 using SportAssistant.Domain.Models.Coaching;
 using SportAssistant.Domain.Models.TrainingPlan;
 using SportAssistant.Domain.Models.TraininTemplate;
@@ -23,6 +24,7 @@ namespace SportAssistant.Application.Common
 
             CreateMap<DictionaryDb, DictionaryItem>().ReverseMap();
             CreateMap<DictionaryTypeDb, DictionaryType>().ReverseMap();
+            CreateMap<EmailMessageDb, EmailMessage>().ReverseMap();            
         }
 
         private void UserProfile()

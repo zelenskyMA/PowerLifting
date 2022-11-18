@@ -3,6 +3,7 @@ import { Button, Col, Container, Row } from "reactstrap";
 import { PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, InputEmail, InputPassword } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
+import '../../../styling/Common.css';
 
 class ChangeUserPassword extends React.Component {
 
@@ -31,17 +32,17 @@ class ChangeUserPassword extends React.Component {
         <Container fluid>
           <ErrorPanel errorMessage={this.state.error} />
 
-          <Row style={{ marginTop: '30px' }}>
+          <Row className="spaceTop">
             <Col xs={6}>
               <InputEmail label="Адрес вашей электронной почты (логин):" propName="login" onChange={this.onValueChange} />
             </Col>
           </Row>
-          <Row style={{ marginTop: '30px' }}>
+          <Row className="spaceTop">
             <Col xs={3}>
               <InputPassword label="Старый пароль:" propName="oldPassword" onChange={this.onValueChange} />
             </Col>
           </Row>
-          <Row style={{ marginTop: '30px' }}>
+          <Row className="spaceTop">
             <Col xs={3}>
               <InputPassword label="Новый пароль:" propName="password" onChange={this.onValueChange} />
             </Col>
@@ -50,7 +51,7 @@ class ChangeUserPassword extends React.Component {
             </Col>
           </Row>
 
-          <Button color="primary" style={{ marginTop: '30px' }} onClick={() => this.onRegister()}>Сменить пароль</Button>
+          <Button color="primary" className="spaceTop" onClick={() => this.onRegister()}>Сменить пароль</Button>
         </Container>
       </>
     );

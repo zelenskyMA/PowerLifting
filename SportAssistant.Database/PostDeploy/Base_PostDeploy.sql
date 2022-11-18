@@ -53,3 +53,19 @@ IF NOT EXISTS (SELECT * FROM Settings WHERE [Id] = 3)
   'Предел поднятий, которые можно назначить в одно упражнение');
 
 SET IDENTITY_INSERT Settings OFF 
+
+
+TRUNCATE TABLE EmailMessages
+SET IDENTITY_INSERT EmailMessages ON
+
+IF NOT EXISTS (SELECT * FROM EmailMessages WHERE [Id] = 1)
+  INSERT INTO EmailMessages (Id, Subject, Body) VALUES ( 1, 'Подтверждение регистрации',
+  '<h4>Поздравляем вас с регистрацией в спортивном ассистенте</h4>
+<p>Прежде чем перейти к планированию тренировок, подтвердите регистрацию перейдя по ссылке {0}</p>');
+
+IF NOT EXISTS (SELECT * FROM EmailMessages WHERE [Id] = 2)
+  INSERT INTO EmailMessages (Id, Subject, Body) VALUES ( 2, 'Сброс пароля',
+  '<h4>Для вашей учетной записи был запрошен сброс пароля</h4>
+<p>По запросу ваш старый пароль был стерт и заменен новым: <strong>{0}</strong></p>');
+
+SET IDENTITY_INSERT EmailMessages OFF 

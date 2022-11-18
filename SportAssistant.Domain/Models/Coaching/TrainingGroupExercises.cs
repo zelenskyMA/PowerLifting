@@ -1,15 +1,14 @@
-﻿using SportAssistant.Domain.Models.Common;
+﻿using SportAssistant.Domain.Models.TrainingPlan;
 
 namespace SportAssistant.Domain.Models.Coaching;
 
-public class TrainingGroupExercises
+public class TrainingGroupWorkout
 {
+    public int Id { get; set; }
+
     public string Name { get; set; } = string.Empty;
 
-    public int ParticipantsCount { get; set; }
+    public string GroupName { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Количество упражнений по подтипам.
-    /// </summary>
-    public List<ValueEntity> ExerciseTypeCounters { get; set; } = new List<ValueEntity>();
+    public PlanDay PlanDay { get; set; }
 }

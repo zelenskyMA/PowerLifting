@@ -25,7 +25,8 @@ namespace SportAssistant.Infrastructure.DataContext
         public DbSet<DictionaryDb> Dictionaries { get; set; }
         public DbSet<DictionaryTypeDb> DictionaryTypes { get; set; }
         public DbSet<SettingsDb> Settings { get; set; }
-
+        public DbSet<EmailMessageDb> EmailMessages { get; set; }
+                
         public DbSet<UserDb> Users { get; set; }
         public DbSet<UserInfoDb> UsersInfo { get; set; }
         public DbSet<UserAchivementDb> UserAchivements { get; set; }

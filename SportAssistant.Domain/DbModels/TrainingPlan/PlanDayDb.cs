@@ -9,11 +9,5 @@ namespace SportAssistant.Domain.DbModels.TrainingPlan
         public int PlanId { get; set; }
 
         public DateTime ActivityDate { get; set; }
-
-        public int LiftCounterSum { get; set; } = 0;
-
-        public int WeightLoadSum { get; set; } = 0;
-
-        public int IntensitySum { get; set; } = 0;
     }
 }

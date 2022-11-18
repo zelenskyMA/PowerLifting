@@ -70,28 +70,9 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
         }
 
         /// <inheritdoc />
-        public async Task<int> CreateAsync(int userId, int planId, DateTime activitydate, int templateDayId)
-        {
-            var trainingDay = new PlanDayDb() { PlanId = planId, ActivityDate = activitydate };
-            await _planDayRepository.CreateAsync(trainingDay);
-
-            if (templateDayId != 0)
-            {
-                await _provider.AcceptChangesAsync();
-                var templateExercises = await _processTemplateExercise.GetByDaysAsync(new List<int>() { templateDayId });
-                foreach (var templateExercise in templateExercises)
-                {
-                    await _processPlanExercise.CreateAsync(userId, trainingDay.Id, templateExercise.Exercise.Id, templateExercise.Order, templateExercise);
-                }
-            }
-
-            return trainingDay.Id;
-        }
-
-        /// <inheritdoc />
         public async Task<PlanDay?> GetCurrentDay(int userId)
         {
-            var now = DateTime.Now.Date;;
+            var now = DateTime.Now.Date; ;
 
             var dbPlans = await _planRepository.FindAsync(t =>
                 t.UserId == userId &&
@@ -109,6 +90,25 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
             }
 
             return await GetAsync(planDayDb.Id);
+        }
+
+        /// <inheritdoc />
+        public async Task<int> CreateAsync(int userId, int planId, DateTime activitydate, int templateDayId)
+        {
+            var trainingDay = new PlanDayDb() { PlanId = planId, ActivityDate = activitydate };
+            await _planDayRepository.CreateAsync(trainingDay);
+
+            if (templateDayId != 0)
+            {
+                await _provider.AcceptChangesAsync();
+                var templateExercises = await _processTemplateExercise.GetByDaysAsync(new List<int>() { templateDayId });
+                foreach (var templateExercise in templateExercises)
+                {
+                    await _processPlanExercise.CreateAsync(userId, trainingDay.Id, templateExercise.Exercise.Id, templateExercise.Order, templateExercise);
+                }
+            }
+
+            return trainingDay.Id;
         }
 
         /// <inheritdoc />

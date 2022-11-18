@@ -7,7 +7,7 @@ using SportAssistant.Domain.Interfaces.UserData.Application;
 namespace SportAssistant.Application.UserData.UserCommands
 {
     /// <summary>
-    /// User password change
+    /// Изменение пользовательского пароля
     /// </summary>
     public class UserChangePasswordCommand : ICommand<UserChangePasswordCommand.Param, bool>
     {
@@ -31,10 +31,8 @@ namespace SportAssistant.Application.UserData.UserCommands
             _processUser.ValidatePassword(param.Password, param.PasswordConfirm, true);
 
             var userDb = await _processUser.TryToLogin(param.Login, param.OldPassword);
-
-            string salt = _passwordManager.GenerateSalt();
-            userDb.Salt = salt;
-            userDb.Password = _passwordManager.ApplySalt(param.Password, salt);
+            userDb.Salt = _passwordManager.GenerateSalt();
+            userDb.Password = _passwordManager.ApplySalt(param.Password, userDb.Salt);
 
             _userRepository.Update(userDb);
 

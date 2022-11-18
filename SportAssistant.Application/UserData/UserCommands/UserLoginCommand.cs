@@ -10,7 +10,7 @@ using SportAssistant.Domain.Models.UserData.Auth;
 namespace SportAssistant.Application.UserData.UserCommands.UserCommands
 {
     /// <summary>
-    /// Login user and generate jwt token
+    /// Аутентификация и авторизация пользователя. Генерация jwt токена.
     /// </summary>
     public class UserLoginCommand : ICommand<UserLoginCommand.Param, TokenModel>
     {

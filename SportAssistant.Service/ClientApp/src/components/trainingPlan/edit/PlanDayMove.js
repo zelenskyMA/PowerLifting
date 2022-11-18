@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { connect } from "react-redux";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Button } from "reactstrap";
@@ -7,6 +8,13 @@ import { ErrorPanel, LoadingPanel } from "../../../common/controls/CustomControl
 import { DateToLocal } from "../../../common/Localization";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToUtc, Locale } from "../../../common/Localization";
+import { changeModalVisibility } from "../../../stores/appStore/appActions";
+
+const mapDispatchToProps = dispatch => {
+  return {
+    changeModalVisibility: (modalInfo) => changeModalVisibility(modalInfo, dispatch)
+  }
+}
 
 class PlanDayMove extends Component {
   constructor() {
@@ -58,6 +66,16 @@ class PlanDayMove extends Component {
     }
   }
 
+  onAction = async (text, action) => {
+    var modalInfo = {
+      isVisible: true,
+      headerText: "Запрос подтверждения",
+      buttons: [{ name: "Подтвердить", onClick: action, color: "success" }],
+      body: () => { return (<p>{text}</p>) }
+    };
+    this.props.changeModalVisibility(modalInfo);
+  }
+
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
 
@@ -72,12 +90,14 @@ class PlanDayMove extends Component {
         <p className="spaceTop">Выберите день в текущем плане для переноса тренировок.</p>
         <Calendar onChange={(date) => this.onSelectionChange('targetDate', date)} value={this.state.selectedInfo.targetDate} locale={Locale} />
 
-        <Button color="primary" className="spaceTop spaceRight" onClick={() => this.onMove()}>Перенести</Button>
-        <Button color="primary" className="spaceTop spaceRight" onClick={() => this.onClear()}>Отменить</Button>
-        <Button color="primary" className="spaceTop" outline onClick={() => this.goBack()}>Назад</Button>
+        <div className="spaceTop">
+          <Button color="primary" className="spaceRight" onClick={() => this.onAction('Подтвердите перенос тренировки', this.onMove)}>Перенести</Button>
+          <Button color="primary" className="spaceRight" onClick={() => this.onAction('Подтвердите отмену', this.onClear)}>Отменить</Button>
+          <Button color="primary" outline onClick={() => this.goBack()}>Назад</Button>
+        </div>
       </>
     );
   }
 }
 
-export default WithRouter(PlanDayMove);
+export default WithRouter(connect(null, mapDispatchToProps)(PlanDayMove));
