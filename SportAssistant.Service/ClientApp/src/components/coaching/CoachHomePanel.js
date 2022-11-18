@@ -53,7 +53,7 @@ class CoachHomePanel extends Component {
 
     return (
       <>
-        <h4 className="spaceBottom">План на сегодня для {this.state.selectedUser.name}.</h4>
+        <h4 className="spaceBottom">План на сегодня для {this.state.selectedUser.name}</h4>
         <PlanDayViewPanel planDay={this.state.selectedUser.planDay} />
 
         <Button className="spaceTop spaceRight" color="primary" onClick={() => this.onGoToUser()}>К карточке спортсмена</Button>
