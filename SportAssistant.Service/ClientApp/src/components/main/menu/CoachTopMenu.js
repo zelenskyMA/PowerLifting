@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { NavItem, NavLink } from 'reactstrap';
 import '../../../styling/Common.css';
+import '../../../styling/NavMenu.css';
 
 export function CoachTopMenu({ userInfo }) {
   return (<>
@@ -16,19 +17,19 @@ function mainMenu(userInfo) {
   return (
     <>
       <NavItem>
-        <NavLink tag={Link} className="text-dark" to="/groupConsole">Группы</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/groupConsole">Группы</NavLink>
       </NavItem>
 
       <NavItem>
-        <NavLink tag={Link} className="text-dark" to="/exercises">Упражнения</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/exercises">Упражнения</NavLink>
       </NavItem>
 
       <NavItem>
-        <NavLink tag={Link} className="text-dark" to="/templateSetList">Тренировочные циклы</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/templateSetList">Тренировочные циклы</NavLink>
       </NavItem>
 
       <NavItem className="spaceRight">
-        <NavLink tag={Link} className="text-dark" to="/requestConsole">Заявки</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/requestConsole">Заявки</NavLink>
       </NavItem>
     </>
   );

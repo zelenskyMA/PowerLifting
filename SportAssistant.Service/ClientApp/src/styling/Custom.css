@@ -13,3 +13,26 @@ code {
   border-color: #1861ac;
 }
 
+.first-page-bckg {
+  background-image: url('./img/enterBackground.jpg?auto=compress&cs=tinysrgb&h=350');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.first-page-text {
+  color: cornsilk !important;
+}
+
+.first-page-spaceTop {
+  margin-top: 100px !important;
+}
+
+.first-page-button {
+  background-color: #326B3F !important;
+  border-color: #326B3F !important;
+}
+  .first-page-button:hover {
+    filter: brightness(85%);
+  }

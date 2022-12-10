@@ -6,6 +6,7 @@ import { ErrorPanel, InputEmail, InputPassword } from "../../../common/controls/
 import WithRouter from "../../../common/extensions/WithRouter";
 import { SetToken } from "../../../common/TokenActions";
 import '../../../styling/Common.css';
+import '../../../styling/Custom.css';
 
 class LoginUser extends React.Component {
 
@@ -31,25 +32,25 @@ class LoginUser extends React.Component {
   render() {
     return (
       <>
-        <h3>Вход</h3>
+        <h3 className="first-page-text">Вход</h3>
 
         <Container onKeyPress={async (e) => e.key === 'Enter' && await this.onLogin()} fluid>
           <ErrorPanel errorMessage={this.state.error} />
 
           <Row className="spaceTop spaceBottom">
-            <Col xs={3}>
+            <Col xs={4}>
               <InputEmail label="Логин:" propName="login" onChange={this.onValueChange} />
             </Col>
-            <Col xs={3}>
+            <Col xs={4}>
               <InputPassword label="Пароль:" propName="password" onChange={this.onValueChange} />
             </Col>
           </Row>
 
-          <NavLink className="inlineLink" tag={Link} to="/register">Зарегистрироваться</NavLink>
-          <NavLink className="inlineLink" tag={Link} to="/changePassword">Сменить пароль</NavLink>
-          <NavLink className="inlineLink" tag={Link} to="/resetPassword">Забыли пароль?</NavLink>
+          <NavLink className="inlineLink first-page-text" tag={Link} to="/register">Зарегистрироваться</NavLink>
+          <NavLink className="inlineLink first-page-text" tag={Link} to="/changePassword">Сменить пароль</NavLink>
+          <NavLink className="inlineLink first-page-text" tag={Link} to="/resetPassword">Забыли пароль?</NavLink>
 
-          <Button color="primary" style={{ marginTop: '30px' }} onClick={() => this.onLogin()}>Войти</Button>
+          <Button className="spaceTop first-page-button" onClick={() => this.onLogin()}>Войти</Button>
         </Container>
       </>
     );
