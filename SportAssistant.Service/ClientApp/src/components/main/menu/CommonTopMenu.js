@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { NavItem, NavLink } from 'reactstrap';
 import '../../../styling/Common.css';
+import '../../../styling/NavMenu.css';
 
 export function CommonTopMenu({ userInfo }) {
   return (<>
@@ -18,15 +19,15 @@ function mainMenu(userInfo) {
   return (
     <>
       <NavItem>
-        <NavLink tag={Link} className="text-dark" to="/plansList">Планы</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/plansList">Планы</NavLink>
       </NavItem>
 
       <NavItem>
-        <NavLink tag={Link} className="text-dark" to="/exercises">Упражнения</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/exercises">Упражнения</NavLink>
       </NavItem>
 
       <NavItem className="spaceRight">
-        <NavLink tag={Link} className="text-dark" to="/planAnalitics">Аналитика</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/planAnalitics">Аналитика</NavLink>
       </NavItem>
     </>
   );
@@ -36,8 +37,8 @@ function adminLink(userInfo) {
   if (!userInfo?.rolesInfo?.isAdmin) { return (<></>) }
 
   return (
-    <NavItem style={{ marginRight: '20px' }}>
-      <NavLink tag={Link} className="text-dark" to="/adminConsole">Администрирование</NavLink>
+    <NavItem className="menu-spaceRight">
+      <NavLink tag={Link} className="menu-item" to="/adminConsole">Администрирование</NavLink>
     </NavItem>
   );
 }
@@ -46,8 +47,8 @@ function coachLink(userInfo) {
   if (!userInfo?.rolesInfo?.isCoach) { return (<></>) }
 
   return (
-    <NavItem style={{ marginRight: '20px' }}>
-      <NavLink tag={Link} className="text-dark" to="/coachConsole">Тренерская</NavLink>
+    <NavItem className="menu-spaceRight">
+      <NavLink tag={Link} className="menu-item" to="/coachConsole">Тренерская</NavLink>
     </NavItem>
   );
 }

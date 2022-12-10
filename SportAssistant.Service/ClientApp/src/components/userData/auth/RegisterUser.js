@@ -29,26 +29,26 @@ class RegisterUser extends React.Component {
   render() {
     return (
       <>
-        <h3>Регистрация</h3>
+        <h3 className="first-page-text">Регистрация</h3>
 
         <Container fluid>
           <ErrorPanel errorMessage={this.state.error} />
 
-          <Row style={{ marginTop: '30px' }}>
-            <Col xs={6}>
+          <Row className="spaceTop">
+            <Col xs={8}>
               <InputEmail label="Адрес вашей электронной почты (логин):" propName="login" onChange={this.onValueChange} />
             </Col>
           </Row>
-          <Row style={{ marginTop: '30px' }}>
+          <Row className="spaceTop">
             <Col xs={3}>
               <InputPassword label="Пароль:" propName="password" onChange={this.onValueChange} />
             </Col>
-            <Col xs={3}>
+            <Col xs={5}>
               <InputPassword label="Подтверждение пароля:" propName="passwordConfirm" onChange={this.onValueChange} />
             </Col>
           </Row>
 
-          <Button color="primary" style={{ marginTop: '30px' }} onClick={() => this.onRegister()}>Зарегистрироваться</Button>
+          <Button className="spaceTop first-page-button" onClick={() => this.onRegister()}>Зарегистрироваться</Button>
         </Container>
       </>
     );

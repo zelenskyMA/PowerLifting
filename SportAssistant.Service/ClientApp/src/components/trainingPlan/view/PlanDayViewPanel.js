@@ -6,8 +6,6 @@ import { LoadingPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 import '../../../styling/Common.css';
-import Completed from '../../../styling/icons/barbellCompleted.png';
-import Planned from '../../../styling/icons/barbellPlanned.png';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -141,11 +139,12 @@ class PlanDayViewPanel extends Component {
 
     var modalData = { id: itemId, name: planExercise.exercise.name, settings: settingsList };
     var exerciseState = this.state.completedExercises.find(t => t.id === modalData.id).state;
+    var imgPrefix = '/img/table/barbell';
 
     return (
       <>
         <div role="button" className="text-center" id={idPrefix} onClick={() => this.onShowExerciseModal(modalData)}>
-          <img src={exerciseState ? Completed : Planned} width="30" height="35" className="rounded mx-auto d-block" />
+          <img src={exerciseState ? `${imgPrefix}Completed.png` : `${imgPrefix}Planned.png`} width="30" height="35" className="rounded mx-auto d-block" />
         </div>
       </>
     );

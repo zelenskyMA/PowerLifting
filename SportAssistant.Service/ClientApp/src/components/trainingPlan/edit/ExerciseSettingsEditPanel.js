@@ -1,8 +1,6 @@
 ﻿import React from 'react';
 import { UncontrolledTooltip } from "reactstrap";
 import '../../../styling/Common.css';
-import Completed from '../../../styling/icons/barbellCompleted.png';
-import Planned from '../../../styling/icons/barbellPlanned.png';
 
 export function ExerciseSettingsEditPanel({ percentage, settings }) {
   var settingsList = settings.filter(t => t.percentage.id === percentage.id).sort((a, b) => a.weight - b.weight);
@@ -12,11 +10,12 @@ export function ExerciseSettingsEditPanel({ percentage, settings }) {
   }
 
   var idPrefix = String(`settings_${percentage.id}_${settingsList[0].id}`);
+  var imgPrefix = '/img/table/barbell';
 
   return (
     <>
       <div className="text-center" id={idPrefix}>
-        <img src={settingsList[0].completed ? Completed : Planned} width="30" height="35" className="rounded mx-auto d-block" />
+        <img src={settingsList[0].completed ? `${imgPrefix}Completed.png` : `${imgPrefix}Planned.png`} width="30" height="35" className="rounded mx-auto d-block" />
       </div>
       <Tooltip settingsList={settingsList} idPrefix={idPrefix} />
     </>

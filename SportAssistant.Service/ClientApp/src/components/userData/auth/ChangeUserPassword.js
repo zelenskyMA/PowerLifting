@@ -4,6 +4,7 @@ import { PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, InputEmail, InputPassword } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
+import '../../../styling/Custom.css';
 
 class ChangeUserPassword extends React.Component {
 
@@ -27,31 +28,31 @@ class ChangeUserPassword extends React.Component {
   render() {
     return (
       <>
-        <h4>Смена пароля</h4>
+        <h3 className="first-page-text">Смена пароля</h3>
 
         <Container fluid>
           <ErrorPanel errorMessage={this.state.error} />
 
           <Row className="spaceTop">
-            <Col xs={6}>
+            <Col xs={9}>
               <InputEmail label="Адрес вашей электронной почты (логин):" propName="login" onChange={this.onValueChange} />
             </Col>
           </Row>
           <Row className="spaceTop">
-            <Col xs={3}>
+            <Col xs={4}>
               <InputPassword label="Старый пароль:" propName="oldPassword" onChange={this.onValueChange} />
             </Col>
           </Row>
           <Row className="spaceTop">
-            <Col xs={3}>
+            <Col xs={4}>
               <InputPassword label="Новый пароль:" propName="password" onChange={this.onValueChange} />
             </Col>
-            <Col xs={3}>
+            <Col xs={5}>
               <InputPassword label="Подтверждение пароля:" propName="passwordConfirm" onChange={this.onValueChange} />
             </Col>
           </Row>
 
-          <Button color="primary" className="spaceTop" onClick={() => this.onRegister()}>Сменить пароль</Button>
+          <Button className="spaceTop first-page-button" onClick={() => this.onRegister()}>Сменить пароль</Button>
         </Container>
       </>
     );

@@ -32,8 +32,8 @@ class NavMenu extends Component {
   render() {
     return (
       <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-          <NavbarBrand tag={Link} to="/">Главная</NavbarBrand>
+        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3 navbar-dark" container light>
+          <NavbarBrand className="menu-first-page-item" tag={Link} to="/">Главная</NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
@@ -53,14 +53,14 @@ class NavMenu extends Component {
     if (legalName === '') {
       return (
         <NavItem>
-          <NavLink tag={Link} className="text-dark" to="/login">Вход</NavLink>
+          <NavLink tag={Link} className="menu-first-page-item" to="/login">Вход</NavLink>
         </NavItem>
       );
     }
 
     return (
       <UncontrolledDropdown nav inNavbar>
-        <DropdownToggle nav caret>{legalName}</DropdownToggle>
+        <DropdownToggle className="menu-item" nav caret>{legalName}</DropdownToggle>
         <DropdownMenu end>
           <DropdownItem className="text-dark" tag={Link} to="/userCabinet" >Личный кабинет</DropdownItem>
           <DropdownItem className="text-dark" onClick={() => RemoveTokens()} >Выход</DropdownItem>

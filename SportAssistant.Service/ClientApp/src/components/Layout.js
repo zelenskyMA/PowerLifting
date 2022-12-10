@@ -5,6 +5,7 @@ import { initApp } from "../stores/appStore/appActions";
 import { GetToken } from '../common/TokenActions';
 import NavMenu from './main/NavMenu';
 import GlobalModalDialogPanel from './main/GlobalModalDialogPanel';
+import '../styling/Custom.css';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -26,8 +27,10 @@ class Layout extends Component {
   }
 
   render() {
+    var bckGround = GetToken() == null ? 'first-page-bckg': '';
+
     return (
-      <div>
+      <div className={bckGround}>
         <NavMenu />
         <GlobalModalDialogPanel />
         <Container>
