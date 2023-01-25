@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import { useFilters, useGlobalFilter, usePagination, useTable } from 'react-table';
 import { Col, Input, InputGroup, InputGroupText, Row } from 'reactstrap';
 
@@ -82,6 +83,7 @@ export function TableControl({ columnsInfo, data,
 }
 
 function FilterPanel({ column, gotoPage, hideFilter }) {
+  const { t } = useTranslation();
 
   if (hideFilter) { return (<></>); }
 
@@ -89,7 +91,7 @@ function FilterPanel({ column, gotoPage, hideFilter }) {
     <Row>
       <Col xs={6} md={{ offset: 6 }}>
         <InputGroup>
-          <InputGroupText>Фильтр списка:</InputGroupText>
+          <InputGroupText>{t('control.filter')}:</InputGroupText>
           <Input xs={2}
             className="form-control"
             value={column.filterValue || ""}
@@ -97,7 +99,7 @@ function FilterPanel({ column, gotoPage, hideFilter }) {
               column.setFilter(e.target.value || undefined);
               gotoPage(0);
             }}
-            placeholder={`введите строку или ее часть`}
+            placeholder={t('control.filterPlaceholder')}
           />
         </InputGroup>
       </Col>
@@ -156,32 +158,3 @@ function PaginationPanel({
     </Row>
   );
 }
-
-/*
-function GlobalFilterPanel({ globalFilter, setGlobalFilter, gotoPage, hideFilter }) {
-  const [value, setValue] = React.useState(globalFilter);
-  const onChange = useAsyncDebounce(value => { setGlobalFilter(value || undefined) }, 200);
-
-  if (hideFilter) { return (<></>); }
-
-  return (
-    <Row>
-      <Col xs={6} md={{ offset: 6 }}>
-        <InputGroup>
-          <InputGroupText>Фильтр списка:</InputGroupText>
-          <Input xs={2}
-            className="form-control"
-            value={value || ""}
-            onChange={e => {
-              setValue(e.target.value);
-              onChange(e.target.value);
-              gotoPage(0);
-            }}
-            placeholder={`введите строку или ее часть`}
-          />
-        </InputGroup>
-      </Col>
-    </Row>
-  );
-}
-*/

@@ -12,13 +12,15 @@ class AdminConsoleView extends Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <h4 className="spaceBottom">Административная консоль</h4>
+        <h4 className="spaceBottom">{lngStr('admin.console')}</h4>
         <TabControl data={[
-          { id: 1, label: 'Ползователи', renderContent: () => this.usersContent() },
-          { id: 2, label: 'Справочники', renderContent: () => this.dictionaryContent() },
-          { id: 3, label: 'Настройки', renderContent: () => this.settingsContent() },
+          { id: 1, label: lngStr('admin.users'), renderContent: () => this.usersContent() },
+          { id: 2, label: lngStr('admin.dictionaries'), renderContent: () => this.dictionaryContent() },
+          { id: 3, label: lngStr('admin.settings'), renderContent: () => this.settingsContent() },
         ]}
         />
       </>
