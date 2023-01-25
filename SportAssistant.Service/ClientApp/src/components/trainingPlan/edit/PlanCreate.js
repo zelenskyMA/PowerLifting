@@ -5,7 +5,7 @@ import { Button, Container } from "reactstrap";
 import { PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
-import { DateToUtc, Locale } from "../../../common/Localization";
+import { DateToUtc, Locale } from "../../../common/LocalActions";
 import '../../../styling/Common.css';
 
 class PlanCreate extends React.Component {

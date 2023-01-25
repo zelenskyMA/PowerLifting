@@ -2,7 +2,7 @@
 import { GetAsync } from "../../common/ApiActions";
 import { TableControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
-import { DateToLocal } from "../../common/Localization";
+import { DateToLocal } from "../../common/LocalActions";
 import '../../styling/Common.css';
 
 class RequestConsoleView extends Component {

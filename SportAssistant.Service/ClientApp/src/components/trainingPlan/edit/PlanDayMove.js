@@ -5,9 +5,8 @@ import "react-calendar/dist/Calendar.css";
 import { Button } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, LoadingPanel } from "../../../common/controls/CustomControls";
-import { DateToLocal } from "../../../common/Localization";
+import { DateToLocal, DateToUtc, Locale } from "../../../common/LocalActions";
 import WithRouter from "../../../common/extensions/WithRouter";
-import { DateToUtc, Locale } from "../../../common/Localization";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 
 const mapDispatchToProps = dispatch => {

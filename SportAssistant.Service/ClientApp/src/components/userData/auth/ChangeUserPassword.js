@@ -26,33 +26,35 @@ class ChangeUserPassword extends React.Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <h3 className="first-page-text">Смена пароля</h3>
+        <h3 className="first-page-text">{lngStr('auth.changePwd')}</h3>
 
         <Container fluid>
           <ErrorPanel errorMessage={this.state.error} />
 
           <Row className="spaceTop">
             <Col xs={9}>
-              <InputEmail label="Адрес вашей электронной почты (логин):" propName="login" onChange={this.onValueChange} />
+              <InputEmail label={lngStr('auth.address')} propName="login" onChange={this.onValueChange} />
             </Col>
           </Row>
           <Row className="spaceTop">
             <Col xs={4}>
-              <InputPassword label="Старый пароль:" propName="oldPassword" onChange={this.onValueChange} />
+              <InputPassword label={lngStr('auth.oldPwd')} propName="oldPassword" onChange={this.onValueChange} />
             </Col>
           </Row>
           <Row className="spaceTop">
             <Col xs={4}>
-              <InputPassword label="Новый пароль:" propName="password" onChange={this.onValueChange} />
+              <InputPassword label={lngStr('auth.newPwd')} propName="password" onChange={this.onValueChange} />
             </Col>
             <Col xs={5}>
-              <InputPassword label="Подтверждение пароля:" propName="passwordConfirm" onChange={this.onValueChange} />
+              <InputPassword label={lngStr('auth.confirmPwd')} propName="passwordConfirm" onChange={this.onValueChange} />
             </Col>
           </Row>
 
-          <Button className="spaceTop first-page-button" onClick={() => this.onRegister()}>Сменить пароль</Button>
+          <Button className="spaceTop first-page-button" onClick={() => this.onRegister()}>{lngStr('button.confirm')}</Button>
         </Container>
       </>
     );

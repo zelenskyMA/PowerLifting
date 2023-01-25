@@ -4,7 +4,7 @@ import "react-calendar/dist/Calendar.css";
 import { Button, Col, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, LoadingPanel, TableControl, DropdownControl } from "../../../common/controls/CustomControls";
-import { Locale, DateToUtc } from "../../../common/Localization";
+import { Locale, DateToUtc } from "../../../common/LocalActions";
 import WithRouter from "../../../common/extensions/WithRouter";
 
 class TemplateSetAssignView extends Component {

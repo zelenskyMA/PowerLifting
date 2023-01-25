@@ -3,7 +3,7 @@ import { Button } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
 import { LoadingPanel, TabControl, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
-import { DateToLocal } from "../../../common/Localization";
+import { DateToLocal } from "../../../common/LocalActions";
 
 /*Используется в нескольких компонентах */
 class PlansListPanel extends Component {

@@ -4,7 +4,7 @@ import { Button, Col, Container, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
-import { DateToLocal, Locale } from "../../../common/Localization";
+import { DateToLocal, Locale } from "../../../common/LocalActions";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 
 const mapDispatchToProps = dispatch => {

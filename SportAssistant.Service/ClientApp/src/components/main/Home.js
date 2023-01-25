@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { GetAsync } from "../../common/ApiActions";
 import { LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
-import { DateToLocal } from "../../common/Localization";
+import { DateToLocal } from "../../common/LocalActions";
 import { GetToken } from '../../common/TokenActions';
 import '../../styling/Common.css';
 import '../../styling/Custom.css';
