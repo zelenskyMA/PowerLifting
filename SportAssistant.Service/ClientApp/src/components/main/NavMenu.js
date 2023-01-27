@@ -30,17 +30,19 @@ class NavMenu extends Component {
   toggleNavbar = () => { this.setState({ collapsed: !this.state.collapsed }); }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3 navbar-dark" container light>
-          <NavbarBrand className="menu-first-page-item" tag={Link} to="/">Главная</NavbarBrand>
+          <NavbarBrand className="menu-first-page-item" tag={Link} to="/">{lngStr('common.main')}</NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
               {this.props.userInfo?.coachOnly ?
                 <CoachTopMenu userInfo={this.props.userInfo} /> :
                 <CommonTopMenu userInfo={this.props.userInfo} />}
-              {this.loginLink()}
+              {this.loginLink(lngStr)}
             </ul>
           </Collapse>
         </Navbar>
@@ -48,12 +50,12 @@ class NavMenu extends Component {
     );
   }
 
-  loginLink() {
+  loginLink(lngStr) {
     var legalName = this.props.userInfo?.legalName ?? '';
     if (legalName === '') {
       return (
         <NavItem>
-          <NavLink tag={Link} className="menu-first-page-item" to="/login">Вход</NavLink>
+          <NavLink tag={Link} className="menu-first-page-item" to="/login">{lngStr('common.enter')}</NavLink>
         </NavItem>
       );
     }
@@ -62,8 +64,8 @@ class NavMenu extends Component {
       <UncontrolledDropdown nav inNavbar>
         <DropdownToggle className="menu-item" nav caret>{legalName}</DropdownToggle>
         <DropdownMenu end>
-          <DropdownItem className="text-dark" tag={Link} to="/userCabinet" >Личный кабинет</DropdownItem>
-          <DropdownItem className="text-dark" onClick={() => RemoveTokens()} >Выход</DropdownItem>
+          <DropdownItem className="text-dark" tag={Link} to="/userCabinet" >{lngStr('user.cabinet')}</DropdownItem>
+          <DropdownItem className="text-dark" onClick={() => RemoveTokens()} >{lngStr('common.exit')}</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     );

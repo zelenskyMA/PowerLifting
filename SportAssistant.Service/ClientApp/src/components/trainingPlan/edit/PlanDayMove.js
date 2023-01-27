@@ -65,11 +65,11 @@ class PlanDayMove extends Component {
     }
   }
 
-  onAction = async (text, action) => {
+  onAction = async (text, action, lngStr) => {
     var modalInfo = {
       isVisible: true,
-      headerText: "Запрос подтверждения",
-      buttons: [{ name: "Подтвердить", onClick: action, color: "success" }],
+      headerText: lngStr('modal.confirm'),
+      buttons: [{ name: lngStr('button.confirm'), onClick: action, color: "success" }],
       body: () => { return (<p>{text}</p>) }
     };
     this.props.changeModalVisibility(modalInfo);
@@ -78,21 +78,22 @@ class PlanDayMove extends Component {
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
 
+    const lngStr = this.props.lngStr;
     var dateView = DateToLocal(this.state.planDay.activityDate);
 
     return (
       <>
-        <h4>Изменение плана тренировок {dateView}</h4>
-        <p>Перенос тренировки на другой день или ее отмена.</p>
+        <h4>{lngStr('training.planChange')} {dateView}</h4>
+        <p>{lngStr('training.trainingDayMove')}</p>
         <ErrorPanel errorMessage={this.state.error} />
 
-        <p className="spaceTop">Выберите день в текущем плане для переноса тренировок.</p>
+        <p className="spaceTop">{lngStr('training.dayMoveSelection')}</p>
         <Calendar onChange={(date) => this.onSelectionChange('targetDate', date)} value={this.state.selectedInfo.targetDate} locale={Locale} />
 
         <div className="spaceTop">
-          <Button color="primary" className="spaceRight" onClick={() => this.onAction('Подтвердите перенос тренировки', this.onMove)}>Перенести</Button>
-          <Button color="primary" className="spaceRight" onClick={() => this.onAction('Подтвердите отмену', this.onClear)}>Отменить</Button>
-          <Button color="primary" outline onClick={() => this.goBack()}>Назад</Button>
+          <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('training.confirmMove'), this.onMove, lngStr)}>{lngStr('button.confirm')}</Button>
+          <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('modal.confirmCancel'), this.onClear, lngStr)}>{lngStr('button.cancel')}</Button>
+          <Button color="primary" outline onClick={() => this.goBack()}>{lngStr('button.back')}</Button>
         </div>
       </>
     );

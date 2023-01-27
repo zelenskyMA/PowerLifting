@@ -11,6 +11,7 @@ export function TableControl({ columnsInfo, data,
   rowDblClick = defaultRowDblClick, rowClick = defaultRowClick, pageSize = 5, hideFilter = false }) {
 
   const columns = React.useMemo(() => columnsInfo, []);
+  const { t } = useTranslation(); //language pack implementation
 
   const {
     getTableProps,
@@ -38,14 +39,14 @@ export function TableControl({ columnsInfo, data,
   );
 
   if (data?.length == 0) {
-    return (<p><em>Нет записей</em></p>);
+    return (<p><em>{t('common.noRecords')}</em></p>);
   }
 
   var filterColumn = headerGroups[0].headers.find(t => t.id === 'name');
 
   return (
     <>
-      <FilterPanel column={filterColumn} gotoPage={gotoPage} hideFilter={data?.length <= pageSize || !filterColumn || hideFilter} />
+      <FilterPanel column={filterColumn} gotoPage={gotoPage} hideFilter={data?.length <= pageSize || !filterColumn || hideFilter} lngStr={t} />
 
       <table className="table table-striped" aria-labelledby="tabelLabel" {...getTableProps()}>
         <thead>
@@ -74,7 +75,7 @@ export function TableControl({ columnsInfo, data,
       </table>
 
       {data?.length > pageSize &&
-        <PaginationPanel
+        <PaginationPanel lngStr={t}
           canPreviousPage={canPreviousPage} canNextPage={canNextPage} pageOptions={pageOptions} pageCount={pageCount}
           gotoPage={gotoPage} nextPage={nextPage} previousPage={previousPage} pageIndex={pageIndex} />
       }
@@ -82,16 +83,14 @@ export function TableControl({ columnsInfo, data,
   )
 }
 
-function FilterPanel({ column, gotoPage, hideFilter }) {
-  const { t } = useTranslation();
-
+function FilterPanel({ column, gotoPage, hideFilter, lngStr }) {
   if (hideFilter) { return (<></>); }
 
   return (
     <Row>
       <Col xs={6} md={{ offset: 6 }}>
         <InputGroup>
-          <InputGroupText>{t('control.filter')}:</InputGroupText>
+          <InputGroupText>{lngStr('control.filter')}:</InputGroupText>
           <Input xs={2}
             className="form-control"
             value={column.filterValue || ""}
@@ -99,7 +98,7 @@ function FilterPanel({ column, gotoPage, hideFilter }) {
               column.setFilter(e.target.value || undefined);
               gotoPage(0);
             }}
-            placeholder={t('control.filterPlaceholder')}
+            placeholder={lngStr('control.filterPlaceholder')}
           />
         </InputGroup>
       </Col>
@@ -108,6 +107,7 @@ function FilterPanel({ column, gotoPage, hideFilter }) {
 }
 
 function PaginationPanel({
+  lngStr,
   canPreviousPage,
   canNextPage,
   pageOptions,
@@ -130,7 +130,7 @@ function PaginationPanel({
           </li>
           <li>
             <a className="page-link disabled">
-              <strong>{pageIndex + 1}</strong> из <strong>{pageOptions.length}</strong>{' '}
+              <strong>{pageIndex + 1}</strong> {lngStr('common.outOf')} <strong>{pageOptions.length}</strong>{' '}
             </a>
           </li>
           <li className="page-item" role="button" onClick={() => nextPage()} disabled={!canNextPage}>

@@ -8,9 +8,11 @@ class PlansListView extends Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <h4 className="spaceBottom">Тренировочные планы</h4>
+        <h4 className="spaceBottom">{lngStr('training.trainingPlans')}</h4>
         <PlansListPanel groupUserId="0" />
       </>
     );

@@ -40,32 +40,34 @@ class Home extends Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>        
-        {this.mainPanel()}
+        {this.mainPanel(lngStr)}
       </>
     );
   }
 
-  mainPanel = () => {
-    if (this.state.loggedUser === false) { return (this.startScreenPanel()); }
+  mainPanel = (lngStr) => {
+    if (this.state.loggedUser === false) { return (this.startScreenPanel(lngStr)); }
     if (this.state.loading) { return (<LoadingPanel />); }
 
     if (this.props.userInfo?.coachOnly) { return (<CoachHomePanel userInfo={this.props.userInfo} />); }
 
     return (
       <>
-        <p className="spaceBottom" >План на <strong>{DateToLocal(new Date())}</strong></p>
-        {this.state.planDay?.exercises?.length > 0 ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>У вас нет тренировок на сегодня</em></p>}
+        <p className="spaceBottom" >{lngStr('training.planFor')} <strong>{DateToLocal(new Date())}</strong></p>
+        {this.state.planDay?.exercises?.length > 0 ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>{lngStr('training.noTrainingsForUser')}</em></p>}
       </>
     );
   }
 
-  startScreenPanel = () => {
+  startScreenPanel = (lngStr) => {
     return (
       <div className="first-page-text first-page-spaceTop">
-        <h1 className="spaceBottom">Спортивный ассистент</h1>
-        <h3>Войдите в свой кабинет, или создайте нового пользователя чтобы запланировать тренировку</h3>
+        <h1 className="spaceBottom">{lngStr('common.application')}</h1>
+        <h3>{lngStr('user.loginOrRegister')}</h3>
       </div>);
   }
 

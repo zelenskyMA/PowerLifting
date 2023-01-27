@@ -43,33 +43,35 @@ class PlanAnaliticsPanel extends Component {
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
 
+    const lngStr = this.props.lngStr;
+
     return (
       <>
         <Row className="spaceBottom">
           <Col xs={4}>
-            <p>Построение графиков по тренировочным планам</p>
+            <p>{lngStr('planAnalitics.buildingGraph')}</p>
           </Col>
           <Col xs={3}>
-            <InputDate label="с:" propName="startDate" onChange={this.onValueChange} initialValue={this.state.startDate?.toISOString()?.substring(0, 10)} />
+            <InputDate label={lngStr('common.from' + ':') } propName="startDate" onChange={this.onValueChange} initialValue={this.state.startDate?.toISOString()?.substring(0, 10)} />
           </Col>
           <Col xs={3}>
-            <InputDate label="по:" propName="finishDate" onChange={this.onValueChange} initialValue={this.state.finishDate?.toISOString()?.substring(0, 10)} />
+            <InputDate label={lngStr('common.to' + ':')} propName="finishDate" onChange={this.onValueChange} initialValue={this.state.finishDate?.toISOString()?.substring(0, 10)} />
           </Col>
         </Row>
 
         <TabControl data={[
-          { id: 1, label: 'КПШ', renderContent: () => this.Panel1Content() },
-          { id: 2, label: 'Нагрузка', renderContent: () => this.Panel2Content() },
-          { id: 3, label: 'Интенсивность', renderContent: () => this.Panel3Content() },
-          { id: 4, label: 'Типы упражнений', renderContent: () => this.Panel4Content() },
+          { id: 1, label: lngStr('training.liftCounter'), renderContent: () => this.Panel1Content(lngStr) },
+          { id: 2, label: lngStr('training.weightLoad'), renderContent: () => this.Panel2Content(lngStr) },
+          { id: 3, label: lngStr('training.intensity'), renderContent: () => this.Panel3Content(lngStr) },
+          { id: 4, label: lngStr('training.exerciseTypes'), renderContent: () => this.Panel4Content() },
         ]} />
       </>
     );
   }
 
-  Panel1Content = () => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: 'КПШ', id: 'liftCounterSum' }]} />); }
-  Panel2Content = () => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: 'Нагрузка', id: 'weightLoadSum' }]} />); }
-  Panel3Content = () => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: 'Интенсивность', id: 'intensitySum' }]} />); }
+  Panel1Content = (lngStr) => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: lngStr('training.liftCounter'), id: 'liftCounterSum' }]} />); }
+  Panel2Content = (lngStr) => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: lngStr('training.weightLoad'), id: 'weightLoadSum' }]} />); }
+  Panel3Content = (lngStr) => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: lngStr('training.intensity'), id: 'intensitySum' }]} />); }
 
   Panel4Content = () => {
     var exerciseTypesData = [];

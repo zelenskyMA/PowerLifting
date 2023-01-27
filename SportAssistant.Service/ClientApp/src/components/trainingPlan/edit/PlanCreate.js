@@ -31,16 +31,18 @@ class PlanCreate extends React.Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <h4>Создание плана тренировок</h4>
+        <h4>{lngStr('training.createTrainingPlan')}</h4>
         <ErrorPanel errorMessage={this.state.error} />
 
         <Container className="spaceTop" fluid>
-          <p>Выберите дату начала тренировок</p>
+          <p>{lngStr('training.selectTrainingStart')}</p>
           <Calendar onChange={this.onDateChange} value={this.state.date} locale={Locale} />
 
-          <Button color="primary" className="spaceTop" onClick={() => this.onPlanCreate()}>Создать</Button>
+          <Button color="primary" className="spaceTop" onClick={() => this.onPlanCreate()}>{lngStr('button.create')}</Button>
         </Container>
       </>
     );

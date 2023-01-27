@@ -18,6 +18,7 @@
   },
 
   "admin": {
+    "administration": "Администрирование",
     "console": "Административная консоль",
     "users": "Ползователи",
     "dictionaries": "Справочники",
@@ -52,6 +53,8 @@
     "height": "Рост",
     "age": "Возраст",
     "cabinet": "Личный кабинет",
+    "userCard": "Карточка",
+    "toUserCard": "К карточке спортсмена",
 
     "sportAchivements": "Спортивные достижения",
     "pushAchivement": "Рекорд в толчке",
@@ -64,18 +67,165 @@
     "requestTrainer": "Подайте заявку тренеру дважды нажав на его строку.",
     "requestForTrainer": "Заявка подана тренеру",
     "confirmTrainerRejection": "Подтвердите отказ от работы с вашим тренером",
-    "notTraining": "Я не тренируюсь"
+    "notTraining": "Я не тренируюсь",
 
+    "loginOrRegister": "Войдите в свой кабинет, или создайте нового пользователя чтобы запланировать тренировку"
   },
 
   "modal": {
-    "confirm": "Запрос подтверждения"
+    "confirm": "Запрос подтверждения",
+    "confirmCancel": "Подтвердите отмену",
+    "confirmExecution": "Подтвердить выполнение"
   },
 
   "control": {
     "filter": "Фильтр списка",
     "filterPlaceholder": "введите строку или ее часть",
-    "loading": "Загрузка"
+    "loading": "Загрузка",
+
+    "dblClickSelect": "Выбрать двойным нажатием.",
+    "dblClickRemove": "Убрать лишнее двойным нажатием."
+  },
+
+  "common": {
+    "application": "Спортивный ассистент",
+    "main": "Главная",
+    "enter": "Вход",
+    "exit": "Выход",
+    "description": "Описание",
+
+    "from": "c",
+    "to": "по",
+    "outOf": "из",
+    "up": "Вверх",
+    "down": "Вниз",
+    "name": "Название",
+    "max": "Максимум",
+    "percent": "Процент",
+    "day": "День",
+
+    "notSet": "Не задано",
+    "noRecords": "Нет записей",
+
+    "ngt": "Не более"
+  },
+
+  "planAnalitics": {
+    "buildingGraph": "Построение графиков по тренировочным планам",
+    "analitics": "Аналитика",
+    "chartOverload": "Слишком много элементов на графике"
+  },
+
+  "groups": {
+    "toGroup": "Группе",
+    "header": "Группы",
+    "group": "Группа",
+    "noGroups": "У вас нет групп",
+    "groupForTransfer": "Укажите группу для перевода",
+    "confirmSportsmenRemoval": "Подтвердите удаление спортсмена",
+    "noSportsmenInGroup": "В группе нет спортсменов",
+    "setGroupForSportsman": "Укажите группу для спортсмена",
+    "createGroupForSportsman": "Создайте группу для спортсменов",
+    "newGroupName": "Название новой группы",
+    "createGroup": "Создать группу",
+    "deleteGroup": "Удалить группу",
+
+    "transfer": "Перевести",
+
+    "numberOfUsers": "Кол-во участников"
+  },
+
+  "coaching": {
+    "requests": "Заявки",
+    "requestFromUser": "Запрос на обучение от пользователя",
+    "requestDate": "Дата заявки",
+    "requestReject": "Отказать",
+    "requestAccept": "Принять",
+    "noRequests": "У вас нет заявок, ожидающих принятия",
+    "requester": "Заявитель",
+    "requesterList": "Список заявителей.",
+    "dblClickAccept": "Принять заявку двойным нажатием.",
+
+    "coachRoom": "Тренерская",
+    "coachCabinet": "Кабинет тренера",
+    "nooneIsTraining": "Сегодня никто из ваших спортсменов не тренируется",
+    "whoIsTraining": "Кто тренируется сегодня",
+    "weeksPlanned": "Запланировано недель",
+
+    "sportsman": "Спортсмен"
+  },
+
+  "training": {
+    "lift": "Поднятие",
+    "liftCounter": "КПШ",
+    "weight": "Вес",
+    "weightLoad": "Нагрузка",
+    "intensity": "Интенсивность",
+    "iterations": "Подходы",
+    "repeates": "Повторы",
+    "liftCounterByZones": "КПШ по зонам интенсивности",
+
+    "exerciseType": "Тип упражнения",
+    "exerciseTypes": "Типы упражнений",
+    "exercise": "Упражнение",
+    "exercises": "Упражнения",
+    "exerciseSubType": "Категория упражнения",
+
+    "planDayTraining": "План тренировок на день",
+    "planFor": "План на",
+    "planIt": "Запланировать",
+    "addLift": "Добавить поднятие",
+    "newTemplateName": "Название нового шаблона",
+    "confirmTemplate": "Завершить формирование шаблона",
+    "deleteTemplate": "Удалить шаблон",
+    "confirmDeletion": "Подтвердите удаление шаблона",
+
+    "createTrainingPlan": "Создание плана тренировок",
+    "selectTrainingStart": "Выберите дату начала тренировок",
+    "trainingPlanFor": "План тренировок на",
+    "trainingStart": "Начало тренировок",
+    "trainingEnd": "Окончание тренировок",
+    "trainingActive": "Действующие",
+    "trainingHistory": "История",
+    "planTrainings": "Запланировать тренировки",
+    "noTrainingsForUser": "У вас нет тренировок на сегодня",
+
+    "plans": "Планы",
+    "trainingPlans": "Тренировочные планы",
+    "planChange": "Изменение плана тренировок",
+    "trainingDayMove": "Перенос тренировки на другой день или ее отмена.",
+    "dayMoveSelection": "Выберите день в текущем плане для переноса тренировок.",
+    "confirmMove": "Подтвердите перенос тренировки",
+    "confirmPlanDeletion": "Подтвердите удаление плана",
+    "plannedDays": "Запланированные дни тренировок",
+    "setPlanDays": "Назначьте упражнения на дни недели.",
+    "deletePlan": "Удалить план",
+    "finishPlanAssignment": "Завершить назначение плана",
+    "todaysPlanFor": "План на сегодня для",
+
+    "cycles": "Тренировочные циклы",
+    "noCycles": "У вас нет тренировочных циклов",
+    "noTemplatesInCycle": "В цикле нет шаблонов",
+    "cycleName": "Название цикла",
+    "newCycleName": "Название нового цикла",
+    "byCycle": "по тренировочному циклу",
+    "singleTmpltSelection": "При необходимости, выберите один шаблон для назначения. В противном случае будет назначен весь тренировочный цикл.",
+    "weeksInCycle": "'Кол-во недель в цикле",
+
+    "exerciseList": "Список упражнений.",
+    "selectedExercises": "Выбранные упражнения.",
+    "exercisesPerDay": "упражнений в день",
+    "leaveComment": "Оставьте комментарий для выполняющего упражнение",
+    "setExercises": "Назначьте упражнения на дни недели.",
+    "totalExercises": "Всего упражнений",
+    "noAssignedExercises": "Нет назначенных упражнений",
+    "assignExercises": "Назначить упражнения",
+    "moveExercises": "Перенести упражнения",
+    "exerciseTypeRecord": "Рекорд спортсмена в данном типе упражнений",
+    "exerciseDescription": "Описание упражнения",
+    "noExercisesToEdit": "У вас нет упражнений для редактирования",
+
+    "trainingAssignmentFrom": "назначаются тренировки, начиная с"
   },
 
   "button": {
@@ -83,10 +233,16 @@
     "confirm": "Подтвердить",
     "continue": "Продолжить",
 
+    "create": "Создать",
+    "delete": "Удалить",
+    "save": "Сохранить",
+
     "search": "Поиск",
+    "back": "Назад",
 
     "reject": "Отказаться",
     "cancel": "Отменить",
-    "select": "Выбрать"
+    "select": "Выбрать",
+    "assign": "Назначить"
   }
 }

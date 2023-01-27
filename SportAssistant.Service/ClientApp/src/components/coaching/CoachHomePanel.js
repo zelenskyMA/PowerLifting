@@ -34,18 +34,20 @@ class CoachHomePanel extends Component {
   onGoToUser = () => { this.props.navigate(`/groupUser/${this.state.selectedUser.id}`); }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     if (this.state.loading) { return (<LoadingPanel />); }
-    if (this.state.userGroups.length === 0) { return (<p><em>Сегодня никто из ваших спортсменов не тренируется</em></p>); }
+    if (this.state.userGroups.length === 0) { return (<p><em>{lngStr('coaching.nooneIsTraining')}</em></p>); }
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: 'Спортсмен', accessor: 'name' },
-      { Header: 'Группа', accessor: 'groupName' },
+      { Header: lngStr('coaching.sportsman'), accessor: 'name' },
+      { Header: lngStr('groups.group'), accessor: 'groupName' },
     ];
     if (!this.state.showDetails) {
       return (
         <>
-          <p>Кто тренируется сегодня:</p>
+          <p>{lngStr('coaching.whoIsTraining')}:</p>
           <TableControl columnsInfo={columns} data={this.state.userGroups} rowClick={this.onRowClick} pageSize={15} />
         </>
       );
@@ -53,11 +55,11 @@ class CoachHomePanel extends Component {
 
     return (
       <>
-        <h4 className="spaceBottom">План на сегодня для {this.state.selectedUser.name}</h4>
+        <h4 className="spaceBottom">{lngStr('training.todaysPlanFor') + ' ' + this.state.selectedUser.name}</h4>
         <PlanDayViewPanel planDay={this.state.selectedUser.planDay} />
 
-        <Button className="spaceTop spaceRight" color="primary" onClick={() => this.onGoToUser()}>К карточке спортсмена</Button>
-        <Button className="spaceTop" color="primary" onClick={() => this.setState({ showDetails: false })}>Назад</Button>
+        <Button className="spaceTop spaceRight" color="primary" onClick={() => this.onGoToUser()}>{lngStr('user.toUserCard')}</Button>
+        <Button className="spaceTop" color="primary" onClick={() => this.setState({ showDetails: false })}>{lngStr('button.back')}</Button>
       </>
     );
   }

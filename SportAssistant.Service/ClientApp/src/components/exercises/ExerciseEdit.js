@@ -56,6 +56,7 @@ class ExerciseEdit extends Component {
 
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
+    const lngStr = this.props.lngStr;
 
     return (
       <>
@@ -64,32 +65,32 @@ class ExerciseEdit extends Component {
 
         <Row className="spaceTop">
           <Col xs={7}>
-            <InputText label="Название:" propName="name" onChange={this.onValueChange} initialValue={this.state.exercise.name} />
+            <InputText label={lngStr('common.name') + ': '} propName="name" onChange={this.onValueChange} initialValue={this.state.exercise.name} />
           </Col>
         </Row>
         <Row className="spaceTop">
           <Col xs={3}>
-            <DropdownControl placeholder="Не задано" label="Тип упражнения: " defaultValue={this.state.exercise.exerciseTypeId}
+            <DropdownControl placeholder={lngStr('common.notSet')} label={lngStr('training.exerciseType') + ': '} defaultValue={this.state.exercise.exerciseTypeId}
               data={this.state.types} onChange={this.onTypeSelect} />
           </Col>
           <Col xs={5}>
-            <DropdownControl placeholder="Не задано" label="Подтип упражнения: " defaultValue={this.state.exercise.exerciseSubTypeId}
+            <DropdownControl placeholder={lngStr('common.notSet')} label={lngStr('training.exerciseSubType') + ': '} defaultValue={this.state.exercise.exerciseSubTypeId}
               data={this.state.subTypes} onChange={this.onSubtypeSelect} />
           </Col>
         </Row>
         <Row className="spaceTop">
           <Col xs={5}>
             <InputTextArea onChange={this.onValueChange} propName="description" cols={98}
-              label="Описание упражнения" initialValue={this.state.exercise.description} />
+              label={lngStr('training.exerciseDescription')} initialValue={this.state.exercise.description} />
           </Col>
         </Row>
 
         <Row className="spaceTop">
           <Col xs={3}>
-            <Button color="primary" onClick={() => this.onConfirm()}>Подтвердить</Button>
+            <Button color="primary" onClick={() => this.onConfirm()}>{lngStr('button.confirm')}</Button>
           </Col>
           <Col xs={1}>
-            <Button color="primary" onClick={() => this.onDelete()}>Удалить</Button>
+            <Button color="primary" onClick={() => this.onDelete()}>{lngStr('button.delete')}</Button>
           </Col>
         </Row>
       </>

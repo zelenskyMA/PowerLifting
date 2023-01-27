@@ -1,11 +1,13 @@
 ﻿import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Container } from "reactstrap";
 
 export function LineChartControl({ displayList, data = null, multidata = false }) {
+  const { t } = useTranslation();
 
   if (data?.length == 0) { return (<></>); }
-  if (data?.length >= 15) { return (<>Слишком много элементов на графике</>); }
+  if (data?.length >= 15) { return (<>{t('planAnalitics.chartOverload')}</>); }
 
   var colors = ['#000000', '#FF0000', '#0000FF', '#728C00', '#C19A6B', '#FF00FF', '#800000', '#008000', '#FFDB58', '#FFD700',
     '#00BFFF', '#00FFFF', '#31906E', '#3C565B', '#C04000', '#827839', '#B8860B', '#806517'];

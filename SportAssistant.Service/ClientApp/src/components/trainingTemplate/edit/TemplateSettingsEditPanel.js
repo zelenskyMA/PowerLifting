@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { UncontrolledTooltip } from "reactstrap";
 import '../../../styling/Common.css';
 
@@ -23,13 +24,15 @@ export function TemplateSettingsEditPanel({ percentage, settings }) {
 }
 
 function Tooltip({ settingsList, idPrefix }) {
+  const { t } = useTranslation();
+
   return (
     <UncontrolledTooltip placement="top" target={idPrefix}>
       {settingsList.map(settings => {
         return (
           <p key={`tooltip_${idPrefix}${Math.random()}`}>
             {
-              `Вес: ${settings.weightPercentage} Подходы: ${settings.iterations} Повторы: ${settings.exercisePart1} | ${settings.exercisePart2} | ${settings.exercisePart3}`
+              `${t('training.weight')}: ${settings.weightPercentage} ${t('training.iterations')}: ${settings.iterations} ${t('training.repeates')}: ${settings.exercisePart1} | ${settings.exercisePart2} | ${settings.exercisePart3}`
             }
           </p>
         );

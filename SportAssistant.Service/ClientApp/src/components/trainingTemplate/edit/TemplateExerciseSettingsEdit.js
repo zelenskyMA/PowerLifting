@@ -66,12 +66,12 @@ class TemplateExerciseSettingsEdit extends Component {
     this.setState({ error: '', settingsList: resultList });
   }
 
-  addLiftItem = () => {
+  addLiftItem = (lngStr) => {
     var template = structuredClone(this.state.templateExercise.settingsTemplate);
 
     var maxLiftItems = this.props.appSettings.maxLiftItems;
     if (this.state.settingsList.length >= maxLiftItems) {
-      this.setState({ error: `Не более ${maxLiftItems}.` });
+      this.setState({ error: `${lngStr('common.ngt')} ${maxLiftItems}.` });
       return;
     }
 
@@ -86,6 +86,7 @@ class TemplateExerciseSettingsEdit extends Component {
 
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
+    const lngStr = this.props.lngStr;
 
     return (
       <>
@@ -95,37 +96,37 @@ class TemplateExerciseSettingsEdit extends Component {
         <Row className="spaceTop">
           <Col xs={5}>
             <InputTextArea onChange={this.onExerciseChange} propName="comments" cols={93}
-              label="Оставьте комментарий для выполняющего упражнение" initialValue={this.state.templateExercise.comments} />
+              label={lngStr('training.leaveComment')} initialValue={this.state.templateExercise.comments} />
           </Col>
         </Row>
 
         <Row className="spaceTop">
           <Col xs={8}>
-            {this.state.settingsList.map((item, i) => this.liftIterationPanel(item, i))}
+            {this.state.settingsList.map((item, i) => this.liftIterationPanel(item, i, lngStr))}
           </Col>
         </Row>
 
-        <Button className="spaceTop spaceRight" color="primary" onClick={() => this.confirmAsync()}>Подтвердить</Button>
-        <Button className="spaceTop" color="primary" outline onClick={() => this.addLiftItem()}>Добавить поднятие</Button>
+        <Button className="spaceTop spaceRight" color="primary" onClick={() => this.confirmAsync()}>{lngStr('button.confirm')}</Button>
+        <Button className="spaceTop" color="primary" outline onClick={() => this.addLiftItem(lngStr)}>{lngStr('training.addLift')}</Button>
       </>
     );
   }
 
-  liftIterationPanel(settings, index) {
+  liftIterationPanel(settings, index, lngStr) {
     var key = settings.id.toString();
 
     return (
       <>
-        <Label key={'l' + key} for={key} sm={2}><Button close onClick={() => this.onSettingsDelete(index)} /> {' '} Поднятие {(index + 1)}:</Label>
+        <Label key={'l' + key} for={key} sm={2}><Button close onClick={() => this.onSettingsDelete(index)} />{` ${lngStr('training.lift')} ${(index + 1)}:`}</Label>
         <Row key={'row' + key} id={key}>
           <Col xs={3}>
-            <InputNumber label="Процент:" propName={index + '|weightPercentage'} onChange={this.onValueChange} initialValue={settings.weightPercentage} />
+            <InputNumber label={lngStr('common.percent') + ':'} propName={index + '|weightPercentage'} onChange={this.onValueChange} initialValue={settings.weightPercentage} />
           </Col>
           <Col xs={3}>
-            <InputNumber label="Подходы:" propName={index + '|iterations'} onChange={this.onValueChange} initialValue={settings.iterations} />
+            <InputNumber label={lngStr('training.iterations') + ':'} propName={index + '|iterations'} onChange={this.onValueChange} initialValue={settings.iterations} />
           </Col>
           <Col xs={4}>
-            <MultiNumberInput label="Повторы:" onChange={this.onValueChange} inputList={[
+            <MultiNumberInput label={lngStr('training.repeates') + ':'} onChange={this.onValueChange} inputList={[
               { propName: index + '|exercisePart1', initialValue: settings.exercisePart1 },
               { propName: index + '|exercisePart2', initialValue: settings.exercisePart2 },
               { propName: index + '|exercisePart3', initialValue: settings.exercisePart3 }]

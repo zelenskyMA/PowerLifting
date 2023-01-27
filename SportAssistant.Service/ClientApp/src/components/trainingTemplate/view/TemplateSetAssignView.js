@@ -57,17 +57,18 @@ class TemplateSetAssignView extends Component {
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
 
+    const lngStr = this.props.lngStr;
     var hasSets = this.state.templateSets && this.state.templateSets.length > 0;
     if (!hasSets) {
       return (<>
-        <p className="spaceTop"><em>У вас нет тренировочных циклов</em></p>
-        <Button color="primary" className="spaceTop" outline onClick={() => this.goBack()}>Назад</Button>
+        <p className="spaceTop"><em>{lngStr('training.noCycles')}</em></p>
+        <Button color="primary" className="spaceTop" outline onClick={() => this.goBack()}>{lngStr('button.back')}</Button>
       </>);
     }
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: 'Имя', accessor: 'name' },
+      { Header: lngStr('user.name'), accessor: 'name' },
     ];
 
     var hasTemplates = this.state.templatePlans && this.state.templatePlans.length > 0;
@@ -76,26 +77,26 @@ class TemplateSetAssignView extends Component {
       <div className="spaceTop">
         <ErrorPanel errorMessage={this.state.error} />
 
-        <p>Группе <strong>{this.state.groupInfo.group.name}</strong> назначаются тренировки, начиная с:</p>
+        <p>{lngStr('groups.toGroup')} <strong>{this.state.groupInfo.group.name}</strong> {lngStr('training.trainingAssignmentFrom')}:</p>
         <Calendar onChange={(date) => this.onSelectionChange('startDate', date)} value={this.state.selectedInfo.startDate} locale={Locale} />
 
         <Row className="spaceBottom spaceTop">
           <Col xs={8}>
-            <DropdownControl placeholder="Не задано" label="по тренировочному циклу: " data={this.state.templateSets} onChange={this.onSetSelect} />
+            <DropdownControl placeholder={lngStr('common.notSet')} label={`${lngStr('training.byCycle')}: `} data={this.state.templateSets} onChange={this.onSetSelect} />
           </Col>
         </Row>
 
-        {!hasTemplates && (<p><em>В цикле нет шаблонов</em></p>)}
+        {!hasTemplates && (<p><em>{lngStr('training.noTemplatesInCycle')}</em></p>)}
         {hasTemplates && (
           <Row>
             <Col xs={9}>
-              <p>При необходимости, выберите один шаблон для назначения. В противном случае будет назначен весь тренировочный цикл.</p>
+              <p>{lngStr('training.singleTmpltSelection')}</p>
               <TableControl columnsInfo={columns} data={this.state.templatePlans} rowClick={this.onTemplateSelect} hideFilter="true" />
             </Col>
           </Row>)}
 
-        <Button color="primary" className="spaceTop spaceRight" disabled={!(hasSets && hasTemplates)} onClick={() => this.onAssign()}>Назначить</Button>
-        <Button color="primary" className="spaceTop" outline onClick={() => this.goBack()}>Назад</Button>
+        <Button color="primary" className="spaceTop spaceRight" disabled={!(hasSets && hasTemplates)} onClick={() => this.onAssign()}>{lngStr('button.assign')}</Button>
+        <Button color="primary" className="spaceTop" outline onClick={() => this.goBack()}>{lngStr('button.back')}</Button>
       </div>
     );
   }

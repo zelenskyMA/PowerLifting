@@ -24,19 +24,21 @@ class RequestConsoleView extends Component {
   onRowlClick = row => { this.props.navigate(`/acceptRequest/${row.values.id}`); }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     if (this.state.myRequests.length === 0) {
-      return (<p className="spaceBorder"><em>У вас нет заявок, ожидающих принятия</em></p>);
+      return (<p className="spaceBorder"><em>{lngStr('coaching.noRequests')}</em></p>);
     }
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: 'Заявитель', accessor: 'userName' },
-      { Header: 'Дата заявки', accessor: 'creationDate', Cell: t => DateToLocal(t.value) }
+      { Header: lngStr('coaching.requester'), accessor: 'userName' },
+      { Header: lngStr('coaching.requestDate'), accessor: 'creationDate', Cell: t => DateToLocal(t.value) }
     ];
 
     return (
       <div className="spaceTop">
-        <p><strong>Список заявителей.</strong> Принять заявку двойным нажатием.</p>
+        <p><strong>{lngStr('coaching.requesterList')}</strong> {lngStr('coaching.dblClickAccept')}</p>
         <TableControl columnsInfo={columns} data={this.state.myRequests} rowClick={this.onRowlClick} />
       </div>
     );

@@ -8,9 +8,11 @@ class PlanAnaliticsView extends Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <h3 className="spaceBottom">Аналитика</h3>
+        <h3 className="spaceBottom">{lngStr('planAnalitics.analitics')}</h3>
         <PlanAnaliticsPanel groupUserId="0" />
       </>
     );

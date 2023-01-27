@@ -12,13 +12,15 @@ class CoachConsoleView extends Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <h5 className="spaceBottom">Тренерский кабинет</h5>
+        <h5 className="spaceBottom">{lngStr('coaching.coachCabinet')}</h5>
         <TabControl data={[
-          { id: 1, label: 'Группы', renderContent: () => this.groupsContent() },
-          { id: 2, label: 'Тренировочные циклы', renderContent: () => this.templateSetsContent() },
-          { id: 3, label: 'Заявки', renderContent: () => this.requestsContent() },
+          { id: 1, label: lngStr('groups.header'), renderContent: () => this.groupsContent() },
+          { id: 2, label: lngStr('training.cycles'), renderContent: () => this.templateSetsContent() },
+          { id: 3, label: lngStr('coaching.requests'), renderContent: () => this.requestsContent() },
         ]}
         />
       </>
