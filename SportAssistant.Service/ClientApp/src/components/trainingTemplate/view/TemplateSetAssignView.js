@@ -16,6 +16,7 @@ class TemplateSetAssignView extends Component {
       templateSets: [],
       templatePlans: [],
       selectedInfo: { setId: 0, templateId: 0, groupId: this.props.params.groupId, startDate: new Date() },
+      selectedTemplateName: '',
       loading: true,
       error: '',
     };
@@ -39,7 +40,14 @@ class TemplateSetAssignView extends Component {
     this.setState({ templatePlans: templateSetData.templates || [] });
   }
 
-  onTemplateSelect = async (row) => { this.onSelectionChange("templateId", row.values.id); }
+  onTemplateSelect = async (row) => {
+    this.onSelectionChange("templateId", row.values.id);
+    this.setState({ selectedTemplateName: row.values.name });
+  }
+  unselectTemplate = () => {
+    this.onSelectionChange("templateId", 0);
+    this.setState({ selectedTemplateName: '' });
+  }
 
   onAssign = async () => {
     try {
@@ -93,6 +101,12 @@ class TemplateSetAssignView extends Component {
               <p>{lngStr('training.singleTmpltSelection')}</p>
               <TableControl columnsInfo={columns} data={this.state.templatePlans} rowClick={this.onTemplateSelect} hideFilter="true" />
             </Col>
+          </Row>)}
+
+        {hasTemplates && this.state.selectedInfo.templateId > 0 && (
+          <Row>
+            <Col xs={1}><Button color="primary" outline onClick={() => this.unselectTemplate()}>{lngStr('button.cancel')}</Button></Col>
+            <Col>{lngStr('training.templateToAssign')}: {this.state.selectedTemplateName}</Col>
           </Row>)}
 
         <Button color="primary" className="spaceTop spaceRight" disabled={!(hasSets && hasTemplates)} onClick={() => this.onAssign()}>{lngStr('button.assign')}</Button>

@@ -90,6 +90,9 @@ class ExerciseEdit extends Component {
             <Button color="primary" onClick={() => this.onConfirm()}>{lngStr('button.confirm')}</Button>
           </Col>
           <Col xs={1}>
+            <Button color="primary" onClick={() => this.props.navigate(`/exercises`)}>{lngStr('button.cancel')}</Button>
+          </Col>
+          <Col xs={1}>
             <Button color="primary" onClick={() => this.onDelete()}>{lngStr('button.delete')}</Button>
           </Col>
         </Row>

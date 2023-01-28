@@ -85,13 +85,13 @@ class GroupUserCardPanel extends Component {
         <ErrorPanel errorMessage={this.state.error} />
 
         <Row className="spaceTop">
-          <Col xs={2}>{lngStr('user.height') + ': ' + this.state.card.baseInfo?.height ?? 0}</Col>
-          <Col xs={2}>{lngStr('user.age') + ': ' + this.state.card.baseInfo?.age ?? 0}</Col>
-          <Col xs={2}>{lngStr('user.weight') + ': ' + this.state.card.baseInfo?.weight ?? 0}</Col>
+          <Col xs={2}>{lngStr('user.height') + ': ' + (this.state.card.baseInfo?.height ?? 0)}</Col>
+          <Col xs={2}>{lngStr('user.age') + ': ' + (this.state.card.baseInfo?.age ?? 0)}</Col>
+          <Col xs={2}>{lngStr('user.weight') + ': ' + (this.state.card.baseInfo?.weight ?? 0)}</Col>
         </Row>
         <Row className="spaceTop">
-          <Col xs={2}>{lngStr('user.pushAchivement') + ': ' + this.state.pushAchivement?.result ?? 0}</Col>
-          <Col xs={2}>{lngStr('user.jerkAchivement') + ': ' + this.state.jerkAchivement?.result ?? 0}</Col>
+          <Col xs={2}>{lngStr('user.pushAchivement') + ': ' + (this.state.pushAchivement?.result ?? 0)}</Col>
+          <Col xs={2}>{lngStr('user.jerkAchivement') + ': ' + (this.state.jerkAchivement?.result ?? 0)}</Col>
         </Row>
         <Row className="spaceTop">
           <Col xs={6}>
