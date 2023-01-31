@@ -57,8 +57,8 @@ class Home extends Component {
 
     return (
       <>
-        <p className="spaceBottom" >{lngStr('training.planFor')} <strong>{DateToLocal(new Date())}</strong></p>
-        {this.state.planDay?.exercises?.length > 0 ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>{lngStr('training.noTrainingsForUser')}</em></p>}
+        <p className="spaceBottom" >{lngStr('training.plan.for')} <strong>{DateToLocal(new Date())}</strong></p>
+        {this.state.planDay?.exercises?.length > 0 ? <PlanDayViewPanel planDay={this.state.planDay} /> : <p><em>{lngStr('training.exercise.nothingForToday')}</em></p>}
       </>
     );
   }
@@ -66,8 +66,8 @@ class Home extends Component {
   startScreenPanel = (lngStr) => {
     return (
       <div className="first-page-text first-page-spaceTop">
-        <h1 className="spaceBottom">{lngStr('common.application')}</h1>
-        <h3>{lngStr('user.loginOrRegister')}</h3>
+        <h1 className="spaceBottom">{lngStr('general.appName')}</h1>
+        <h3>{lngStr('appSetup.user.loginOrRegister')}</h3>
       </div>);
   }
 

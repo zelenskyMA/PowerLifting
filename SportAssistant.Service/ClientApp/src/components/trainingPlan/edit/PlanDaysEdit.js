@@ -49,9 +49,9 @@ class PlanDaysEdit extends React.Component {
   onDeletePlan = async (lngStr) => {
     var modalInfo = {
       isVisible: true,
-      headerText: lngStr('modal.confirm'),
-      buttons: [{ name: lngStr('button.confirm'), onClick: this.onConfirmDelete, color: "success" }],
-      body: () => { return (<p>{lngStr('training.confirmPlanDeletion')}</p>) }
+      headerText: lngStr('appSetup.modal.confirm'),
+      buttons: [{ name: lngStr('general.actions.confirm'), onClick: this.onConfirmDelete, color: "success" }],
+      body: () => { return (<p>{lngStr('training.plan.confirmDeletion')}</p>) }
     };
     this.props.changeModalVisibility(modalInfo);
   }
@@ -59,7 +59,7 @@ class PlanDaysEdit extends React.Component {
   render() {
     const lngStr = this.props.lngStr;
     const days = this.state.plannedDays;
-    const placeHolder = lngStr('common.notSet');
+    const placeHolder = lngStr('general.common.notSet');
 
     return (
       <>
@@ -68,7 +68,7 @@ class PlanDaysEdit extends React.Component {
         <ErrorPanel errorMessage={this.state.error} />
 
         <Row>
-          <Col xs={3} md={{ offset: 4 }}><strong>{lngStr('training.setPlanDays')}</strong></Col>
+          <Col xs={3} md={{ offset: 4 }}><strong>{lngStr('training.exercise.setDays')}</strong></Col>
         </Row>
         <br />
         <Container fluid>
@@ -86,7 +86,7 @@ class PlanDaysEdit extends React.Component {
             <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[6])}</Col>
 
             <Col>
-              <div><strong>{lngStr('training.totalExercises')}</strong></div>
+              <div><strong>{lngStr('training.exercise.total')}</strong></div>
               {this.countersPanel(this.state.typeCounters, lngStr)}
             </Col>
 
@@ -110,8 +110,8 @@ class PlanDaysEdit extends React.Component {
             <div>{DateToLocal(day.activityDate)}</div>
           </Col>
           <Col style={{ paddingTop: '7px' }} >
-            <Button color="primary" outline title={lngStr('training.assignExercises')} style={{ width: '40px', marginRight: '10px' }} onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
-            <Button color="primary" outline title={lngStr('training.moveExercises')} style={{ width: '40px' }} disabled={day.exerciseTypeCounters.length == 0} onClick={() => this.props.navigate(`/movePlanDay/${this.props.params.planId}/${day.id}`)} >{' - '}</Button>
+            <Button color="primary" outline title={lngStr('training.exercise.assign')} style={{ width: '40px', marginRight: '10px' }} onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
+            <Button color="primary" outline title={lngStr('training.exercise.transfer')} style={{ width: '40px' }} disabled={day.exerciseTypeCounters.length == 0} onClick={() => this.props.navigate(`/movePlanDay/${this.props.params.planId}/${day.id}`)} >{' - '}</Button>
           </Col>
         </Row>
         <hr style={{ width: '60%', paddingTop: "2px" }} />
@@ -127,7 +127,7 @@ class PlanDaysEdit extends React.Component {
 
     if (counters.length == 0) {
       return (
-        <span style={{ fontSize: fontSize }}>{lngStr('training.noAssignedExercises')}</span>
+        <span style={{ fontSize: fontSize }}>{lngStr('training.exercise.nothingAssigned')}</span>
       );
     }
 
@@ -146,9 +146,9 @@ class PlanDaysEdit extends React.Component {
   buttonPanel(lngStr) {
     return (
       <Col>
-        <Button color="primary" onClick={async () => this.props.navigate(this.state.backUrl)}>{lngStr('training.finishPlanAssignment')}</Button>
+        <Button color="primary" onClick={async () => this.props.navigate(this.state.backUrl)}>{lngStr('training.plan.finishAssignment')}</Button>
         <p></p>
-        <Button color="primary" outline onClick={async () => this.onDeletePlan(lngStr)}>{lngStr('training.deletePlan')}</Button>
+        <Button color="primary" outline onClick={async () => this.onDeletePlan(lngStr)}>{lngStr('training.plan.delete')}</Button>
       </Col>
     );
   }

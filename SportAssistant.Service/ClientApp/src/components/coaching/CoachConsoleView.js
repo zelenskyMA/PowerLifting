@@ -18,9 +18,9 @@ class CoachConsoleView extends Component {
       <>
         <h5 className="spaceBottom">{lngStr('coaching.coachCabinet')}</h5>
         <TabControl data={[
-          { id: 1, label: lngStr('groups.header'), renderContent: () => this.groupsContent() },
-          { id: 2, label: lngStr('training.cycles'), renderContent: () => this.templateSetsContent() },
-          { id: 3, label: lngStr('coaching.requests'), renderContent: () => this.requestsContent() },
+          { id: 1, label: lngStr('coaching.groups.header'), renderContent: () => this.groupsContent() },
+          { id: 2, label: lngStr('training.cycle.multi'), renderContent: () => this.templateSetsContent() },
+          { id: 3, label: lngStr('coaching.request.header'), renderContent: () => this.requestsContent() },
         ]}
         />
       </>

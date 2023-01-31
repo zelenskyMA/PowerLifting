@@ -53,9 +53,9 @@ class TemplatePlanEdit extends React.Component {
   onDeletePlan = async (lngStr) => {
     var modalInfo = {
       isVisible: true,
-      headerText: lngStr('modal.confirm'),
-      buttons: [{ name: lngStr('button.confirm'), onClick: this.onConfirmDelete, color: "success" }],
-      body: () => { return (<p>{lngStr('training.confirmDeletion')}</p>) }
+      headerText: lngStr('appSetup.modal.confirm'),
+      buttons: [{ name: lngStr('general.actions.confirm'), onClick: this.onConfirmDelete, color: "success" }],
+      body: () => { return (<p>{lngStr('training.template.confirmDeletion')}</p>) }
     };
     this.props.changeModalVisibility(modalInfo);
   }
@@ -64,7 +64,7 @@ class TemplatePlanEdit extends React.Component {
     const lngStr = this.props.lngStr;
 
     const days = this.state.days;
-    const placeHolder = lngStr('common.notSet');
+    const placeHolder = lngStr('general.common.notSet');
 
     return (
       <>
@@ -72,12 +72,12 @@ class TemplatePlanEdit extends React.Component {
 
         <Row className="spaceBottom">
           <Col xs={8} md={{ offset: 2 }}>
-            <InputText label={lngStr('common.name')} propName="name" onChange={this.onPlanChange} initialValue={this.state.plan.name} />
+            <InputText label={lngStr('general.common.name')} propName="name" onChange={this.onPlanChange} initialValue={this.state.plan.name} />
           </Col>
         </Row>
 
         <Row>
-          <Col xs={3} md={{ offset: 4 }}><strong>{lngStr('training.setExercises')}</strong></Col>
+          <Col xs={3} md={{ offset: 4 }}><strong>{lngStr('training.exercise.setExercises')}</strong></Col>
         </Row>
         <br />
         <Container fluid>
@@ -95,7 +95,7 @@ class TemplatePlanEdit extends React.Component {
             <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[6])}</Col>
 
             <Col>
-              <div><strong>{lngStr('training.totalExercises')}</strong></div>
+              <div><strong>{lngStr('training.exercise.total')}</strong></div>
               {this.countersPanel(this.state.typeCounters, lngStr)}
             </Col>
 
@@ -113,7 +113,7 @@ class TemplatePlanEdit extends React.Component {
       <Container fluid>
         <Row>
           <Col className="text-center">
-            <div style={{ paddingTop: '7px', paddingLeft: '50px' }}><strong>{`${lngStr('common.day')} ${day.dayNumber}`}</strong></div>
+            <div style={{ paddingTop: '7px', paddingLeft: '50px' }}><strong>{`${lngStr('general.common.day')} ${day.dayNumber}`}</strong></div>
           </Col>
           <Col style={{ paddingTop: '7px', paddingRight: '45px' }} >
             <Button color="primary" outline onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
@@ -132,7 +132,7 @@ class TemplatePlanEdit extends React.Component {
 
     if (counters.length == 0) {
       return (
-        <span style={{ fontSize: fontSize }}>{lngStr('training.noAssignedExercises')}</span>
+        <span style={{ fontSize: fontSize }}>{lngStr('training.exercise.nothingAssigned')}</span>
       );
     }
 
@@ -151,9 +151,9 @@ class TemplatePlanEdit extends React.Component {
   buttonPanel(lngStr) {
     return (
       <Col>
-        <Button color="primary" onClick={async () => this.onConfirmPlan()}>{lngStr('training.confirmTemplate')}</Button>
+        <Button color="primary" onClick={async () => this.onConfirmPlan()}>{lngStr('training.template.confirmCreation')}</Button>
         <p></p>
-        <Button color="primary" outline onClick={async () => this.onDeletePlan(lngStr)}>{lngStr('training.deleteTemplate')}</Button>
+        <Button color="primary" outline onClick={async () => this.onDeletePlan(lngStr)}>{lngStr('training.template.delete')}</Button>
       </Col>
     );
   }

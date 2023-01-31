@@ -64,9 +64,9 @@ class UserCabinet extends Component {
 
     var modalInfo = {
       isVisible: true,
-      headerText: lngStr('modal.confirm'),
-      buttons: [{ name: lngStr('button.confirm'), onClick: this.onConfirmRejectCoach, color: "success" }],
-      body: () => { return (<p>{lngStr('user.confirmTrainerRejection')}</p>) }
+      headerText: lngStr('appSetup.modal.confirm'),
+      buttons: [{ name: lngStr('general.actions.confirm'), onClick: this.onConfirmRejectCoach, color: "success" }],
+      body: () => { return (<p>{lngStr('coaching.request.confirmTrainerRejection')}</p>) }
     };
     this.props.changeModalVisibility(modalInfo);
   }
@@ -84,15 +84,15 @@ class UserCabinet extends Component {
 
     return (
       <>
-        <h5 className="spaceBottom">{lngStr('user.cabinet')}</h5>
+        <h5 className="spaceBottom">{lngStr('appSetup.user.cabinet')}</h5>
         {this.personalInfoPanel(lngStr)}
 
         <hr style={{ width: '75%', paddingTop: "2px", marginBottom: '30px' }} />
 
-        <p>{lngStr('user.sportAchivements')}</p>
+        <p>{lngStr('appSetup.user.sportAchivements')}</p>
         {this.sportInfoPanel(lngStr)}
 
-        <Button className="spaceTop" color="primary" onClick={() => this.confirmAsync()}>{lngStr('button.confirm')}</Button>
+        <Button className="spaceTop" color="primary" onClick={() => this.confirmAsync()}>{lngStr('general.actions.confirm')}</Button>
       </>
     );
   }
@@ -102,31 +102,31 @@ class UserCabinet extends Component {
       <>
         <Row className="spaceBottom" style={{ marginTop: '10px' }}>
           <Col xs={3}>
-            <InputText label={lngStr('user.name') + ':'} propName="firstName" onChange={this.onValueChange} initialValue={this.state.userInfo.firstName} />
+            <InputText label={lngStr('appSetup.user.name') + ':'} propName="firstName" onChange={this.onValueChange} initialValue={this.state.userInfo.firstName} />
           </Col>
           <Col xs={3}>
-            <InputText label={lngStr('user.surname') + ':'} propName="surname" onChange={this.onValueChange} initialValue={this.state.userInfo.surname} />
+            <InputText label={lngStr('appSetup.user.surname') + ':'} propName="surname" onChange={this.onValueChange} initialValue={this.state.userInfo.surname} />
           </Col>
           <Col xs={3}>
-            <InputText label={lngStr('user.patronimic') + ':'} propName="patronimic" onChange={this.onValueChange} initialValue={this.state.userInfo.patronimic} />
+            <InputText label={lngStr('appSetup.user.patronimic') + ':'} propName="patronimic" onChange={this.onValueChange} initialValue={this.state.userInfo.patronimic} />
           </Col>
         </Row>
         <Row className="spaceBottom">
           <Col xs={3}>
-            <InputNumber label={lngStr('user.weight') + ':'} propName="weight" onChange={this.onValueChange} initialValue={this.state.userInfo.weight} />
+            <InputNumber label={lngStr('appSetup.user.weight') + ':'} propName="weight" onChange={this.onValueChange} initialValue={this.state.userInfo.weight} />
           </Col>
           <Col xs={3}>
-            <InputNumber label={lngStr('user.height') + ':'} propName="height" onChange={this.onValueChange} initialValue={this.state.userInfo.height} />
+            <InputNumber label={lngStr('appSetup.user.height') + ':'} propName="height" onChange={this.onValueChange} initialValue={this.state.userInfo.height} />
           </Col>
           <Col xs={3}>
-            <InputNumber label={lngStr('user.age') + ':'} propName="age" onChange={this.onValueChange} initialValue={this.state.userInfo.age} />
+            <InputNumber label={lngStr('appSetup.user.age') + ':'} propName="age" onChange={this.onValueChange} initialValue={this.state.userInfo.age} />
           </Col>
         </Row>
 
         {(this.state.userInfo?.rolesInfo?.isCoach || false) &&
           <Row className="spaceBottom">
             <Col xs={3}>
-              <InputCheckbox label={lngStr('user.notTraining')} propName="coachOnly" onChange={this.onValueChange} initialValue={this.state.userInfo.coachOnly} />
+              <InputCheckbox label={lngStr('coaching.notTraining')} propName="coachOnly" onChange={this.onValueChange} initialValue={this.state.userInfo.coachOnly} />
             </Col>
           </Row>
         }
@@ -139,17 +139,17 @@ class UserCabinet extends Component {
       <>
         <Row style={{ marginTop: '10px' }}>
           <Col xs={3}>
-            <InputNumber label={lngStr('user.pushAchivement') + ':'} propName="result" onChange={this.onPushChange} initialValue={this.state.pushAchivement?.result} />
+            <InputNumber label={lngStr('appSetup.user.pushAchivement') + ':'} propName="result" onChange={this.onPushChange} initialValue={this.state.pushAchivement?.result} />
           </Col>
           <Col xs={3}>
-            <InputNumber label={lngStr('user.jerkAchivement') + ':'} propName="result" onChange={this.onJerkChange} initialValue={this.state.jerkAchivement?.result} />
+            <InputNumber label={lngStr('appSetup.user.jerkAchivement') + ':'} propName="result" onChange={this.onJerkChange} initialValue={this.state.jerkAchivement?.result} />
           </Col>
         </Row>
 
         <Row className="spaceTop">
           <Col xs={6}>
             <Label check>
-              <span style={{ marginRight: '20px' }} >{lngStr('user.myTrainer')}:</span>
+              <span style={{ marginRight: '20px' }} >{lngStr('coaching.myTrainer')}:</span>
               {this.coachRequestView(lngStr)}
             </Label>
           </Col>
@@ -163,19 +163,19 @@ class UserCabinet extends Component {
     if (this.state.userInfo.coachLegalName) {
       return (<>
         <strong className="spaceRight" >{this.state.userInfo.coachLegalName}</strong>
-        <Button color="primary" onClick={() => this.rejectCoach()}>{lngStr('button.reject')}</Button >
+        <Button color="primary" onClick={() => this.rejectCoach()}>{lngStr('general.actions.giveUp')}</Button >
       </>);
     }
 
     if (this.state.trainingRequest.coachName) {
       return (<>
-        <strong className="spaceRight" >{lngStr('user.requestForTrainer')} {this.state.trainingRequest.coachName}</strong>
-        <Button color="primary" onClick={() => this.cancelRequest()}>{lngStr('button.cancel')}</Button >
+        <strong className="spaceRight" >{lngStr('coaching.request.forTrainer')} {this.state.trainingRequest.coachName}</strong>
+        <Button color="primary" onClick={() => this.cancelRequest()}>{lngStr('general.actions.cancel')}</Button >
       </>
       );
     }
 
-    return (<Button color="primary" onClick={() => this.createRequest()}>{lngStr('button.select')}</Button>);
+    return (<Button color="primary" onClick={() => this.createRequest()}>{lngStr('general.actions.select')}</Button>);
   }
 
 }

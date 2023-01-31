@@ -35,7 +35,7 @@ class NavMenu extends Component {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3 navbar-dark" container light>
-          <NavbarBrand className="menu-first-page-item" tag={Link} to="/">{lngStr('common.main')}</NavbarBrand>
+          <NavbarBrand className="menu-first-page-item" tag={Link} to="/">{lngStr('general.common.main')}</NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
@@ -55,7 +55,7 @@ class NavMenu extends Component {
     if (legalName === '') {
       return (
         <NavItem>
-          <NavLink tag={Link} className="menu-first-page-item" to="/login">{lngStr('common.enter')}</NavLink>
+          <NavLink tag={Link} className="menu-first-page-item" to="/login">{lngStr('general.common.enter')}</NavLink>
         </NavItem>
       );
     }
@@ -64,8 +64,8 @@ class NavMenu extends Component {
       <UncontrolledDropdown nav inNavbar>
         <DropdownToggle className="menu-item" nav caret>{legalName}</DropdownToggle>
         <DropdownMenu end>
-          <DropdownItem className="text-dark" tag={Link} to="/userCabinet" >{lngStr('user.cabinet')}</DropdownItem>
-          <DropdownItem className="text-dark" onClick={() => RemoveTokens()} >{lngStr('common.exit')}</DropdownItem>
+          <DropdownItem className="text-dark" tag={Link} to="/userCabinet" >{lngStr('appSetup.user.cabinet')}</DropdownItem>
+          <DropdownItem className="text-dark" onClick={() => RemoveTokens()} >{lngStr('general.common.exit')}</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     );

@@ -29,21 +29,21 @@ class ExercisesView extends Component {
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: lngStr('common.name'), accessor: 'name' },
-      { Header: lngStr('training.exerciseType'), accessor: 'exerciseTypeName' },
-      { Header: lngStr('training.exerciseSubType'), accessor: 'exerciseSubTypeName' },
+      { Header: lngStr('general.common.name'), accessor: 'name' },
+      { Header: lngStr('training.exercise.type'), accessor: 'exerciseTypeName' },
+      { Header: lngStr('training.exercise.subType'), accessor: 'exerciseSubTypeName' },
     ];
 
     var hasData = this.state.exercises && this.state.exercises.length > 0;
 
     return (
       <div className="spaceTop">
-        {!hasData && (<p><em>{lngStr('training.noExercisesToEdit')}</em></p>)}
+        {!hasData && (<p><em>{lngStr('training.exercise.nothingToEdit')}</em></p>)}
         {hasData && (
           <TableControl columnsInfo={columns} data={this.state.exercises} rowClick={this.onRowClick} />
         )}
 
-        <Button className="spaceTop" color="primary" onClick={() => this.onCreate()}>{lngStr('button.create')}</Button>
+        <Button className="spaceTop" color="primary" onClick={() => this.onCreate()}>{lngStr('general.actions.create')}</Button>
       </div>
     );
   }

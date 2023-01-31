@@ -12,7 +12,7 @@ class PlanAnaliticsView extends Component {
 
     return (
       <>
-        <h3 className="spaceBottom">{lngStr('planAnalitics.analitics')}</h3>
+        <h3 className="spaceBottom">{lngStr('analitics.header')}</h3>
         <PlanAnaliticsPanel groupUserId="0" />
       </>
     );

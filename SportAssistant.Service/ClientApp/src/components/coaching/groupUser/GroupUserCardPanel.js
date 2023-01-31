@@ -69,9 +69,9 @@ class GroupUserCardPanel extends Component {
   removeUser = async (lngStr) => {
     var modalInfo = {
       isVisible: true,
-      headerText: lngStr('modal.confirm'),
-      buttons: [{ name: lngStr('button.confirm'), onClick: this.confirmRemoveUser, color: "success" }],
-      body: () => { return (<p>{lngStr('groups.confirmSportsmenRemoval')}</p>) }
+      headerText: lngStr('appSetup.modal.confirm'),
+      buttons: [{ name: lngStr('general.actions.confirm'), onClick: this.confirmRemoveUser, color: "success" }],
+      body: () => { return (<p>{lngStr('coaching.groups.confirmSportsmenRemoval')}</p>) }
     };
     this.props.changeModalVisibility(modalInfo);
   }
@@ -85,26 +85,26 @@ class GroupUserCardPanel extends Component {
         <ErrorPanel errorMessage={this.state.error} />
 
         <Row className="spaceTop">
-          <Col xs={2}>{lngStr('user.height') + ': ' + (this.state.card.baseInfo?.height ?? 0)}</Col>
-          <Col xs={2}>{lngStr('user.age') + ': ' + (this.state.card.baseInfo?.age ?? 0)}</Col>
-          <Col xs={2}>{lngStr('user.weight') + ': ' + (this.state.card.baseInfo?.weight ?? 0)}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.height') + ': ' + (this.state.card.baseInfo?.height ?? 0)}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.age') + ': ' + (this.state.card.baseInfo?.age ?? 0)}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.weight') + ': ' + (this.state.card.baseInfo?.weight ?? 0)}</Col>
         </Row>
         <Row className="spaceTop">
-          <Col xs={2}>{lngStr('user.pushAchivement') + ': ' + (this.state.pushAchivement?.result ?? 0)}</Col>
-          <Col xs={2}>{lngStr('user.jerkAchivement') + ': ' + (this.state.jerkAchivement?.result ?? 0)}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.pushAchivement') + ': ' + (this.state.pushAchivement?.result ?? 0)}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.jerkAchivement') + ': ' + (this.state.jerkAchivement?.result ?? 0)}</Col>
         </Row>
         <Row className="spaceTop">
           <Col xs={6}>
-            <DropdownControl placeholder={lngStr('common.notSet')} label={lngStr('groups.groupForTransfer') + ': '}
+            <DropdownControl placeholder={lngStr('general.common.notSet')} label={lngStr('coaching.groups.groupForTransfer') + ': '}
               data={this.state.coachGroups} onChange={this.onGroupSelect} defaultValue={this.state.card.groupInfo.id} />
           </Col>
         </Row>
         <Row className="spaceTop">
           <Col xs={1} className="spaceRight">
-            <Button color="primary" onClick={() => this.changeGroup()}>{lngStr('groups.transfer')}</Button>
+            <Button color="primary" onClick={() => this.changeGroup()}>{lngStr('general.actions.transfer')}</Button>
           </Col>
           <Col xs={1}>
-            <Button color="primary" onClick={() => this.removeUser(lngStr)}>{lngStr('button.delete')}</Button>
+            <Button color="primary" onClick={() => this.removeUser(lngStr)}>{lngStr('general.actions.delete')}</Button>
           </Col>
         </Row>
       </>

@@ -43,15 +43,15 @@ class GroupConsoleView extends Component {
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: lngStr('common.name'), accessor: 'name' },
-      { Header: lngStr('groups.numberOfUsers'), accessor: 'participantsCount' }
+      { Header: lngStr('general.common.name'), accessor: 'name' },
+      { Header: lngStr('coaching.groups.numberOfUsers'), accessor: 'participantsCount' }
     ];
 
     var hasData = this.state.myGroups && this.state.myGroups.length > 0;
 
     return (
       <div className="spaceTop">
-        {!hasData && (<p><em>{lngStr('groups.noGroups')}</em></p>)}
+        {!hasData && (<p><em>{lngStr('coaching.groups.noGroups')}</em></p>)}
         {hasData && (
           <TableControl columnsInfo={columns} data={this.state.myGroups} rowClick={this.onRowClick} pageSize={10} />
         )}
@@ -61,13 +61,13 @@ class GroupConsoleView extends Component {
 
         <Row>
           <Col xs={8}>
-            <InputText label={lngStr('groups.newGroupName')} propName="name" onChange={this.newGroupChange} initialValue={this.state.newGroup.name} />
+            <InputText label={lngStr('coaching.groups.newGroupName')} propName="name" onChange={this.newGroupChange} initialValue={this.state.newGroup.name} />
           </Col>
           <Col xs={4}>
-            <InputTextArea label={lngStr('common.description')} propName="description" rows="2" cols="45" onChange={this.newGroupChange} initialValue={this.state.newGroup.description} />
+            <InputTextArea label={lngStr('general.common.description')} propName="description" rows="2" cols="45" onChange={this.newGroupChange} initialValue={this.state.newGroup.description} />
           </Col>
         </Row>
-        <Button color="primary" onClick={() => this.createGroup()}>{lngStr('groups.createGroup')}</Button>
+        <Button color="primary" onClick={() => this.createGroup()}>{lngStr('coaching.groups.createGroup')}</Button>
       </div>
     );
   }

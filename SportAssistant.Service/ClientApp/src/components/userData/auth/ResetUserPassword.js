@@ -29,20 +29,20 @@ class ResetUserPassword extends React.Component {
 
     return (
       <>
-        <h3 className="first-page-text">{lngStr('auth.restorePwd')}</h3>
+        <h3 className="first-page-text">{lngStr('general.auth.restorePwd')}</h3>
         <Container fluid>
-          <h6 className="first-page-text">{lngStr('auth.resetInfo1')}</h6>
-          <h6 className="first-page-text">{lngStr('auth.resetInfo2')}</h6>
+          <h6 className="first-page-text">{lngStr('general.auth.resetInfo1')}</h6>
+          <h6 className="first-page-text">{lngStr('general.auth.resetInfo2')}</h6>
 
           <ErrorPanel errorMessage={this.state.error} />
 
           <Row className="spaceTop">
             <Col xs={6}>
-              <InputEmail label={lngStr('auth.address')} propName="login" onChange={this.onValueChange} />
+              <InputEmail label={lngStr('general.auth.address') + ':'} propName="login" onChange={this.onValueChange} />
             </Col>
           </Row>
 
-          <Button className="spaceTop first-page-button" onClick={() => this.onReset()}>{lngStr('button.continue')}</Button>
+          <Button className="spaceTop first-page-button" onClick={() => this.onReset()}>{lngStr('general.actions.continue')}</Button>
         </Container>
       </>
     );

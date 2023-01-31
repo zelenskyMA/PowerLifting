@@ -33,7 +33,7 @@ class UserAdministrationPanel extends Component {
       var searchId = this.state.userSearch.id > 0 ? `userId=${this.state.userSearch.id}` : '';
       var searchLogin = this.state.userSearch.login ? `login=${this.state.userSearch.login}` : '';
       if (!searchId && !searchLogin) {
-        this.setState({ error: lngStr('admin.userSearchError') });
+        this.setState({ error: lngStr('appSetup.admin.userSearchError') });
       }
 
       var cardData = null;
@@ -70,7 +70,7 @@ class UserAdministrationPanel extends Component {
 
       await PostAsync('/administration/applyBlock', blockInfo);
 
-      this.setState({ success: lngStr('admin.blockChanged'), error: '' });
+      this.setState({ success: lngStr('appSetup.admin.blockChanged'), error: '' });
     }
     catch (error) {
       this.setState({ error: error.message, success: '' });
@@ -86,7 +86,7 @@ class UserAdministrationPanel extends Component {
       }
 
       await PostAsync('/administration/applyRoles', roleInfo);
-      this.setState({ success: lngStr('admin.rolesChanged'), error: '' });
+      this.setState({ success: lngStr('appSetup.admin.rolesChanged'), error: '' });
     }
     catch (error) {
       this.setState({ error: error.message, success: '' });
@@ -98,19 +98,19 @@ class UserAdministrationPanel extends Component {
 
     return (
       <>
-        <p className="spaceTop">{lngStr('admin.userSearch')}</p>
+        <p className="spaceTop">{lngStr('appSetup.admin.userSearch')}</p>
         <ErrorPanel errorMessage={this.state.error} />
         <InfoPanel infoMessage={this.state.success} />
 
         <Row>
           <Col xs={3}>
-            <InputNumber label={lngStr('admin.byId')} initialValue={this.state.userSearch.id} propName="id" onChange={this.onSearchChange} />
+            <InputNumber label={lngStr('appSetup.admin.byId')} initialValue={this.state.userSearch.id} propName="id" onChange={this.onSearchChange} />
           </Col>
           <Col xs={3}>
-            <InputText label={lngStr('admin.byLogin')} initialValue={this.state.userSearch.login} propName="login" onChange={this.onSearchChange} />
+            <InputText label={lngStr('appSetup.admin.byLogin')} initialValue={this.state.userSearch.login} propName="login" onChange={this.onSearchChange} />
           </Col>
           <Col xs={3}>
-            <Button color="primary" onClick={() => this.onUserSearch(lngStr)}>{lngStr('button.search')}</Button>
+            <Button color="primary" onClick={() => this.onUserSearch(lngStr)}>{lngStr('general.actions.search')}</Button>
           </Col>
         </Row>
         <hr style={{ width: '80%', paddingTop: "2px" }} />
@@ -125,7 +125,7 @@ class UserAdministrationPanel extends Component {
 
     return (
       <>
-        <h6 className="spaceTop"> {lngStr('admin.userFound')}
+        <h6 className="spaceTop"> {lngStr('appSetup.admin.userFound')}
           <span id="legalName" role="Button" style={{ marginLeft: '10px', color: 'blue', cursor: 'zoom-in' }}
             onMouseEnter={() => this.onUserCardView(true)} onMouseLeave={() => this.onUserCardView(false)}>
             {this.state.userCard?.baseInfo?.legalName}
@@ -136,39 +136,39 @@ class UserAdministrationPanel extends Component {
         <Container fluid>
           <Row>
             <Col xs={3}>
-              {lngStr('admin.id')}: {this.state.userCard?.userId}
+              {lngStr('general.id') + ': ' + this.state.userCard?.userId}
             </Col>
             <Col xs={3}>
-              {lngStr('admin.login')}: {this.state.userCard?.login}
+              {lngStr('general.auth.login') + ': ' + this.state.userCard?.login}
             </Col>
           </Row>
         </Container>
 
-        <h6 className="spaceTop">{lngStr('admin.block')}</h6>
+        <h6 className="spaceTop">{lngStr('general.actions.block')}</h6>
         <Container fluid>
           <Row>
             <Col xs={2}>
-              <InputCheckbox label={lngStr('admin.blocked')} initialValue={this.state.blockUser.block} propName="block" onChange={this.onBlockChange} />
+              <InputCheckbox label={lngStr('appSetup.admin.blocked')} initialValue={this.state.blockUser.block} propName="block" onChange={this.onBlockChange} />
             </Col>
             <Col xs={6}>
-              <InputText label={lngStr('admin.reason')} initialValue={this.state.blockUser.reason} propName="reason" onChange={this.onBlockChange} />
+              <InputText label={lngStr('appSetup.admin.reason')} initialValue={this.state.blockUser.reason} propName="reason" onChange={this.onBlockChange} />
             </Col>
             <Col xs={3}>
-              <Button color="primary" onClick={() => this.blockUser(lngStr)}>{lngStr('button.confirm')}</Button>
+              <Button color="primary" onClick={() => this.blockUser(lngStr)}>{lngStr('general.actions.confirm')}</Button>
             </Col>
           </Row>
         </Container>
 
-        <h6 className="spaceTop">{lngStr('admin.userRoles')}</h6>
+        <h6 className="spaceTop">{lngStr('appSetup.admin.userRoles')}</h6>
         <Container fluid>
           <Col xs={2}>
-            <InputCheckbox label={lngStr('user.trainer')} initialValue={this.state.userRoles.coach} propName="coach" onChange={this.onUserRoleChange} />
+            <InputCheckbox label={lngStr('coaching.trainer')} initialValue={this.state.userRoles.coach} propName="coach" onChange={this.onUserRoleChange} />
           </Col>
           <Col xs={2}>
-            <InputCheckbox label={lngStr('user.admin')} initialValue={this.state.userRoles.admin} propName="admin" onChange={this.onUserRoleChange} />
+            <InputCheckbox label={lngStr('appSetup.admin.adminRole')} initialValue={this.state.userRoles.admin} propName="admin" onChange={this.onUserRoleChange} />
           </Col>
           <Col xs={3}>
-            <Button color="primary" onClick={() => this.applyUserRoles(lngStr)}>{lngStr('button.confirm')}</Button>
+            <Button color="primary" onClick={() => this.applyUserRoles(lngStr)}>{lngStr('general.actions.confirm')}</Button>
           </Col>
         </Container>
       </>

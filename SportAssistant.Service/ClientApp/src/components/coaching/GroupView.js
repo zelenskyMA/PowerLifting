@@ -42,7 +42,7 @@ class GroupView extends Component {
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: lngStr('user.name'), accessor: 'fullName' },
+      { Header: lngStr('appSetup.user.name'), accessor: 'fullName' },
       { Header: lngStr('coaching.weeksPlanned'), accessor: 'activePlansCount' },
     ];
 
@@ -56,14 +56,14 @@ class GroupView extends Component {
 
         {!hasData && (
           <>
-            <p><em>{lngStr('groups.noSportsmenInGroup')}</em></p>
-            <Button color="primary" className="spaceTop spaceRight" onClick={() => this.deleteGroup()}>{lngStr('groups.deleteGroup')}</Button>
+            <p><em>{lngStr('coaching.groups.noSportsmenInGroup')}</em></p>
+            <Button color="primary" className="spaceTop spaceRight" onClick={() => this.deleteGroup()}>{lngStr('coaching.groups.deleteGroup')}</Button>
           </>
         )}
         {hasData && <TableControl columnsInfo={columns} data={this.state.users} rowClick={this.onRowClick} />}
 
-        <Button color="primary" className="spaceRight spaceTop" disabled={!hasData} onClick={() => this.props.navigate(`/assignTemplateSet/${this.props.params.groupId}`)}>{lngStr('training.planTrainings')}</Button>
-        <Button color="primary" className="spaceTop" outline onClick={() => this.props.navigate('/coachConsole')}>{lngStr('button.back')}</Button>
+        <Button color="primary" className="spaceRight spaceTop" disabled={!hasData} onClick={() => this.props.navigate(`/assignTemplateSet/${this.props.params.groupId}`)}>{lngStr('training.planTraining')}</Button>
+        <Button color="primary" className="spaceTop" outline onClick={() => this.props.navigate('/coachConsole')}>{lngStr('general.actions.back')}</Button>
       </>
     );
   }

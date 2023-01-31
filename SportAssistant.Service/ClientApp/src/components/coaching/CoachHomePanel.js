@@ -42,7 +42,7 @@ class CoachHomePanel extends Component {
     const columns = [
       { Header: 'Id', accessor: 'id' },
       { Header: lngStr('coaching.sportsman'), accessor: 'name' },
-      { Header: lngStr('groups.group'), accessor: 'groupName' },
+      { Header: lngStr('coaching.groups.group'), accessor: 'groupName' },
     ];
     if (!this.state.showDetails) {
       return (
@@ -55,11 +55,11 @@ class CoachHomePanel extends Component {
 
     return (
       <>
-        <h4 className="spaceBottom">{lngStr('training.todaysPlanFor') + ' ' + this.state.selectedUser.name}</h4>
+        <h4 className="spaceBottom">{lngStr('training.plan.forToday') + ' ' + this.state.selectedUser.name}</h4>
         <PlanDayViewPanel planDay={this.state.selectedUser.planDay} />
 
-        <Button className="spaceTop spaceRight" color="primary" onClick={() => this.onGoToUser()}>{lngStr('user.toUserCard')}</Button>
-        <Button className="spaceTop" color="primary" onClick={() => this.setState({ showDetails: false })}>{lngStr('button.back')}</Button>
+        <Button className="spaceTop spaceRight" color="primary" onClick={() => this.onGoToUser()}>{lngStr('appSetup.user.toUserCard')}</Button>
+        <Button className="spaceTop" color="primary" onClick={() => this.setState({ showDetails: false })}>{lngStr('general.actions.back')}</Button>
       </>
     );
   }

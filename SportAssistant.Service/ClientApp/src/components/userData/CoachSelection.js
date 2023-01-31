@@ -32,14 +32,14 @@ class CoachSelection extends Component {
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: lngStr('user.name'), accessor: 'name' },
-      { Header: lngStr('user.age'), accessor: 'age' }
+      { Header: lngStr('appSetup.user.name'), accessor: 'name' },
+      { Header: lngStr('appSetup.user.age'), accessor: 'age' }
     ];
 
     return (
       <>
-        <h4>{lngStr('user.trainers')}</h4>
-        <p>{lngStr('user.requestTrainer')}</p>
+        <h4>{lngStr('coaching.trainers')}</h4>
+        <p>{lngStr('coaching.request.requestTrainer')}</p>
         <TableControl columnsInfo={columns} data={this.state.coaches} rowClick={this.onRowDblClick} />
       </>
     );

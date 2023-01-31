@@ -18,19 +18,19 @@ function mainMenu(userInfo, lngStr) {
   return (
     <>
       <NavItem>
-        <NavLink tag={Link} className="menu-item" to="/groupConsole">{lngStr('groups.header')}</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/groupConsole">{lngStr('coaching.groups.header')}</NavLink>
       </NavItem>
 
       <NavItem>
-        <NavLink tag={Link} className="menu-item" to="/exercises">{lngStr('training.exercises')}</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/exercises">{lngStr('training.exercise.exercises')}</NavLink>
       </NavItem>
 
       <NavItem>
-        <NavLink tag={Link} className="menu-item" to="/templateSetList">{lngStr('training.cycles')}</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/templateSetList">{lngStr('training.cycle.multi')}</NavLink>
       </NavItem>
 
       <NavItem className="spaceRight">
-        <NavLink tag={Link} className="menu-item" to="/requestConsole">{lngStr('coaching.requests')}</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/requestConsole">{lngStr('coaching.request.header')}</NavLink>
       </NavItem>
     </>
   );

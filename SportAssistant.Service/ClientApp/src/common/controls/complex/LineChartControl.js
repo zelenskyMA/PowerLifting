@@ -7,7 +7,7 @@ export function LineChartControl({ displayList, data = null, multidata = false }
   const { t } = useTranslation();
 
   if (data?.length == 0) { return (<></>); }
-  if (data?.length >= 15) { return (<>{t('planAnalitics.chartOverload')}</>); }
+  if (data?.length >= 15) { return (<>{t('analitics.chartOverload')}</>); }
 
   var colors = ['#000000', '#FF0000', '#0000FF', '#728C00', '#C19A6B', '#FF00FF', '#800000', '#008000', '#FFDB58', '#FFD700',
     '#00BFFF', '#00FFFF', '#31906E', '#3C565B', '#C04000', '#827839', '#B8860B', '#806517'];

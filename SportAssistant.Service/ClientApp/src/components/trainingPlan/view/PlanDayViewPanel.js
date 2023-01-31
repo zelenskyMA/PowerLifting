@@ -55,17 +55,17 @@ class PlanDayViewPanel extends Component {
     var modalInfo = {
       isVisible: true,
       headerText: modalData.name,
-      buttons: [{ name: lngStr('modal.confirmExecution'), onClick: this.onCompleteExercise, color: "success" }],
+      buttons: [{ name: lngStr('appSetup.modal.confirmExecution'), onClick: this.onCompleteExercise, color: "success" }],
       body: () => {
         return (
           modalData.settings?.map((item, index) => {
             return (
               <Row className="spaceBottom" key={item.id}>
                 <Col>
-                  <span className="spaceRight"><strong>{lngStr('training.lift') + ' ' + (index + 1)}:</strong></span>
-                  <span className="spaceRight"><i>{lngStr('training.weight')}:</i>{' ' + item.weight}</span>
-                  <span className="spaceRight"><i>{lngStr('training.iterations')}:</i>{' ' + item.iterations}</span>
-                  <span><i>{lngStr('training.repeates')}:</i>{' '}{item.exercisePart1}{' | '}{item.exercisePart2}{' | '}{item.exercisePart3}</span>
+                  <span className="spaceRight"><strong>{lngStr('training.entity.lift') + ' ' + (index + 1)}:</strong></span>
+                  <span className="spaceRight"><i>{lngStr('training.entity.weight')}:</i>{' ' + item.weight}</span>
+                  <span className="spaceRight"><i>{lngStr('training.entity.iterations')}:</i>{' ' + item.iterations}</span>
+                  <span><i>{lngStr('training.entity.repeates')}:</i>{' '}{item.exercisePart1}{' | '}{item.exercisePart2}{' | '}{item.exercisePart3}</span>
                 </Col>
               </Row>
             );
@@ -85,11 +85,11 @@ class PlanDayViewPanel extends Component {
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th className="nameColumn">{lngStr('training.exercise')}</th>
+            <th className="nameColumn">{lngStr('training.exercise.header')}</th>
             {planDay.percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
-            <th className="intColumn text-center">{lngStr('training.liftCounter')}</th>
-            <th className="intColumn text-center">{lngStr('training.weightLoad')}</th>
-            <th className="intColumn text-center">{lngStr('training.intensity')}</th>
+            <th className="intColumn text-center">{lngStr('training.entity.liftCounter')}</th>
+            <th className="intColumn text-center">{lngStr('training.entity.weightLoad')}</th>
+            <th className="intColumn text-center">{lngStr('training.entity.intensity')}</th>
           </tr>
         </thead>
         <tbody>
@@ -114,7 +114,7 @@ class PlanDayViewPanel extends Component {
         </tbody>
         <tfoot>
           <tr>
-            <td><i>{lngStr('training.liftCounterByZones')}</i></td>
+            <td><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
             {planDay.liftIntensities.map((intensity, i) =>
               <td key={'kph' + i} className="text-center"> {intensity.value} </td>
             )}

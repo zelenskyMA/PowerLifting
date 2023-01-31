@@ -36,22 +36,22 @@ class PlanDayEdit extends Component {
 
     return (
       <>
-        <h4 className="spaceBottom">{lngStr('training.trainingPlanFor')} {dateView}</h4>
+        <h4 className="spaceBottom">{lngStr('training.plan.trainingPlanFor')} {dateView}</h4>
 
         <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
             <tr>
-              <th className="nameColumn">{lngStr('training.exercise')}</th>
+              <th className="nameColumn">{lngStr('training.exercise.header')}</th>
               {this.state.planDay.percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
-              <th className="intColumn text-center">{lngStr('training.liftCounter')}</th>
-              <th className="intColumn text-center">{lngStr('training.weightLoad')}</th>
-              <th className="intColumn text-center">{lngStr('training.intensity')}</th>
+              <th className="intColumn text-center">{lngStr('training.entity.liftCounter')}</th>
+              <th className="intColumn text-center">{lngStr('training.entity.weightLoad')}</th>
+              <th className="intColumn text-center">{lngStr('training.entity.intensity')}</th>
             </tr>
           </thead>
           <tbody>
             {this.state.planDay.exercises.map((planExercise, i) =>
               <tr key={'planTr' + i}>
-                <td role="button" title={lngStr('training.planIt')} onClick={() => this.editSettings(planExercise)}>
+                <td role="button" title={lngStr('general.actions.schedule')} onClick={() => this.editSettings(planExercise)}>
                   {planExercise.exercise.name}
                 </td>
 
@@ -68,7 +68,7 @@ class PlanDayEdit extends Component {
           </tbody>
           <tfoot>
             <tr>
-              <td><i>{lngStr('training.liftCounterByZones')}</i></td>
+              <td><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
               {this.state.planDay.liftIntensities.map((intensity, i) =>
                 <td key={'kph' + i} className="text-center"> {intensity.value} </td>
               )}
@@ -79,8 +79,8 @@ class PlanDayEdit extends Component {
           </tfoot>
         </table>
 
-        <Button className="spaceRight" color="primary" onClick={() => this.confirmAsync()}>{lngStr('button.confirm')}</Button>
-        <Button color="primary" outline onClick={() => this.props.navigate(`/editPlanExercises/${this.props.params.planId}/${this.props.params.id}`)}>{lngStr('button.back')}</Button>
+        <Button className="spaceRight" color="primary" onClick={() => this.confirmAsync()}>{lngStr('general.actions.confirm')}</Button>
+        <Button color="primary" outline onClick={() => this.props.navigate(`/editPlanExercises/${this.props.params.planId}/${this.props.params.id}`)}>{lngStr('general.actions.back')}</Button>
       </>
     );
   }

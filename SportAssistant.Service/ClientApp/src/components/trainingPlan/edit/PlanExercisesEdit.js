@@ -44,7 +44,7 @@ class PlanExercisesEdit extends Component {
     const maxExercises = this.props.appSettings.maxExercises;
 
     if (this.state.selectedExercises.length >= maxExercises) {
-      this.setState({ error: `${lngStr('common.max')} ${maxExercises} ${lngStr('training.exercisesPerDay')}.` });
+      this.setState({ error: `${lngStr('general.common.max')} ${maxExercises} ${lngStr('training.exercise.perDay')}.` });
       return;
     }
 
@@ -84,18 +84,18 @@ class PlanExercisesEdit extends Component {
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: lngStr('common.name'), accessor: 'name' },
-      { Header: lngStr('training.exerciseSubType'), accessor: 'exerciseSubTypeName' },
-      { Header: lngStr('training.exerciseType'), accessor: 'exerciseTypeName' },
+      { Header: lngStr('general.common.name'), accessor: 'name' },
+      { Header: lngStr('training.exercise.subType'), accessor: 'exerciseSubTypeName' },
+      { Header: lngStr('training.exercise.type'), accessor: 'exerciseTypeName' },
     ];
 
     return (
       <>
-        <h4>{lngStr('training.exercises')}</h4>
-        <p><strong>{lngStr('training.exerciseList')}</strong> {lngStr('control.dblClickSelect')}</p>
+        <h4>{lngStr('training.exercise.exercises')}</h4>
+        <p><strong>{lngStr('training.exercise.list')}</strong> {lngStr('appSetup.control.dblClickSelect')}</p>
         <TableControl columnsInfo={columns} data={this.state.exercises} rowDblClick={this.onRowDblClick} />
 
-        <p><strong>{lngStr('training.selectedExercises')}</strong> {lngStr('control.dblClickRemove')}</p>
+        <p><strong>{lngStr('training.exercise.selected')}</strong> {lngStr('appSetup.control.dblClickRemove')}</p>
         <ErrorPanel errorMessage={this.state.error} />
 
         <Container fluid>
@@ -103,19 +103,19 @@ class PlanExercisesEdit extends Component {
             <thead>
               <tr>
                 <th style={{ width: '25px' }}></th>
-                <th>{lngStr('common.name')}</th>
-                <th>{lngStr('training.exerciseSubType')}</th>
-                <th>{lngStr('training.exerciseType')}</th>
+                <th>{lngStr('general.common.name')}</th>
+                <th>{lngStr('training.exercise.subType')}</th>
+                <th>{lngStr('training.exercise.type')}</th>
               </tr>
             </thead>
             <tbody>
               {this.state.selectedExercises.map((row, index) =>
                 <tr key={index} role="button">
                   <td>
-                    <span onClick={() => this.rowMoveUp(index)} style={{ paddingRight: '7px' }} title={lngStr('common.up')} >
+                    <span onClick={() => this.rowMoveUp(index)} style={{ paddingRight: '7px' }} title={lngStr('general.common.up')} >
                       🔼
                     </span>
-                    <span onClick={() => this.rowMoveDown(index)} title={lngStr('common.down')}>
+                    <span onClick={() => this.rowMoveDown(index)} title={lngStr('general.common.down')}>
                       🔽
                     </span>
                   </td>
@@ -127,8 +127,8 @@ class PlanExercisesEdit extends Component {
             </tbody>
           </table>
 
-          <Button color="primary" className="spaceRight" onClick={() => this.confirmExercisesAsync()}>{lngStr('button.confirm')}</Button>
-          <Button color="primary" outline onClick={() => this.props.navigate(`/editPlanDays/${this.props.params.planId}`)}>{lngStr('button.back')}</Button>
+          <Button color="primary" className="spaceRight" onClick={() => this.confirmExercisesAsync()}>{lngStr('general.actions.confirm')}</Button>
+          <Button color="primary" outline onClick={() => this.props.navigate(`/editPlanDays/${this.props.params.planId}`)}>{lngStr('general.actions.back')}</Button>
         </Container>
       </>
     );

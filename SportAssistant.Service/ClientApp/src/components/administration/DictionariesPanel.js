@@ -17,7 +17,7 @@ class DictionariesPanel extends Component {
 
     return (
       <>
-        <p className="spaceTop">{lngStr('admin.dictionaries')}</p>
+        <p className="spaceTop">{lngStr('appSetup.admin.dictionaries')}</p>
         <ErrorPanel errorMessage={this.state.error} />
       </>
     );

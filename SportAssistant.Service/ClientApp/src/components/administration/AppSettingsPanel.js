@@ -32,7 +32,7 @@ class AppSettingsPanel extends Component {
     try {
       await PostAsync(`/appSettings/update`, this.state.settings);
 
-      this.setState({ success: lngStr('admin.settingsChanged'), error: '' });
+      this.setState({ success: lngStr('appSetup.admin.settingsChanged'), error: '' });
     }
     catch (error) {
       this.setState({ error: error.message, success: '' });
@@ -44,23 +44,23 @@ class AppSettingsPanel extends Component {
 
     return (
       <>
-        <p className="spaceTop">{lngStr('admin.settings')}</p>
+        <p className="spaceTop">{lngStr('appSetup.admin.settings')}</p>
         <ErrorPanel errorMessage={this.state.error} />
         <InfoPanel infoMessage={this.state.success} />
 
         <Row className="spaceBottom">
           <Col xs={3}>
-            <InputNumber label={lngStr('admin.maxActivePlans')} propName="maxActivePlans" onChange={this.onValueChange} initialValue={this.state.settings.maxActivePlans} />
+            <InputNumber label={lngStr('appSetup.admin.maxActivePlans')} propName="maxActivePlans" onChange={this.onValueChange} initialValue={this.state.settings.maxActivePlans} />
           </Col>
           <Col xs={3}>
-            <InputNumber label={lngStr('admin.maxExercises')} propName="maxExercises" onChange={this.onValueChange} initialValue={this.state.settings.maxExercises} />
+            <InputNumber label={lngStr('appSetup.admin.maxExercises')} propName="maxExercises" onChange={this.onValueChange} initialValue={this.state.settings.maxExercises} />
           </Col>
           <Col xs={3}>
-            <InputNumber label={lngStr('admin.maxLiftItems')} propName="maxLiftItems" onChange={this.onValueChange} initialValue={this.state.settings.maxLiftItems} />
+            <InputNumber label={lngStr('appSetup.admin.maxLiftItems')} propName="maxLiftItems" onChange={this.onValueChange} initialValue={this.state.settings.maxLiftItems} />
           </Col>
         </Row>
 
-        <Button className="spaceTop" color="primary" onClick={() => this.confirmAsync(lngStr)}>{lngStr('button.confirm')}</Button>
+        <Button className="spaceTop" color="primary" onClick={() => this.confirmAsync(lngStr)}>{lngStr('general.actions.confirm')}</Button>
       </>
     );
   }

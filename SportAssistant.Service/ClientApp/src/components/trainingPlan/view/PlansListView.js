@@ -12,7 +12,7 @@ class PlansListView extends Component {
 
     return (
       <>
-        <h4 className="spaceBottom">{lngStr('training.trainingPlans')}</h4>
+        <h4 className="spaceBottom">{lngStr('training.plan.trainingPlans')}</h4>
         <PlansListPanel groupUserId="0" />
       </>
     );

@@ -58,7 +58,7 @@ class TemplateSetView extends Component {
     const lngStr = this.props.lngStr;
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: lngStr('user.name'), accessor: 'name' },
+      { Header: lngStr('appSetup.user.name'), accessor: 'name' },
     ];
 
     var hasData = this.state.templateSet.templates && this.state.templateSet.templates.length > 0;
@@ -69,28 +69,28 @@ class TemplateSetView extends Component {
 
         <Row className="spaceTop spaceBottom">
           <Col xs={5}>
-            <InputText label={lngStr('training.cycleName')} propName="name" onChange={this.onValueChange} initialValue={this.state.templateSet.name} />
+            <InputText label={lngStr('training.cycle.name')} propName="name" onChange={this.onValueChange} initialValue={this.state.templateSet.name} />
           </Col>
           <Col xs={4}>
-            <Button color="primary" className="spaceRight" onClick={() => this.onUpdateTemplateSet()}>{lngStr('button.save')}</Button>
-            <Button color="primary" onClick={() => this.onDeleteTemplateSet()}>{lngStr('button.delete')}</Button>
+            <Button color="primary" className="spaceRight" onClick={() => this.onUpdateTemplateSet()}>{lngStr('general.actions.save')}</Button>
+            <Button color="primary" onClick={() => this.onDeleteTemplateSet()}>{lngStr('general.actions.delete')}</Button>
           </Col>
         </Row>
 
-        {!hasData && (<p><em>{lngStr('training.noTemplatesInCycle')}</em></p>)}
+        {!hasData && (<p><em>{lngStr('training.cycle.noTemplates')}</em></p>)}
         {hasData && (<TableControl columnsInfo={columns} data={this.state.templateSet.templates} rowClick={this.onRowClick} />)}
 
         <hr className="spaceTop" style={{ paddingTop: "2px" }} />
         <Row>
           <Col xs={8}>
-            <InputText label={lngStr('training.newTemplateName')} propName="name" onChange={this.onPlanChange} initialValue={this.state.newTemplatePlan.name} />
+            <InputText label={lngStr('training.template.newName')} propName="name" onChange={this.onPlanChange} initialValue={this.state.newTemplatePlan.name} />
           </Col>
           <Col xs={2}>
-            <Button color="primary" onClick={() => this.onCreateTemplatePlan()}>{lngStr('button.create')}</Button>
+            <Button color="primary" onClick={() => this.onCreateTemplatePlan()}>{lngStr('general.actions.create')}</Button>
           </Col>
         </Row>
 
-        <Button color="primary" className="spaceTop" outline onClick={() => this.props.navigate('/templateSetList')}>{lngStr('button.back')}</Button>
+        <Button color="primary" className="spaceTop" outline onClick={() => this.props.navigate('/templateSetList')}>{lngStr('general.actions.back')}</Button>
       </>
     );
   }

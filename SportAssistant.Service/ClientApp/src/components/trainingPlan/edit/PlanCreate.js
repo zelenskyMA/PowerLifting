@@ -35,14 +35,14 @@ class PlanCreate extends React.Component {
 
     return (
       <>
-        <h4>{lngStr('training.createTrainingPlan')}</h4>
+        <h4>{lngStr('training.plan.create')}</h4>
         <ErrorPanel errorMessage={this.state.error} />
 
         <Container className="spaceTop" fluid>
-          <p>{lngStr('training.selectTrainingStart')}</p>
+          <p>{lngStr('training.selectStartDate')}</p>
           <Calendar onChange={this.onDateChange} value={this.state.date} locale={Locale} />
 
-          <Button color="primary" className="spaceTop" onClick={() => this.onPlanCreate()}>{lngStr('button.create')}</Button>
+          <Button color="primary" className="spaceTop" onClick={() => this.onPlanCreate()}>{lngStr('general.actions.create')}</Button>
         </Container>
       </>
     );

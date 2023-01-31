@@ -68,8 +68,8 @@ class PlanDayMove extends Component {
   onAction = async (text, action, lngStr) => {
     var modalInfo = {
       isVisible: true,
-      headerText: lngStr('modal.confirm'),
-      buttons: [{ name: lngStr('button.confirm'), onClick: action, color: "success" }],
+      headerText: lngStr('appSetup.modal.confirm'),
+      buttons: [{ name: lngStr('general.actions.confirm'), onClick: action, color: "success" }],
       body: () => { return (<p>{text}</p>) }
     };
     this.props.changeModalVisibility(modalInfo);
@@ -83,17 +83,17 @@ class PlanDayMove extends Component {
 
     return (
       <>
-        <h4>{lngStr('training.planChange')} {dateView}</h4>
-        <p>{lngStr('training.trainingDayMove')}</p>
+        <h4>{lngStr('training.plan.change')} {dateView}</h4>
+        <p>{lngStr('training.transferOrCancel')}</p>
         <ErrorPanel errorMessage={this.state.error} />
 
-        <p className="spaceTop">{lngStr('training.dayMoveSelection')}</p>
+        <p className="spaceTop">{lngStr('training.transferToDay')}</p>
         <Calendar onChange={(date) => this.onSelectionChange('targetDate', date)} value={this.state.selectedInfo.targetDate} locale={Locale} />
 
         <div className="spaceTop">
-          <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('training.confirmMove'), this.onMove, lngStr)}>{lngStr('button.confirm')}</Button>
-          <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('modal.confirmCancel'), this.onClear, lngStr)}>{lngStr('button.cancel')}</Button>
-          <Button color="primary" outline onClick={() => this.goBack()}>{lngStr('button.back')}</Button>
+          <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('training.confirmTransfer'), this.onMove, lngStr)}>{lngStr('general.actions.confirm')}</Button>
+          <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('appSetup.modal.confirmCancel'), this.onClear, lngStr)}>{lngStr('general.actions.cancel')}</Button>
+          <Button color="primary" outline onClick={() => this.goBack()}>{lngStr('general.actions.back')}</Button>
         </div>
       </>
     );

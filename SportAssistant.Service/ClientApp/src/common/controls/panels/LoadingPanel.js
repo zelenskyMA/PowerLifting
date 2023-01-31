@@ -5,7 +5,7 @@ import '../../../styling/Common.css';
 export function LoadingPanel({ message = null }) {
   const { t } = useTranslation();
   if (!message) {
-    message = t('control.loading') + '...';
+    message = t('appSetup.control.loading') + '...';
   }
 
   return (

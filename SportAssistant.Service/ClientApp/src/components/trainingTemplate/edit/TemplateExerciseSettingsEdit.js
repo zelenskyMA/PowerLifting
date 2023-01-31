@@ -71,7 +71,7 @@ class TemplateExerciseSettingsEdit extends Component {
 
     var maxLiftItems = this.props.appSettings.maxLiftItems;
     if (this.state.settingsList.length >= maxLiftItems) {
-      this.setState({ error: `${lngStr('common.ngt')} ${maxLiftItems}.` });
+      this.setState({ error: `${lngStr('general.common.ngt')} ${maxLiftItems}.` });
       return;
     }
 
@@ -106,7 +106,7 @@ class TemplateExerciseSettingsEdit extends Component {
           </Col>
         </Row>
 
-        <Button className="spaceTop spaceRight" color="primary" onClick={() => this.confirmAsync()}>{lngStr('button.confirm')}</Button>
+        <Button className="spaceTop spaceRight" color="primary" onClick={() => this.confirmAsync()}>{lngStr('general.actions.confirm')}</Button>
         <Button className="spaceTop" color="primary" outline onClick={() => this.addLiftItem(lngStr)}>{lngStr('training.addLift')}</Button>
       </>
     );
@@ -117,16 +117,16 @@ class TemplateExerciseSettingsEdit extends Component {
 
     return (
       <>
-        <Label key={'l' + key} for={key} sm={2}><Button close onClick={() => this.onSettingsDelete(index)} />{` ${lngStr('training.lift')} ${(index + 1)}:`}</Label>
+        <Label key={'l' + key} for={key} sm={2}><Button close onClick={() => this.onSettingsDelete(index)} />{` ${lngStr('training.entity.lift')} ${(index + 1)}:`}</Label>
         <Row key={'row' + key} id={key}>
           <Col xs={3}>
-            <InputNumber label={lngStr('common.percent') + ':'} propName={index + '|weightPercentage'} onChange={this.onValueChange} initialValue={settings.weightPercentage} />
+            <InputNumber label={lngStr('general.common.percent') + ':'} propName={index + '|weightPercentage'} onChange={this.onValueChange} initialValue={settings.weightPercentage} />
           </Col>
           <Col xs={3}>
-            <InputNumber label={lngStr('training.iterations') + ':'} propName={index + '|iterations'} onChange={this.onValueChange} initialValue={settings.iterations} />
+            <InputNumber label={lngStr('training.entity.iterations') + ':'} propName={index + '|iterations'} onChange={this.onValueChange} initialValue={settings.iterations} />
           </Col>
           <Col xs={4}>
-            <MultiNumberInput label={lngStr('training.repeates') + ':'} onChange={this.onValueChange} inputList={[
+            <MultiNumberInput label={lngStr('training.entity.repeates') + ':'} onChange={this.onValueChange} inputList={[
               { propName: index + '|exercisePart1', initialValue: settings.exercisePart1 },
               { propName: index + '|exercisePart2', initialValue: settings.exercisePart2 },
               { propName: index + '|exercisePart3', initialValue: settings.exercisePart3 }]

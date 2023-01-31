@@ -16,11 +16,11 @@ class AdminConsoleView extends Component {
 
     return (
       <>
-        <h4 className="spaceBottom">{lngStr('admin.console')}</h4>
+        <h4 className="spaceBottom">{lngStr('appSetup.admin.console')}</h4>
         <TabControl data={[
-          { id: 1, label: lngStr('admin.users'), renderContent: () => this.usersContent() },
-          { id: 2, label: lngStr('admin.dictionaries'), renderContent: () => this.dictionaryContent() },
-          { id: 3, label: lngStr('admin.settings'), renderContent: () => this.settingsContent() },
+          { id: 1, label: lngStr('appSetup.admin.users'), renderContent: () => this.usersContent() },
+          { id: 2, label: lngStr('appSetup.admin.dictionaries'), renderContent: () => this.dictionaryContent() },
+          { id: 3, label: lngStr('appSetup.admin.settings'), renderContent: () => this.settingsContent() },
         ]}
         />
       </>

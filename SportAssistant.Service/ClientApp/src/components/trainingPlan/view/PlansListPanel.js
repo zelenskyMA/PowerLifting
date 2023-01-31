@@ -35,15 +35,15 @@ class PlansListPanel extends Component {
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: lngStr('training.trainingStart'), accessor: 'startDate', Cell: t => DateToLocal(t.value) },
-      { Header: lngStr('training.trainingEnd'), accessor: 'finishDate', Cell: t => DateToLocal(t.value) }
+      { Header: lngStr('training.startDate'), accessor: 'startDate', Cell: t => DateToLocal(t.value) },
+      { Header: lngStr('training.endDate'), accessor: 'finishDate', Cell: t => DateToLocal(t.value) }
     ];
 
     return (
       <>
         <TabControl data={[
-          { id: 1, label: lngStr('training.trainingActive'), renderContent: () => this.activePlansContent(columns, lngStr) },
-          { id: 2, label: lngStr('training.trainingHistory'), renderContent: () => this.historyPlansContent(columns) }
+          { id: 1, label: lngStr('training.active'), renderContent: () => this.activePlansContent(columns, lngStr) },
+          { id: 2, label: lngStr('training.history'), renderContent: () => this.historyPlansContent(columns) }
         ]}
         />
       </>
@@ -55,7 +55,7 @@ class PlansListPanel extends Component {
       <>
         <TableControl columnsInfo={columns} data={this.state.activePlans} rowClick={this.onRowClick} pageSize={10} hideFilter={true} />
         <Button style={{ marginTop: '20px' }} color="primary" onClick={() => this.props.navigate(`/createPlan/${this.props.groupUserId}`)}>
-          {lngStr('training.planTrainings')}
+          {lngStr('training.planTraining')}
         </Button>
       </>
     );

@@ -22,15 +22,15 @@ function mainMenu(userInfo, lngStr) {
   return (
     <>
       <NavItem>
-        <NavLink tag={Link} className="menu-item" to="/plansList">{lngStr('training.plans')}</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/plansList">{lngStr('training.plan.multi')}</NavLink>
       </NavItem>
 
       <NavItem>
-        <NavLink tag={Link} className="menu-item" to="/exercises">{lngStr('training.exercises')}</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/exercises">{lngStr('training.exercise.exercises')}</NavLink>
       </NavItem>
 
       <NavItem className="spaceRight">
-        <NavLink tag={Link} className="menu-item" to="/planAnalitics">{lngStr('planAnalitics.analitics')}</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/planAnalitics">{lngStr('analitics.header')}</NavLink>
       </NavItem>
     </>
   );
@@ -41,7 +41,7 @@ function adminLink(userInfo, lngStr) {
 
   return (
     <NavItem className="menu-spaceRight">
-      <NavLink tag={Link} className="menu-item" to="/adminConsole">{lngStr('admin.administration')}</NavLink>
+      <NavLink tag={Link} className="menu-item" to="/adminConsole">{lngStr('appSetup.admin.administration')}</NavLink>
     </NavItem>
   );
 }

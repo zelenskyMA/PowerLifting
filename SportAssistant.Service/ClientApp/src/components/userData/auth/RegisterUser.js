@@ -31,26 +31,26 @@ class RegisterUser extends React.Component {
 
     return (
       <>
-        <h3 className="first-page-text">{lngStr('auth.register')}</h3>
+        <h3 className="first-page-text">{lngStr('general.auth.registration')}</h3>
 
         <Container fluid>
           <ErrorPanel errorMessage={this.state.error} />
 
           <Row className="spaceTop">
             <Col xs={8}>
-              <InputEmail label={lngStr('auth.address')} propName="login" onChange={this.onValueChange} />
+              <InputEmail label={lngStr('general.auth.address') + ':'} propName="login" onChange={this.onValueChange} />
             </Col>
           </Row>
           <Row className="spaceTop">
             <Col xs={3}>
-              <InputPassword label={lngStr('auth.password')} propName="password" onChange={this.onValueChange} />
+              <InputPassword label={lngStr('general.auth.password') + ':'} propName="password" onChange={this.onValueChange} />
             </Col>
             <Col xs={5}>
-              <InputPassword label={lngStr('auth.confirmPwd')} propName="passwordConfirm" onChange={this.onValueChange} />
+              <InputPassword label={lngStr('general.auth.confirmPwd') + ':'} propName="passwordConfirm" onChange={this.onValueChange} />
             </Col>
           </Row>
 
-          <Button className="spaceTop first-page-button" onClick={() => this.onRegister()}>{lngStr('button.confirm')}</Button>
+          <Button className="spaceTop first-page-button" onClick={() => this.onRegister()}>{lngStr('general.actions.confirm')}</Button>
         </Container>
       </>
     );

@@ -39,7 +39,7 @@ export function TableControl({ columnsInfo, data,
   );
 
   if (data?.length == 0) {
-    return (<p><em>{t('common.noRecords')}</em></p>);
+    return (<p><em>{t('general.common.noRecords')}</em></p>);
   }
 
   var filterColumn = headerGroups[0].headers.find(t => t.id === 'name');
@@ -90,7 +90,7 @@ function FilterPanel({ column, gotoPage, hideFilter, lngStr }) {
     <Row>
       <Col xs={6} md={{ offset: 6 }}>
         <InputGroup>
-          <InputGroupText>{lngStr('control.filter')}:</InputGroupText>
+          <InputGroupText>{lngStr('appSetup.control.filter')}:</InputGroupText>
           <Input xs={2}
             className="form-control"
             value={column.filterValue || ""}
@@ -98,7 +98,7 @@ function FilterPanel({ column, gotoPage, hideFilter, lngStr }) {
               column.setFilter(e.target.value || undefined);
               gotoPage(0);
             }}
-            placeholder={lngStr('control.filterPlaceholder')}
+            placeholder={lngStr('appSetup.control.filterPlaceholder')}
           />
         </InputGroup>
       </Col>
@@ -130,7 +130,7 @@ function PaginationPanel({
           </li>
           <li>
             <a className="page-link disabled">
-              <strong>{pageIndex + 1}</strong> {lngStr('common.outOf')} <strong>{pageOptions.length}</strong>{' '}
+              <strong>{pageIndex + 1}</strong> {lngStr('general.common.outOf')} <strong>{pageOptions.length}</strong>{' '}
             </a>
           </li>
           <li className="page-item" role="button" onClick={() => nextPage()} disabled={!canNextPage}>

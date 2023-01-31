@@ -34,21 +34,21 @@ class TemplateDayEdit extends Component {
 
     return (
       <>
-        <h4 className="spaceBottom">{lngStr('training.planDayTraining') + ' ' + this.state.templateDay.dayNumber}</h4>
+        <h4 className="spaceBottom">{lngStr('training.plan.trainingDay') + ' ' + this.state.templateDay.dayNumber}</h4>
 
         <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
             <tr>
-              <th className="nameColumn" >{lngStr('training.exercise')}</th>
+              <th className="nameColumn" >{lngStr('training.exercise.header')}</th>
               {this.state.templateDay.percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
-              <th className="intColumn text-center">{lngStr('training.liftCounter')}</th>
-              <th style={{ width: '110px' }} className=" intColumntext-center">{lngStr('training.weightLoad')} %</th>
+              <th className="intColumn text-center">{lngStr('training.entity.liftCounter')}</th>
+              <th style={{ width: '110px' }} className=" intColumntext-center">{lngStr('training.entity.weightLoad')} %</th>
             </tr>
           </thead>
           <tbody>
             {this.state.templateDay.exercises.map((templateExercise, i) =>
               <tr key={'planTr' + i}>
-                <td role="button" title={lngStr('training.planIt')} onClick={() => this.editSettings(templateExercise)}>
+                <td role="button" title={lngStr('general.actions.schedule')} onClick={() => this.editSettings(templateExercise)}>
                   {templateExercise.exercise.name}
                 </td>
 
@@ -72,8 +72,8 @@ class TemplateDayEdit extends Component {
           </tfoot>
         </table>
 
-        <Button className="spaceRight" color="primary" onClick={() => this.confirmAsync()}>{lngStr('button.confirm')}</Button>
-        <Button color="primary" outline onClick={() => this.props.navigate(`/editTemplateExercises/${this.props.params.templateId}/${this.props.params.id}`)}>{lngStr('button.back')}</Button>
+        <Button className="spaceRight" color="primary" onClick={() => this.confirmAsync()}>{lngStr('general.actions.confirm')}</Button>
+        <Button color="primary" outline onClick={() => this.props.navigate(`/editTemplateExercises/${this.props.params.templateId}/${this.props.params.id}`)}>{lngStr('general.actions.back')}</Button>
       </>
     );
   }

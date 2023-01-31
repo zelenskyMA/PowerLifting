@@ -27,18 +27,18 @@ class RequestConsoleView extends Component {
     const lngStr = this.props.lngStr;
 
     if (this.state.myRequests.length === 0) {
-      return (<p className="spaceBorder"><em>{lngStr('coaching.noRequests')}</em></p>);
+      return (<p className="spaceBorder"><em>{lngStr('coaching.request.noRequests')}</em></p>);
     }
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: lngStr('coaching.requester'), accessor: 'userName' },
-      { Header: lngStr('coaching.requestDate'), accessor: 'creationDate', Cell: t => DateToLocal(t.value) }
+      { Header: lngStr('coaching.request.requester'), accessor: 'userName' },
+      { Header: lngStr('coaching.request.date'), accessor: 'creationDate', Cell: t => DateToLocal(t.value) }
     ];
 
     return (
       <div className="spaceTop">
-        <p><strong>{lngStr('coaching.requesterList')}</strong> {lngStr('coaching.dblClickAccept')}</p>
+        <p><strong>{lngStr('coaching.request.requesterList')}</strong> {lngStr('coaching.request.dblClickAccept')}</p>
         <TableControl columnsInfo={columns} data={this.state.myRequests} rowClick={this.onRowlClick} />
       </div>
     );
