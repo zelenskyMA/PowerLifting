@@ -152,7 +152,6 @@ class PlanDaysEdit extends React.Component {
       </Col>
     );
   }
-
 }
 
 export default WithRouter(connect(null, mapDispatchToProps)(PlanDaysEdit))
