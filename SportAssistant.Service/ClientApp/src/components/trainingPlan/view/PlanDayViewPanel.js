@@ -49,23 +49,23 @@ class PlanDayViewPanel extends Component {
     this.setState({ completedExercises: newValue });
   }
 
-  onShowExerciseModal = (modalData) => {
+  onShowExerciseModal = (modalData, lngStr) => {
     this.setState({ selectedModalData: modalData });
 
     var modalInfo = {
       isVisible: true,
       headerText: modalData.name,
-      buttons: [{ name: "Подтвердить выполнение", onClick: this.onCompleteExercise, color: "success" }],
+      buttons: [{ name: lngStr('appSetup.modal.confirmExecution'), onClick: this.onCompleteExercise, color: "success" }],
       body: () => {
         return (
           modalData.settings?.map((item, index) => {
             return (
               <Row className="spaceBottom" key={item.id}>
                 <Col>
-                  <span className="spaceRight"><strong>Поднятие {(index + 1)}:</strong></span>
-                  <span className="spaceRight"><i>Вес:</i>{' ' + item.weight}</span>
-                  <span className="spaceRight"><i>Подходы:</i>{' ' + item.iterations}</span>
-                  <span><i>Повторы:</i>{' '}{item.exercisePart1}{' | '}{item.exercisePart2}{' | '}{item.exercisePart3}</span>
+                  <span className="spaceRight"><strong>{lngStr('training.entity.lift') + ' ' + (index + 1)}:</strong></span>
+                  <span className="spaceRight"><i>{lngStr('training.entity.weight')}:</i>{' ' + item.weight}</span>
+                  <span className="spaceRight"><i>{lngStr('training.entity.iterations')}:</i>{' ' + item.iterations}</span>
+                  <span><i>{lngStr('training.entity.repeates')}:</i>{' '}{item.exercisePart1}{' | '}{item.exercisePart2}{' | '}{item.exercisePart3}</span>
                 </Col>
               </Row>
             );
@@ -78,17 +78,18 @@ class PlanDayViewPanel extends Component {
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
 
+    const lngStr = this.props.lngStr;
     var planDay = this.props.planDay;
 
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th className="nameColumn" >Упражнение</th>
+            <th className="nameColumn">{lngStr('training.exercise.header')}</th>
             {planDay.percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
-            <th className="intColumn text-center">КПШ</th>
-            <th className="intColumn text-center">Нагрузка</th>
-            <th className="intColumn text-center">Интенсивность</th>
+            <th className="intColumn text-center">{lngStr('training.entity.liftCounter')}</th>
+            <th className="intColumn text-center">{lngStr('training.entity.weightLoad')}</th>
+            <th className="intColumn text-center">{lngStr('training.entity.intensity')}</th>
           </tr>
         </thead>
         <tbody>
@@ -102,7 +103,7 @@ class PlanDayViewPanel extends Component {
 
               {planDay.percentages.map(percentage =>
                 <td key={percentage.id} className="text-center">
-                  {this.exerciseSettingsPanel(percentage, planExercise)}
+                  {this.exerciseSettingsPanel(percentage, planExercise, lngStr)}
                 </td>
               )}
               <td className="text-center"><strong>{planExercise.liftCounter}</strong></td>
@@ -113,7 +114,7 @@ class PlanDayViewPanel extends Component {
         </tbody>
         <tfoot>
           <tr>
-            <td><i>КПШ по зонам интенсивности</i></td>
+            <td><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
             {planDay.liftIntensities.map((intensity, i) =>
               <td key={'kph' + i} className="text-center"> {intensity.value} </td>
             )}
@@ -126,7 +127,7 @@ class PlanDayViewPanel extends Component {
     );
   }
 
-  exerciseSettingsPanel = (percentage, planExercise) => {
+  exerciseSettingsPanel = (percentage, planExercise, lngStr) => {
     if (this.state.completedExercises.length === 0) { return (<></>); }
 
     var itemId = `${planExercise.id}_${percentage.id}`;
@@ -143,7 +144,7 @@ class PlanDayViewPanel extends Component {
 
     return (
       <>
-        <div role="button" className="text-center" id={idPrefix} onClick={() => this.onShowExerciseModal(modalData)}>
+        <div role="button" className="text-center" id={idPrefix} onClick={() => this.onShowExerciseModal(modalData, lngStr)}>
           <img src={exerciseState ? `${imgPrefix}Completed.png` : `${imgPrefix}Planned.png`} width="30" height="35" className="rounded mx-auto d-block" />
         </div>
       </>

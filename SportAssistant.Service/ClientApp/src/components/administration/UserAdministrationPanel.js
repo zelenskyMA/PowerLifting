@@ -28,12 +28,12 @@ class UserAdministrationPanel extends Component {
 
   onUserCardView = (value) => { this.setState({ userCardView: value }); }
 
-  onUserSearch = async () => {
+  onUserSearch = async (lngStr) => {
     try {
       var searchId = this.state.userSearch.id > 0 ? `userId=${this.state.userSearch.id}` : '';
       var searchLogin = this.state.userSearch.login ? `login=${this.state.userSearch.login}` : '';
       if (!searchId && !searchLogin) {
-        this.setState({ error: "Необходимо указать хотя бы один критерий поиска" });
+        this.setState({ error: lngStr('appSetup.admin.userSearchError') });
       }
 
       var cardData = null;
@@ -60,7 +60,7 @@ class UserAdministrationPanel extends Component {
     }
   }
 
-  blockUser = async () => {
+  blockUser = async (lngStr) => {
     try {
       var blockInfo = {
         userId: this.state.userCard?.userId,
@@ -70,14 +70,14 @@ class UserAdministrationPanel extends Component {
 
       await PostAsync('/administration/applyBlock', blockInfo);
 
-      this.setState({ success: 'Блокировка изменена успешно', error: '' });
+      this.setState({ success: lngStr('appSetup.admin.blockChanged'), error: '' });
     }
     catch (error) {
       this.setState({ error: error.message, success: '' });
     }
   }
 
-  applyUserRoles = async () => {
+  applyUserRoles = async (lngStr) => {
     try {
       var roleInfo = {
         userId: this.state.userCard?.userId,
@@ -86,7 +86,7 @@ class UserAdministrationPanel extends Component {
       }
 
       await PostAsync('/administration/applyRoles', roleInfo);
-      this.setState({ success: 'Роли изменены успешно', error: '' });
+      this.setState({ success: lngStr('appSetup.admin.rolesChanged'), error: '' });
     }
     catch (error) {
       this.setState({ error: error.message, success: '' });
@@ -94,36 +94,38 @@ class UserAdministrationPanel extends Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <p className="spaceTop">Поиск пользователя</p>
+        <p className="spaceTop">{lngStr('appSetup.admin.userSearch')}</p>
         <ErrorPanel errorMessage={this.state.error} />
         <InfoPanel infoMessage={this.state.success} />
 
         <Row>
           <Col xs={3}>
-            <InputNumber label="По идентификатору" initialValue={this.state.userSearch.id} propName="id" onChange={this.onSearchChange} />
+            <InputNumber label={lngStr('appSetup.admin.byId')} initialValue={this.state.userSearch.id} propName="id" onChange={this.onSearchChange} />
           </Col>
           <Col xs={3}>
-            <InputText label="По логину" initialValue={this.state.userSearch.login} propName="login" onChange={this.onSearchChange} />
+            <InputText label={lngStr('appSetup.admin.byLogin')} initialValue={this.state.userSearch.login} propName="login" onChange={this.onSearchChange} />
           </Col>
           <Col xs={3}>
-            <Button color="primary" onClick={() => this.onUserSearch()}>Поиск</Button>
+            <Button color="primary" onClick={() => this.onUserSearch(lngStr)}>{lngStr('general.actions.search')}</Button>
           </Col>
         </Row>
         <hr style={{ width: '80%', paddingTop: "2px" }} />
 
-        {this.userData()}
+        {this.userData(lngStr)}
       </>
     );
   }
 
-  userData = () => {
+  userData = (lngStr) => {
     if (this.state.userCard?.userId == null) { return (<></>); }
 
     return (
       <>
-        <h6 className="spaceTop"> Найден пользователь
+        <h6 className="spaceTop"> {lngStr('appSetup.admin.userFound')}
           <span id="legalName" role="Button" style={{ marginLeft: '10px', color: 'blue', cursor: 'zoom-in' }}
             onMouseEnter={() => this.onUserCardView(true)} onMouseLeave={() => this.onUserCardView(false)}>
             {this.state.userCard?.baseInfo?.legalName}
@@ -134,39 +136,39 @@ class UserAdministrationPanel extends Component {
         <Container fluid>
           <Row>
             <Col xs={3}>
-              Ид: {this.state.userCard?.userId}
+              {lngStr('general.id') + ': ' + this.state.userCard?.userId}
             </Col>
             <Col xs={3}>
-              Логин: {this.state.userCard?.login}
+              {lngStr('general.auth.login') + ': ' + this.state.userCard?.login}
             </Col>
           </Row>
         </Container>
 
-        <h6 className="spaceTop">Блокировка</h6>
+        <h6 className="spaceTop">{lngStr('general.actions.block')}</h6>
         <Container fluid>
           <Row>
             <Col xs={2}>
-              <InputCheckbox label="Заблокирован" initialValue={this.state.blockUser.block} propName="block" onChange={this.onBlockChange} />
+              <InputCheckbox label={lngStr('appSetup.admin.blocked')} initialValue={this.state.blockUser.block} propName="block" onChange={this.onBlockChange} />
             </Col>
             <Col xs={6}>
-              <InputText label="Причина" initialValue={this.state.blockUser.reason} propName="reason" onChange={this.onBlockChange} />
+              <InputText label={lngStr('appSetup.admin.reason')} initialValue={this.state.blockUser.reason} propName="reason" onChange={this.onBlockChange} />
             </Col>
             <Col xs={3}>
-              <Button color="primary" onClick={() => this.blockUser()}>Применить</Button>
+              <Button color="primary" onClick={() => this.blockUser(lngStr)}>{lngStr('general.actions.confirm')}</Button>
             </Col>
           </Row>
         </Container>
 
-        <h6 className="spaceTop">Роли пользователя</h6>
+        <h6 className="spaceTop">{lngStr('appSetup.admin.userRoles')}</h6>
         <Container fluid>
           <Col xs={2}>
-            <InputCheckbox label="Тренер" initialValue={this.state.userRoles.coach} propName="coach" onChange={this.onUserRoleChange} />
+            <InputCheckbox label={lngStr('coaching.trainer')} initialValue={this.state.userRoles.coach} propName="coach" onChange={this.onUserRoleChange} />
           </Col>
           <Col xs={2}>
-            <InputCheckbox label="Администратор" initialValue={this.state.userRoles.admin} propName="admin" onChange={this.onUserRoleChange} />
+            <InputCheckbox label={lngStr('appSetup.admin.adminRole')} initialValue={this.state.userRoles.admin} propName="admin" onChange={this.onUserRoleChange} />
           </Col>
           <Col xs={3}>
-            <Button color="primary" onClick={() => this.applyUserRoles()}>Применить</Button>
+            <Button color="primary" onClick={() => this.applyUserRoles(lngStr)}>{lngStr('general.actions.confirm')}</Button>
           </Col>
         </Container>
       </>

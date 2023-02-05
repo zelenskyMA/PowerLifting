@@ -3,7 +3,7 @@ import { Button } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
 import { LoadingPanel, TabControl, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
-import { DateToLocal } from "../../../common/Localization";
+import { DateToLocal } from "../../../common/LocalActions";
 
 /*Используется в нескольких компонентах */
 class PlansListPanel extends Component {
@@ -31,30 +31,31 @@ class PlansListPanel extends Component {
 
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
+    const lngStr = this.props.lngStr;
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: 'Начало тренировок', accessor: 'startDate', Cell: t => DateToLocal(t.value) },
-      { Header: 'Окончание тренировок', accessor: 'finishDate', Cell: t => DateToLocal(t.value) }
+      { Header: lngStr('training.startDate'), accessor: 'startDate', Cell: t => DateToLocal(t.value) },
+      { Header: lngStr('training.endDate'), accessor: 'finishDate', Cell: t => DateToLocal(t.value) }
     ];
 
     return (
       <>
         <TabControl data={[
-          { id: 1, label: 'Действующие', renderContent: () => this.activePlansContent(columns) },
-          { id: 2, label: 'История', renderContent: () => this.historyPlansContent(columns) }
+          { id: 1, label: lngStr('training.active'), renderContent: () => this.activePlansContent(columns, lngStr) },
+          { id: 2, label: lngStr('training.history'), renderContent: () => this.historyPlansContent(columns) }
         ]}
         />
       </>
     );
   }
 
-  activePlansContent = (columns) => {
+  activePlansContent = (columns, lngStr) => {
     return (
       <>
         <TableControl columnsInfo={columns} data={this.state.activePlans} rowClick={this.onRowClick} pageSize={10} hideFilter={true} />
         <Button style={{ marginTop: '20px' }} color="primary" onClick={() => this.props.navigate(`/createPlan/${this.props.groupUserId}`)}>
-          Запланировать тренировки
+          {lngStr('training.planTraining')}
         </Button>
       </>
     );

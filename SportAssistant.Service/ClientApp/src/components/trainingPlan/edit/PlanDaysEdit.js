@@ -4,7 +4,7 @@ import { Button, Col, Container, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
-import { DateToLocal, Locale } from "../../../common/Localization";
+import { DateToLocal, Locale } from "../../../common/LocalActions";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 
 const mapDispatchToProps = dispatch => {
@@ -46,28 +46,29 @@ class PlanDaysEdit extends React.Component {
     }
   }
 
-  onDeletePlan = async () => {
+  onDeletePlan = async (lngStr) => {
     var modalInfo = {
       isVisible: true,
-      headerText: "Запрос подтверждения",
-      buttons: [{ name: "Подтвердить", onClick: this.onConfirmDelete, color: "success" }],
-      body: () => { return (<p>Подтвердите удаление плана</p>) }
+      headerText: lngStr('appSetup.modal.confirm'),
+      buttons: [{ name: lngStr('general.actions.confirm'), onClick: this.onConfirmDelete, color: "success" }],
+      body: () => { return (<p>{lngStr('training.plan.confirmDeletion')}</p>) }
     };
     this.props.changeModalVisibility(modalInfo);
   }
 
   render() {
+    const lngStr = this.props.lngStr;
     const days = this.state.plannedDays;
-    const placeHolder = "Не задано";
+    const placeHolder = lngStr('general.common.notSet');
 
     return (
       <>
-        <h4>Запланированные дни тренировок</h4>
+        <h4>{lngStr('training.plannedDays')}</h4>
         <br />
         <ErrorPanel errorMessage={this.state.error} />
 
         <Row>
-          <Col xs={3} md={{ offset: 4 }}><strong>Назначьте упражнения на дни недели.</strong></Col>
+          <Col xs={3} md={{ offset: 4 }}><strong>{lngStr('training.exercise.setDays')}</strong></Col>
         </Row>
         <br />
         <Container fluid>
@@ -85,11 +86,11 @@ class PlanDaysEdit extends React.Component {
             <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[6])}</Col>
 
             <Col>
-              <div><strong>Всего упражнений</strong></div>
-              {this.countersPanel(this.state.typeCounters)}
+              <div><strong>{lngStr('training.exercise.total')}</strong></div>
+              {this.countersPanel(this.state.typeCounters, lngStr)}
             </Col>
 
-            <Col>{this.buttonPanel()}</Col>
+            <Col>{this.buttonPanel(lngStr)}</Col>
           </Row>
         </Container>
       </>
@@ -97,6 +98,7 @@ class PlanDaysEdit extends React.Component {
   }
 
   dayPanel(day) {
+    const lngStr = this.props.lngStr;
     var dateName = new Date(day.activityDate).toLocaleString(Locale, { weekday: 'long' });
     dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
 
@@ -108,24 +110,24 @@ class PlanDaysEdit extends React.Component {
             <div>{DateToLocal(day.activityDate)}</div>
           </Col>
           <Col style={{ paddingTop: '7px' }} >
-            <Button color="primary" outline title="Назначить упражнения" style={{ width: '40px',  marginRight: '10px' }} onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
-            <Button color="primary" outline title="Перенести упражнения" style={{ width: '40px'}} disabled={day.exerciseTypeCounters.length == 0} onClick={() => this.props.navigate(`/movePlanDay/${this.props.params.planId}/${day.id}`)} >{' - '}</Button>
+            <Button color="primary" outline title={lngStr('training.exercise.assign')} style={{ width: '40px', marginRight: '10px' }} onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
+            <Button color="primary" outline title={lngStr('training.exercise.transfer')} style={{ width: '40px' }} disabled={day.exerciseTypeCounters.length == 0} onClick={() => this.props.navigate(`/movePlanDay/${this.props.params.planId}/${day.id}`)} >{' - '}</Button>
           </Col>
         </Row>
         <hr style={{ width: '60%', paddingTop: "2px" }} />
         <Row>
-          <Col>{this.countersPanel(day.exerciseTypeCounters)}</Col>
+          <Col>{this.countersPanel(day.exerciseTypeCounters, lngStr)}</Col>
         </Row>
       </Container>
     );
   }
 
-  countersPanel(counters) {
+  countersPanel(counters, lngStr) {
     var fontSize = "0.85rem";
 
     if (counters.length == 0) {
       return (
-        <span style={{ fontSize: fontSize }}>Нет назначенных упражнений</span>
+        <span style={{ fontSize: fontSize }}>{lngStr('training.exercise.nothingAssigned')}</span>
       );
     }
 
@@ -141,16 +143,15 @@ class PlanDaysEdit extends React.Component {
     );
   }
 
-  buttonPanel() {
+  buttonPanel(lngStr) {
     return (
       <Col>
-        <Button color="primary" onClick={async () => this.props.navigate(this.state.backUrl)}>Завершить назначение плана</Button>
+        <Button color="primary" onClick={async () => this.props.navigate(this.state.backUrl)}>{lngStr('training.plan.finishAssignment')}</Button>
         <p></p>
-        <Button color="primary" outline onClick={async () => this.onDeletePlan()}>Удалить план</Button>
+        <Button color="primary" outline onClick={async () => this.onDeletePlan(lngStr)}>{lngStr('training.plan.delete')}</Button>
       </Col>
     );
   }
-
 }
 
 export default WithRouter(connect(null, mapDispatchToProps)(PlanDaysEdit))

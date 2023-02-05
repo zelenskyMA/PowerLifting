@@ -5,9 +5,8 @@ import "react-calendar/dist/Calendar.css";
 import { Button } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, LoadingPanel } from "../../../common/controls/CustomControls";
-import { DateToLocal } from "../../../common/Localization";
+import { DateToLocal, DateToUtc, Locale } from "../../../common/LocalActions";
 import WithRouter from "../../../common/extensions/WithRouter";
-import { DateToUtc, Locale } from "../../../common/Localization";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 
 const mapDispatchToProps = dispatch => {
@@ -66,11 +65,11 @@ class PlanDayMove extends Component {
     }
   }
 
-  onAction = async (text, action) => {
+  onAction = async (text, action, lngStr) => {
     var modalInfo = {
       isVisible: true,
-      headerText: "Запрос подтверждения",
-      buttons: [{ name: "Подтвердить", onClick: action, color: "success" }],
+      headerText: lngStr('appSetup.modal.confirm'),
+      buttons: [{ name: lngStr('general.actions.confirm'), onClick: action, color: "success" }],
       body: () => { return (<p>{text}</p>) }
     };
     this.props.changeModalVisibility(modalInfo);
@@ -79,21 +78,22 @@ class PlanDayMove extends Component {
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
 
+    const lngStr = this.props.lngStr;
     var dateView = DateToLocal(this.state.planDay.activityDate);
 
     return (
       <>
-        <h4>Изменение плана тренировок {dateView}</h4>
-        <p>Перенос тренировки на другой день или ее отмена.</p>
+        <h4>{lngStr('training.plan.change')} {dateView}</h4>
+        <p>{lngStr('training.transferOrCancel')}</p>
         <ErrorPanel errorMessage={this.state.error} />
 
-        <p className="spaceTop">Выберите день в текущем плане для переноса тренировок.</p>
+        <p className="spaceTop">{lngStr('training.transferToDay')}</p>
         <Calendar onChange={(date) => this.onSelectionChange('targetDate', date)} value={this.state.selectedInfo.targetDate} locale={Locale} />
 
         <div className="spaceTop">
-          <Button color="primary" className="spaceRight" onClick={() => this.onAction('Подтвердите перенос тренировки', this.onMove)}>Перенести</Button>
-          <Button color="primary" className="spaceRight" onClick={() => this.onAction('Подтвердите отмену', this.onClear)}>Отменить</Button>
-          <Button color="primary" outline onClick={() => this.goBack()}>Назад</Button>
+          <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('training.confirmTransfer'), this.onMove, lngStr)}>{lngStr('general.actions.confirm')}</Button>
+          <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('appSetup.modal.confirmCancel'), this.onClear, lngStr)}>{lngStr('general.actions.cancel')}</Button>
+          <Button color="primary" outline onClick={() => this.goBack()}>{lngStr('general.actions.back')}</Button>
         </div>
       </>
     );

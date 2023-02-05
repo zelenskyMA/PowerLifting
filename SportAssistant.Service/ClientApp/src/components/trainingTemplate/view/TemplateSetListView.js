@@ -40,16 +40,17 @@ class TemplateSetListView extends Component {
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
 
+    const lngStr = this.props.lngStr;
     var hasData = this.state.templateSets && this.state.templateSets.length > 0;
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: 'Название', accessor: 'name' },
-      { Header: 'Кол-во недель в цикле', accessor: data => { return String(data.templates.length); } }
+      { Header: lngStr('general.common.name'), accessor: 'name' },
+      { Header: lngStr('training.cycle.weeksInCycle'), accessor: data => { return String(data.templates.length); } }
     ];
 
     return (
       <div className="spaceTop">
-        {!hasData && (<p><em>У вас нет тренировочных циклов</em></p>)}
+        {!hasData && (<p><em>{lngStr('training.cycle.none')}</em></p>)}
         {hasData && (
           <TableControl columnsInfo={columns} data={this.state.templateSets} rowClick={this.onRowClick} />
         )}
@@ -60,10 +61,10 @@ class TemplateSetListView extends Component {
 
           <Row>
             <Col xs={8}>
-              <InputText label="Название нового цикла" propName="name" onChange={this.onValueChange} initialValue={this.state.newSet.name} />
+              <InputText label={lngStr('training.cycle.newName')} propName="name" onChange={this.onValueChange} initialValue={this.state.newSet.name} />
             </Col>
             <Col xs={2}>
-              <Button color="primary" onClick={() => this.createTemplateSet()}>Создать</Button>
+              <Button color="primary" onClick={() => this.createTemplateSet()}>{lngStr('general.actions.create')}</Button>
             </Col>
           </Row>
         </Container>

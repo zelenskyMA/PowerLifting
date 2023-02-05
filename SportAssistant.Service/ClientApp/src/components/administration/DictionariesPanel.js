@@ -1,8 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Col, Row } from "reactstrap";
-import { GetAsync } from "../../common/ApiActions";
-import UserAdministrationPanel from "./UserAdministrationPanel"
-import { ErrorPanel, InputNumber, InputText } from "../../common/controls/CustomControls";
+import { ErrorPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
@@ -16,9 +13,11 @@ class DictionariesPanel extends Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <p className="spaceTop">Справочники</p>
+        <p className="spaceTop">{lngStr('appSetup.admin.dictionaries')}</p>
         <ErrorPanel errorMessage={this.state.error} />
       </>
     );

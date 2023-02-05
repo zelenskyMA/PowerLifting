@@ -26,18 +26,20 @@ class CoachSelection extends Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     if (this.state.loading) { return (<LoadingPanel />); }
 
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: 'Имя', accessor: 'name' },
-      { Header: 'Возраст', accessor: 'age' }
+      { Header: lngStr('appSetup.user.name'), accessor: 'name' },
+      { Header: lngStr('appSetup.user.age'), accessor: 'age' }
     ];
 
     return (
       <>
-        <h4>Тренеры</h4>
-        <p>Подайте заявку тренеру дважды нажав на его строку.</p>
+        <h4>{lngStr('coaching.trainers')}</h4>
+        <p>{lngStr('coaching.request.requestTrainer')}</p>
         <TableControl columnsInfo={columns} data={this.state.coaches} rowClick={this.onRowDblClick} />
       </>
     );

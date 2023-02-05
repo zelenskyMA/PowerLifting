@@ -5,7 +5,7 @@ import { Button, Container } from "reactstrap";
 import { PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
-import { DateToUtc, Locale } from "../../../common/Localization";
+import { DateToUtc, Locale } from "../../../common/LocalActions";
 import '../../../styling/Common.css';
 
 class PlanCreate extends React.Component {
@@ -31,16 +31,18 @@ class PlanCreate extends React.Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <h4>Создание плана тренировок</h4>
+        <h4>{lngStr('training.plan.create')}</h4>
         <ErrorPanel errorMessage={this.state.error} />
 
         <Container className="spaceTop" fluid>
-          <p>Выберите дату начала тренировок</p>
+          <p>{lngStr('training.selectStartDate')}</p>
           <Calendar onChange={this.onDateChange} value={this.state.date} locale={Locale} />
 
-          <Button color="primary" className="spaceTop" onClick={() => this.onPlanCreate()}>Создать</Button>
+          <Button color="primary" className="spaceTop" onClick={() => this.onPlanCreate()}>{lngStr('general.actions.create')}</Button>
         </Container>
       </>
     );

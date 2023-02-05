@@ -41,8 +41,10 @@ class TemplateExercisesEdit extends Component {
 
   onRowDblClick = row => {
     const maxExercises = this.props.appSettings.maxExercises;
+    const lngStr = this.props.lngStr;
+
     if (this.state.selectedExercises.length >= maxExercises) {
-      this.setState({ error: `Максимум ${maxExercises} упражнений в день.` });
+      this.setState({ error: `${lngStr('general.common.max')} ${maxExercises} ${lngStr('training.exercise.perDay')}.` });
       return;
     }
 
@@ -78,20 +80,22 @@ class TemplateExercisesEdit extends Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: 'Название', accessor: 'name' },
-      { Header: 'Категория упражнения', accessor: 'exerciseSubTypeName' },
-      { Header: 'Тип упражнения', accessor: 'exerciseTypeName' },
+      { Header: lngStr('general.common.name'), accessor: 'name' },
+      { Header: lngStr('training.exercise.subType'), accessor: 'exerciseSubTypeName' },
+      { Header: lngStr('training.exercise.type'), accessor: 'exerciseTypeName' },
     ];
 
     return (
       <>
-        <h4>Упражнения</h4>
-        <p><strong>Список упражнений.</strong> Выбрать двойным нажатием.</p>
+        <h4>{lngStr('training.exercise.exercises')}</h4>
+        <p><strong>{lngStr('training.exercise.list')}</strong> {lngStr('appSetup.control.dblClickSelect')}</p>
         <TableControl columnsInfo={columns} data={this.state.exercises} rowDblClick={this.onRowDblClick} />
 
-        <p><strong>Выбранные упражнения.</strong> Убрать лишнее двойным нажатием.</p>
+        <p><strong>{lngStr('training.exercise.selected')}</strong> {lngStr('appSetup.control.dblClickRemove')}</p>
         <ErrorPanel errorMessage={this.state.error} />
 
         <Container fluid>
@@ -99,19 +103,19 @@ class TemplateExercisesEdit extends Component {
             <thead>
               <tr>
                 <th style={{ width: '25px' }}></th>
-                <th>Название</th>
-                <th>Категория упражнения</th>
-                <th>Тип упражнения</th>
+                <th>{lngStr('general.common.name')}</th>
+                <th>{lngStr('training.exercise.subType')}</th>
+                <th>{lngStr('training.exercise.type')}</th>
               </tr>
             </thead>
             <tbody>
               {this.state.selectedExercises.map((row, index) =>
                 <tr key={index} role="button">
                   <td>
-                    <span onClick={() => this.rowMoveUp(index)} style={{ paddingRight: '7px' }} title="Вверх" >
+                    <span onClick={() => this.rowMoveUp(index)} style={{ paddingRight: '7px' }} title={lngStr('general.common.up')} >
                       🔼
                     </span>
-                    <span onClick={() => this.rowMoveDown(index)} title="Вниз">
+                    <span onClick={() => this.rowMoveDown(index)} title={lngStr('general.common.down')}>
                       🔽
                     </span>
                   </td>
@@ -123,13 +127,13 @@ class TemplateExercisesEdit extends Component {
             </tbody>
           </table>
 
-          <Button color="primary" className="spaceRight" onClick={() => this.confirmExercisesAsync()}>Подтвердить</Button>
-          <Button color="primary" outline onClick={() => this.props.navigate(`/editTemplatePlan/${this.props.params.templateId}`)}>Назад</Button>
+          <Button color="primary" className="spaceRight" onClick={() => this.confirmExercisesAsync()}>{lngStr('general.actions.confirm')}</Button>
+          <Button color="primary" outline onClick={() => this.props.navigate(`/editTemplatePlan/${this.props.params.templateId}`)}>{lngStr('general.actions.back')}</Button>
         </Container>
       </>
     );
   }
- 
+
 }
 
 export default WithRouter(connect(mapStateToProps, null)(TemplateExercisesEdit));

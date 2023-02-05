@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { Button, Row, Col } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
-import { ErrorPanel, DropdownControl } from "../../../common/controls/CustomControls";
+import { ErrorPanel, DropdownControl, LoadingPanel } from "../../../common/controls/CustomControls";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
@@ -66,44 +66,45 @@ class GroupUserCardPanel extends Component {
     catch (error) { this.setState({ error: error.message }); }
   }
 
-  removeUser = async () => {
+  removeUser = async (lngStr) => {
     var modalInfo = {
       isVisible: true,
-      headerText: "Запрос подтверждения",
-      buttons: [{ name: "Подтвердить", onClick: this.confirmRemoveUser, color: "success" }],
-      body: () => { return (<p>Подтвердите удаление спортсмена</p>) }
+      headerText: lngStr('appSetup.modal.confirm'),
+      buttons: [{ name: lngStr('general.actions.confirm'), onClick: this.confirmRemoveUser, color: "success" }],
+      body: () => { return (<p>{lngStr('coaching.groups.confirmSportsmenRemoval')}</p>) }
     };
     this.props.changeModalVisibility(modalInfo);
   }
 
   render() {
-    if (this.state.loading) { return (<p><em>Загрузка...</em></p>); }
+    if (this.state.loading) { return (<LoadingPanel />); }
+    const lngStr = this.props.lngStr;
 
     return (
       <>
         <ErrorPanel errorMessage={this.state.error} />
 
         <Row className="spaceTop">
-          <Col xs={2}>Рост: {this.state.card.baseInfo?.height ?? 0}</Col>
-          <Col xs={2}>Возраст: {this.state.card.baseInfo?.age ?? 0}</Col>
-          <Col xs={2}>Вес: {this.state.card.baseInfo?.weight ?? 0}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.height') + ': ' + (this.state.card.baseInfo?.height ?? 0)}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.age') + ': ' + (this.state.card.baseInfo?.age ?? 0)}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.weight') + ': ' + (this.state.card.baseInfo?.weight ?? 0)}</Col>
         </Row>
         <Row className="spaceTop">
-          <Col xs={2}>Рекорд в толчке: {this.state.pushAchivement?.result ?? 0}</Col>
-          <Col xs={2}>Рекорд в рывке: {this.state.jerkAchivement?.result ?? 0}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.pushAchivement') + ': ' + (this.state.pushAchivement?.result ?? 0)}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.jerkAchivement') + ': ' + (this.state.jerkAchivement?.result ?? 0)}</Col>
         </Row>
         <Row className="spaceTop">
           <Col xs={6}>
-            <DropdownControl placeholder="Не задано" label="Укажите группу для перевода: "
+            <DropdownControl placeholder={lngStr('general.common.notSet')} label={lngStr('coaching.groups.groupForTransfer') + ': '}
               data={this.state.coachGroups} onChange={this.onGroupSelect} defaultValue={this.state.card.groupInfo.id} />
           </Col>
         </Row>
         <Row className="spaceTop">
           <Col xs={1} className="spaceRight">
-            <Button color="primary" onClick={() => this.changeGroup()}>Перевести</Button>
+            <Button color="primary" onClick={() => this.changeGroup()}>{lngStr('general.actions.transfer')}</Button>
           </Col>
           <Col xs={1}>
-            <Button color="primary" onClick={() => this.removeUser()}>Удалить</Button>
+            <Button color="primary" onClick={() => this.removeUser(lngStr)}>{lngStr('general.actions.delete')}</Button>
           </Col>
         </Row>
       </>

@@ -25,22 +25,24 @@ class ResetUserPassword extends React.Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <h3 className="first-page-text">Восстановление доступа</h3>
+        <h3 className="first-page-text">{lngStr('general.auth.restorePwd')}</h3>
         <Container fluid>
-          <h6 className="first-page-text">Для восстановления доступа к учетной записи укажите ваш логин.</h6>
-          <h6 className="first-page-text">После подтверждения, на ваш электронный адрес будет выслан новый пароль.</h6>
+          <h6 className="first-page-text">{lngStr('general.auth.resetInfo1')}</h6>
+          <h6 className="first-page-text">{lngStr('general.auth.resetInfo2')}</h6>
 
           <ErrorPanel errorMessage={this.state.error} />
 
           <Row className="spaceTop">
             <Col xs={6}>
-              <InputEmail label="Адрес вашей электронной почты (логин):" propName="login" onChange={this.onValueChange} />
+              <InputEmail label={lngStr('general.auth.address') + ':'} propName="login" onChange={this.onValueChange} />
             </Col>
           </Row>
 
-          <Button className="spaceTop first-page-button" onClick={() => this.onReset()}>Продолжить</Button>
+          <Button className="spaceTop first-page-button" onClick={() => this.onReset()}>{lngStr('general.actions.continue')}</Button>
         </Container>
       </>
     );

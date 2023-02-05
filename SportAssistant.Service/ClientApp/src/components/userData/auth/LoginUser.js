@@ -30,27 +30,29 @@ class LoginUser extends React.Component {
   }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     return (
       <>
-        <h3 className="first-page-text">Вход</h3>
+        <h3 className="first-page-text">{lngStr('general.auth.enter')}</h3>
 
         <Container onKeyPress={async (e) => e.key === 'Enter' && await this.onLogin()} fluid>
           <ErrorPanel errorMessage={this.state.error} />
 
           <Row className="spaceTop spaceBottom">
             <Col xs={4}>
-              <InputEmail label="Логин:" propName="login" onChange={this.onValueChange} />
+              <InputEmail label={lngStr('general.auth.login') + ':'} propName="login" onChange={this.onValueChange} />
             </Col>
             <Col xs={4}>
-              <InputPassword label="Пароль:" propName="password" onChange={this.onValueChange} />
+              <InputPassword label={lngStr('general.auth.password') + ':'} propName="password" onChange={this.onValueChange} />
             </Col>
           </Row>
 
-          <NavLink className="inlineLink first-page-text" tag={Link} to="/register">Зарегистрироваться</NavLink>
-          <NavLink className="inlineLink first-page-text" tag={Link} to="/changePassword">Сменить пароль</NavLink>
-          <NavLink className="inlineLink first-page-text" tag={Link} to="/resetPassword">Забыли пароль?</NavLink>
+          <NavLink className="inlineLink first-page-text" tag={Link} to="/register">{lngStr('general.auth.registration')}</NavLink>
+          <NavLink className="inlineLink first-page-text" tag={Link} to="/changePassword">{lngStr('general.auth.changePwd')}</NavLink>
+          <NavLink className="inlineLink first-page-text" tag={Link} to="/resetPassword">{lngStr('general.auth.resetPwd')}</NavLink>
 
-          <Button className="spaceTop first-page-button" onClick={() => this.onLogin()}>Войти</Button>
+          <Button className="spaceTop first-page-button" onClick={() => this.onLogin()}>{lngStr('general.actions.enter')}</Button>
         </Container>
       </>
     );

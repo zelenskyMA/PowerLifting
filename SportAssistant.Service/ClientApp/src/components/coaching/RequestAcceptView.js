@@ -49,29 +49,30 @@ class RequestAcceptView extends Component {
 
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
+    const lngStr = this.props.lngStr;
 
     return (
       <>
-        <h5>Запрос на обучение от пользователя: {this.state.request.userName}</h5>
+        <h5>{lngStr('coaching.request.fromUser') + ': ' + this.state.request.userName}</h5>
         <ErrorPanel errorMessage={this.state.error} />
 
         <Row className="spaceTop">
-          <Col xs={2}>Рост: {this.state.request.userHeight}</Col>
-          <Col xs={2}>Возраст: {this.state.request.userAge}</Col>
-          <Col xs={2}>Вес: {this.state.request.userWeight}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.height') + ': ' + this.state.request.userHeight}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.age') + ': ' + this.state.request.userAge}</Col>
+          <Col xs={2}>{lngStr('appSetup.user.weight') + ': ' + this.state.request.userWeight}</Col>
         </Row>
         <Row className="spaceTop">
           <Col xs={6}>
-            <DropdownControl placeholder="Не задано" label="Укажите группу для спортсмена: " noData="Создайте группу для спортсменов"
+            <DropdownControl placeholder={lngStr('general.common.notSet')} label={lngStr('coaching.groups.setGroupForSportsman') + ': '} noData={lngStr('coaching.groups.createGroupForSportsman')}
               data={this.state.coachGroups} onChange={this.onGroupSelect} />
           </Col>
         </Row>
         <Row className="spaceTop">
           <Col xs={1} className="spaceRight">
-            <Button color="primary" onClick={() => this.rejectRequest()}>Отказать</Button>
+            <Button color="primary" onClick={() => this.rejectRequest()}>{lngStr('general.actions.reject')}</Button>
           </Col>
           <Col xs={1}>
-            <Button color="primary" onClick={() => this.acceptRequest()}>Принять</Button>
+            <Button color="primary" onClick={() => this.acceptRequest()}>{lngStr('general.actions.accept')}</Button>
           </Col>
         </Row>
       </>

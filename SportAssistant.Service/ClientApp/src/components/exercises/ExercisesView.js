@@ -25,23 +25,25 @@ class ExercisesView extends Component {
   onRowClick = row => { this.props.navigate(`/exercises/edit/${row.values.id}`); }
 
   render() {
+    const lngStr = this.props.lngStr;
+
     const columns = [
       { Header: 'Id', accessor: 'id' },
-      { Header: 'Название', accessor: 'name' },
-      { Header: 'Тип упражнения', accessor: 'exerciseTypeName' },
-      { Header: 'Подтип упражнения', accessor: 'exerciseSubTypeName' }
+      { Header: lngStr('general.common.name'), accessor: 'name' },
+      { Header: lngStr('training.exercise.type'), accessor: 'exerciseTypeName' },
+      { Header: lngStr('training.exercise.subType'), accessor: 'exerciseSubTypeName' },
     ];
 
     var hasData = this.state.exercises && this.state.exercises.length > 0;
 
     return (
       <div className="spaceTop">
-        {!hasData && (<p><em>У вас нет упражнений для редактирования</em></p>)}
+        {!hasData && (<p><em>{lngStr('training.exercise.nothingToEdit')}</em></p>)}
         {hasData && (
           <TableControl columnsInfo={columns} data={this.state.exercises} rowClick={this.onRowClick} />
         )}
 
-        <Button className="spaceTop" color="primary" onClick={() => this.onCreate()}>Создать</Button>
+        <Button className="spaceTop" color="primary" onClick={() => this.onCreate()}>{lngStr('general.actions.create')}</Button>
       </div>
     );
   }
