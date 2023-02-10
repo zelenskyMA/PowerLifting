@@ -100,7 +100,7 @@ namespace SportAssistant.Application.UserData.UserCommands
             }
             catch
             {
-                throw new BusinessException("Формат логина не соответствует почте.");
+                throw new BusinessException("Формат логина не соответствует формату почты. Например 'user@email.ru'");
             }
         }
 

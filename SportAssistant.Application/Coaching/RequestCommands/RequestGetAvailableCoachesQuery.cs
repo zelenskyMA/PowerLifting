@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.Interfaces.Coaching.Repositories;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Models.Coaching;
@@ -11,13 +12,16 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
     public class RequestGetAvailableCoachesQuery : ICommand<RequestGetAvailableCoachesQuery.Param, List<CoachInfo>>
     {
         private readonly ITrainingRequestRepository _trainingRequestRepository;
+        private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public RequestGetAvailableCoachesQuery(
             ITrainingRequestRepository trainingRequestRepository,
+            IUserProvider user,
             IMapper mapper)
         {
             _trainingRequestRepository = trainingRequestRepository;
+            _user = user;
             _mapper = mapper;
         }
 
@@ -29,7 +33,10 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
                 return new List<CoachInfo>();
             }
 
-            var coaches = coachesDb.Select(t => _mapper.Map<CoachInfo>(t)).ToList();
+            var coaches = coachesDb
+                .Where(t=> t.UserId != _user.Id) // не предлагать пользователю самого себя тренером
+                .Select(_mapper.Map<CoachInfo>).ToList();
+
             foreach (var item in coaches)
             {
                 var coachDb = coachesDb.First(t => t.UserId == item.Id);

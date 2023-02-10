@@ -40,7 +40,7 @@ using SportAssistant.Service.Middleware;
 using System.Text;
 using ConfigurationManager = SportAssistant.Service.Extensions.ConfigurationManager;
 
-internal class Program
+public partial class Program
 {
     private static void Main(string[] args)
     {

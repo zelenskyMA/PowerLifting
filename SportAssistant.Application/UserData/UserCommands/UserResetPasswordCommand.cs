@@ -34,6 +34,11 @@ namespace SportAssistant.Application.UserData.UserCommands
                 throw new BusinessException("Пользователь с указанным логином не найден.");
             }
 
+            if (userDb.Blocked)
+            {
+                throw new BusinessException($"Пользователь заблокирован, обратитесь к администрации.'");
+            }
+
             var password = _passwordManager.GeneratePassword();
             userDb.Salt = _passwordManager.GenerateSalt();
             userDb.Password = _passwordManager.ApplySalt(password, userDb.Salt);
@@ -47,7 +52,7 @@ namespace SportAssistant.Application.UserData.UserCommands
 
         public class Param
         {
-            public string Login { get; set; }
+            public string Login { get; set; } = string.Empty;
         }
     }
 }

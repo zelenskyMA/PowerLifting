@@ -33,9 +33,6 @@ namespace SportAssistant.Application.UserData.UserCommands.UserCommands
         /// <inheritdoc />
         public async Task<TokenModel> ExecuteAsync(Param param)
         {
-            _processUser.ValidateLogin(param.Login);
-            _processUser.ValidatePassword(param.Password);
-
             var userDb = await _processUser.TryToLogin(param.Login, param.Password);
 
             var user = _mapper.Map<UserModel>(userDb);

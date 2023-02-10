@@ -1,14 +1,13 @@
 ﻿
-
 SET IDENTITY_INSERT usr.Users ON
 
 IF NOT EXISTS (SELECT * FROM usr.Users WHERE [Id] = 1)
   INSERT INTO usr.Users (Id, Email, Password, Salt, Blocked) VALUES 
-  ( 1, 'caragus_niveus@mail.ru', 'BD-40-DC-2F-2B-E1-A6-EC-E0-27-63-65-BD-0C-E6-AB-57-54-8F-65', '1CCFD3C98A', 0);
+  ( 1, 'caragus_niveus@mail.ru', 'BD-40-DC-2F-2B-E1-A6-EC-E0-27-63-65-BD-0C-E6-AB-57-54-8F-65', '1CCFD3C98A', 0); --password = asdf123
 
 IF NOT EXISTS (SELECT * FROM usr.Users WHERE [Id] = 2)
   INSERT INTO usr.Users (Id, Email, Password, Salt, Blocked) VALUES 
-  ( 2, 'coach@mail.ru', 'BD-40-DC-2F-2B-E1-A6-EC-E0-27-63-65-BD-0C-E6-AB-57-54-8F-65', '1CCFD3C98A', 0);
+  ( 2, 'coach@mail.ru', 'BD-40-DC-2F-2B-E1-A6-EC-E0-27-63-65-BD-0C-E6-AB-57-54-8F-65', '1CCFD3C98A', 0); --password = asdf123
 
 SET IDENTITY_INSERT usr.Users OFF 
 

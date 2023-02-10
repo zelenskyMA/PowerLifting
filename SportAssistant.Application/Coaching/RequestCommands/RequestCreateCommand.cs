@@ -35,6 +35,11 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
                 throw new BusinessException($"Вы уже подали заявку тренеру {coachName}");
             }
 
+            if (_user.Id == param.СoachId)
+            {
+                throw new BusinessException($"Нельзя подать заявку самому себе");
+            }
+
             await _trainingRequestRepository.CreateAsync(new TrainingRequestDb()
             {
                 UserId = _user.Id,
