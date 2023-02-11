@@ -1,8 +1,6 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.IdentityModel.Tokens;
-using RazorPagesProject.Tests;
 using SportAssistant.Domain.Models.UserData;
 using TestFramework;
 using TestFramework.TestExtensions;
@@ -10,39 +8,33 @@ using Xunit;
 
 namespace TestsBackend.User;
 
-public class UserInfoTest : IClassFixture<ServiceTestFixture<Program>>
+public class UserInfoTest : BaseTest
 {
-    private readonly HttpClient _client;
-    private readonly ServiceTestFixture<Program> _factory;
-
-    public UserInfoTest(ServiceTestFixture<Program> factory)
-    {
-        _factory = factory;
-        _client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        _factory.AuthorizeUser(_client);
+    public UserInfoTest(ServiceTestFixture<Program> factory) : base(factory) {
+        Factory.Actions.AuthorizeUser(Client);
     }
 
     [Fact]
     public void Get_Update_UserInfo_Success()
     {
         //Arrange
-        _factory.AuthorizeUser(_client);
+        Factory.Actions.AuthorizeUser(Client);
 
         //Act
         // пустые данные корректно возвращаются
-        var info = _client.Get<UserInfo>("/userInfo/get");
+        var info = Client.Get<UserInfo>("/userInfo/get");
         info.Should().NotBeNull();
         info.FirstName.IsNullOrEmpty().Should().BeTrue();
         info.Age.Should().BeNull();
 
         // обновление данных пользователя
-        var newInfo = _factory.GetBuilder().Build().Create<UserInfo>();
+        var newInfo = Factory.GetBuilder().Build().Create<UserInfo>();
 
-        var response = _client.Post<bool>("/userInfo/update", newInfo);
+        var response = Client.Post<bool>("/userInfo/update", newInfo);
         response.Should().BeTrue();
 
         //Assert - проверяем обновление
-        info = _client.Get<UserInfo>("/userInfo/get");
+        info = Client.Get<UserInfo>("/userInfo/get");
         info.Should().BeEquivalentTo(newInfo, t => t
             .Excluding(m => m.LegalName)
             .Excluding(m => m.CoachLegalName)
@@ -52,10 +44,10 @@ public class UserInfoTest : IClassFixture<ServiceTestFixture<Program>>
     [Fact]
     public void Get_Card_Wrong_Request_Fail()
     {
-        var response = _client.Get("/userInfo/getCard");
+        var response = Client.Get("/userInfo/getCard");
         response.ReadErrorMessage().Should().Match("Пользователь не найден*");
 
-        response = _client.Get("/userInfo/getCard?userId=999");
+        response = Client.Get("/userInfo/getCard?userId=999");
         response.ReadErrorMessage().Should().Match("Пользователь не найден*");
     }
 
@@ -63,11 +55,11 @@ public class UserInfoTest : IClassFixture<ServiceTestFixture<Program>>
     public void Get_Card_No_Rights_Fail()
     {
         //Arrange
-        _factory.AuthorizeUser(_client);
-        var userId = _factory.Users.First(t => t.Email == Constants.User2Login).Id;
+        Factory.Actions.AuthorizeUser(Client);
+        var userId = Factory.Data.GetUserId(Constants.User2Login);
 
         //Act
-        var response = _client.Get($"/userInfo/getCard?userId={userId}");
+        var response = Client.Get($"/userInfo/getCard?userId={userId}");
 
         //Assert
         response.ReadErrorMessage().Should().Match("Нет прав для просмотра данной информации*");
@@ -78,15 +70,15 @@ public class UserInfoTest : IClassFixture<ServiceTestFixture<Program>>
     public void Get_Card_Self_BaseInfo_Success()
     {
         //Arrange
-        _factory.AuthorizeAdmin(_client);
-        var userId = _factory.Users.First(t => t.Email == Constants.AdminLogin).Id;
-        var newInfo = _factory.GetBuilder().Build().Create<UserInfo>();
+        Factory.Actions.AuthorizeAdmin(Client);
+        var userId = Factory.Data.GetUserId(Constants.AdminLogin);
+        var newInfo = Factory.GetBuilder().Build().Create<UserInfo>();
 
-        var response = _client.Post<bool>("/userInfo/update", newInfo);
+        var response = Client.Post<bool>("/userInfo/update", newInfo);
         response.Should().BeTrue();
 
         //Act
-        var card = _client.Get<UserCard>($"/userInfo/getCard?userId={userId}");
+        var card = Client.Get<UserCard>($"/userInfo/getCard?userId={userId}");
 
         //Assert обновления
         card.Login.Should().BeEquivalentTo(Constants.AdminLogin);
@@ -97,15 +89,15 @@ public class UserInfoTest : IClassFixture<ServiceTestFixture<Program>>
     public void Get_Card_ByAdmin_Blocked_Success()
     {
         //Arrange
-        _factory.AuthorizeAdmin(_client);
-        var blockedUserId = _factory.Users.First(t => t.Email == Constants.BlockedUserLogin).Id;
+        Factory.Actions.AuthorizeAdmin(Client);
+        var blockedUserId = Factory.Data.GetUserId(Constants.BlockedUserLogin);
 
         //Act
-        var card = _client.Get<UserCard>($"/userInfo/getCard?userId={blockedUserId}");
+        var card = Client.Get<UserCard>($"/userInfo/getCard?userId={blockedUserId}");
 
         //Assert
         card.Login.Should().BeEquivalentTo(Constants.BlockedUserLogin);
-        card.BlockReason?.BlockerId.Should().Be(_factory.Users.First(t => t.Email == Constants.AdminLogin).Id);
+        card.BlockReason?.BlockerId.Should().Be(Factory.Data.GetUserId(Constants.AdminLogin));
         card.BlockReason.Should().NotBeNull();
     }
 
@@ -113,15 +105,15 @@ public class UserInfoTest : IClassFixture<ServiceTestFixture<Program>>
     public void Get_Card_ByCoach_Blocked_Success()
     {
         //Arrange
-        _factory.AuthorizeCoach(_client);
-        var blockedUserId = _factory.Users.First(t => t.Email == Constants.BlockedUserLogin).Id;
+        Factory.Actions.AuthorizeCoach(Client);
+        var blockedUserId = Factory.Data.GetUserId(Constants.BlockedUserLogin);
 
         //Act
-        var card = _client.Get<UserCard>($"/userInfo/getCard?userId={blockedUserId}");
+        var card = Client.Get<UserCard>($"/userInfo/getCard?userId={blockedUserId}");
 
         //Assert
         card.Login.Should().BeEquivalentTo(Constants.BlockedUserLogin);
-        card.BlockReason?.BlockerId.Should().Be(_factory.Users.First(t => t.Email == Constants.AdminLogin).Id);
+        card.BlockReason?.BlockerId.Should().Be(Factory.Data.GetUserId(Constants.AdminLogin));
         card.BlockReason.Should().NotBeNull();
     }
 }
