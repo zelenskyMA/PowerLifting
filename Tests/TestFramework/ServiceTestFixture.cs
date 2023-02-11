@@ -1,9 +1,8 @@
-using Azure.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SportAssistant.Application.UserData.UserCommands.UserCommands;
@@ -13,22 +12,26 @@ using SportAssistant.Domain.Models.UserData.Auth;
 using SportAssistant.Infrastructure.DataContext;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using TestFramework;
 using TestFramework.DataGeneration;
 using TestFramework.TestExtensions;
-
 namespace RazorPagesProject.Tests;
 
 [ExcludeFromCodeCoverage]
 public class ServiceTestFixture<TStartup>
     : WebApplicationFactory<TStartup> where TStartup : class
 {
+    /// <summary> Предсозданные пользователи для использования в тестах</summary>
     public List<UserDb> Users { get; }
 
+    /// <summary> Предсозданный план для тестов</summary>
     public PlanDay PlanDay { get; set; }
+
+    private DbConnection _connection;
 
     public ServiceTestFixture()
     {
@@ -49,37 +52,27 @@ public class ServiceTestFixture<TStartup>
     {
         builder.ConfigureServices(services =>
         {
+            // create new Db with new connection
+            _connection = new SqliteConnection("Filename=:memory:");
+            _connection.Open();
+
+            // replace old db with new one in DI
             var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<SportContext>));
             services.Remove(descriptor);
+            services.AddDbContext<SportContext>(options => options.UseSqlite(_connection));
 
-            services.AddDbContext<SportContext>(options =>
-            {
-                options.UseInMemoryDatabase($"InMemoryDatabase");
-                options.ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-            });
-
+            // get context
             var sp = services.BuildServiceProvider();
-
             using var scope = sp.CreateScope();
             var scopedServices = scope.ServiceProvider;
             var ctx = scopedServices.GetRequiredService<SportContext>();
-            var logger = scopedServices.GetRequiredService<ILogger<ServiceTestFixture<TStartup>>>();
 
+            // seed context with data
             ctx.Database.EnsureCreated();
-
-            try
-            {
-                DbSeed.InitializeDbForTests(ctx, Users);
-                PlanDay = DbSeed.CreatePlan(ctx, 3, DateTime.Now);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, $"Error occurred on database seeding for tests. Msg: {ex.Message}");
-            }
+            DbSeed.InitializeDbForTests(ctx, Users);
+            PlanDay = DbSeed.CreatePlan(ctx, 3, DateTime.Now);
         });
     }
-
-    public void Init(SportContext ctx) => DbSeed.InitializeDbForTests(ctx, Users);
 
     /// <summary>
     /// Получение билдера моделей с тестовыми данными
@@ -98,5 +91,13 @@ public class ServiceTestFixture<TStartup>
 
         UnAuthorize(client);
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.Token}");
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        _connection?.Close();
+        _connection?.Dispose();
+
+        base.Dispose(disposing);
     }
 }
