@@ -1,6 +1,7 @@
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.DbModels.UserData;
+using SportAssistant.Domain.Models.TrainingPlan;
 using SportAssistant.Infrastructure.DataContext;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,53 @@ namespace RazorPagesProject.Tests
         {
             ExecuteInitScripts(ctx);
             UsersSetup(ctx, users);
+        }
+
+        public static PlanDay CreatePlan(SportContext ctx, int userId, DateTime startDate)
+        {
+            var plan = new PlanDb() { StartDate = startDate, UserId = userId };
+            ctx.Plans.Add(plan);
+            ctx.SaveChanges();
+
+            var planDay = new PlanDayDb() { PlanId = plan.Id, ActivityDate = startDate.AddDays(1) };
+            ctx.PlanDays.Add(planDay);
+            ctx.SaveChanges();
+
+            var exercises = new List<PlanExerciseDb>() {
+                new PlanExerciseDb(){ PlanDayId = planDay.Id, Order = 1, ExerciseId = 1 },
+                new PlanExerciseDb(){ PlanDayId = planDay.Id, Order = 1, ExerciseId = 20},
+            };
+            ctx.PlanExercises.AddRange(exercises);
+            ctx.SaveChanges();
+
+            var exSettings = new List<PlanExerciseSettingsDb>() {
+                new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
+                new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = false  },
+                new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
+                new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = false  },
+            };
+            ctx.PlanExerciseSettings.AddRange(exSettings);
+            ctx.SaveChanges();
+
+
+            return new PlanDay()
+            {
+                Id = planDay.Id,
+                PlanId = plan.Id,
+                Exercises = new List<PlanExercise>() {
+                    new PlanExercise() {
+                        Id = exercises[0].Id,
+                        Exercise = new Exercise(){ Id = 1, ExerciseTypeId = 2 },
+                        Settings = new List<PlanExerciseSettings>(){ new PlanExerciseSettings() { Id = exSettings[0].Id }, new PlanExerciseSettings() { Id = exSettings[1].Id } }
+                    },
+
+                    new PlanExercise() {
+                        Id = exercises[1].Id,
+                        Exercise = new Exercise(){ Id = 20, ExerciseTypeId = 1 },
+                        Settings = new List<PlanExerciseSettings>(){ new PlanExerciseSettings() { Id = exSettings[2].Id }, new PlanExerciseSettings() { Id = exSettings[3].Id } }
+                    }
+                }
+            };
         }
 
         private static void UsersSetup(SportContext ctx, List<UserDb> users)

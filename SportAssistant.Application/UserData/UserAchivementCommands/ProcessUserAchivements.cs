@@ -54,7 +54,7 @@ namespace SportAssistant.Application.UserData.UserAchivementCommands
                 .Select(group => group.OrderByDescending(t => t.CreationDate).First())
                 .ToList();
 
-            return filteredAchivements.Select(t => _mapper.Map<UserAchivement>(t)).ToList();
+            return filteredAchivements.Select(_mapper.Map<UserAchivement>).ToList();
         }
 
         /// <inheritdoc />

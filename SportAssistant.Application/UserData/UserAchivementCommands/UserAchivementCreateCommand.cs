@@ -7,6 +7,9 @@ using SportAssistant.Domain.Models.UserData;
 
 namespace SportAssistant.Application.UserData.UserCommands1
 {
+    /// <summary>
+    /// Добавление рекорда(ов) спортсмена. Собирается история рекордов.
+    /// </summary>
     public class UserAchivementCreateCommand : ICommand<UserAchivementCreateCommand.Param, bool>
     {
         private readonly ICrudRepo<UserAchivementDb> _userAchivementRepository;

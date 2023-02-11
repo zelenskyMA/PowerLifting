@@ -9,7 +9,7 @@ using TestFramework;
 using TestFramework.TestExtensions;
 using Xunit;
 
-namespace TestsBackend;
+namespace TestsBackend.Common;
 
 public class AuthTest : IClassFixture<ServiceTestFixture<Program>>
 {
@@ -133,7 +133,7 @@ public class AuthTest : IClassFixture<ServiceTestFixture<Program>>
 
         // user not found
         response = _client.Post("/user/changePassword", new UserChangePasswordCommand.Param() { Login = testLogin, Password = testPwd, PasswordConfirm = testPwd });
-        var ss = response.ReadErrorMessage().Should().Match("ѕользователь с указанным логином не найден*");
+        response.ReadErrorMessage().Should().Match("ѕользователь с указанным логином не найден*");
 
 
         // user old password is wrong
