@@ -3,9 +3,10 @@ using FluentAssertions;
 using SportAssistant.Domain.Models.UserData;
 using TestFramework;
 using TestFramework.TestExtensions;
+using TestsBackend;
 using Xunit;
 
-namespace TestsBackend.User;
+namespace User;
 
 public class UserAchivementTest : BaseTest
 {

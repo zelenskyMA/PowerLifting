@@ -4,9 +4,10 @@ using Microsoft.IdentityModel.Tokens;
 using SportAssistant.Domain.Models.UserData;
 using TestFramework;
 using TestFramework.TestExtensions;
+using TestsBackend;
 using Xunit;
 
-namespace TestsBackend.User;
+namespace User;
 
 public class UserInfoTest : BaseTest
 {

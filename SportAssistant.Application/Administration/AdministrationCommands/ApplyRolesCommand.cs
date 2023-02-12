@@ -5,7 +5,7 @@ using SportAssistant.Domain.Interfaces.UserData.Application;
 namespace SportAssistant.Application.Administration.AdministrationCommands
 {
     /// <summary>
-    /// Apply role changes for selected user
+    /// Изменение ролей для выбранного пользователя. Добавляем и удаляем.
     /// </summary>
     public class ApplyRolesCommand : ICommand<ApplyRolesCommand.Param, bool>
     {

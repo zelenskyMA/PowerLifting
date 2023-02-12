@@ -80,7 +80,7 @@ public static class DbSeed
 
         // user roles
         ctx.UserRoles.Add(new UserRoleDb() { UserId = adminId, RoleId = 10 });
-        ctx.UserRoles.Add(new UserRoleDb() { UserId = coachId, RoleId = 10 });
+        ctx.UserRoles.Add(new UserRoleDb() { UserId = coachId, RoleId = 11 });
 
         //set blocked useer
         ctx.UserBlockHistoryItems.Add(new UserBlockHistoryDb()

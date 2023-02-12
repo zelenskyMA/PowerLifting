@@ -1,14 +1,14 @@
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.IdentityModel.Tokens;
 using SportAssistant.Application.UserData.UserCommands;
 using SportAssistant.Application.UserData.UserCommands.UserCommands;
 using SportAssistant.Domain.Models.UserData.Auth;
 using TestFramework;
 using TestFramework.TestExtensions;
+using TestsBackend;
 using Xunit;
 
-namespace TestsBackend.Common;
+namespace Common;
 
 public class AuthTest : BaseTest
 {

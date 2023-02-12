@@ -2,9 +2,10 @@
 using SportAssistant.Domain.Models;
 using TestFramework;
 using TestFramework.TestExtensions;
+using TestsBackend;
 using Xunit;
 
-namespace TestsBackend.Common;
+namespace Common;
 
 public class DictionaryTest : BaseTest
 {
