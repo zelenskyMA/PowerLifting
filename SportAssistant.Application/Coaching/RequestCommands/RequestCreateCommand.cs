@@ -29,10 +29,16 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
         public async Task<bool> ExecuteAsync(Param param)
         {
             var existingRequest = await _processTrainingRequest.GetByUserAsync(_user.Id);
+            var coach = await _processTrainingRequest.GetCoachName(param.СoachId);
+
             if (existingRequest.Id > 0)
             {
-                var coachName = await _processTrainingRequest.GetCoachName(param.СoachId);
-                throw new BusinessException($"Вы уже подали заявку тренеру {coachName}");
+                throw new BusinessException($"Вы уже подали заявку тренеру {coach.name}");
+            }
+
+            if (coach.foundId == 0)
+            {
+                throw new BusinessException($"Тренер, которому вы подаете заявку, не найден.");
             }
 
             if (_user.Id == param.СoachId)

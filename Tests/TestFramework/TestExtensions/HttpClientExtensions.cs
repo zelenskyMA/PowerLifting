@@ -19,9 +19,9 @@ public static class HttpClientExtensions
         return HandleResult<TResult>(respContentString);
     }
 
-    public static HttpResponseMessage Post(this HttpClient httpClient, string path, object body) => httpClient.PostAsJsonAsync(path, body).GetAwaiter().GetResult();
+    public static HttpResponseMessage Post(this HttpClient httpClient, string path, object body = null) => httpClient.PostAsJsonAsync(path, body).GetAwaiter().GetResult();
 
-    public static TResult Post<TResult>(this HttpClient httpClient, string path, object body)
+    public static TResult Post<TResult>(this HttpClient httpClient, string path, object body = null)
     {
         using HttpResponseMessage resp = httpClient.PostAsJsonAsync(path, body).GetAwaiter().GetResult();
         string respContentString = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -29,7 +29,7 @@ public static class HttpClientExtensions
         return HandleResult<TResult>(respContentString);
     }
 
-    public static TResult Put<TResult>(this HttpClient httpClient, string path, object body)
+    public static TResult Put<TResult>(this HttpClient httpClient, string path, object body = null)
     {
         using HttpResponseMessage resp = httpClient.PutAsJsonAsync(path, body).GetAwaiter().GetResult();
         string respContentString = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();

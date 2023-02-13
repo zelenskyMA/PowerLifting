@@ -73,9 +73,18 @@ public static class DbSeed
         var coachId = users.First(t => t.Email == Constants.CoachLogin).Id;
 
         //user info
+        var noCoachUsers = new List<int>() { coachId, users.First(t => t.Email == Constants.NoCoachUserLogin).Id };
         foreach (var user in users)
         {
-            ctx.UsersInfo.Add(new UserInfoDb() { UserId = user.Id, CoachId = user.Id == coachId ? null : coachId });
+            ctx.UsersInfo.Add(new UserInfoDb() { 
+                UserId = user.Id, 
+                Age = 45,
+                FirstName = "Иван",
+                Surname = "Иванов",
+                Height= 150,
+                Weight= 60,
+                CoachId = noCoachUsers.Contains(user.Id) ? null : coachId }
+            );
         }
 
         // user roles

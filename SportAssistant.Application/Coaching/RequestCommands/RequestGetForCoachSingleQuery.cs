@@ -9,7 +9,7 @@ using SportAssistant.Domain.Models.Coaching;
 namespace SportAssistant.Application.Coaching.TrainingRequestCommands
 {
     /// <summary>
-    /// Получение тренером поданной к нему заявки по ее Ид.
+    /// Получение тренером поданой ему заявки по Ид.
     /// </summary>
     public class RequestGetForCoachSingleQuery : ICommand<RequestGetForCoachSingleQuery.Param, TrainingRequest>
     {

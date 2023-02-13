@@ -28,7 +28,7 @@ public class DataPreset
             new UserDb() { Id = 2, Email = Constants.CoachLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
             new UserDb() { Id = 3, Email = Constants.UserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
             new UserDb() { Id = 4, Email = Constants.BlockedUserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, Blocked = true },
-            new UserDb() { Id = 5, Email = Constants.User2Login, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
+            new UserDb() { Id = 5, Email = Constants.NoCoachUserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
         };
 
         DbSeed.InitializeDbForTests(ctx, Users);

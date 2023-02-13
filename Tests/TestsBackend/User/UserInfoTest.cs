@@ -22,11 +22,11 @@ public class UserInfoTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
 
         //Act
-        // пустые данные корректно возвращаются
+        // исходные данные корректно возвращаются
         var info = Client.Get<UserInfo>("/userInfo/get");
         info.Should().NotBeNull();
-        info.FirstName.IsNullOrEmpty().Should().BeTrue();
-        info.Age.Should().BeNull();
+        info.FirstName.IsNullOrEmpty().Should().BeFalse();
+        info.Age.Should().NotBeNull();
 
         // обновление данных пользователя
         var newInfo = Factory.GetBuilder().Build().Create<UserInfo>();
@@ -35,8 +35,10 @@ public class UserInfoTest : BaseTest
         response.Should().BeTrue();
 
         //Assert - проверяем обновление
-        info = Client.Get<UserInfo>("/userInfo/get");
-        info.Should().BeEquivalentTo(newInfo, t => t
+        var assertInfo = Client.Get<UserInfo>("/userInfo/get");
+        assertInfo.FirstName.Should().NotBe(info.FirstName);
+        assertInfo.Age.Should().NotBe(info.Age);
+        assertInfo.Should().BeEquivalentTo(newInfo, t => t
             .Excluding(m => m.LegalName)
             .Excluding(m => m.CoachLegalName)
             .Excluding(m => m.RolesInfo));
@@ -57,7 +59,7 @@ public class UserInfoTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var userId = Factory.Data.GetUserId(Constants.User2Login);
+        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
 
         //Act
         var response = Client.Get($"/userInfo/getCard?userId={userId}");
