@@ -5,11 +5,11 @@ using TestFramework.TestExtensions;
 using TestsBackend;
 using Xunit;
 
-namespace Coaching.RequestTests;
+namespace Coaching;
 
-public class CreateDeleteTest : BaseTest
+public class Request_CreateDeleteTest : BaseTest
 {
-    public CreateDeleteTest(ServiceTestFixture<Program> factory) : base(factory) { }
+    public Request_CreateDeleteTest(ServiceTestFixture<Program> factory) : base(factory) { }
 
     [Fact]
     public void Create_Request_UnAuthorized_Fail()
@@ -54,10 +54,11 @@ public class CreateDeleteTest : BaseTest
 
         //Assert
         response.ReadErrorMessage().Should().Match("Вы уже подали заявку тренеру*");
+        RemoveRequest(); // удаляем первую заявку
     }
 
     [Fact]
-    public void Remove_Request_NotExisting_Success()
+    public void Delete_Request_NotExisting_Success()
     {
         var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
         Factory.Actions.AuthorizeUserNoCoach(Client);
@@ -67,7 +68,7 @@ public class CreateDeleteTest : BaseTest
     }
 
     [Fact]
-    public void CreateAndRemove_Request_Success()
+    public void CreateAndDelete_Request_Success()
     {
         //Arrange
         Factory.Actions.AuthorizeUserNoCoach(Client);
@@ -99,5 +100,15 @@ public class CreateDeleteTest : BaseTest
         request.Should().NotBeNull(); // ожидаем заглушку
         request.UserId.Should().Be(0);
         request.CoachId.Should().Be(0);
+    }
+
+    /// <summary>
+    /// Удаляем запрос к тренеру
+    /// </summary>
+    private void RemoveRequest()
+    {
+        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var removeResult = Client.Post<bool>($"/trainingRequests/remove?userId={userId}");
+        removeResult.Should().BeTrue();
     }
 }

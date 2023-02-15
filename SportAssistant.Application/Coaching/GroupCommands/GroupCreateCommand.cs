@@ -1,8 +1,10 @@
 ﻿using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.Coaching;
+using SportAssistant.Domain.Enums;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
+using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Domain.Models.Coaching;
 
 namespace SportAssistant.Application.Coaching.TrainingGroupCommands
@@ -12,14 +14,17 @@ namespace SportAssistant.Application.Coaching.TrainingGroupCommands
     /// </summary>
     public class GroupCreateCommand : ICommand<GroupCreateCommand.Param, bool>
     {
+        private readonly IUserRoleCommands _userRoleCommands;
         private readonly ICrudRepo<TrainingGroupDb> _trainingGroupRepository;
         private readonly IUserProvider _user;
 
         public GroupCreateCommand(
+         IUserRoleCommands userRoleCommands,
          ICrudRepo<TrainingGroupDb> trainingGroupRepository,
          IUserProvider user)
         {
             _trainingGroupRepository = trainingGroupRepository;
+            _userRoleCommands = userRoleCommands;
             _user = user;
         }
 
@@ -28,6 +33,11 @@ namespace SportAssistant.Application.Coaching.TrainingGroupCommands
             if (string.IsNullOrWhiteSpace(param.Group.Name))
             {
                 throw new BusinessException($"Название группы обязательно");
+            }
+
+            if (!await _userRoleCommands.IHaveRole(UserRoles.Coach))
+            {
+                throw new RoleException();
             }
 
             var groupDb = await _trainingGroupRepository.FindAsync(t => t.Name == param.Group.Name && t.CoachId == _user.Id);

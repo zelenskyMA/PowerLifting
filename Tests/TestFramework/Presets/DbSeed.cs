@@ -1,4 +1,5 @@
 using SportAssistant.Domain.DbModels.Basic;
+using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models.TrainingPlan;
@@ -15,6 +16,7 @@ public static class DbSeed
     {
         ExecuteInitScripts(ctx);
         UsersSetup(ctx, users);
+        AddCoachGroupData(ctx, users);
     }
 
     public static PlanDay CreatePlan(SportContext ctx, int userId, DateTime startDate)
@@ -76,14 +78,16 @@ public static class DbSeed
         var noCoachUsers = new List<int>() { coachId, users.First(t => t.Email == Constants.NoCoachUserLogin).Id };
         foreach (var user in users)
         {
-            ctx.UsersInfo.Add(new UserInfoDb() { 
-                UserId = user.Id, 
+            ctx.UsersInfo.Add(new UserInfoDb()
+            {
+                UserId = user.Id,
                 Age = 45,
                 FirstName = "Иван",
                 Surname = "Иванов",
-                Height= 150,
-                Weight= 60,
-                CoachId = noCoachUsers.Contains(user.Id) ? null : coachId }
+                Height = 150,
+                Weight = 60,
+                CoachId = noCoachUsers.Contains(user.Id) ? null : coachId
+            }
             );
         }
 
@@ -91,7 +95,7 @@ public static class DbSeed
         ctx.UserRoles.Add(new UserRoleDb() { UserId = adminId, RoleId = 10 });
         ctx.UserRoles.Add(new UserRoleDb() { UserId = coachId, RoleId = 11 });
 
-        //set blocked useer
+        //set blocked user
         ctx.UserBlockHistoryItems.Add(new UserBlockHistoryDb()
         {
             BlockerId = adminId,
@@ -102,6 +106,20 @@ public static class DbSeed
 
         ctx.SaveChanges();
     }
+
+    private static void AddCoachGroupData(SportContext ctx, List<UserDb> users)
+    {
+        var coachId = users.First(t => t.Email == Constants.CoachLogin).Id;
+        var userId = users.First(t => t.Email == Constants.UserLogin).Id;
+
+        var group = new TrainingGroupDb() { CoachId = coachId, Name = Constants.GroupName };
+        ctx.TrainingGroups.Add(group);
+        ctx.SaveChanges();
+
+        ctx.TrainingGroupUsers.Add(new TrainingGroupUserDb() { GroupId = group.Id, UserId = userId });
+        ctx.SaveChanges();
+    }
+
 
     private static void ExecuteInitScripts(SportContext ctx)
     {

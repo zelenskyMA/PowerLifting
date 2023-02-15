@@ -1,16 +1,15 @@
-﻿using Azure.Core;
-using FluentAssertions;
+﻿using FluentAssertions;
 using SportAssistant.Domain.Models.Coaching;
 using TestFramework;
 using TestFramework.TestExtensions;
 using TestsBackend;
 using Xunit;
 
-namespace Coaching.RequestTests;
+namespace Coaching;
 
-public class GetTest : BaseTest
+public class Request_GetTest : BaseTest
 {
-    public GetTest(ServiceTestFixture<Program> factory) : base(factory) { }
+    public Request_GetTest(ServiceTestFixture<Program> factory) : base(factory) { }
 
     [Fact]
     public void Get_Request_UnAuthorized_Fail()
