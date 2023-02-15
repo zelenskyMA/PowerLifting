@@ -19,19 +19,29 @@ public static class DbSeed
         AddCoachGroupData(ctx, users);
     }
 
-    public static PlanDay CreatePlan(SportContext ctx, int userId, DateTime startDate)
+    public static List<PlanDay> CreatePlan(SportContext ctx, int userId, DateTime startDate)
     {
+        //план
         var plan = new PlanDb() { StartDate = startDate, UserId = userId };
         ctx.Plans.Add(plan);
         ctx.SaveChanges();
 
-        var planDay = new PlanDayDb() { PlanId = plan.Id, ActivityDate = startDate.AddDays(1) };
-        ctx.PlanDays.Add(planDay);
+        //7 плановых дней
+        var planDays = new List<PlanDayDb>() { };
+        for (int i = 0; i < 7; i++)
+        {
+            planDays.Add(new PlanDayDb() { PlanId = plan.Id, ActivityDate = startDate.AddDays(i) });
+        }
+        ctx.PlanDays.AddRange(planDays);
         ctx.SaveChanges();
 
+        //упражнения по дням
         var exercises = new List<PlanExerciseDb>() {
-            new PlanExerciseDb(){ PlanDayId = planDay.Id, Order = 1, ExerciseId = 1 },
-            new PlanExerciseDb(){ PlanDayId = planDay.Id, Order = 1, ExerciseId = 20},
+            new PlanExerciseDb(){ PlanDayId = planDays[0].Id, Order = 1, ExerciseId = 1 },
+            new PlanExerciseDb(){ PlanDayId = planDays[0].Id, Order = 1, ExerciseId = 20},
+
+            new PlanExerciseDb(){ PlanDayId = planDays[1].Id, Order = 1, ExerciseId = 91},
+            new PlanExerciseDb(){ PlanDayId = planDays[1].Id, Order = 1, ExerciseId = 61},
         };
         ctx.PlanExercises.AddRange(exercises);
         ctx.SaveChanges();
@@ -40,30 +50,49 @@ public static class DbSeed
             new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
             new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = false  },
             new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = true  },
+
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[2].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[2].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = true  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[3].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[3].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = false  },
         };
         ctx.PlanExerciseSettings.AddRange(exSettings);
         ctx.SaveChanges();
 
-
-        return new PlanDay()
+        var result = new List<PlanDay>();
+        foreach (var planDay in planDays)
         {
-            Id = planDay.Id,
-            PlanId = plan.Id,
-            Exercises = new List<PlanExercise>() {
-                new PlanExercise() {
-                    Id = exercises[0].Id,
-                    Exercise = new Exercise(){ Id = 1, ExerciseTypeId = 2 },
-                    Settings = new List<PlanExerciseSettings>(){ new PlanExerciseSettings() { Id = exSettings[0].Id }, new PlanExerciseSettings() { Id = exSettings[1].Id } }
-                },
+            var dayExercises = exercises.Where(t => t.PlanDayId == planDay.Id).ToList();
+            var settings = exSettings.Where(t => dayExercises.Select(t => t.Id).Contains(t.PlanExerciseId)).ToList();
 
-                new PlanExercise() {
-                    Id = exercises[1].Id,
-                    Exercise = new Exercise(){ Id = 20, ExerciseTypeId = 1 },
-                    Settings = new List<PlanExerciseSettings>(){ new PlanExerciseSettings() { Id = exSettings[2].Id }, new PlanExerciseSettings() { Id = exSettings[3].Id } }
-                }
+            result.Add(new PlanDay()
+            {
+                Id = planDay.Id,
+                PlanId = plan.Id,
+                Exercises = dayExercises.Count == 0 ? new List<PlanExercise>() :
+                    new List<PlanExercise>() {
+                        new PlanExercise() {
+                            Id = dayExercises[0].Id,
+                            Exercise = new Exercise(){ Id = dayExercises[0].ExerciseId, ExerciseTypeId = 2 },
+                            Settings = settings.Count == 0 ? new List<PlanExerciseSettings>() : new List<PlanExerciseSettings>()
+                            { 
+                                new PlanExerciseSettings() { Id = settings[0].Id }, new PlanExerciseSettings() { Id = settings[1].Id } 
+                            }
+                        },
+                        new PlanExercise() {
+                            Id = dayExercises[1].Id,
+                            Exercise = new Exercise(){ Id = dayExercises[0].ExerciseId, ExerciseTypeId = 1 },
+                            Settings = settings.Count == 0 ? new List<PlanExerciseSettings>() : new List<PlanExerciseSettings>()
+                            { 
+                                new PlanExerciseSettings() { Id = settings[2].Id }, new PlanExerciseSettings() { Id = settings[3].Id } 
+                            }
+                    }
             }
-        };
+            });
+        }
+
+        return result;
     }
 
     private static void UsersSetup(SportContext ctx, List<UserDb> users)
@@ -119,7 +148,6 @@ public static class DbSeed
         ctx.TrainingGroupUsers.Add(new TrainingGroupUserDb() { GroupId = group.Id, UserId = userId });
         ctx.SaveChanges();
     }
-
 
     private static void ExecuteInitScripts(SportContext ctx)
     {

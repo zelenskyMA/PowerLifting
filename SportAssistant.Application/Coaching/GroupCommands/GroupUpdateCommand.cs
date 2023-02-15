@@ -8,7 +8,7 @@ using SportAssistant.Domain.Models.Coaching;
 namespace SportAssistant.Application.Coaching.TrainingGroupCommands
 {
     /// <summary>
-    /// Обновление тренировочной группы тренером
+    /// Обновление тренировочной группы владельцем
     /// </summary>
     public class GroupUpdateCommand : ICommand<GroupUpdateCommand.Param, bool>
     {

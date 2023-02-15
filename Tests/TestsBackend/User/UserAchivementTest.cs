@@ -73,8 +73,8 @@ public class UserAchivementTest : BaseTest
         };
         Client.Post<bool>("/userAchivement/create", request);
 
-        var typeId = Factory.Data.PlanDay.Exercises[0].Exercise.ExerciseTypeId;
-        var requestStr = $"planExerciseId={Factory.Data.PlanDay.Exercises[0].Id}&exerciseTypeId={typeId}";
+        var typeId = Factory.Data.PlanDays[0].Exercises[0].Exercise.ExerciseTypeId;
+        var requestStr = $"planExerciseId={Factory.Data.PlanDays[0].Exercises[0].Id}&exerciseTypeId={typeId}";
 
         //Act
         var response = Client.Get<UserAchivement>($"/userAchivement/getByExercise?{requestStr}");

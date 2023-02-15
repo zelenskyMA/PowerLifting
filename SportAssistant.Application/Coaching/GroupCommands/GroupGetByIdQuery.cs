@@ -7,7 +7,7 @@ using SportAssistant.Domain.Models.Coaching;
 namespace SportAssistant.Application.Coaching.TrainingGroupCommands
 {
     /// <summary>
-    /// Получение запланированного упражнения по его Ид.
+    /// Получение тренерской группы по ее Ид.
     /// </summary>
     public class GroupGetByIdQuery : ICommand<GroupGetByIdQuery.Param, TrainingGroupInfo>
     {

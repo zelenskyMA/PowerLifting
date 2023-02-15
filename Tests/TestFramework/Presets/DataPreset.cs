@@ -19,7 +19,7 @@ public class DataPreset
     public List<UserDb> Users { get; }
 
     /// <summary> Предсозданный план для тестов</summary>
-    public PlanDay PlanDay { get; }
+    public List<PlanDay> PlanDays { get; }
 
     public DataPreset(SportContext ctx)
     {
@@ -32,7 +32,7 @@ public class DataPreset
         };
 
         DbSeed.InitializeDbForTests(ctx, Users);
-        PlanDay = DbSeed.CreatePlan(ctx, 3, DateTime.Now);
+        PlanDays = DbSeed.CreatePlan(ctx, 3, DateTime.Now);
     }
 
     public int GetUserId(string login) => Users.First(t => t.Email == login).Id;
