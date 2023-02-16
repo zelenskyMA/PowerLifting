@@ -26,13 +26,14 @@ public class DataPreset
         Users = new List<UserDb>() {
             new UserDb() { Id = 1, Email = Constants.AdminLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
             new UserDb() { Id = 2, Email = Constants.CoachLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
-            new UserDb() { Id = 3, Email = Constants.UserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
-            new UserDb() { Id = 4, Email = Constants.BlockedUserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, Blocked = true },
-            new UserDb() { Id = 5, Email = Constants.NoCoachUserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
+            new UserDb() { Id = 3, Email = Constants.SecondCoachLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
+            new UserDb() { Id = 4, Email = Constants.UserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
+            new UserDb() { Id = 5, Email = Constants.BlockedUserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, Blocked = true },
+            new UserDb() { Id = 6, Email = Constants.NoCoachUserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
         };
 
         DbSeed.InitializeDbForTests(ctx, Users);
-        PlanDays = DbSeed.CreatePlan(ctx, 3, DateTime.Now);
+        PlanDays = DbSeed.CreatePlan(ctx, GetUserId(Constants.UserLogin), DateTime.Now);
     }
 
     public int GetUserId(string login) => Users.First(t => t.Email == login).Id;

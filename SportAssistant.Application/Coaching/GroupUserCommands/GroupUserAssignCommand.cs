@@ -13,9 +13,9 @@ using SportAssistant.Infrastructure.DataContext;
 namespace SportAssistant.Application.Coaching.TrainingGroupUserCommands
 {
     /// <summary>
-    /// Изменение тренировочной группы, к которой прикреплен спортсмен
+    /// Назначение/изменение тренировочной группы, к которой прикреплен спортсмен
     /// </summary>
-    public class GroupUserUpdateCommand : ICommand<GroupUserUpdateCommand.Param, bool>
+    public class GroupUserAssignCommand : ICommand<GroupUserAssignCommand.Param, bool>
     {
         private readonly IContextProvider _provider;
         private readonly IProcessRequest _processTrainingRequest;
@@ -24,7 +24,7 @@ namespace SportAssistant.Application.Coaching.TrainingGroupUserCommands
         private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
         private readonly IUserProvider _user;
 
-        public GroupUserUpdateCommand(
+        public GroupUserAssignCommand(
             IContextProvider provider,
             IProcessGroupUser processTrainingGroupUser,
             IProcessRequest processTrainingRequest,
@@ -47,16 +47,21 @@ namespace SportAssistant.Application.Coaching.TrainingGroupUserCommands
             var userRequestDb = await _processTrainingRequest.GetByUserAsync(param.UserGroup.UserId);
             if (userRequestDb.Id == 0)
             {
-                await UpdateUserToGroupAsync(group, userInfo);
+                if (userInfo.CoachId != _user.Id)
+                {
+                    throw new BusinessException("Нельзя принять спортсмена в группу без его заявки");
+                }
+
+                await TransferUserBetweenGroupsAsync(group, userInfo);
                 return true;
             }
 
-            await AddNewUserToGroupAsync(group, userInfo, userRequestDb);
+            await AssignUserByRequestAsync(group, userInfo, userRequestDb);
             return true;
         }
 
         /// <summary> По заявке определяем спортсмена к тренеру в указанную группу. Заявку удаляем. </summary>
-        private async Task AddNewUserToGroupAsync(TrainingGroupDb group, UserInfoDb userInfo, TrainingRequest request)
+        private async Task AssignUserByRequestAsync(TrainingGroupDb group, UserInfoDb userInfo, TrainingRequest request)
         {
             if (request.CoachId != _user.Id)
             {
@@ -65,11 +70,6 @@ namespace SportAssistant.Application.Coaching.TrainingGroupUserCommands
 
             try
             {
-                if (userInfo.CoachId != null)
-                {
-                    throw new BusinessException("Спортсмен уже тренируется у другого тренера. Ошибочная заявка.");
-                }
-
                 await _trainingGroupUserRepository.CreateAsync(new TrainingGroupUserDb()
                 {
                     UserId = userInfo.UserId,
@@ -86,7 +86,7 @@ namespace SportAssistant.Application.Coaching.TrainingGroupUserCommands
         }
 
 
-        private async Task UpdateUserToGroupAsync(TrainingGroupDb group, UserInfoDb userInfo)
+        private async Task TransferUserBetweenGroupsAsync(TrainingGroupDb group, UserInfoDb userInfo)
         {
             var userGroupDb = (await _trainingGroupUserRepository.FindAsync(t => t.UserId == userInfo.UserId)).FirstOrDefault();
             if (userGroupDb == null || userGroupDb.GroupId == group.Id) //нет реального перемещения.

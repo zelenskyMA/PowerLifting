@@ -7,6 +7,7 @@ public static class Constants
 {
     public static string AdminLogin => "admin@mail.ru";
     public static string CoachLogin => "coach@mail.ru";
+    public static string SecondCoachLogin => "secondCoach@mail.ru";
     public static string UserLogin => "user@mail.ru";
     public static string NoCoachUserLogin => "user2@mail.ru";
     public static string BlockedUserLogin => "blocked@mail.ru";
@@ -16,4 +17,5 @@ public static class Constants
 
 
     public static string GroupName => "Predefined Group";
+    public static string SecondGroupName => "Second Predefined Group";
 }

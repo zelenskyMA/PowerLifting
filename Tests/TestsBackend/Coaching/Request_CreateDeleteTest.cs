@@ -24,7 +24,7 @@ public class Request_CreateDeleteTest : BaseTest
     [Fact]
     public void Create_Request_WrongCoachId_Fail()
     {
-        Factory.Actions.AuthorizeCoach(Client);
+        Factory.Actions.AuthorizeUserNoCoach(Client);
         var response = Client.Post($"/trainingRequests/create?coachId=0");
         response.ReadErrorMessage().Should().Match("Тренер, которому вы подаете заявку, не найден*");
     }
@@ -55,6 +55,20 @@ public class Request_CreateDeleteTest : BaseTest
         //Assert
         response.ReadErrorMessage().Should().Match("Вы уже подали заявку тренеру*");
         RemoveRequest(); // удаляем первую заявку
+    }
+
+    [Fact]
+    public void Create_Request_AlreadyHasCoach_Fail()
+    {
+        // Arrange
+        Factory.Actions.AuthorizeUser(Client);
+        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
+
+        //Act
+        var response = Client.Post($"/trainingRequests/create?coachId={coachId}");
+
+        //Assert
+        response.ReadErrorMessage().Should().Match("У вас уже есть тренер. Он может быть только один*");
     }
 
     [Fact]

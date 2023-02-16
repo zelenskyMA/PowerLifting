@@ -9,10 +9,10 @@ namespace SportAssistant.Service.Controllers.Coaching
     public class TrainingGroupUserController : BaseController
     {
         [HttpPost]
-        [Route("update")]
-        public async Task<bool> UpdateUserGroupAsync([FromServices] ICommand<GroupUserUpdateCommand.Param, bool> command, TrainingGroupUser targetGroup)
+        [Route("assign")]
+        public async Task<bool> AssignUserGroupAsync([FromServices] ICommand<GroupUserAssignCommand.Param, bool> command, TrainingGroupUser targetGroup)
         {
-            var result = await command.ExecuteAsync(new GroupUserUpdateCommand.Param() { UserGroup = targetGroup });
+            var result = await command.ExecuteAsync(new GroupUserAssignCommand.Param() { UserGroup = targetGroup });
             return result;
         }
 

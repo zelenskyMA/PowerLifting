@@ -52,7 +52,7 @@ class GroupUserCardPanel extends Component {
   changeGroup = async () => {
     try {
       var userGroup = { userId: this.props.params.id, groupId: this.state.selectedGroupId };
-      await PostAsync(`/groupUser/update`, userGroup);
+      await PostAsync(`/groupUser/assign`, userGroup);
     }
     catch (error) { this.setState({ error: error.message }); }
   }

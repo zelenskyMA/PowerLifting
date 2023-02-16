@@ -38,10 +38,10 @@ public static class DbSeed
         //упражнения по дням
         var exercises = new List<PlanExerciseDb>() {
             new PlanExerciseDb(){ PlanDayId = planDays[0].Id, Order = 1, ExerciseId = 1 },
-            new PlanExerciseDb(){ PlanDayId = planDays[0].Id, Order = 1, ExerciseId = 20},
+            new PlanExerciseDb(){ PlanDayId = planDays[0].Id, Order = 2, ExerciseId = 20},
 
             new PlanExerciseDb(){ PlanDayId = planDays[1].Id, Order = 1, ExerciseId = 91},
-            new PlanExerciseDb(){ PlanDayId = planDays[1].Id, Order = 1, ExerciseId = 61},
+            new PlanExerciseDb(){ PlanDayId = planDays[1].Id, Order = 2, ExerciseId = 61},
         };
         ctx.PlanExercises.AddRange(exercises);
         ctx.SaveChanges();
@@ -76,16 +76,16 @@ public static class DbSeed
                             Id = dayExercises[0].Id,
                             Exercise = new Exercise(){ Id = dayExercises[0].ExerciseId, ExerciseTypeId = 2 },
                             Settings = settings.Count == 0 ? new List<PlanExerciseSettings>() : new List<PlanExerciseSettings>()
-                            { 
-                                new PlanExerciseSettings() { Id = settings[0].Id }, new PlanExerciseSettings() { Id = settings[1].Id } 
+                            {
+                                new PlanExerciseSettings() { Id = settings[0].Id }, new PlanExerciseSettings() { Id = settings[1].Id }
                             }
                         },
                         new PlanExercise() {
                             Id = dayExercises[1].Id,
-                            Exercise = new Exercise(){ Id = dayExercises[0].ExerciseId, ExerciseTypeId = 1 },
+                            Exercise = new Exercise(){ Id = dayExercises[1].ExerciseId, ExerciseTypeId = 1 },
                             Settings = settings.Count == 0 ? new List<PlanExerciseSettings>() : new List<PlanExerciseSettings>()
-                            { 
-                                new PlanExerciseSettings() { Id = settings[2].Id }, new PlanExerciseSettings() { Id = settings[3].Id } 
+                            {
+                                new PlanExerciseSettings() { Id = settings[2].Id }, new PlanExerciseSettings() { Id = settings[3].Id }
                             }
                     }
             }
@@ -104,7 +104,9 @@ public static class DbSeed
         var coachId = users.First(t => t.Email == Constants.CoachLogin).Id;
 
         //user info
-        var noCoachUsers = new List<int>() { coachId, users.First(t => t.Email == Constants.NoCoachUserLogin).Id };
+        var noCoachUsers = new List<int>() { coachId, users.First(t => t.Email == Constants.NoCoachUserLogin).Id,
+            users.First(t => t.Email == Constants.SecondCoachLogin).Id};
+
         foreach (var user in users)
         {
             ctx.UsersInfo.Add(new UserInfoDb()
@@ -123,6 +125,7 @@ public static class DbSeed
         // user roles
         ctx.UserRoles.Add(new UserRoleDb() { UserId = adminId, RoleId = 10 });
         ctx.UserRoles.Add(new UserRoleDb() { UserId = coachId, RoleId = 11 });
+        ctx.UserRoles.Add(new UserRoleDb() { UserId = users.First(t => t.Email == Constants.SecondCoachLogin).Id, RoleId = 11 });
 
         //set blocked user
         ctx.UserBlockHistoryItems.Add(new UserBlockHistoryDb()
@@ -141,11 +144,15 @@ public static class DbSeed
         var coachId = users.First(t => t.Email == Constants.CoachLogin).Id;
         var userId = users.First(t => t.Email == Constants.UserLogin).Id;
 
-        var group = new TrainingGroupDb() { CoachId = coachId, Name = Constants.GroupName };
-        ctx.TrainingGroups.Add(group);
+        var groups = new List<TrainingGroupDb>()
+        {
+            new TrainingGroupDb() { CoachId = coachId, Name = Constants.GroupName },
+            new TrainingGroupDb() { CoachId = coachId, Name = Constants.SecondGroupName },
+        };
+        ctx.TrainingGroups.AddRange(groups);
         ctx.SaveChanges();
 
-        ctx.TrainingGroupUsers.Add(new TrainingGroupUserDb() { GroupId = group.Id, UserId = userId });
+        ctx.TrainingGroupUsers.Add(new TrainingGroupUserDb() { GroupId = groups[0].Id, UserId = userId });
         ctx.SaveChanges();
     }
 

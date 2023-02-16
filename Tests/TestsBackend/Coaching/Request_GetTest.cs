@@ -68,15 +68,21 @@ public class Request_GetTest : BaseTest
 
         //Assert
         response.Should().NotBeNull();
-        response.Count.Should().Be(1);
-        response[0].Id.Should().Be(Factory.Data.GetUserId(Constants.CoachLogin));
-        response[0].Name.Should().NotBeEmpty();
+        response.Count.Should().BeGreaterThan(0);
+
+        var coach = response.FirstOrDefault(t => t.Id == Factory.Data.GetUserId(Constants.CoachLogin));
+        coach.Should().NotBeNull();
+        coach.Name.Should().NotBeEmpty();
     }
 
     [Fact]
     public void Get_Coaches_ExcludeSelf_Success()
     {
         //Arrange
+        Factory.Actions.AuthorizeUserNoCoach(Client);
+        var coaches = Client.Get<List<CoachInfo>>("/trainingRequests/getCoaches");
+        var all = coaches.Count;
+
         Factory.Actions.AuthorizeCoach(Client);
 
         //Act
@@ -84,7 +90,7 @@ public class Request_GetTest : BaseTest
 
         //Assert
         response.Should().NotBeNull();
-        response.Count.Should().Be(0);
+        response.Count.Should().Be(all - 1);
     }
 
     [Fact]
