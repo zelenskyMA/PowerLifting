@@ -12,7 +12,10 @@ namespace TestsBackend
         public BaseTest(ServiceTestFixture<Program> factory)
         {
             Factory = factory;
-            Client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+            Client = factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect= false,
+            });
         }
     }
 }

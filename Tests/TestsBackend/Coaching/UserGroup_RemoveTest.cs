@@ -10,7 +10,7 @@ namespace Coaching;
 public class UserGroup_RemoveTest : BaseTest
 {
     public UserGroup_RemoveTest(ServiceTestFixture<Program> factory) : base(factory) { }
-
+   
     [Fact]
     public void User_Remove_NoGroup_Fail()
     {
@@ -87,6 +87,7 @@ public class UserGroup_RemoveTest : BaseTest
         var restoreResult = Client.Post<bool>($"/groupUser/assign", request);
         restoreResult.Should().BeTrue();
     }
+
 
     private TrainingGroup GetPredefinedGroup()
     {

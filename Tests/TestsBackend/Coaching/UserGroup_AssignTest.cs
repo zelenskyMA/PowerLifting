@@ -27,6 +27,7 @@ public class UserGroup_AssignTest : BaseTest
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
     }
 
+
     [Fact]
     public void User_Assign_NoGroup_Fail()
     {
@@ -209,7 +210,6 @@ public class UserGroup_AssignTest : BaseTest
         response.Should().BeTrue();
     }
 
-   
 
     private TrainingGroup GetPredefinedGroup(string name = "")
     {
