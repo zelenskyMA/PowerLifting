@@ -81,6 +81,23 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         }
 
         /// <inheritdoc />
+        public async Task<bool> ViewAllowedForUserAsync(int userIdForCheck)
+        {
+            if (userIdForCheck == 0 || userIdForCheck == _user.Id) // свой план
+            {
+                return true;
+            }
+
+            var info = await _processUserInfo.GetInfo(userIdForCheck);
+            if (info?.CoachId != _user.Id) // тренерский план спортсмену
+            {
+                throw new DataException();
+            }
+
+            return true;
+        }
+
+        /// <inheritdoc />
         public async Task CheckActivePlansLimitAsync(int userId)
         {
             var startDate = DateTime.Now.Date.AddDays(-7);

@@ -2,20 +2,20 @@
 using TestFramework;
 using Xunit;
 
-namespace TestsBackend
-{
-    public class BaseTest : IClassFixture<ServiceTestFixture<Program>>
-    {
-        public HttpClient Client { get; }
-        public ServiceTestFixture<Program> Factory { get; }
+namespace TestsBackend;
 
-        public BaseTest(ServiceTestFixture<Program> factory)
+[Collection("AllTests")] // Заставляет классы тестов выполняться последовательно
+public class BaseTest : IClassFixture<ServiceTestFixture<Program>>
+{
+    public HttpClient Client { get; }
+    public ServiceTestFixture<Program> Factory { get; }
+
+    public BaseTest(ServiceTestFixture<Program> factory)
+    {
+        Factory = factory;
+        Client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
-            Factory = factory;
-            Client = factory.CreateClient(new WebApplicationFactoryClientOptions
-            {
-                AllowAutoRedirect= false,
-            });
-        }
+            AllowAutoRedirect= false,
+        });
     }
 }

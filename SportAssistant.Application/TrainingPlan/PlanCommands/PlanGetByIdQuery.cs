@@ -15,6 +15,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
     {
         private readonly IProcessPlanExercise _processPlanExercise;
         private readonly ITrainingCountersSetup _planCountersSetup;
+        private readonly IProcessPlan _processPlan;
         private readonly ICrudRepo<PlanDb> _planRepository;
         private readonly ICrudRepo<PlanDayDb> _planDayRepository;
         private readonly IUserProvider _user;
@@ -23,6 +24,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         public PlanGetByIdQuery(
             IProcessPlanExercise processPlanExercise,
             ITrainingCountersSetup planCountersSetup,
+            IProcessPlan processPlan,
             ICrudRepo<PlanDb> planRepository,
             ICrudRepo<PlanDayDb> planDayRepository,
             IUserProvider user,
@@ -30,6 +32,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         {
             _processPlanExercise = processPlanExercise;
             _planCountersSetup = planCountersSetup;
+            _processPlan = processPlan;
             _planRepository = planRepository;
             _planDayRepository = planDayRepository;
             _user = user;
@@ -44,9 +47,11 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
                 return new Plan();
             }
 
+            await _processPlan.ViewAllowedForUserAsync(dbPlan.UserId);
+
             var plan = _mapper.Map<Plan>(dbPlan);
 
-            var planDays = (await _planDayRepository.FindAsync(t => t.PlanId == dbPlan.Id)).Select(t => _mapper.Map<PlanDay>(t)).ToList();
+            var planDays = (await _planDayRepository.FindAsync(t => t.PlanId == dbPlan.Id)).Select(_mapper.Map<PlanDay>).ToList();
             var planExercises = await _processPlanExercise.GetByDaysAsync(planDays.Select(t => t.Id).ToList());
             foreach (var planDay in planDays)
             {

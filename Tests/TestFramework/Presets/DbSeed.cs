@@ -48,14 +48,14 @@ public static class DbSeed
 
         var exSettings = new List<PlanExerciseSettingsDb>() {
             new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 7, Completed = false  },
             new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = true  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 7, Completed = true  },
 
             new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[2].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[2].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = true  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[2].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 7, Completed = true  },
             new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[3].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[3].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, Weight = 80, PercentageId = 7, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[3].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 7, Completed = false  },
         };
         ctx.PlanExerciseSettings.AddRange(exSettings);
         ctx.SaveChanges();
