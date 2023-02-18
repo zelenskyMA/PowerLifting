@@ -10,7 +10,7 @@ public class ActionsPreset
     public void AuthorizeAdmin(HttpClient client) => Authorize(client, Constants.AdminLogin);
     public void AuthorizeCoach(HttpClient client) => Authorize(client, Constants.CoachLogin);
     public void AuthorizeUser(HttpClient client) => Authorize(client, Constants.UserLogin);
-    public void AuthorizeUserNoCoach(HttpClient client) => Authorize(client, Constants.NoCoachUserLogin);
+    public void AuthorizeNoCoachUser(HttpClient client) => Authorize(client, Constants.NoCoachUserLogin);
 
     public void UnAuthorize(HttpClient client) => client.DefaultRequestHeaders.Remove("Authorization");
 

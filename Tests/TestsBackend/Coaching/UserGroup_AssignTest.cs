@@ -152,7 +152,7 @@ public class UserGroup_AssignTest : BaseTest
         oldInfo.Users.FirstOrDefault(t => t.Id == userId).Should().BeNull();
 
         // создание заявки
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.SecondCoachLogin); // второй тренер
         var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}");
         createResult.Should().BeTrue();
@@ -186,7 +186,7 @@ public class UserGroup_AssignTest : BaseTest
         oldInfo.Users.FirstOrDefault(t => t.Id == userId).Should().BeNull();
 
         // создание заявки
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
         var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}");
         createResult.Should().BeTrue();

@@ -83,15 +83,15 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         /// <inheritdoc />
         public async Task<bool> ViewAllowedForUserAsync(int userIdForCheck)
         {
-            if (userIdForCheck == 0 || userIdForCheck == _user.Id) // свой план
+            if (userIdForCheck == 0 || userIdForCheck == _user.Id) // проверяем на свой запрос
             {
                 return true;
             }
 
             var info = await _processUserInfo.GetInfo(userIdForCheck);
-            if (info?.CoachId != _user.Id) // тренерский план спортсмену
+            if (info?.CoachId != _user.Id) // проверяем на тренерский запрос
             {
-                throw new DataException();
+                throw new DataException(); // не свой и не тренерский
             }
 
             return true;

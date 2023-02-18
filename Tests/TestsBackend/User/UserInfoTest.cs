@@ -70,7 +70,7 @@ public class UserInfoTest : BaseTest
 
 
     [Fact]
-    public void Get_Card_Self_BaseInfo_Success()
+    public void Get_Card_Owner_BaseInfo_Success()
     {
         //Arrange
         Factory.Actions.AuthorizeAdmin(Client);

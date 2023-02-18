@@ -21,6 +21,8 @@ public static class DbSeed
 
     public static List<PlanDay> CreatePlan(SportContext ctx, int userId, DateTime startDate)
     {
+        startDate = startDate.Date;
+
         //план
         var plan = new PlanDb() { StartDate = startDate, UserId = userId };
         ctx.Plans.Add(plan);

@@ -24,7 +24,7 @@ public class Request_CreateDeleteTest : BaseTest
     [Fact]
     public void Create_Request_WrongCoachId_Fail()
     {
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
         var response = Client.Post($"/trainingRequests/create?coachId=0");
         response.ReadErrorMessage().Should().Match("Тренер, которому вы подаете заявку, не найден*");
     }
@@ -43,7 +43,7 @@ public class Request_CreateDeleteTest : BaseTest
     public void Create_Request_Multiple_Fail()
     {
         // Arrange
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
 
         var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}"); // создаем первую заявку
@@ -75,7 +75,7 @@ public class Request_CreateDeleteTest : BaseTest
     public void Delete_Request_NotExisting_Success()
     {
         var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
 
         var removeResult = Client.Post<bool>($"/trainingRequests/remove?userId={userId}");
         removeResult.Should().BeTrue(); // Удаление несуществующей заявки не падает с ошибкой.
@@ -85,7 +85,7 @@ public class Request_CreateDeleteTest : BaseTest
     public void CreateAndDelete_Request_Success()
     {
         //Arrange
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
         var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
 

@@ -23,7 +23,7 @@ public class Request_GetTest : BaseTest
     public void Get_My_Request_Fail()
     {
         //Arrange
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
 
         //Act
         var response = Client.Get<TrainingRequest>("/trainingRequests/getMyRequest");
@@ -61,7 +61,7 @@ public class Request_GetTest : BaseTest
     public void Get_Coaches_Single_Success()
     {
         //Arrange
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
 
         //Act
         var response = Client.Get<List<CoachInfo>>("/trainingRequests/getCoaches");
@@ -79,7 +79,7 @@ public class Request_GetTest : BaseTest
     public void Get_Coaches_ExcludeSelf_Success()
     {
         //Arrange
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
         var coaches = Client.Get<List<CoachInfo>>("/trainingRequests/getCoaches");
         var all = coaches.Count;
 
@@ -169,7 +169,7 @@ public class Request_GetTest : BaseTest
     /// </summary>
     private void CreateRequest()
     {
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
         var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}");
         createResult.Should().BeTrue();
@@ -181,7 +181,7 @@ public class Request_GetTest : BaseTest
     private void RemoveRequest()
     {
         var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
         var removeResult = Client.Post<bool>($"/trainingRequests/remove?userId={userId}");
         removeResult.Should().BeTrue();
     }

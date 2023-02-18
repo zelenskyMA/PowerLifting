@@ -33,7 +33,9 @@ public class DataPreset
         };
 
         DbSeed.InitializeDbForTests(ctx, Users);
-        PlanDays = DbSeed.CreatePlan(ctx, GetUserId(Constants.UserLogin), DateTime.Now);
+        PlanDays = DbSeed.CreatePlan(ctx, GetUserId(Constants.UserLogin), DateTime.Now); //Active plan
+        DbSeed.CreatePlan(ctx, GetUserId(Constants.UserLogin), DateTime.Now.AddDays(-10)); // 1 old plan
+        DbSeed.CreatePlan(ctx, GetUserId(Constants.UserLogin), DateTime.Now.AddDays(-20)); // 2 old plan
     }
 
     public int GetUserId(string login) => Users.First(t => t.Email == login).Id;

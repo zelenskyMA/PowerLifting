@@ -1,16 +1,15 @@
 ﻿using FluentAssertions;
 using SportAssistant.Domain.Models.TrainingPlan;
-using SportAssistant.Domain.Models.UserData;
 using TestFramework;
 using TestFramework.TestExtensions;
 using TestsBackend;
 using Xunit;
 
-namespace Plans;
+namespace TrainingPlans;
 
-public class PlanTest : BaseTest
+public class Plan_GetTest : BaseTest
 {
-    public PlanTest(ServiceTestFixture<Program> factory) : base(factory) { }
+    public Plan_GetTest(ServiceTestFixture<Program> factory) : base(factory) { }
 
     [Fact]
     public void Get_Plan_WrongId_Fail()
@@ -29,6 +28,20 @@ public class PlanTest : BaseTest
     }
 
     [Fact]
+    public void Get_Plan_ByOthers_Fail()
+    {
+        //Arrange
+        Factory.Actions.AuthorizeNoCoachUser(Client);
+        var planId = Factory.Data.PlanDays[0].PlanId;
+
+        //Act
+        var response = Client.Get($"/trainingPlan/get?id={planId}");
+
+        //Assert
+        response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
+    }
+
+    [Fact]
     public void Get_Plan_ByCoach_Success()
     {
         //Arrange
@@ -40,26 +53,12 @@ public class PlanTest : BaseTest
 
         //Assert
         plan.Should().NotBeNull();
-        plan.Id.Should().Be(planId);
         plan.IsMyPlan.Should().BeFalse();
+        VerifyPlanCheck(plan, planId);
     }
 
     [Fact]
-    public void Get_Plan_ByOthers_Success()
-    {
-        //Arrange
-        Factory.Actions.AuthorizeAdmin(Client);
-        var planId = Factory.Data.PlanDays[0].PlanId;
-
-        //Act
-        var response = Client.Get($"/trainingPlan/get?id={planId}");
-
-        //Assert
-        response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
-    }
-
-    [Fact]
-    public void Get_Plan_ByMe_Success()
+    public void Get_Plan_ByOwner_Success()
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
@@ -69,13 +68,91 @@ public class PlanTest : BaseTest
         var plan = Client.Get<Plan>($"/trainingPlan/get?id={planId}");
 
         //Assert
+        plan.Should().NotBeNull();
+        plan.IsMyPlan.Should().BeTrue();
+        VerifyPlanCheck(plan, planId);
+    }
+
+
+    [Fact]
+    public void Get_PlanList_WrongId_Fail()
+    {
+        //Arrange
+        Factory.Actions.AuthorizeUser(Client);
+
+        //Act
+        var plans = Client.Get<Plans>($"/trainingPlan/getList?userId=-1");
+
+        //Assert
+        plans.Should().NotBeNull();
+        plans.ActivePlans.Should().HaveCount(0);
+        plans.ExpiredPlans.Should().HaveCount(0);
+    }
+
+    [Fact]
+    public void Get_PlanList_ByOthers_Fail()
+    {
+        //Arrange
+        Factory.Actions.AuthorizeNoCoachUser(Client);
+        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+
+        //Act
+        var response = Client.Get($"/trainingPlan/getList?userId={userId}");
+
+        //Assert
+        response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
+    }
+
+    [Fact]
+    public void Get_PlanList_ByCoach_Success()
+    {
+        //Arrange
+        Factory.Actions.AuthorizeCoach(Client);
+        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+
+        //Act
+        var plans = Client.Get<Plans>($"/trainingPlan/getList?userId={userId}");
+
+        //Assert
+        plans.Should().NotBeNull();
+        plans.ActivePlans.Should().HaveCount(1);
+        plans.ExpiredPlans.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public void Get_PlanList_ByOwner_Success()
+    {
+        //Arrange
+        Factory.Actions.AuthorizeUser(Client);
+        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+
+        //Act
+        var plans = Client.Get<Plans>($"/trainingPlan/getList?userId={userId}");
+
+        //Assert
+        plans.Should().NotBeNull();
+        plans.ActivePlans.Should().HaveCount(1);
+        plans.ExpiredPlans.Should().HaveCount(2);
+
+        var plan = plans.ActivePlans[0];
+        plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == Constants.UserLogin).Id);
+        plan.StartDate.Date.Should().BeCloseTo(DateTime.Now.Date, new TimeSpan(1, 1, 1));
+        plan.FinishDate.Date.Should().BeCloseTo(plan.StartDate.AddDays(6).Date, new TimeSpan(1, 1, 1));
+        plan.TrainingDays.Should().HaveCount(0); // в списке планов нам нужны только заголовки, никаких деталей.
+
+        plan = plans.ExpiredPlans[0];
+        plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == Constants.UserLogin).Id);
+        plan.TrainingDays.Should().HaveCount(0); // в списке планов нам нужны только заголовки, никаких деталей.
+    }
+
+
+    private void VerifyPlanCheck(Plan plan, int? planId) {
         // план
         plan.Should().NotBeNull();
         plan.Id.Should().Be(planId);
         plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == Constants.UserLogin).Id);
         plan.StartDate.Date.Should().BeCloseTo(DateTime.Now.Date, new TimeSpan(1, 1, 1));
         plan.FinishDate.Date.Should().BeCloseTo(plan.StartDate.AddDays(6).Date, new TimeSpan(1, 1, 1));
-        plan.IsMyPlan.Should().BeTrue();
 
         plan.TypeCountersSum.Should().NotBeEmpty();
         plan.TypeCountersSum.Where(t => t.Value > 0).Should().HaveCount(4);

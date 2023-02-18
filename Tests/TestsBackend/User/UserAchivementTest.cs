@@ -55,7 +55,7 @@ public class UserAchivementTest : BaseTest
     }
 
     [Fact]
-    public void Get_ByExercise_Self_Fail()
+    public void Get_AchivementsByExercise_Owner_Fail()
     {
         var response = Client.Get($"/userAchivement/getByExercise?planExerciseId=0&exerciseTypeId=1");
         response.ReadErrorMessage().Should().Match("Упражнение не найдено, нельзя определить рекорд*");
@@ -63,7 +63,7 @@ public class UserAchivementTest : BaseTest
 
 
     [Fact]
-    public void Get_ByExercise_Self_Success()
+    public void Get_AchivementsByExercise_Owner_Success()
     {
         //Arrange
         var userId = Factory.Data.GetUserId(Constants.UserLogin);

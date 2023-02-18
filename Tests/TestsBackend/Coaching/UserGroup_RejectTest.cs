@@ -15,7 +15,7 @@ public class UserGroup_RejectTest : BaseTest
     [Fact]
     public void User_Reject_NoCoachOrRequest_Success()
     {
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
         var response = Client.Post<bool>("/groupUser/reject");
         response.Should().BeTrue();
     }
@@ -24,7 +24,7 @@ public class UserGroup_RejectTest : BaseTest
     public void User_Reject_Request_Success()
     {
         //Arrange
-        Factory.Actions.AuthorizeUserNoCoach(Client);
+        Factory.Actions.AuthorizeNoCoachUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
 
         var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}");
