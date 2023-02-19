@@ -6,11 +6,11 @@ using TestFramework.TestExtensions;
 using TestsBackend;
 using Xunit;
 
-namespace User;
+namespace AppUser;
 
-public class UserAchivementTest : BaseTest
+public class User_AchivementTest : BaseTest
 {
-    public UserAchivementTest(ServiceTestFixture<Program> factory) : base(factory)
+    public User_AchivementTest(ServiceTestFixture<Program> factory) : base(factory)
     {
         Factory.Actions.AuthorizeUser(Client);
     }

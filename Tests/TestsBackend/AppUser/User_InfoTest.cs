@@ -7,11 +7,11 @@ using TestFramework.TestExtensions;
 using TestsBackend;
 using Xunit;
 
-namespace User;
+namespace AppUser;
 
-public class UserInfoTest : BaseTest
+public class User_InfoTest : BaseTest
 {
-    public UserInfoTest(ServiceTestFixture<Program> factory) : base(factory) {
+    public User_InfoTest(ServiceTestFixture<Program> factory) : base(factory) {
         Factory.Actions.AuthorizeUser(Client);
     }
 

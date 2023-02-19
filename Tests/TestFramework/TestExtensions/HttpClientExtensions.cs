@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using HttpClient = System.Net.Http.HttpClient;
@@ -16,6 +18,11 @@ public static class HttpClientExtensions
         using HttpResponseMessage resp = httpClient.GetAsync(path).GetAwaiter().GetResult();
         string respContentString = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
+        if (resp.StatusCode != HttpStatusCode.OK)
+        {
+            throw new ApplicationException(respContentString);
+        }
+
         return HandleResult<TResult>(respContentString);
     }
 
@@ -26,6 +33,11 @@ public static class HttpClientExtensions
         using HttpResponseMessage resp = httpClient.PostAsJsonAsync(path, body).GetAwaiter().GetResult();
         string respContentString = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
+        if (resp.StatusCode != HttpStatusCode.OK)
+        {
+            throw new ApplicationException(respContentString);
+        }
+
         return HandleResult<TResult>(respContentString);
     }
 
@@ -33,6 +45,11 @@ public static class HttpClientExtensions
     {
         using HttpResponseMessage resp = httpClient.PutAsJsonAsync(path, body).GetAwaiter().GetResult();
         string respContentString = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+        if (resp.StatusCode != HttpStatusCode.OK)
+        {
+            throw new ApplicationException(respContentString);
+        }
 
         return HandleResult<TResult>(respContentString);
     }

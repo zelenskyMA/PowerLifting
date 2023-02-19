@@ -18,6 +18,7 @@ class TemplateExercisesEdit extends Component {
     this.state = {
       exercises: [],
       selectedExercises: [],
+      templateDay: Object,
       error: ''
     };
   }
@@ -25,13 +26,14 @@ class TemplateExercisesEdit extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    const [exerciseList, templateExercises] = await Promise.all([
+    const [exerciseList, templateExercises, templateDay] = await Promise.all([
       GetAsync("/exerciseInfo/getPlanningList"),
-      GetAsync(`/templateExercise/getByDay?dayId=${this.props.params.dayId}`)
+      GetAsync(`/templateExercise/getByDay?dayId=${this.props.params.dayId}`),
+      GetAsync(`/templateDay/get?id=${this.props.params.dayId}`),
     ]);
 
     var templateExercisesData = templateExercises.map((item, i) => item.exercise);
-    this.setState({ exercises: exerciseList, selectedExercises: templateExercisesData });
+    this.setState({ exercises: exerciseList, selectedExercises: templateExercisesData, templateDay: templateDay });
   }
 
   confirmExercisesAsync = async () => {
@@ -91,7 +93,7 @@ class TemplateExercisesEdit extends Component {
 
     return (
       <>
-        <h4>{lngStr('training.exercise.exercises')}</h4>
+        <h4>{lngStr('training.exercise.exercises')} {lngStr('general.common.day') + ' ' + this.state.templateDay.dayNumber}</h4>
         <p><strong>{lngStr('training.exercise.list')}</strong> {lngStr('appSetup.control.dblClickSelect')}</p>
         <TableControl columnsInfo={columns} data={this.state.exercises} rowDblClick={this.onRowDblClick} />
 

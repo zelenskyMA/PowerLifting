@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Button, Container } from 'reactstrap';
+import { DateToLocal } from "../../../common/LocalActions";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
@@ -18,6 +19,7 @@ class PlanExercisesEdit extends Component {
     this.state = {
       exercises: [],
       selectedExercises: [],
+      planDay: Object,
       error: ''
     };
   }
@@ -25,13 +27,14 @@ class PlanExercisesEdit extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    const [exerciseList, planExercises] = await Promise.all([
+    const [exerciseList, planExercises, planDay] = await Promise.all([
       GetAsync("/exerciseInfo/getPlanningList"),
-      GetAsync(`/planExercise/getByDay?dayId=${this.props.params.id}`)
+      GetAsync(`/planExercise/getByDay?dayId=${this.props.params.id}`),
+      GetAsync(`/planDay/get?id=${this.props.params.id}`)
     ]);
 
     var planExercisesData = planExercises.map((item, i) => item.exercise);
-    this.setState({ exercises: exerciseList, selectedExercises: planExercisesData });
+    this.setState({ exercises: exerciseList, selectedExercises: planExercisesData, planDay: planDay });
   }
 
   confirmExercisesAsync = async () => {
@@ -89,9 +92,11 @@ class PlanExercisesEdit extends Component {
       { Header: lngStr('training.exercise.type'), accessor: 'exerciseTypeName' },
     ];
 
+    var dateView = DateToLocal(this.state.planDay.activityDate);
+
     return (
       <>
-        <h4>{lngStr('training.exercise.exercises')}</h4>
+        <h4>{lngStr('training.exercise.exercises')} {dateView}</h4>
         <p><strong>{lngStr('training.exercise.list')}</strong> {lngStr('appSetup.control.dblClickSelect')}</p>
         <TableControl columnsInfo={columns} data={this.state.exercises} rowDblClick={this.onRowDblClick} />
 

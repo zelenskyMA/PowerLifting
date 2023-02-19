@@ -77,16 +77,9 @@ public class Plan_GetTest : BaseTest
     [Fact]
     public void Get_PlanList_WrongId_Fail()
     {
-        //Arrange
         Factory.Actions.AuthorizeUser(Client);
-
-        //Act
-        var plans = Client.Get<Plans>($"/trainingPlan/getList?userId=-1");
-
-        //Assert
-        plans.Should().NotBeNull();
-        plans.ActivePlans.Should().HaveCount(0);
-        plans.ExpiredPlans.Should().HaveCount(0);
+        var response = Client.Get($"/trainingPlan/getList?userId=-1");
+        response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
     }
 
     [Fact]
