@@ -41,13 +41,13 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
 
         public async Task<Plan> ExecuteAsync(Param param)
         {
-            var dbPlan = (await _planRepository.FindAsync(t => t.Id == param.Id)).FirstOrDefault();
+            var dbPlan = await _planRepository.FindOneAsync(t => t.Id == param.Id);
             if (dbPlan == null)
             {
                 return new Plan();
             }
 
-            await _processPlan.ViewAllowedForUserAsync(dbPlan.UserId);
+            await _processPlan.ViewAllowedForDataOfUserAsync(dbPlan.UserId);
 
             var plan = _mapper.Map<Plan>(dbPlan);
 

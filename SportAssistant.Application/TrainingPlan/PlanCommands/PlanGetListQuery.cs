@@ -34,7 +34,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         {
             var userId = param.UserId == 0 ? _user.Id : param.UserId;
 
-            await _processPlan.ViewAllowedForUserAsync(userId);
+            await _processPlan.ViewAllowedForDataOfUserAsync(userId);
 
             var plansDb = await _planRepository.FindAsync(t => t.UserId == userId);
             var plansList = plansDb.Select(_mapper.Map<Plan>).ToList();

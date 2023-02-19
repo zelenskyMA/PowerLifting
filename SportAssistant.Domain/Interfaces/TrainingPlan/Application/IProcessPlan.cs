@@ -21,11 +21,11 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         Task<int> PlanningAllowedForUserAsync(int userIdForCheck);
 
         /// <summary>
-        /// Проверка допустимости просмотра плана для текущего пользователя.
+        /// Проверка допустимости просмотра данных пользователя userIdForCheck текущим пользователем.
         /// </summary>
         /// <param name="userIdForCheck">Ид пользователя, которому принадлежит план</param>
         /// <returns></returns>
-        Task<bool> ViewAllowedForUserAsync(int userIdForCheck);
+        Task<bool> ViewAllowedForDataOfUserAsync(int userIdForCheck);
 
         /// <summary>
         /// проверка количества активных планов. Не позволяем планировать слишком много.

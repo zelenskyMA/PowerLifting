@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -11,6 +12,8 @@ namespace TestFramework.TestExtensions;
 [ExcludeFromCodeCoverage]
 public static class HttpClientExtensions
 {
+    private static HttpStatusCode[] allowedStatuses = new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.NoContent };
+
     public static HttpResponseMessage Get(this HttpClient httpClient, string path) => httpClient.GetAsync(path).GetAwaiter().GetResult();
 
     public static TResult Get<TResult>(this HttpClient httpClient, string path)
@@ -18,7 +21,7 @@ public static class HttpClientExtensions
         using HttpResponseMessage resp = httpClient.GetAsync(path).GetAwaiter().GetResult();
         string respContentString = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-        if (resp.StatusCode != HttpStatusCode.OK)
+        if (!allowedStatuses.Contains(resp.StatusCode))
         {
             throw new ApplicationException(respContentString);
         }
@@ -33,7 +36,7 @@ public static class HttpClientExtensions
         using HttpResponseMessage resp = httpClient.PostAsJsonAsync(path, body).GetAwaiter().GetResult();
         string respContentString = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-        if (resp.StatusCode != HttpStatusCode.OK)
+        if (!allowedStatuses.Contains(resp.StatusCode))
         {
             throw new ApplicationException(respContentString);
         }
@@ -46,7 +49,7 @@ public static class HttpClientExtensions
         using HttpResponseMessage resp = httpClient.PutAsJsonAsync(path, body).GetAwaiter().GetResult();
         string respContentString = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-        if (resp.StatusCode != HttpStatusCode.OK)
+        if (!allowedStatuses.Contains(resp.StatusCode))
         {
             throw new ApplicationException(respContentString);
         }

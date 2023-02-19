@@ -44,7 +44,7 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
 
         public async Task<PlanAnalitics> ExecuteAsync(Param param)
         {
-            await _processPlan.ViewAllowedForUserAsync(param.UserId);
+            await _processPlan.ViewAllowedForDataOfUserAsync(param.UserId);
 
             var plans = await PreparePlansWithCounters(param);
             var analitics = new PlanAnalitics();

@@ -81,7 +81,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         }
 
         /// <inheritdoc />
-        public async Task<bool> ViewAllowedForUserAsync(int userIdForCheck)
+        public async Task<bool> ViewAllowedForDataOfUserAsync(int userIdForCheck)
         {
             if (userIdForCheck == 0 || userIdForCheck == _user.Id) // проверяем на свой запрос
             {

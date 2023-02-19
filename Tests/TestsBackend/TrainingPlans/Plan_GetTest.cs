@@ -49,12 +49,12 @@ public class Plan_GetTest : BaseTest
         var planId = Factory.Data.PlanDays[0].PlanId;
 
         //Act
-        var plan = Client.Get<Plan>($"/trainingPlan/get?id={planId}");
+        var response = Client.Get<Plan>($"/trainingPlan/get?id={planId}");
 
         //Assert
-        plan.Should().NotBeNull();
-        plan.IsMyPlan.Should().BeFalse();
-        VerifyPlanCheck(plan, planId);
+        response.Should().NotBeNull();
+        response.IsMyPlan.Should().BeFalse();
+        VerifyPlanCheck(response, planId);
     }
 
     [Fact]
@@ -65,12 +65,12 @@ public class Plan_GetTest : BaseTest
         var planId = Factory.Data.PlanDays[0].PlanId;
 
         //Act
-        var plan = Client.Get<Plan>($"/trainingPlan/get?id={planId}");
+        var response = Client.Get<Plan>($"/trainingPlan/get?id={planId}");
 
         //Assert
-        plan.Should().NotBeNull();
-        plan.IsMyPlan.Should().BeTrue();
-        VerifyPlanCheck(plan, planId);
+        response.Should().NotBeNull();
+        response.IsMyPlan.Should().BeTrue();
+        VerifyPlanCheck(response, planId);
     }
 
 
@@ -104,12 +104,12 @@ public class Plan_GetTest : BaseTest
         var userId = Factory.Data.GetUserId(Constants.UserLogin);
 
         //Act
-        var plans = Client.Get<Plans>($"/trainingPlan/getList?userId={userId}");
+        var response = Client.Get<Plans>($"/trainingPlan/getList?userId={userId}");
 
         //Assert
-        plans.Should().NotBeNull();
-        plans.ActivePlans.Should().HaveCount(1);
-        plans.ExpiredPlans.Should().HaveCount(2);
+        response.Should().NotBeNull();
+        response.ActivePlans.Should().HaveCount(1);
+        response.ExpiredPlans.Should().HaveCount(2);
     }
 
     [Fact]
@@ -120,20 +120,20 @@ public class Plan_GetTest : BaseTest
         var userId = Factory.Data.GetUserId(Constants.UserLogin);
 
         //Act
-        var plans = Client.Get<Plans>($"/trainingPlan/getList?userId={userId}");
+        var response = Client.Get<Plans>($"/trainingPlan/getList?userId={userId}");
 
         //Assert
-        plans.Should().NotBeNull();
-        plans.ActivePlans.Should().HaveCount(1);
-        plans.ExpiredPlans.Should().HaveCount(2);
+        response.Should().NotBeNull();
+        response.ActivePlans.Should().HaveCount(1);
+        response.ExpiredPlans.Should().HaveCount(2);
 
-        var plan = plans.ActivePlans[0];
+        var plan = response.ActivePlans[0];
         plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == Constants.UserLogin).Id);
         plan.StartDate.Date.Should().BeCloseTo(DateTime.Now.Date, new TimeSpan(1, 1, 1));
         plan.FinishDate.Date.Should().BeCloseTo(plan.StartDate.AddDays(6).Date, new TimeSpan(1, 1, 1));
         plan.TrainingDays.Should().HaveCount(0); // в списке планов нам нужны только заголовки, никаких деталей.
 
-        plan = plans.ExpiredPlans[0];
+        plan = response.ExpiredPlans[0];
         plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == Constants.UserLogin).Id);
         plan.TrainingDays.Should().HaveCount(0); // в списке планов нам нужны только заголовки, никаких деталей.
     }
