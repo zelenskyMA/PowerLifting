@@ -122,8 +122,8 @@ class PlanExerciseSettingsEdit extends Component {
 
   liftIterationPanel(settings, index, lngStr) {
     var key = settings.id.toString();
-
-    var currentPersent = Math.round((settings.weight * 100) / this.state.achivement.result);
+    
+    var currentPersent = this.state.achivement.result > 0 ? Math.round((settings.weight * 100) / this.state.achivement.result) : 0;
 
     return (
       <>
