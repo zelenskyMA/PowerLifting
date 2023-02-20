@@ -147,11 +147,9 @@ class UserCabinet extends Component {
         </Row>
 
         <Row className="spaceTop">
-          <Col xs={6}>
-            <Label check>
+          <Col xs={10}>            
               <span style={{ marginRight: '20px' }} >{lngStr('coaching.myTrainer')}:</span>
-              {this.coachRequestView(lngStr)}
-            </Label>
+              {this.coachRequestView(lngStr)}            
           </Col>
         </Row>
 
@@ -163,14 +161,14 @@ class UserCabinet extends Component {
     if (this.state.userInfo.coachLegalName) {
       return (<>
         <strong className="spaceRight" >{this.state.userInfo.coachLegalName}</strong>
-        <Button color="primary" onClick={() => this.rejectCoach()}>{lngStr('general.actions.giveUp')}</Button >
+        <Button color="primary" onClick={() => this.rejectCoach()}>{lngStr('general.actions.giveUp')}</Button>
       </>);
     }
 
     if (this.state.trainingRequest.coachName) {
       return (<>
         <strong className="spaceRight" >{lngStr('coaching.request.forTrainer')} {this.state.trainingRequest.coachName}</strong>
-        <Button color="primary" onClick={() => this.cancelRequest()}>{lngStr('general.actions.cancel')}</Button >
+        <Button color="primary" onClick={() => this.cancelRequest()}>{lngStr('general.actions.cancel')}</Button>
       </>
       );
     }

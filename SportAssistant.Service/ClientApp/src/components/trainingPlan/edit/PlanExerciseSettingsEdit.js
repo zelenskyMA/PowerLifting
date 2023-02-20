@@ -123,12 +123,17 @@ class PlanExerciseSettingsEdit extends Component {
   liftIterationPanel(settings, index, lngStr) {
     var key = settings.id.toString();
 
+    var currentPersent = Math.round((settings.weight * 100) / this.state.achivement.result);
+
     return (
       <>
         <Label key={'l' + key} for={key} sm={2}><Button close onClick={() => this.onSettingsDelete(index)} />{` ${lngStr('training.entity.lift')} ${(index + 1)}:`}</Label>
         <Row key={'row' + key} id={key}>
           <Col xs={2}>
             <InputNumber label={lngStr('training.entity.weight') + ':'} propName={index + '|weight'} onChange={this.onValueChange} initialValue={settings.weight} />
+          </Col>
+          <Col xs={1}>
+            {currentPersent}%
           </Col>
           <Col xs={4}>
             <MultiNumberInput label={lngStr('training.entity.repeates') + ':'} onChange={this.onValueChange} inputList={[
