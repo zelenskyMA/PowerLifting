@@ -3,6 +3,7 @@ using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
+using SportAssistant.Domain.Models.TrainingPlan;
 
 namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
 {
@@ -33,15 +34,15 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
 
         public async Task<bool> ExecuteAsync(Param param)
         {
-            if (param.TargetDate == null)
+            if (param.Id == 0 || param.PlanId == 0 || param.TargetDate == null)
             {
-                throw new BusinessException("Целевой день не указан.");
+                throw new BadRequestException("Не задан один из обязательных параметров.");
             }
 
             var oldExercisesDb = await _planExerciseRepository.FindAsync(t => t.PlanDayId == param.Id);
             if (oldExercisesDb.Count == 0)
             {
-                return true;
+                return false;
             }
 
             var oldDay = await _planDayRepository.FindOneAsync(t => t.Id == param.Id && t.PlanId == param.PlanId);

@@ -72,6 +72,7 @@ public static class DbSeed
             {
                 Id = planDay.Id,
                 PlanId = plan.Id,
+                ActivityDate = planDay.ActivityDate,
                 Exercises = dayExercises.Count == 0 ? new List<PlanExercise>() :
                     new List<PlanExercise>() {
                         new PlanExercise() {

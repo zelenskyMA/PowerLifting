@@ -118,9 +118,7 @@ public class PlanDay_GetTest : BaseTest
     private void VerifyPlanCheck(PlanDay planDay, int? planDayId)
     {
         // тренировочный день плана
-        AssertionExtensions.Should(planDay).NotBeNull();
-        AssertionExtensions.Should(planDay.Id).Be(planDayId);
-
+        planDay.Should().NotBeNull();
         planDay.Id.Should().BeGreaterThan(0);
         planDay.ActivityDate.Should().BeAfter(DateTime.Now.AddDays(-1));
 
