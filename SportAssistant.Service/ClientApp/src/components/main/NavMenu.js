@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import {
-    Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink,
-    UncontrolledDropdown
+  Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink,
+  UncontrolledDropdown
 } from 'reactstrap';
 import WithRouter from "../../common/extensions/WithRouter";
 import { RemoveTokens } from '../../common/TokenActions';
@@ -31,12 +31,17 @@ class NavMenu extends Component {
 
   render() {
     const lngStr = this.props.lngStr;
+    var legalName = this.props.userInfo?.legalName ?? '';
 
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3 navbar-dark" container light>
-          <NavbarBrand className="menu-first-page-item" tag={Link} to="/">{lngStr('general.common.main')}</NavbarBrand>
-          <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
+          {legalName &&
+            <>
+              <NavbarBrand className="menu-first-page-item" tag={Link} to="/">{lngStr('general.common.main')}</NavbarBrand>
+              <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
+            </>
+          }
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
               {this.props.userInfo?.coachOnly ?
@@ -52,13 +57,7 @@ class NavMenu extends Component {
 
   loginLink(lngStr) {
     var legalName = this.props.userInfo?.legalName ?? '';
-    if (legalName === '') {
-      return (
-        <NavItem>
-          <NavLink tag={Link} className="menu-first-page-item" to="/login">{lngStr('general.common.enter')}</NavLink>
-        </NavItem>
-      );
-    }
+    if (legalName === '') { return (<></>); }
 
     return (
       <UncontrolledDropdown nav inNavbar>
