@@ -7,6 +7,7 @@ using SportAssistant.Infrastructure.DataContext;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 
 namespace TestFramework.Presets;
 
@@ -168,17 +169,17 @@ public static class DbSeed
         });
 
         ctx.Dictionaries.AddRange(new List<DictionaryDb>() {
-            new() { Id = 1,TypeId = 1, Name = "Толчковые", Description = "толчок штанги" },
-            new() { Id = 2,TypeId = 1, Name = "Рывковые", Description = "рывок штанги" },
+            new() { Id = 1, TypeId = 1, Name = "Толчковые", Description = "толчок штанги" },
+            new() { Id = 2, TypeId = 1, Name = "Рывковые", Description = "рывок штанги" },
 
-            new() { Id = 10,TypeId = 3, Name = "Администратор", Description = "толчок штанги" },
-            new() { Id = 11,TypeId = 3, Name = "Тренер", Description = "рывок штанги" },
+            new() { Id = 10, TypeId = 3, Name = "Администратор", Description = "толчок штанги" },
+            new() { Id = 11, TypeId = 3, Name = "Тренер", Description = "рывок штанги" },
 
-            new() { Id = 50,TypeId = 2, Name = "Рывок классический", Description = string.Empty },
-            new() { Id = 51,TypeId = 2, Name = "Толчок. Взятие на грудь", Description = string.Empty },
-            new() { Id = 52,TypeId = 2, Name = "Толчок с груди", Description = string.Empty },
-            new() { Id = 53,TypeId = 2, Name = "Толчок классический", Description = string.Empty },
-            new() { Id = 54,TypeId = 2, Name = "ОФП", Description = string.Empty },
+            new() { Id = Constants.SubTypeId, TypeId = 2, Name = "Рывок классический", Description = string.Empty },
+            new() { Id = 51, TypeId = 2, Name = "Толчок. Взятие на грудь", Description = string.Empty },
+            new() { Id = 52, TypeId = 2, Name = "Толчок с груди", Description = string.Empty },
+            new() { Id = 53, TypeId = 2, Name = "Толчок классический", Description = string.Empty },
+            new() { Id = 54, TypeId = 2, Name = "ОФП", Description = string.Empty },
         });
 
         ctx.Settings.AddRange(new List<SettingsDb>() {
@@ -210,11 +211,11 @@ public static class DbSeed
         });
 
         ctx.Exercises.AddRange(new List<ExerciseDb>() {
-            new ExerciseDb(){ Id = 1, ExerciseTypeId = 2, ExerciseSubTypeId = 50, Name = "Рывок классический", Description = string.Empty},
+            new ExerciseDb(){ Id = Constants.ExType2Id, ExerciseTypeId = 2, ExerciseSubTypeId = 50, Name = "Рывок классический", Description = string.Empty},
             new ExerciseDb(){ Id = 2, ExerciseTypeId = 2, ExerciseSubTypeId = 50, Name = "Рывок без разброса ног", Description = string.Empty},
             new ExerciseDb(){ Id = 20, ExerciseTypeId = 1, ExerciseSubTypeId = 51, Name = "Взятие на грудь без разброса ног", Description = string.Empty},
             new ExerciseDb(){ Id = 21, ExerciseTypeId = 1, ExerciseSubTypeId = 51, Name = "Взятие на грудь с подставки", Description = string.Empty},
-            new ExerciseDb(){ Id = 40, ExerciseTypeId = 1, ExerciseSubTypeId = 52, Name = "Приседания на груди + толчок", Description = string.Empty},
+            new ExerciseDb(){ Id = Constants.ExType1Id, ExerciseTypeId = 1, ExerciseSubTypeId = 52, Name = "Приседания на груди + толчок", Description = string.Empty},
             new ExerciseDb(){ Id = 41, ExerciseTypeId = 1, ExerciseSubTypeId = 52, Name = "Толчок со стоек", Description = string.Empty},
             new ExerciseDb(){ Id = 60, ExerciseTypeId = 1, ExerciseSubTypeId = 53, Name = "Толчок классический", Description = string.Empty},
             new ExerciseDb(){ Id = 61, ExerciseTypeId = 1, ExerciseSubTypeId = 53, Name = "Взятие на грудь + толчок", Description = string.Empty},

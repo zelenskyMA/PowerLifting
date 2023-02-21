@@ -1,6 +1,4 @@
-﻿using Azure;
-using FluentAssertions;
-using SportAssistant.Domain.DbModels.TrainingPlan;
+﻿using FluentAssertions;
 using SportAssistant.Domain.Models.TrainingPlan;
 using TestFramework;
 using TestFramework.TestExtensions;

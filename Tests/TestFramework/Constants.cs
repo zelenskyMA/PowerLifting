@@ -18,4 +18,8 @@ public static class Constants
 
     public static string GroupName => "Predefined Group";
     public static string SecondGroupName => "Second Predefined Group";
+
+    public static int ExType1Id => 40;
+    public static int ExType2Id => 1;
+    public static int SubTypeId => 50;
 }
