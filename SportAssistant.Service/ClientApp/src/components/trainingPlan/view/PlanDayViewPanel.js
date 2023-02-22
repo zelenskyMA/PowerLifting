@@ -40,7 +40,7 @@ class PlanDayViewPanel extends Component {
   }
 
   onCompleteExercise = async () => {
-    await PostAsync("/planExercise/complete", this.state.selectedModalData.settings.map(a => a.id));
+    await PostAsync("/planExercise/complete", { ids: this.state.selectedModalData.settings.map(a => a.id) });
 
     var current = this.state.completedExercises.find(t => t.id === this.state.selectedModalData.id);
     current.state = true;

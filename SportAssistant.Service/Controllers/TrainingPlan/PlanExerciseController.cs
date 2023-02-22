@@ -21,7 +21,7 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
         [Route("getByDay")]
         public async Task<List<PlanExercise>> GetByDay([FromServices] ICommand<PlanExerciseGetByDaysQuery.Param, List<PlanExercise>> command, int dayId)
         {
-            var result = await command.ExecuteAsync(new PlanExerciseGetByDaysQuery.Param() { DayIds = new List<int>() { dayId } });
+            var result = await command.ExecuteAsync(new PlanExerciseGetByDaysQuery.Param() { DayId = dayId });
             return result;
         }
 
@@ -43,9 +43,9 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
 
         [HttpPost]
         [Route("complete")]
-        public async Task<bool> CompleteAsync([FromServices] ICommand<PlanExerciseSettingsComplete.Param, bool> command, List<int> exerciseIds)
+        public async Task<bool> CompleteAsync([FromServices] ICommand<PlanExerciseSettingsComplete.Param, bool> command, PlanExerciseSettingsComplete.Param param)
         {
-            var result = await command.ExecuteAsync(new PlanExerciseSettingsComplete.Param() { Ids = exerciseIds });
+            var result = await command.ExecuteAsync(param);
             return result;
         }
     }

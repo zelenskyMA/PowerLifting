@@ -43,8 +43,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
         /// <inheritdoc />
         public async Task<List<PlanExercise>> GetByDaysAsync(List<int> dayIds)
         {
-            var planExerciseDb = await _planExerciseRepository.FindAsync(t => dayIds.Contains(t.PlanDayId));
-            var exercises = await PrepareExerciseDataAsync(planExerciseDb);
+            var planExercisesDb = await _planExerciseRepository.FindAsync(t => dayIds.Contains(t.PlanDayId));
+            var exercises = await PrepareExerciseDataAsync(planExercisesDb);
             return exercises;
         }
 

@@ -65,7 +65,7 @@ public class PlanDay_GetTest : BaseTest
 
         //Assert
         response.Should().NotBeNull();
-        VerifyPlanCheck(response, planDayId);
+        VerifyPlanDayCheck(response, planDayId);
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class PlanDay_GetTest : BaseTest
 
         //Assert
         response.Should().NotBeNull();
-        VerifyPlanCheck(response, planDayId);
+        VerifyPlanDayCheck(response, planDayId);
     }
 
     [Fact]
@@ -110,10 +110,10 @@ public class PlanDay_GetTest : BaseTest
         //Assert
         response.Should().NotBeNull();
         response.ActivityDate.Should().Be(DateTime.Now.Date);
-        VerifyPlanCheck(response, response.Id);
+        VerifyPlanDayCheck(response, response.Id);
     }
 
-    private void VerifyPlanCheck(PlanDay planDay, int? planDayId)
+    private void VerifyPlanDayCheck(PlanDay planDay, int? planDayId)
     {
         // тренировочный день плана
         planDay.Should().NotBeNull();

@@ -1,5 +1,4 @@
-﻿using SportAssistant.Application.TrainingPlan.PlanCommands;
-using SportAssistant.Domain.CustomExceptions;
+﻿using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -36,7 +35,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
 
         public async Task<bool> ExecuteAsync(Param param)
         {
-            if (param.Exercises.Count == 0)
+            if (param.Exercises == null || param.Exercises.Count == 0)
             {
                 return false;
             }

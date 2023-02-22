@@ -29,7 +29,7 @@ namespace SportAssistant.Application.UserData.UserCommands1
         /// <inheritdoc />
         public async Task<bool> ExecuteAsync(Param param)
         {
-            var achivementsDb = param.Achivements.Select(t => _mapper.Map<UserAchivementDb>(t));
+            var achivementsDb = param.Achivements.Select(_mapper.Map<UserAchivementDb>);
             foreach (var item in achivementsDb)
             {
                 item.CreationDate = DateTime.Now.Date;

@@ -33,7 +33,7 @@ public class User_AchivementTest : BaseTest
     }
 
     [Fact]
-    public void Create_Achivements_Success()
+    public void CreateUpdate_Achivements_Success()
     {
         //Arrange
         var userId = Factory.Data.GetUserId(Constants.UserLogin);
@@ -50,7 +50,7 @@ public class User_AchivementTest : BaseTest
 
         var achivements = Client.Get<List<UserAchivement>>("/userAchivement/get");
         achivements.Count.Should().Be(2);
-        achivements.First(t=> t.ExerciseTypeId == 1).Result.Should().Be(25);
+        achivements.Last(t=> t.ExerciseTypeId == 1).Result.Should().Be(25);
         achivements.First(t => t.ExerciseTypeId == 2).Result.Should().Be(100);
     }
 

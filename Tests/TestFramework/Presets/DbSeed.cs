@@ -50,15 +50,15 @@ public static class DbSeed
         ctx.SaveChanges();
 
         var exSettings = new List<PlanExerciseSettingsDb>() {
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 7, Completed = false  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 7, Completed = true  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 1, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[0].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 2, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 1, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[1].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 2, Completed = true  },
 
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[2].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[2].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 7, Completed = true  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[3].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 9, Completed = false  },
-            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[3].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 7, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[2].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 1, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[2].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 2, Completed = true  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[3].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 100, PercentageId = 1, Completed = false  },
+            new PlanExerciseSettingsDb(){ PlanExerciseId = exercises[3].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, Weight = 80, PercentageId = 2, Completed = false  },
         };
         ctx.PlanExerciseSettings.AddRange(exSettings);
         ctx.SaveChanges();
@@ -104,6 +104,7 @@ public static class DbSeed
         ctx.Users.AddRange(users);
         ctx.SaveChanges();
 
+        var mainUuserId = users.First(t => t.Email == Constants.UserLogin).Id;
         var adminId = users.First(t => t.Email == Constants.AdminLogin).Id;
         var coachId = users.First(t => t.Email == Constants.CoachLogin).Id;
 
@@ -122,14 +123,15 @@ public static class DbSeed
                 Height = 150,
                 Weight = 60,
                 CoachId = noCoachUsers.Contains(user.Id) ? null : coachId
-            }
-            );
+            });
         }
 
         // user roles
         ctx.UserRoles.Add(new UserRoleDb() { UserId = adminId, RoleId = 10 });
         ctx.UserRoles.Add(new UserRoleDb() { UserId = coachId, RoleId = 11 });
         ctx.UserRoles.Add(new UserRoleDb() { UserId = users.First(t => t.Email == Constants.SecondCoachLogin).Id, RoleId = 11 });
+
+        ctx.UserAchivements.Add(new UserAchivementDb() { UserId = mainUuserId, CreationDate = DateTime.Now.AddDays(-1), ExerciseTypeId = 1, Result = 20 });
 
         //set blocked user
         ctx.UserBlockHistoryItems.Add(new UserBlockHistoryDb()
