@@ -47,7 +47,7 @@ public class UserGroup_RejectTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
 
-        var info = Client.Get<UserInfo>("/userInfo/get");
+        var info = Client.Get<UserInfo>("/userInfo");
         info.CoachId.Should().Be(Factory.Data.GetUserId(Constants.CoachLogin));
 
         //Act
@@ -55,7 +55,7 @@ public class UserGroup_RejectTest : BaseTest
         response.Should().BeTrue();
 
         //Assert
-        info = Client.Get<UserInfo>("/userInfo/get");
+        info = Client.Get<UserInfo>("/userInfo");
         info.CoachId.Should().BeNull();
 
         // откат. Возвращаем тренера пользователю

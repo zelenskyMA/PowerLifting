@@ -13,33 +13,33 @@ namespace SportAssistant.Service.Controllers.UserData
     {
         [HttpPost]
         [Route("login")]
-        public async Task<TokenModel> LoginAsync([FromServices] ICommand<UserLoginCommand.Param, TokenModel> command, UserLoginCommand.Param loginModel)
+        public async Task<TokenModel> LoginAsync([FromServices] ICommand<UserLoginCommand.Param, TokenModel> command, UserLoginCommand.Param param)
         {
-            var result = await command.ExecuteAsync(loginModel);
+            var result = await command.ExecuteAsync(param);
             return result;
         }
 
         [HttpPost]
         [Route("register")]
-        public async Task<TokenModel> RegisterAsync([FromServices] ICommand<UserRegisterCommand.Param, TokenModel> command, UserRegisterCommand.Param registrationModel)
+        public async Task<TokenModel> RegisterAsync([FromServices] ICommand<UserRegisterCommand.Param, TokenModel> command, UserRegisterCommand.Param param)
         {
-            var result = await command.ExecuteAsync(registrationModel);
+            var result = await command.ExecuteAsync(param);
             return result;
         }
 
         [HttpPost]
         [Route("changePassword")]
-        public async Task<bool> ChangePasswordAsync([FromServices] ICommand<UserChangePasswordCommand.Param, bool> command, UserChangePasswordCommand.Param registrationModel)
+        public async Task<bool> ChangePasswordAsync([FromServices] ICommand<UserChangePasswordCommand.Param, bool> command, UserChangePasswordCommand.Param param)
         {
-            var result = await command.ExecuteAsync(registrationModel);
+            var result = await command.ExecuteAsync(param);
             return result;
         }
 
         [HttpPost]
         [Route("resetPassword")]
-        public async Task<bool> ResetPasswordAsync([FromServices] ICommand<UserResetPasswordCommand.Param, bool> command, UserResetPasswordCommand.Param registrationModel)
+        public async Task<bool> ResetPasswordAsync([FromServices] ICommand<UserResetPasswordCommand.Param, bool> command, UserResetPasswordCommand.Param param)
         {
-            var result = await command.ExecuteAsync(registrationModel);
+            var result = await command.ExecuteAsync(param);
             return result;
         }
                 

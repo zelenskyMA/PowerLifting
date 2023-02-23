@@ -29,9 +29,7 @@ class PlanExerciseSettingsEdit extends Component {
 
   async getInitData() {
     var data = await GetAsync(`/planExercise/get?id=${this.props.params.id}`);
-
-    var request = `?planExerciseId=${data.id}&exerciseTypeId=${data?.exercise?.exerciseTypeId}`;
-    var achivementData = await GetAsync(`/userAchivement/getByExercise${request}`);
+    var achivementData = await GetAsync(`/userAchivement/getByExercise/${data.id}/${data?.exercise?.exerciseTypeId}`);
 
     this.setState({ planExercise: data, settingsList: data.settings, achivement: achivementData, loading: false });
   }

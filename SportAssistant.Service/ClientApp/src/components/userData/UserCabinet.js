@@ -31,8 +31,8 @@ class UserCabinet extends Component {
 
   getInitData = async () => {
     const [info, achivementsData, trainingRequestData] = await Promise.all([
-      GetAsync("/userInfo/get"),
-      GetAsync("/userAchivement/get"),
+      GetAsync("/userInfo"),
+      GetAsync("/userAchivement"),
       GetAsync("/trainingRequests/getMyRequest")
     ]);
 
@@ -55,7 +55,7 @@ class UserCabinet extends Component {
 
   onConfirmRejectCoach = async () => {
     await PostAsync(`/groupUser/reject`);
-    var info = await GetAsync("/userInfo/get");
+    var info = await GetAsync("/userInfo");
     this.setState({ userInfo: info });
   }
 
@@ -73,7 +73,7 @@ class UserCabinet extends Component {
 
   confirmAsync = async () => {
     await this.props.updateUserInfo(this.state.userInfo);
-    await PostAsync(`/userAchivement/create`, [this.state.pushAchivement, this.state.jerkAchivement]);
+    await PostAsync(`/userAchivement`, { achivements: [this.state.pushAchivement, this.state.jerkAchivement] });
     this.props.navigate("/");
   }
 

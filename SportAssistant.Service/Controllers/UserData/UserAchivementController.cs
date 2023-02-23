@@ -10,7 +10,6 @@ namespace SportAssistant.Service.Controllers.UserData
     public class UserAchivementController : BaseController
     {
         [HttpGet]
-        [Route("get")]
         public async Task<List<UserAchivement>> GetAsync([FromServices] ICommand<UserAchivementGetQuery.Param, List<UserAchivement>> command)
         {
             var result = await command.ExecuteAsync(new UserAchivementGetQuery.Param());
@@ -18,7 +17,7 @@ namespace SportAssistant.Service.Controllers.UserData
         }
 
         [HttpGet]
-        [Route("getByExercise")]
+        [Route("getByExercise/{planExerciseId}/{exerciseTypeId}")]
         public async Task<UserAchivement> GetByExerciseAsync(
             [FromServices] ICommand<UserAchivementsGetByExerciseQuery.Param, UserAchivement> command,
             int planExerciseId,
@@ -33,10 +32,9 @@ namespace SportAssistant.Service.Controllers.UserData
         }
 
         [HttpPost]
-        [Route("create")]
-        public async Task<bool> CreateAsync([FromServices] ICommand<UserAchivementCreateCommand.Param, bool> command, List<UserAchivement> achivements)
+        public async Task<bool> CreateAsync([FromServices] ICommand<UserAchivementCreateCommand.Param, bool> command, UserAchivementCreateCommand.Param param)
         {
-            var result = await command.ExecuteAsync(new UserAchivementCreateCommand.Param() { Achivements = achivements });
+            var result = await command.ExecuteAsync(param);
             return result;
         }
     }
