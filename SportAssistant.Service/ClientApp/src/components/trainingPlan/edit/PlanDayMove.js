@@ -1,12 +1,12 @@
 ﻿import React, { Component } from 'react';
-import { connect } from "react-redux";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { connect } from "react-redux";
 import { Button } from "reactstrap";
-import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { DeleteAsync, GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, LoadingPanel } from "../../../common/controls/CustomControls";
-import { DateToLocal, DateToUtc, Locale } from "../../../common/LocalActions";
 import WithRouter from "../../../common/extensions/WithRouter";
+import { DateToLocal, DateToUtc, Locale } from "../../../common/LocalActions";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 
 const mapDispatchToProps = dispatch => {
@@ -30,7 +30,7 @@ class PlanDayMove extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    var data = await GetAsync(`/planDay/get?id=${this.props.params.id}`);
+    var data = await GetAsync(`/planDay/${this.props.params.id}`);
 
     var planId = parseInt(this.props.params.planId, 10);
     var dayId = parseInt(this.props.params.id, 10);
@@ -57,7 +57,7 @@ class PlanDayMove extends Component {
 
   onClear = async () => {
     try {
-      await PostAsync("/planDay/clear", this.state.selectedInfo);
+      await DeleteAsync(`/planDay/${this.state.selectedInfo.id}`);
       this.goBack();
     }
     catch (error) {

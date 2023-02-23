@@ -18,7 +18,7 @@ public class Plan_GetTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
 
         //Act
-        var plan = Client.Get<Plan>($"/trainingPlan/get?id=-1");
+        var plan = Client.Get<Plan>($"/trainingPlan/-1");
 
         //Assert
         plan.Should().NotBeNull();
@@ -35,7 +35,7 @@ public class Plan_GetTest : BaseTest
         var planId = Factory.Data.PlanDays[0].PlanId;
 
         //Act
-        var response = Client.Get($"/trainingPlan/get?id={planId}");
+        var response = Client.Get($"/trainingPlan/{planId}");
 
         //Assert
         response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
@@ -49,7 +49,7 @@ public class Plan_GetTest : BaseTest
         var planId = Factory.Data.PlanDays[0].PlanId;
 
         //Act
-        var response = Client.Get<Plan>($"/trainingPlan/get?id={planId}");
+        var response = Client.Get<Plan>($"/trainingPlan/{planId}");
 
         //Assert
         response.Should().NotBeNull();
@@ -65,7 +65,7 @@ public class Plan_GetTest : BaseTest
         var planId = Factory.Data.PlanDays[0].PlanId;
 
         //Act
-        var response = Client.Get<Plan>($"/trainingPlan/get?id={planId}");
+        var response = Client.Get<Plan>($"/trainingPlan/{planId}");
 
         //Assert
         response.Should().NotBeNull();
@@ -78,7 +78,7 @@ public class Plan_GetTest : BaseTest
     public void Get_PlanList_WrongId_Fail()
     {
         Factory.Actions.AuthorizeUser(Client);
-        var response = Client.Get($"/trainingPlan/getList?userId=-1");
+        var response = Client.Get($"/trainingPlan/getList/-1");
         response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
     }
 
@@ -90,7 +90,7 @@ public class Plan_GetTest : BaseTest
         var userId = Factory.Data.GetUserId(Constants.UserLogin);
 
         //Act
-        var response = Client.Get($"/trainingPlan/getList?userId={userId}");
+        var response = Client.Get($"/trainingPlan/getList/{userId}");
 
         //Assert
         response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
@@ -104,7 +104,7 @@ public class Plan_GetTest : BaseTest
         var userId = Factory.Data.GetUserId(Constants.UserLogin);
 
         //Act
-        var response = Client.Get<Plans>($"/trainingPlan/getList?userId={userId}");
+        var response = Client.Get<Plans>($"/trainingPlan/getList/{userId}");
 
         //Assert
         response.Should().NotBeNull();
@@ -120,7 +120,7 @@ public class Plan_GetTest : BaseTest
         var userId = Factory.Data.GetUserId(Constants.UserLogin);
 
         //Act
-        var response = Client.Get<Plans>($"/trainingPlan/getList?userId={userId}");
+        var response = Client.Get<Plans>($"/trainingPlan/getList/{userId}");
 
         //Assert
         response.Should().NotBeNull();

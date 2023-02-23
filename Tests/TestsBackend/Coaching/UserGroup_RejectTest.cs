@@ -27,7 +27,7 @@ public class UserGroup_RejectTest : BaseTest
         Factory.Actions.AuthorizeNoCoachUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
 
-        var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}");
+        var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         createResult.Should().BeTrue();
 
         //Act
@@ -67,7 +67,7 @@ public class UserGroup_RejectTest : BaseTest
         var request = new TrainingGroupUser() { GroupId = groups.FirstOrDefault(t => t.Name == Constants.GroupName).Id, UserId = userId };
         // 2) создание заявки
         Factory.Actions.AuthorizeUser(Client);
-        var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}");
+        var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         // 3) назначение тренера
         Factory.Actions.AuthorizeCoach(Client);
         var assignment = Client.Post<bool>($"/groupUser/assign", request);

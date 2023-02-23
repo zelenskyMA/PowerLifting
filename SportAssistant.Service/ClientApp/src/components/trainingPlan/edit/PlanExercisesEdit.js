@@ -29,8 +29,8 @@ class PlanExercisesEdit extends Component {
   async getInitData() {
     const [exerciseList, planExercises, planDay] = await Promise.all([
       GetAsync("/exerciseInfo/getPlanningList"),
-      GetAsync(`/planExercise/getByDay?dayId=${this.props.params.id}`),
-      GetAsync(`/planDay/get?id=${this.props.params.id}`)
+      GetAsync(`/planExercise/getByDay/${this.props.params.id}`),
+      GetAsync(`/planDay/${this.props.params.id}`)
     ]);
 
     var planExercisesData = planExercises.map((item, i) => item.exercise);
@@ -38,7 +38,7 @@ class PlanExercisesEdit extends Component {
   }
 
   confirmExercisesAsync = async () => {
-    await PostAsync('/planExercise/create', { dayId: this.props.params.id, exercises: this.state.selectedExercises });
+    await PostAsync('/planExercise', { dayId: this.props.params.id, exercises: this.state.selectedExercises });
     this.props.navigate(`/editPlanDay/${this.props.params.planId}/${this.props.params.id}`);
   }
 

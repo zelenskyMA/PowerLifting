@@ -18,7 +18,7 @@ public class Exercise_CreateUpdateTest : BaseTest
     {
         Factory.Actions.UnAuthorize(Client);
         var request = new Exercise() { Name = "test1", ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId };
-        var response = Client.Post($"/exerciseInfo/update", request);
+        var response = Client.Post($"/exerciseInfo", request);
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
     }
 
@@ -29,13 +29,13 @@ public class Exercise_CreateUpdateTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
 
         //Act - Assert
-        var response = Client.Post($"/exerciseInfo/update", new Exercise() { Name = string.Empty, ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId });
+        var response = Client.Post($"/exerciseInfo/", new Exercise() { Name = string.Empty, ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId });
         response.ReadErrorMessage().Should().Match("Название обязательно для заполнения");
 
-        response = Client.Post($"/exerciseInfo/update", new Exercise() { Name = "sss", ExerciseTypeId = 0, ExerciseSubTypeId = Constants.SubTypeId });
+        response = Client.Post($"/exerciseInfo/", new Exercise() { Name = "sss", ExerciseTypeId = 0, ExerciseSubTypeId = Constants.SubTypeId });
         response.ReadErrorMessage().Should().Match("Укажите существующий тип упражнения");
 
-        response = Client.Post($"/exerciseInfo/update", new Exercise() { Name = "sss", ExerciseTypeId = exTypeId, ExerciseSubTypeId = 0 });
+        response = Client.Post($"/exerciseInfo/", new Exercise() { Name = "sss", ExerciseTypeId = exTypeId, ExerciseSubTypeId = 0 });
         response.ReadErrorMessage().Should().Match("Укажите существующий подтип упражнения");
     }
 
@@ -46,10 +46,10 @@ public class Exercise_CreateUpdateTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
 
         //Act - Assert
-        var response = Client.Post($"/exerciseInfo/update", new Exercise() { Name = "nmk", ExerciseTypeId = 100, ExerciseSubTypeId = Constants.SubTypeId });
+        var response = Client.Post($"/exerciseInfo/", new Exercise() { Name = "nmk", ExerciseTypeId = 100, ExerciseSubTypeId = Constants.SubTypeId });
         response.ReadErrorMessage().Should().Match("Укажите существующий тип упражнения");
 
-        response = Client.Post($"/exerciseInfo/update", new Exercise() { Name = "nmk", ExerciseTypeId = exTypeId, ExerciseSubTypeId = 1000 });
+        response = Client.Post($"/exerciseInfo/", new Exercise() { Name = "nmk", ExerciseTypeId = exTypeId, ExerciseSubTypeId = 1000 });
         response.ReadErrorMessage().Should().Match("Укажите существующий подтип упражнения");
     }
 
@@ -62,10 +62,10 @@ public class Exercise_CreateUpdateTest : BaseTest
         var request = new Exercise() { Name = "test1", ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId };
 
         //Act
-        var createResponse = Client.Post<bool>($"/exerciseInfo/update", request); // создаем успешно
+        var createResponse = Client.Post<bool>($"/exerciseInfo/", request); // создаем успешно
         createResponse.Should().BeTrue();
 
-        var response = Client.Post($"/exerciseInfo/update", request); // создаем упражнение с тем же названием
+        var response = Client.Post($"/exerciseInfo/", request); // создаем упражнение с тем же названием
 
         //Assert
         response.ReadErrorMessage().Should().Match("Упражнение с таким названием уже существует*");
@@ -81,7 +81,7 @@ public class Exercise_CreateUpdateTest : BaseTest
         request.Description = "---";
 
         //Act
-        var response = Client.Post($"/exerciseInfo/update", request);
+        var response = Client.Post($"/exerciseInfo/", request);
 
         //Assert
         response.ReadErrorMessage().Should().Match("Базовый справочник упражнений редактируют только администраторы*");
@@ -98,7 +98,7 @@ public class Exercise_CreateUpdateTest : BaseTest
         request.Description = desc;
 
         //Act
-        var response = Client.Post<bool>($"/exerciseInfo/update", request);
+        var response = Client.Post<bool>($"/exerciseInfo/", request);
 
         //Assert
         response.Should().BeTrue();
@@ -114,7 +114,7 @@ public class Exercise_CreateUpdateTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
         var exName = "zzz";
         var request = new Exercise() { Name = exName, ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId };
-        Client.Post<bool>($"/exerciseInfo/update", request);
+        Client.Post<bool>($"/exerciseInfo/", request);
 
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getEditingList");
         request.Id = items.FirstOrDefault(t => t.Name == exName).Id;
@@ -122,12 +122,12 @@ public class Exercise_CreateUpdateTest : BaseTest
 
         //Act - Assert | by admin
         Factory.Actions.AuthorizeAdmin(Client);
-        var response = Client.Post($"/exerciseInfo/update", request);
+        var response = Client.Post($"/exerciseInfo/", request);
         response.ReadErrorMessage().Should().Match("У вас нет прав на редактирование данного упражнения*");
 
         //Act - Assert | by admin
         Factory.Actions.AuthorizeCoach(Client);
-        response = Client.Post($"/exerciseInfo/update", request);
+        response = Client.Post($"/exerciseInfo/", request);
         response.ReadErrorMessage().Should().Match("У вас нет прав на редактирование данного упражнения*");
     }
 
@@ -145,7 +145,7 @@ public class Exercise_CreateUpdateTest : BaseTest
         items.FirstOrDefault(t => t.Name == exName).Should().BeNull();
 
         //Act
-        var response = Client.Post<bool>($"/exerciseInfo/update", request);
+        var response = Client.Post<bool>($"/exerciseInfo/", request);
 
         //Assert
         response.Should().BeTrue();
@@ -175,7 +175,7 @@ public class Exercise_CreateUpdateTest : BaseTest
         var exName = "ddd";
         var changeData = " sss";
         var request = new Exercise() { Name = exName, ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId, Description = desc };
-        Client.Post<bool>($"/exerciseInfo/update", request); // создаем упражнение
+        Client.Post<bool>($"/exerciseInfo/", request); // создаем упражнение
 
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getEditingList"); // проверяем, что есть личное упражнение
         var changeItem = items.FirstOrDefault(t => t.Name == exName);
@@ -185,7 +185,7 @@ public class Exercise_CreateUpdateTest : BaseTest
         request.Id = changeItem.Id;
         request.Name = exName + changeData;
         request.Description = desc + changeData;
-        var response = Client.Post<bool>($"/exerciseInfo/update", request); // обновляем упражнение
+        var response = Client.Post<bool>($"/exerciseInfo/", request); // обновляем упражнение
 
         //Assert
         response.Should().BeTrue();

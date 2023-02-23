@@ -18,7 +18,7 @@ namespace SportAssistant.Service.Controllers.Coaching
         }
 
         [HttpGet]
-        [Route("get")]
+        [Route("{id}")]
         public async Task<TrainingGroupInfo> GetAsync([FromServices] ICommand<GroupGetByIdQuery.Param, TrainingGroupInfo> command, int id)
         {
             var result = await command.ExecuteAsync(new GroupGetByIdQuery.Param() { Id = id });
@@ -35,26 +35,24 @@ namespace SportAssistant.Service.Controllers.Coaching
 
 
         [HttpPost]
-        [Route("create")]
         public async Task<bool> CreateAsync([FromServices] ICommand<GroupCreateCommand.Param, bool> command, TrainingGroup group)
         {
             var result = await command.ExecuteAsync(new GroupCreateCommand.Param() { Group = group });
             return result;
         }
 
-        [HttpPost]
-        [Route("update")]
+        [HttpPut, Obsolete]
         public async Task<bool> UpdateAsync([FromServices] ICommand<GroupUpdateCommand.Param, bool> command, TrainingGroup group)
         {
             var result = await command.ExecuteAsync(new GroupUpdateCommand.Param() { Group = group });
             return result;
         }
 
-        [HttpPost]
-        [Route("delete")]
-        public async Task<bool> DeleteAsync([FromServices] ICommand<GroupDeleteCommand.Param, bool> command, GroupDeleteCommand.Param param)
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<bool> DeleteAsync([FromServices] ICommand<GroupDeleteCommand.Param, bool> command, int id)
         {
-            var result = await command.ExecuteAsync(param);
+            var result = await command.ExecuteAsync(new GroupDeleteCommand.Param() { Id = id });
             return result;
         }
     }

@@ -9,7 +9,7 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
     public class PlanController : BaseController
     {
         [HttpGet]
-        [Route("get")]
+        [Route("{id}")]
         public async Task<Plan> GetAsync([FromServices] ICommand<PlanGetByIdQuery.Param, Plan> command, int id)
         {
             var result = await command.ExecuteAsync(new PlanGetByIdQuery.Param() { Id = id });
@@ -17,7 +17,7 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
         }
 
         [HttpGet]
-        [Route("getList")]
+        [Route("getList/{userId}")]
         public async Task<Plans> GetListAsync([FromServices] ICommand<PlanGetListQuery.Param, Plans> command, int userId = 0)
         {
             var result = await command.ExecuteAsync(new PlanGetListQuery.Param() { UserId = userId });
@@ -25,18 +25,17 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<int> CreateAsync([FromServices] ICommand<PlanCreateCommand.Param, int> command, PlanCreateCommand.Param param)
         {
             var result = await command.ExecuteAsync(param);
             return result;
         }
 
-        [HttpPost]
-        [Route("delete")]
-        public async Task<bool> DeleteAsync([FromServices] ICommand<PlanDeleteCommand.Param, bool> command, PlanDeleteCommand.Param param)
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<bool> DeleteAsync([FromServices] ICommand<PlanDeleteCommand.Param, bool> command, int id)
         {
-            var result = await command.ExecuteAsync(param);
+            var result = await command.ExecuteAsync(new PlanDeleteCommand.Param() { Id = id });
             return result;
         }
     }

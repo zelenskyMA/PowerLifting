@@ -139,7 +139,7 @@ public class Request_GetTest : BaseTest
             Factory.Actions.AuthorizeCoach(Client); // получить заявку по Ид может только тренер
 
             //Act
-            var response = Client.Get<TrainingRequest>($"/trainingRequests/get?id={request.Id}");
+            var response = Client.Get<TrainingRequest>($"/trainingRequests/{request.Id}");
 
             //Assert
             response.Should().NotBeNull();
@@ -159,7 +159,7 @@ public class Request_GetTest : BaseTest
     public void Get_RequestById_None_Fail()
     {
         Factory.Actions.AuthorizeCoach(Client);
-        var response = Client.Get($"/trainingRequests/get?id=0");
+        var response = Client.Get($"/trainingRequests/0");
         response.ReadErrorMessage().Should().Match("У тренера с Ид*нет заявки с Ид*");
     }
 
@@ -171,7 +171,7 @@ public class Request_GetTest : BaseTest
     {
         Factory.Actions.AuthorizeNoCoachUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
-        var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}");
+        var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         createResult.Should().BeTrue();
     }
 
@@ -182,7 +182,7 @@ public class Request_GetTest : BaseTest
     {
         var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var removeResult = Client.Post<bool>($"/trainingRequests/remove?userId={userId}");
+        var removeResult = Client.Delete<bool>($"/trainingRequests/{userId}");
         removeResult.Should().BeTrue();
     }
 }

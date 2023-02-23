@@ -25,7 +25,7 @@ public class Group_UpdateTest : BaseTest
         var request = new TrainingGroup() { Id = 0, Name = newName, Description = newDesc };
 
         //Act - Assert
-        var response = Client.Post($"/trainingGroups/update", request);
+        var response = Client.Put($"/trainingGroups", request);
         response.ReadErrorMessage().Should().Match("Группа не существует*");
     }
 
@@ -38,7 +38,7 @@ public class Group_UpdateTest : BaseTest
         var request = new TrainingGroup() { Id = groupId, Name = Constants.GroupName, Description = newDesc };
 
         //Act
-        var response = Client.Post($"/trainingGroups/update", request);
+        var response = Client.Put($"/trainingGroups", request);
 
         //Assert
         try
@@ -58,7 +58,7 @@ public class Group_UpdateTest : BaseTest
         var request = new TrainingGroup() { Id = groupId, Name = newName, Description = newDesc };
 
         //Act
-        var response = Client.Post($"/trainingGroups/update", request);
+        var response = Client.Put($"/trainingGroups", request);
 
         //Assert
         try
@@ -78,7 +78,7 @@ public class Group_UpdateTest : BaseTest
         var request = new TrainingGroup() { Id = groupId, Name = newName, Description = newDesc };
 
         //Act
-        var response = Client.Post<bool>($"/trainingGroups/update", request);
+        var response = Client.Put<bool>($"/trainingGroups", request);
 
         //Assert
         try
@@ -104,7 +104,7 @@ public class Group_UpdateTest : BaseTest
     {
         Factory.Actions.AuthorizeCoach(Client);
         var request = new TrainingGroup() { CoachId = coachId, Name = name, Description = desc };
-        var response = Client.Post<bool>($"/trainingGroups/create", request);
+        var response = Client.Post<bool>($"/trainingGroups", request);
         response.Should().BeTrue();
 
         var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
@@ -118,8 +118,7 @@ public class Group_UpdateTest : BaseTest
     /// <summary> Удаление группы </summary>
     private void DeleteGroup(int id)
     {
-        var request = new GroupDeleteCommand.Param() { Id = id };
-        var response = Client.Post<bool>($"/trainingGroups/delete", request);
+        var response = Client.Delete<bool>($"/trainingGroups/{id}");
         response.Should().BeTrue();
     }
 }

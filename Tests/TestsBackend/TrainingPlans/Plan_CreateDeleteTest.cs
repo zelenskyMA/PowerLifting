@@ -21,7 +21,7 @@ public class Plan_CreateDeleteTest : BaseTest
         var request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now.AddDays(10), UserId = userId };
 
         //Act
-        var response = Client.Post($"/trainingPlan/create", request);
+        var response = Client.Post($"/trainingPlan", request);
 
         //Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
@@ -36,11 +36,11 @@ public class Plan_CreateDeleteTest : BaseTest
 
         //Act + Assert
         var request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now.AddDays(6), UserId = userId };
-        var response = Client.Post($"/trainingPlan/create", request);
+        var response = Client.Post($"/trainingPlan", request);
         response.ReadErrorMessage().Should().Match("Найдены пересекающийся по датам планы. Даты начала*");
 
         request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now, UserId = userId };
-        response = Client.Post($"/trainingPlan/create", request);
+        response = Client.Post($"/trainingPlan", request);
         response.ReadErrorMessage().Should().Match("Найдены пересекающийся по датам планы. Даты начала*");
     }
 
@@ -53,7 +53,7 @@ public class Plan_CreateDeleteTest : BaseTest
         var request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now.AddDays(10), UserId = userId };
 
         //Act
-        var response = Client.Post($"/trainingPlan/create", request);
+        var response = Client.Post($"/trainingPlan", request);
 
         //Assert
         response.ReadErrorMessage().Should().Match("У вас нет права планировать тренировки данного пользователя*");
@@ -62,14 +62,8 @@ public class Plan_CreateDeleteTest : BaseTest
     [Fact]
     public void Delete_Plan_ByOthers_Fail()
     {
-        //Arrange
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var request = new PlanDeleteCommand.Param() { Id = Factory.Data.PlanDays[0].PlanId.Value };
-
-        //Act
-        var response = Client.Post($"/trainingPlan/delete", request);
-
-        //Assert
+        var response = Client.Delete($"/trainingPlan/{Factory.Data.PlanDays[0].PlanId.Value}");
         response.ReadErrorMessage().Should().Match("У вас нет права планировать тренировки данного пользователя*");
     }
 
@@ -82,20 +76,19 @@ public class Plan_CreateDeleteTest : BaseTest
         var request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now, UserId = userId };
 
         //Act + Assert создание
-        var planId = Client.Post<int>($"/trainingPlan/create", request);
+        var planId = Client.Post<int>($"/trainingPlan", request);
         planId.Should().BeGreaterThan(0);
 
-        var plan = Client.Get<Plan>($"/trainingPlan/get?id={planId}"); // план создан
+        var plan = Client.Get<Plan>($"/trainingPlan/{planId}"); // план создан
         plan.Should().NotBeNull();
         plan.Id.Should().Be(planId);
         plan.TrainingDays.Count.Should().Be(7);
 
         //Act + Assert удаление
-        var requestDelete = new PlanDeleteCommand.Param() { Id = planId };
-        var response = Client.Post<bool>($"/trainingPlan/delete", requestDelete);
+        var response = Client.Delete<bool>($"/trainingPlan/{planId}");
         response.Should().BeTrue();
 
-        plan = Client.Get<Plan>($"/trainingPlan/get?id={planId}"); // план удален
+        plan = Client.Get<Plan>($"/trainingPlan/{planId}"); // план удален
         plan.Should().NotBeNull();
         plan.Id.Should().Be(0);
         plan.TrainingDays.Should().BeEmpty();
@@ -110,20 +103,19 @@ public class Plan_CreateDeleteTest : BaseTest
         var request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now.AddDays(20), UserId = userId };
 
         //Act + Assert создание
-        var planId = Client.Post<int>($"/trainingPlan/create", request);
+        var planId = Client.Post<int>($"/trainingPlan", request);
         planId.Should().BeGreaterThan(0);
 
-        var plan = Client.Get<Plan>($"/trainingPlan/get?id={planId}"); // план создан
+        var plan = Client.Get<Plan>($"/trainingPlan/{planId}"); // план создан
         plan.Should().NotBeNull();
         plan.Id.Should().Be(planId);
         plan.TrainingDays.Count.Should().Be(7);
 
         //Act + Assert удаление
-        var requestDelete = new PlanDeleteCommand.Param() { Id = planId };
-        var response = Client.Post<bool>($"/trainingPlan/delete", requestDelete);
+        var response = Client.Delete<bool>($"/trainingPlan/{planId}");
         response.Should().BeTrue();
 
-        plan = Client.Get<Plan>($"/trainingPlan/get?id={planId}"); // план удален
+        plan = Client.Get<Plan>($"/trainingPlan/{planId}"); // план удален
         plan.Should().NotBeNull();
         plan.Id.Should().Be(0);
         plan.TrainingDays.Should().BeEmpty();

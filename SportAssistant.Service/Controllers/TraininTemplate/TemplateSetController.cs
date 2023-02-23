@@ -9,7 +9,7 @@ namespace SportAssistant.Service.Controllers.TraininTemplate
     public class TemplateSetController : BaseController
     {
         [HttpGet]
-        [Route("get")]
+        [Route("{id}")]
         public async Task<TemplateSet> GetAsync([FromServices] ICommand<TemplateSetGetByIdQuery.Param, TemplateSet> command, int id)
         {
             var result = await command.ExecuteAsync(new TemplateSetGetByIdQuery.Param() { Id = id });
@@ -25,24 +25,7 @@ namespace SportAssistant.Service.Controllers.TraininTemplate
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<int> CreateAsync([FromServices] ICommand<TemplateSetCreateCommand.Param, int> command, TemplateSetCreateCommand.Param param)
-        {
-            var result = await command.ExecuteAsync(param);
-            return result;
-        }
-
-        [HttpPost]
-        [Route("update")]
-        public async Task<bool> UpdateAsync([FromServices] ICommand<TemplateSetUpdateCommand.Param, bool> command, TemplateSet templateSet)
-        {
-            var result = await command.ExecuteAsync(new TemplateSetUpdateCommand.Param() { TemplateSet = templateSet });
-            return result;
-        }
-
-        [HttpPost]
-        [Route("delete")]
-        public async Task<bool> DeleteAsync([FromServices] ICommand<TemplateSetDeleteCommand.Param, bool> command, TemplateSetDeleteCommand.Param param)
         {
             var result = await command.ExecuteAsync(param);
             return result;
@@ -53,6 +36,21 @@ namespace SportAssistant.Service.Controllers.TraininTemplate
         public async Task<bool> AssignAsync([FromServices] ICommand<TemplateSetAssignCommand.Param, bool> command, TemplateSetAssignCommand.Param param)
         {
             var result = await command.ExecuteAsync(param);
+            return result;
+        }
+
+        [HttpPut]
+        public async Task<bool> UpdateAsync([FromServices] ICommand<TemplateSetUpdateCommand.Param, bool> command, TemplateSet templateSet)
+        {
+            var result = await command.ExecuteAsync(new TemplateSetUpdateCommand.Param() { TemplateSet = templateSet });
+            return result;
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<bool> DeleteAsync([FromServices] ICommand<TemplateSetDeleteCommand.Param, bool> command, int id)
+        {
+            var result = await command.ExecuteAsync(new TemplateSetDeleteCommand.Param() { Id = id });
             return result;
         }
     }

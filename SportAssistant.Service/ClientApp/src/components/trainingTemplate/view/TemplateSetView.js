@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Button, Col, Row } from "reactstrap";
-import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { GetAsync, PostAsync, PutAsync, DeleteAsync } from "../../../common/ApiActions";
 import { ErrorPanel, InputText, LoadingPanel, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
@@ -20,7 +20,7 @@ class TemplateSetView extends Component {
   componentDidMount() { this.getGroupData(); }
 
   getGroupData = async () => {
-    var templateSetData = await GetAsync(`/templateSet/get?id=${this.props.params.id}`);
+    var templateSetData = await GetAsync(`/templateSet/${this.props.params.id}`);
 
     this.setState({ templateSet: templateSetData, loading: false });
   }
@@ -32,7 +32,7 @@ class TemplateSetView extends Component {
 
   onDeleteTemplateSet = async () => {
     try {
-      await PostAsync("/templateSet/delete", { id: this.props.params.id });
+      await DeleteAsync(`/templateSet/${this.props.params.id}`);
       this.props.navigate(`/templateSetList`);
     }
     catch (error) {
@@ -40,11 +40,11 @@ class TemplateSetView extends Component {
     }
   }
 
-  onUpdateTemplateSet = async () => { await PostAsync("/templateSet/update", this.state.templateSet); }
+  onUpdateTemplateSet = async () => { await PutAsync("/templateSet", this.state.templateSet); }
 
   onCreateTemplatePlan = async () => {
     try {
-      var templatePlanId = await PostAsync("/templatePlan/create", this.state.newTemplatePlan);
+      var templatePlanId = await PostAsync("/templatePlan", this.state.newTemplatePlan);
       this.props.navigate(`/editTemplatePlan/${templatePlanId}`);
     }
     catch (error) {

@@ -121,7 +121,7 @@ public class PlanDay_MoveTest : BaseTest
         };
 
         // в целевом дне пусто
-        var checkTargetDay = Client.Get<PlanDay>($"/planDay/get?id={targetDayId}");
+        var checkTargetDay = Client.Get<PlanDay>($"/planDay/{targetDayId}");
         checkTargetDay.Should().NotBeNull();
         checkTargetDay.Id.Should().Be(targetDayId);
         checkTargetDay.Exercises.Should().BeEmpty();
@@ -133,13 +133,13 @@ public class PlanDay_MoveTest : BaseTest
         response.Should().BeTrue();
 
         // в источнике упражнения удалены
-        var sourceDay = Client.Get<PlanDay>($"/planDay/get?id={planDay.Id}");
+        var sourceDay = Client.Get<PlanDay>($"/planDay/{planDay.Id}");
         sourceDay.Should().NotBeNull();
         sourceDay.Id.Should().Be(planDay.Id);
         sourceDay.Exercises.Should().BeEmpty();
 
         // в целевой день упражнения добавлены
-        var resultDay = Client.Get<PlanDay>($"/planDay/get?id={targetDayId}");
+        var resultDay = Client.Get<PlanDay>($"/planDay/{targetDayId}");
         resultDay.Should().NotBeNull();
         resultDay.Id.Should().Be(targetDayId);
         resultDay.Exercises.Should().HaveCount(2);

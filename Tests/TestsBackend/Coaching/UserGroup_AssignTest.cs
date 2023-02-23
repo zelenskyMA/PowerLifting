@@ -98,7 +98,7 @@ public class UserGroup_AssignTest : BaseTest
         var request = new TrainingGroupUser() { GroupId = targetGroup.Id, UserId = userId };
 
         //  предпроверка - спортсмен в группе
-        var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={sourceGroup.Id}");
+        var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{sourceGroup.Id}");
         oldInfo.Users.FirstOrDefault(t => t.Id == userId).Should().NotBeNull();
 
         //Act
@@ -106,10 +106,10 @@ public class UserGroup_AssignTest : BaseTest
 
         //Assert
         response.Should().BeTrue();
-        var newInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={targetGroup.Id}"); // в целевой появился
+        var newInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{targetGroup.Id}"); // в целевой появился
         newInfo.Users.FirstOrDefault(t => t.Id == userId).Should().NotBeNull();
 
-        oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={sourceGroup.Id}"); // в сорсовой исчез
+        oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{sourceGroup.Id}"); // в сорсовой исчез
         oldInfo.Users.FirstOrDefault(t => t.Id == userId).Should().BeNull();
 
         //откат - возвращаем пользователя
@@ -127,7 +127,7 @@ public class UserGroup_AssignTest : BaseTest
         var request = new TrainingGroupUser() { GroupId = sourceGroup.Id, UserId = userId };
 
         //  предпроверка - спортсмен в группе
-        var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={sourceGroup.Id}");
+        var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{sourceGroup.Id}");
         oldInfo.Users.FirstOrDefault(t => t.Id == userId).Should().NotBeNull();
 
         //Act
@@ -135,7 +135,7 @@ public class UserGroup_AssignTest : BaseTest
 
         //Assert
         response.Should().BeTrue();
-        var newInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={sourceGroup.Id}"); // в целевой не исчез
+        var newInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{sourceGroup.Id}"); // в целевой не исчез
         newInfo.Users.FirstOrDefault(t => t.Id == userId).Should().NotBeNull();
     }
 
@@ -148,13 +148,13 @@ public class UserGroup_AssignTest : BaseTest
         var request = new TrainingGroupUser() { GroupId = group.Id, UserId = userId };
 
         //  предпроверка - спортсмен не в группе
-        var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={group.Id}");
+        var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{group.Id}");
         oldInfo.Users.FirstOrDefault(t => t.Id == userId).Should().BeNull();
 
         // создание заявки
         Factory.Actions.AuthorizeNoCoachUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.SecondCoachLogin); // второй тренер
-        var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}");
+        var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         createResult.Should().BeTrue();
 
         Factory.Actions.AuthorizeCoach(Client);
@@ -165,11 +165,11 @@ public class UserGroup_AssignTest : BaseTest
         //Assert
         response.ReadErrorMessage().Should().Match("Заявка спортсмена направлена другому тренеру*");
 
-        var newInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={group.Id}"); // спортсмен не добавился
+        var newInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{group.Id}"); // спортсмен не добавился
         newInfo.Users.FirstOrDefault(t => t.Id == userId).Should().BeNull();
 
         //откат - удаляем заявку
-        var removeResult = Client.Post<bool>($"/trainingRequests/remove?userId={userId}");
+        var removeResult = Client.Delete<bool>($"/trainingRequests/{userId}");
         removeResult.Should().BeTrue();
     }
 
@@ -182,13 +182,13 @@ public class UserGroup_AssignTest : BaseTest
         var request = new TrainingGroupUser() { GroupId = group.Id, UserId = userId };
 
         //  предпроверка - спортсмен не в группе
-        var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={group.Id}");
+        var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{group.Id}");
         oldInfo.Users.FirstOrDefault(t => t.Id == userId).Should().BeNull();
 
         // создание заявки
         Factory.Actions.AuthorizeNoCoachUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
-        var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}");
+        var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         createResult.Should().BeTrue();
 
         Factory.Actions.AuthorizeCoach(Client);
@@ -198,7 +198,7 @@ public class UserGroup_AssignTest : BaseTest
 
         //Assert
         response.Should().BeTrue();
-        var newInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={group.Id}"); // добавился успешно
+        var newInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{group.Id}"); // добавился успешно
         newInfo.Users.FirstOrDefault(t => t.Id == userId).Should().NotBeNull();
 
         var requestInfo = Client.Get<TrainingRequest>("/trainingRequests/getMyRequest"); // заявки нет, только заглушка

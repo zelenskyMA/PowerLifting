@@ -15,7 +15,7 @@ public class DictionaryTest : BaseTest
     public void Get_Dictionary_Unauthorized_Fail()
     {
         Factory.Actions.UnAuthorize(Client);
-        var response = Client.Get("/dictionary/getListByType?typeId=1");
+        var response = Client.Get("/dictionary/getListByType/1");
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
     }
 
@@ -23,7 +23,7 @@ public class DictionaryTest : BaseTest
     public void Get_Dictionary_ByType_Success()
     {
         Factory.Actions.AuthorizeUser(Client);
-        var response = Client.Get<List<DictionaryItem>>("/dictionary/getListByType?typeId=1");
+        var response = Client.Get<List<DictionaryItem>>("/dictionary/getListByType/1");
         response.Should().NotBeNull();
         response.Count.Should().BeGreaterThan(1);
     }

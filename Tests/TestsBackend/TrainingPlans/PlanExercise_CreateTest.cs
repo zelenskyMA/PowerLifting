@@ -23,7 +23,7 @@ public class PlanExercise_CreateTest : BaseTest
         var request = new PlanExerciseCreateCommand.Param() { DayId = planDayId, Exercises = new List<Exercise>() };
 
         //Act
-        var response = Client.Post<bool>($"/planExercise/create", request);
+        var response = Client.Post<bool>($"/planExercise", request);
 
         //Assert
         response.Should().BeFalse();
@@ -37,7 +37,7 @@ public class PlanExercise_CreateTest : BaseTest
         int dayCounter = 4;
         var planDayId = Factory.Data.PlanDays[dayCounter].Id;
         var example = GetExercises().First();
-        var settings = Client.Get<AppSettings>("/appSettings/get");
+        var settings = Client.Get<AppSettings>("/appSettings");
 
         var exercises = new List<Exercise>();
         for (int i = 0; i <= settings.MaxExercises; i++)
@@ -48,7 +48,7 @@ public class PlanExercise_CreateTest : BaseTest
         var request = new PlanExerciseCreateCommand.Param() { DayId = planDayId, Exercises = exercises };
 
         //Act
-        var response = Client.Post($"/planExercise/create", request);
+        var response = Client.Post($"/planExercise", request);
 
         //Assert
         response.ReadErrorMessage().Should().Match("Лимит упражнений в день превышен*");
@@ -63,13 +63,13 @@ public class PlanExercise_CreateTest : BaseTest
         var request = new PlanExerciseCreateCommand.Param() { DayId = planDayId, Exercises = GetExercises() };
 
         Factory.Actions.AuthorizeUser(Client); // чужим инфа недоступна
-        var testDay = Client.Get<PlanDay>($"/planDay/get?id={planDayId}"); // проверяем, что нет упражнений
+        var testDay = Client.Get<PlanDay>($"/planDay/{planDayId}"); // проверяем, что нет упражнений
         testDay.Exercises.Should().BeEmpty();
 
         Factory.Actions.AuthorizeNoCoachUser(Client);
 
         //Act
-        var response = Client.Post($"/planExercise/create", request);
+        var response = Client.Post($"/planExercise", request);
 
         //Assert
         response.ReadErrorMessage().Should().Match("У вас нет права планировать тренировки данного пользователя*");
@@ -84,16 +84,16 @@ public class PlanExercise_CreateTest : BaseTest
         var planDayId = Factory.Data.PlanDays[dayCounter].Id;
         var request = new PlanExerciseCreateCommand.Param() { DayId = planDayId, Exercises = GetExercises() };
 
-        var testDay = Client.Get<PlanDay>($"/planDay/get?id={planDayId}"); // проверяем, что нет упражнений
+        var testDay = Client.Get<PlanDay>($"/planDay/{planDayId}"); // проверяем, что нет упражнений
         testDay.Exercises.Should().BeEmpty();
 
         //Act
-        var response = Client.Post<bool>($"/planExercise/create", request);
+        var response = Client.Post<bool>($"/planExercise", request);
 
         //Assert
         response.Should().BeTrue();
 
-        var updatedDay = Client.Get<PlanDay>($"/planDay/get?id={planDayId}");
+        var updatedDay = Client.Get<PlanDay>($"/planDay/{planDayId}");
         updatedDay.Exercises.Count.Should().Be(GetExercises().Count);
     }
 
@@ -106,16 +106,16 @@ public class PlanExercise_CreateTest : BaseTest
         var planDayId = Factory.Data.PlanDays[dayCounter].Id;
         var request = new PlanExerciseCreateCommand.Param() { DayId = planDayId, Exercises = GetExercises() };
 
-        var testDay = Client.Get<PlanDay>($"/planDay/get?id={planDayId}"); // проверяем, что нет упражнений
+        var testDay = Client.Get<PlanDay>($"/planDay/{planDayId}"); // проверяем, что нет упражнений
         testDay.Exercises.Should().BeEmpty();
 
         //Act
-        var response = Client.Post<bool>($"/planExercise/create", request);
+        var response = Client.Post<bool>($"/planExercise", request);
 
         //Assert
         response.Should().BeTrue();
 
-        var updatedDay = Client.Get<PlanDay>($"/planDay/get?id={planDayId}");
+        var updatedDay = Client.Get<PlanDay>($"/planDay/{planDayId}");
         updatedDay.Exercises.Count.Should().Be(GetExercises().Count);
     }
 
@@ -132,16 +132,16 @@ public class PlanExercise_CreateTest : BaseTest
             Exercises = new List<Exercise>() { GetExercises().First() } // берем только одно
         };
 
-        var testDay = Client.Get<PlanDay>($"/planDay/get?id={planDayId}"); // проверяем, что есть 2 упражнения
+        var testDay = Client.Get<PlanDay>($"/planDay/{planDayId}"); // проверяем, что есть 2 упражнения
         testDay.Exercises.Count.Should().Be(2);
 
         //Act
-        var response = Client.Post<bool>($"/planExercise/create", request);
+        var response = Client.Post<bool>($"/planExercise", request);
 
         //Assert
         response.Should().BeTrue();
 
-        var updatedDay = Client.Get<PlanDay>($"/planDay/get?id={planDayId}");
+        var updatedDay = Client.Get<PlanDay>($"/planDay/{planDayId}");
         updatedDay.Exercises.Count.Should().Be(1); // было 2, стало 1.
     }
 

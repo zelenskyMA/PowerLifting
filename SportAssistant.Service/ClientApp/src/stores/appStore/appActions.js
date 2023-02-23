@@ -15,7 +15,7 @@ export async function setUserInfo(dispatch) {
 }
 
 export async function initApp(dispatch) {
-  const response = await GetAsync("/appSettings/get");
+  const response = await GetAsync("/appSettings");
   dispatch({ type: RECEIVE_SETTINGS, result: response });
 
   setUserInfo(dispatch);

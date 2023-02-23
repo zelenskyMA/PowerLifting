@@ -19,7 +19,7 @@ public class Group_CreateDeleteTest : BaseTest
     public void Create_Group_UnAuthorized_Fail()
     {
         Factory.Actions.UnAuthorize(Client);
-        var response = Client.Post($"/trainingGroups/create", NewGroup(Factory.Data.GetUserId(Constants.CoachLogin)));
+        var response = Client.Post($"/trainingGroups", NewGroup(Factory.Data.GetUserId(Constants.CoachLogin)));
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
     }
 
@@ -27,7 +27,7 @@ public class Group_CreateDeleteTest : BaseTest
     public void Create_Group_ByUser_Fail() // при любом переданном ид тренера, бесправный пользователь ничего не создаст.
     {
         Factory.Actions.AuthorizeUser(Client);
-        var response = Client.Post($"/trainingGroups/create", NewGroup());
+        var response = Client.Post($"/trainingGroups", NewGroup());
         response.ReadErrorMessage().Should().Match("У вас нет прав на выполнение данной операции*");
     }
 
@@ -35,7 +35,7 @@ public class Group_CreateDeleteTest : BaseTest
     public void Create_Group_NoName_Fail()
     {
         Factory.Actions.AuthorizeCoach(Client);
-        var response = Client.Post($"/trainingGroups/create", new TrainingGroup() { });
+        var response = Client.Post($"/trainingGroups", new TrainingGroup() { });
         response.ReadErrorMessage().Should().Match("Название группы обязательно*");
     }
 
@@ -44,7 +44,7 @@ public class Group_CreateDeleteTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
-        var response = Client.Post<bool>($"/trainingGroups/create", new TrainingGroup() { Name = name });
+        var response = Client.Post<bool>($"/trainingGroups", new TrainingGroup() { Name = name });
         response.Should().BeTrue();
 
         var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
@@ -54,7 +54,7 @@ public class Group_CreateDeleteTest : BaseTest
         try
         {
             //Act
-            var secondResponse = Client.Post($"/trainingGroups/create", new TrainingGroup() { Name = name });
+            var secondResponse = Client.Post($"/trainingGroups", new TrainingGroup() { Name = name });
 
             //Assert
             secondResponse.ReadErrorMessage().Should().Match("Группа с названием * уже существует*");
@@ -68,7 +68,7 @@ public class Group_CreateDeleteTest : BaseTest
     {
         //Act
         Factory.Actions.AuthorizeCoach(Client);
-        var response = Client.Post<bool>($"/trainingGroups/create", NewGroup());
+        var response = Client.Post<bool>($"/trainingGroups", NewGroup());
         response.Should().BeTrue(); // создание идет для пославшего запрос тренера, чей бы логин ни был указан (даже 0)
 
         //Assert
@@ -91,7 +91,7 @@ public class Group_CreateDeleteTest : BaseTest
     public void Delete_Group_NoId_Fail()
     {
         Factory.Actions.AuthorizeCoach(Client);
-        var response = Client.Post($"/trainingGroups/delete", new GroupDeleteCommand.Param() { Id = 0 });
+        var response = Client.Delete($"/trainingGroups/0");
         response.ReadErrorMessage().Should().Match("Группа с Id * не найдена*");
     }
 
@@ -104,7 +104,7 @@ public class Group_CreateDeleteTest : BaseTest
         var group = groups.FirstOrDefault(t => t.Name == Constants.GroupName);
 
         //Act
-        var response = Client.Post($"/trainingGroups/delete", new GroupDeleteCommand.Param() { Id = group.Id });
+        var response = Client.Delete($"/trainingGroups/{group.Id}");
 
         //Assert
         response.ReadErrorMessage().Should().Match("В удаляемой группе устались участники*");
@@ -116,7 +116,7 @@ public class Group_CreateDeleteTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
-        var createResponse = Client.Post<bool>($"/trainingGroups/create", NewGroup());
+        var createResponse = Client.Post<bool>($"/trainingGroups", NewGroup());
         createResponse.Should().BeTrue();
         var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
         var group = groups.FirstOrDefault(t => t.Name == name);
@@ -135,8 +135,7 @@ public class Group_CreateDeleteTest : BaseTest
     /// <summary> Удаление группы </summary>
     private void DeleteGroup(int id)
     {
-        var request = new GroupDeleteCommand.Param() { Id = id };
-        var response = Client.Post<bool>($"/trainingGroups/delete", request);
+        var response = Client.Delete<bool>($"/trainingGroups/{id}");
         response.Should().BeTrue();
     }
 }

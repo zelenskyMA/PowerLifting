@@ -1,8 +1,6 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models.Analitics;
-using SportAssistant.Domain.Models.UserData;
 using TestFramework;
 using TestFramework.TestExtensions;
 using TestsBackend;
@@ -35,7 +33,7 @@ public class User_AnaliticsTest : BaseTest
         var finishDate = ToIso(DateTime.Now.AddDays(10));
 
         //Act
-        var response = Client.Get($"/analitics/getPlanAnalitics?startDate={startDate}&finishDate={finishDate}&userId={userId}");
+        var response = Client.Get($"/analitics/getPlanAnalitics/{userId}?startDate={startDate}&finishDate={finishDate}");
 
         //Assert
         response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
@@ -88,7 +86,7 @@ public class User_AnaliticsTest : BaseTest
         var startDate = ToIso(DateTime.Now.AddDays(-10));
         var finishDate = ToIso(DateTime.Now.AddDays(10));
 
-        var response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics?startDate={startDate}&finishDate={finishDate}&userId={userId}");
+        var response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics/{userId}?startDate={startDate}&finishDate={finishDate}");
         response.TypeCounters.Should().HaveCount(4);
         response.PlanCounters.Should().HaveCount(2);
         response.FullTypeCounterList.Should().HaveCount(2);
@@ -97,7 +95,7 @@ public class User_AnaliticsTest : BaseTest
         startDate = ToIso(DateTime.Now.AddDays(-8));
         finishDate = ToIso(DateTime.Now.AddDays(10));
 
-        response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics?startDate={startDate}&finishDate={finishDate}&userId={userId}");
+        response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics/{userId}?startDate={startDate}&finishDate={finishDate}");
         response.TypeCounters.Should().HaveCount(4);
         response.PlanCounters.Should().HaveCount(1);
         response.FullTypeCounterList.Should().HaveCount(1);

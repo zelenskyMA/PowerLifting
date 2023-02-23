@@ -19,7 +19,7 @@ class AppSettingsPanel extends Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var settingsData = await GetAsync("/appSettings/get");
+    var settingsData = await GetAsync("/appSettings");
     this.setState({ settings: settingsData });
   }
 
@@ -30,7 +30,7 @@ class AppSettingsPanel extends Component {
 
   confirmAsync = async (lngStr) => {
     try {
-      await PostAsync(`/appSettings/update`, this.state.settings);
+      await PostAsync(`/appSettings`, { settings: this.state.settings });
 
       this.setState({ success: lngStr('appSetup.admin.settingsChanged'), error: '' });
     }

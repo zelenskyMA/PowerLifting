@@ -24,7 +24,7 @@ public class PlanExercise_UpdateTest : BaseTest
         var request = new PlanExerciseUpdateCommand.Param() { PlanExercise = new PlanExercise() { Id = -1 } };
 
         //Act
-        var response = Client.Post($"/planExercise/update", request);
+        var response = Client.Put($"/planExercise", request);
 
         //Assert
         response.ReadErrorMessage().Should().Match("Не найдено упражнение для обновления*");
@@ -36,11 +36,11 @@ public class PlanExercise_UpdateTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
         var planExId = Factory.Data.PlanDays[1].Exercises.First().Id;
-        var exercise = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var exercise = Client.Get<PlanExercise>($"/planExercise/{planExId}");
 
         var request = new PlanExerciseUpdateCommand.Param() { PlanExercise = exercise };
 
-        var settings = Client.Get<AppSettings>("/appSettings/get");
+        var settings = Client.Get<AppSettings>("/appSettings");
         var item = request.PlanExercise.Settings.First();
         item.Id = 0;
         for (int i = 0; i <= settings.MaxLiftItems; i++)
@@ -49,7 +49,7 @@ public class PlanExercise_UpdateTest : BaseTest
         }
 
         //Act
-        var response = Client.Post($"/planExercise/update", request);
+        var response = Client.Put($"/planExercise", request);
 
         //Assert
         response.ReadErrorMessage().Should().Match("Лимит поднятий в упражнении превышен*");
@@ -61,13 +61,13 @@ public class PlanExercise_UpdateTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
         var planExId = Factory.Data.PlanDays[1].Exercises.First().Id;
-        var exercise = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var exercise = Client.Get<PlanExercise>($"/planExercise/{planExId}");
 
         var request = new PlanExerciseUpdateCommand.Param() { PlanExercise = exercise };
         request.PlanExercise.Comments = comment;
 
         //Act
-        var response = Client.Post($"/planExercise/update", request);
+        var response = Client.Put($"/planExercise", request);
 
         //Assert
         response.ReadErrorMessage().Should().Match("Рекорд спортсмена не указан. Нельзя запланировать тренировку*");
@@ -79,7 +79,7 @@ public class PlanExercise_UpdateTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
         var planExId = Factory.Data.PlanDays[1].Exercises.First().Id;
-        var exercise = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var exercise = Client.Get<PlanExercise>($"/planExercise/{planExId}");
 
         var request = new PlanExerciseUpdateCommand.Param() { PlanExercise = exercise };
         request.PlanExercise.Comments = comment;
@@ -88,7 +88,7 @@ public class PlanExercise_UpdateTest : BaseTest
         Factory.Actions.AuthorizeAdmin(Client);
 
         //Act
-        var response = Client.Post($"/planExercise/update", request);
+        var response = Client.Put($"/planExercise", request);
 
         //Assert
         response.ReadErrorMessage().Should().Match("У вас нет права планировать тренировки данного пользователя*");
@@ -100,7 +100,7 @@ public class PlanExercise_UpdateTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
         var planExId = Factory.Data.PlanDays[0].Exercises[1].Id;
-        var exercise = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var exercise = Client.Get<PlanExercise>($"/planExercise/{planExId}");
 
         var request = new PlanExerciseUpdateCommand.Param() { PlanExercise = exercise };
         request.PlanExercise.Comments = comment;
@@ -108,12 +108,12 @@ public class PlanExercise_UpdateTest : BaseTest
         request.PlanExercise.Settings[0].Weight = weight;
 
         //Act
-        var response = Client.Post<bool>($"/planExercise/update", request);
+        var response = Client.Put<bool>($"/planExercise", request);
 
         //Assert
         response.Should().BeTrue();
 
-        var updatedExercise = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var updatedExercise = Client.Get<PlanExercise>($"/planExercise/{planExId}");
         updatedExercise.Should().NotBeNull();
         updatedExercise.Comments.Should().Be(comment); // обновилось упражнение
         var newSetting = updatedExercise.Settings.First(t => t.Id == oldSetting.Id);
@@ -128,7 +128,7 @@ public class PlanExercise_UpdateTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
         var planExId = Factory.Data.PlanDays[1].Exercises[1].Id;
-        var exercise = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var exercise = Client.Get<PlanExercise>($"/planExercise/{planExId}");
 
         var request = new PlanExerciseUpdateCommand.Param() { PlanExercise = exercise };
         request.PlanExercise.Comments = comment;
@@ -136,12 +136,12 @@ public class PlanExercise_UpdateTest : BaseTest
         request.PlanExercise.Settings[0].Weight = weight;
 
         //Act
-        var response = Client.Post<bool>($"/planExercise/update", request);
+        var response = Client.Put<bool>($"/planExercise", request);
 
         //Assert
         response.Should().BeTrue();
 
-        var updatedExercise = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var updatedExercise = Client.Get<PlanExercise>($"/planExercise/{planExId}");
         updatedExercise.Should().NotBeNull();
         updatedExercise.Comments.Should().Be(comment); // обновилось упражнение
         var newSetting = updatedExercise.Settings.First(t => t.Id == oldSetting.Id);

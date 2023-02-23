@@ -1,8 +1,8 @@
 ﻿import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Button, Col, Label, Row } from "reactstrap";
-import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { InputNumber, InputCheckbox, InputText, LoadingPanel } from "../../common/controls/CustomControls";
+import { Button, Col, Row } from "reactstrap";
+import { DeleteAsync, GetAsync, PostAsync } from "../../common/ApiActions";
+import { InputCheckbox, InputNumber, InputText, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import { changeModalVisibility, updateUserInfo } from "../../stores/appStore/appActions";
 import '../../styling/Common.css';
@@ -48,7 +48,7 @@ class UserCabinet extends Component {
 
   createRequest = () => { this.props.navigate("/coachSelection"); }
   cancelRequest = async () => {
-    await PostAsync(`/trainingRequests/remove`);
+    await DeleteAsync(`/trainingRequests`);
     var trainingRequestData = await GetAsync("/trainingRequests/getMyRequest");
     this.setState({ trainingRequest: trainingRequestData });
   }

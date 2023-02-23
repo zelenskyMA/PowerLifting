@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Button, Col, Label, Row } from "reactstrap";
-import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { GetAsync, PutAsync } from "../../../common/ApiActions";
 import { ErrorPanel, InputNumber, InputTextArea, LoadingPanel, MultiNumberInput } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
@@ -27,7 +27,7 @@ class TemplateExerciseSettingsEdit extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    var templateExerciseData = await GetAsync(`/templateExercise/get?id=${this.props.params.id}`);
+    var templateExerciseData = await GetAsync(`/templateExercise/${this.props.params.id}`);
 
     this.setState({ templateExercise: templateExerciseData, settingsList: templateExerciseData.settings, loading: false });
   }
@@ -37,7 +37,7 @@ class TemplateExerciseSettingsEdit extends Component {
       var templateExercise = this.state.templateExercise;
       templateExercise.settings = this.state.settingsList;
 
-      await PostAsync('/templateExercise/update', { templateExercise: templateExercise });
+      await PutAsync('/templateExercise', { templateExercise: templateExercise });
       this.props.navigate(`/editTemplateDay/${this.props.params.templateId}/${templateExercise.templateDayId}`);
     }
     catch (error) {

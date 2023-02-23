@@ -20,7 +20,7 @@ public class Group_GetTest : BaseTest
     public void Get_GroupById_WrongId_Fail()
     {
         Factory.Actions.AuthorizeCoach(Client);
-        var response = Client.Get($"/trainingGroups/get?id=0");
+        var response = Client.Get($"/trainingGroups/0");
         response.ReadErrorMessage().Should().Match("Группа не найдена*");
 
     }
@@ -35,7 +35,7 @@ public class Group_GetTest : BaseTest
         group.Should().NotBeNull();
 
         //Act
-        var response = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={group.Id}");
+        var response = Client.Get<TrainingGroupInfo>($"/trainingGroups/{group.Id}");
 
         //Assert
         response.Should().NotBeNull();
@@ -92,29 +92,5 @@ public class Group_GetTest : BaseTest
         info.GroupName.Should().Be(Constants.GroupName);
         info.PlanDay.PlanId.Should().Be(planDays[0].PlanId);
         info.PlanDay.Id.Should().Be(planDays[0].Id);
-    }
-
-    /// <summary> Создание группы </summary>
-    private int CreateGroup(int coachId = 0)
-    {
-        Factory.Actions.AuthorizeCoach(Client);
-        var request = new TrainingGroup() { CoachId = coachId, Name = name, Description = desc };
-        var response = Client.Post<bool>($"/trainingGroups/create", request);
-        response.Should().BeTrue();
-
-        var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
-        var group = groups.FirstOrDefault(t => t.Name == name);
-        group.Should().NotBeNull();
-
-        return group.Id;
-    }
-
-
-    /// <summary> Удаление группы </summary>
-    private void DeleteGroup(int id)
-    {
-        var request = new GroupDeleteCommand.Param() { Id = id };
-        var response = Client.Post<bool>($"/trainingGroups/delete", request);
-        response.Should().BeTrue();
-    }
+    }   
 }

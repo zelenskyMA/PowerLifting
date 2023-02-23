@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Button, Col, Label, Row } from "reactstrap";
-import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { GetAsync, PutAsync } from "../../../common/ApiActions";
 import { ErrorPanel, InputNumber, InputTextArea, LoadingPanel, MultiNumberInput } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
@@ -28,7 +28,7 @@ class PlanExerciseSettingsEdit extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    var data = await GetAsync(`/planExercise/get?id=${this.props.params.id}`);
+    var data = await GetAsync(`/planExercise/${this.props.params.id}`);
     var achivementData = await GetAsync(`/userAchivement/getByExercise/${data.id}/${data?.exercise?.exerciseTypeId}`);
 
     this.setState({ planExercise: data, settingsList: data.settings, achivement: achivementData, loading: false });
@@ -39,7 +39,7 @@ class PlanExerciseSettingsEdit extends Component {
       var planExercise = this.state.planExercise;
       planExercise.settings = this.state.settingsList;
 
-      await PostAsync('/planExercise/update', { planExercise: planExercise });
+      await PutAsync('/planExercise', { planExercise: planExercise });
       this.props.navigate(`/editPlanDay/${this.props.params.planId}/${planExercise.planDayId}`);
     }
     catch (error) {

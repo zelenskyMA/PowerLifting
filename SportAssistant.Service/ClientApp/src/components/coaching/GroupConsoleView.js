@@ -28,7 +28,7 @@ class GroupConsoleView extends Component {
 
   createGroup = async () => {
     try {
-      await PostAsync(`/trainingGroups/create`, this.state.newGroup);
+      await PostAsync(`/trainingGroups`, this.state.newGroup);
       await this.getInitData();
     }
     catch (error) {

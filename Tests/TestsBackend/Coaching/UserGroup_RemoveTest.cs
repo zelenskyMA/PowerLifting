@@ -64,7 +64,7 @@ public class UserGroup_RemoveTest : BaseTest
         var userId = Factory.Data.GetUserId(Constants.UserLogin); // пользователь с тренером и группой
         var request = new TrainingGroupUser() { GroupId = group.Id, UserId = userId };
 
-        var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={group.Id}"); //предпроверка - спортсмен в группе
+        var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{group.Id}"); //предпроверка - спортсмен в группе
         oldInfo.Users.FirstOrDefault(t => t.Id == userId).Should().NotBeNull();
 
         //Act
@@ -72,14 +72,14 @@ public class UserGroup_RemoveTest : BaseTest
 
         //Assert
         response.Should().BeTrue();
-        var newInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/get?id={group.Id}");
+        var newInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{group.Id}");
         newInfo.Users.FirstOrDefault(t => t.Id == userId).Should().BeNull();
 
         // откат
         // 1) создание заявки
         Factory.Actions.AuthorizeUser(Client);
         var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
-        var createResult = Client.Post<bool>($"/trainingRequests/create?coachId={coachId}");
+        var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         createResult.Should().BeTrue();
 
         // 2) возвращение юзера в группу

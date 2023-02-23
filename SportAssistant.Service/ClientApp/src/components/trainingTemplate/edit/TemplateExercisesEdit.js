@@ -28,8 +28,8 @@ class TemplateExercisesEdit extends Component {
   async getInitData() {
     const [exerciseList, templateExercises, templateDay] = await Promise.all([
       GetAsync("/exerciseInfo/getPlanningList"),
-      GetAsync(`/templateExercise/getByDay?dayId=${this.props.params.dayId}`),
-      GetAsync(`/templateDay/get?id=${this.props.params.dayId}`),
+      GetAsync(`/templateExercise/getByDay/${this.props.params.dayId}`),
+      GetAsync(`/templateDay/${this.props.params.dayId}`),
     ]);
 
     var templateExercisesData = templateExercises.map((item, i) => item.exercise);
@@ -37,7 +37,7 @@ class TemplateExercisesEdit extends Component {
   }
 
   confirmExercisesAsync = async () => {
-    await PostAsync('/templateExercise/create', { dayId: this.props.params.dayId, exercises: this.state.selectedExercises });
+    await PostAsync('/templateExercise', { dayId: this.props.params.dayId, exercises: this.state.selectedExercises });
     this.props.navigate(`/editTemplateDay/${this.props.params.templateId}/${this.props.params.dayId}`);
   }
 

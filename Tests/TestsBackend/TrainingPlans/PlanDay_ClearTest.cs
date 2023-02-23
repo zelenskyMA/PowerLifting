@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using SportAssistant.Application.TrainingPlan.PlanDayCommands;
 using SportAssistant.Domain.Models.TrainingPlan;
 using TestFramework;
 using TestFramework.TestExtensions;
@@ -15,12 +14,8 @@ public class PlanDay_ClearTest : BaseTest
     [Fact]
     public void Clear_PlanDay_WrongId_Fail()
     {
-        //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var request = new PlanDayClearCommand.Param() { Id = 0 };
-
-        //Act - Assert
-        var response = Client.Post<bool>($"/planDay/clear", request);
+        var response = Client.Delete<bool>($"/planDay/0");
         response.Should().BeTrue();
     }
 
@@ -29,11 +24,10 @@ public class PlanDay_ClearTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var planDay = Factory.Data.PlanDays[6];
-        var request = new PlanDayClearCommand.Param() { Id = planDay.Id };
+        var planDayId = Factory.Data.PlanDays[6].Id;
 
         //Act - Assert
-        var response = Client.Post<bool>($"/planDay/clear", request);
+        var response = Client.Delete<bool>($"/planDay/{planDayId}");
         response.Should().BeTrue();
     }
 
@@ -42,11 +36,10 @@ public class PlanDay_ClearTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeAdmin(Client);
-        var planDay = Factory.Data.PlanDays[1];
-        var request = new PlanDayClearCommand.Param() { Id = planDay.Id };
+        var planDayId = Factory.Data.PlanDays[1].Id;
 
         //Act - Assert
-        var response = Client.Post($"/planDay/clear", request);
+        var response = Client.Delete($"/planDay/{planDayId}");
         response.ReadErrorMessage().Should().Match("У вас нет права планировать тренировки данного пользователя*");
     }
 
@@ -55,25 +48,24 @@ public class PlanDay_ClearTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
-        var planDay = Factory.Data.PlanDays[0]; // удаляем 1-ый день без отката
-        var request = new PlanDayClearCommand.Param() { Id = planDay.Id };
+        var planDayId = Factory.Data.PlanDays[0].Id; // удаляем 1-ый день без отката
 
         // в целевом дне НЕ пусто
-        var checkTargetDay = Client.Get<PlanDay>($"/planDay/get?id={planDay.Id}");
+        var checkTargetDay = Client.Get<PlanDay>($"/planDay/{planDayId}");
         checkTargetDay.Should().NotBeNull();
-        checkTargetDay.Id.Should().Be(planDay.Id);
+        checkTargetDay.Id.Should().Be(planDayId);
         checkTargetDay.Exercises.Should().NotBeEmpty();
 
         //Act
-        var response = Client.Post<bool>($"/planDay/clear", request);
+        var response = Client.Delete<bool>($"/planDay/{planDayId}");
 
         //Assert
         response.Should().BeTrue();
 
         // упражнения удалены
-        var sourceDay = Client.Get<PlanDay>($"/planDay/get?id={planDay.Id}");
+        var sourceDay = Client.Get<PlanDay>($"/planDay/{planDayId}");
         sourceDay.Should().NotBeNull();
-        sourceDay.Id.Should().Be(planDay.Id);
+        sourceDay.Id.Should().Be(planDayId);
         sourceDay.Exercises.Should().BeEmpty();
     }
 
@@ -82,25 +74,24 @@ public class PlanDay_ClearTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var planDay = Factory.Data.PlanDays[1]; // удаляем 2-ой день без отката
-        var request = new PlanDayClearCommand.Param() { Id = planDay.Id };
+        var planDayId = Factory.Data.PlanDays[1].Id; // удаляем 2-ой день без отката
 
         // в целевом дне НЕ пусто
-        var checkTargetDay = Client.Get<PlanDay>($"/planDay/get?id={planDay.Id}");
+        var checkTargetDay = Client.Get<PlanDay>($"/planDay/{planDayId}");
         checkTargetDay.Should().NotBeNull();
-        checkTargetDay.Id.Should().Be(planDay.Id);
+        checkTargetDay.Id.Should().Be(planDayId);
         checkTargetDay.Exercises.Should().NotBeEmpty();
 
         //Act
-        var response = Client.Post<bool>($"/planDay/clear", request);
+        var response = Client.Delete<bool>($"/planDay/{planDayId}");
 
         //Assert
         response.Should().BeTrue();
 
         // упражнения удалены
-        var sourceDay = Client.Get<PlanDay>($"/planDay/get?id={planDay.Id}");
+        var sourceDay = Client.Get<PlanDay>($"/planDay/{planDayId}");
         sourceDay.Should().NotBeNull();
-        sourceDay.Id.Should().Be(planDay.Id);
+        sourceDay.Id.Should().Be(planDayId);
         sourceDay.Exercises.Should().BeEmpty();
     }
 }

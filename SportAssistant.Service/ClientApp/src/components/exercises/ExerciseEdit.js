@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Button, Col, Row } from "reactstrap";
-import { GetAsync, PostAsync } from "../../common/ApiActions";
+import { GetAsync, PostAsync, DeleteAsync } from "../../common/ApiActions";
 import { DropdownControl, ErrorPanel, InputText, InputTextArea, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
@@ -22,9 +22,9 @@ class ExerciseEdit extends Component {
 
   async getInitData() {
     const [exerciseData, typesData, subTypesData] = await Promise.all([
-      GetAsync(`exerciseInfo/get?id=${this.props.params.id ?? 0}`),
-      GetAsync(`dictionary/getListByType?typeId=1`),
-      GetAsync(`dictionary/getListByType?typeId=2`)
+      GetAsync(`exerciseInfo/${this.props.params.id ?? 0}`),
+      GetAsync(`dictionary/getListByType/1`),
+      GetAsync(`dictionary/getListByType/2`)
     ]);
 
     this.setState({ exercise: exerciseData, types: typesData, subTypes: subTypesData, loading: false });
@@ -32,7 +32,7 @@ class ExerciseEdit extends Component {
 
   onConfirm = async () => {
     try {
-      await PostAsync(`/exerciseInfo/update`, this.state.exercise);
+      await PostAsync(`/exerciseInfo`, this.state.exercise);
       this.props.navigate(`/exercises`);
     }
     catch (error) {
@@ -42,7 +42,7 @@ class ExerciseEdit extends Component {
 
   onDelete = async () => {
     try {
-      await PostAsync(`/exerciseInfo/delete?Id=${this.state.exercise.id}`);
+      await DeleteAsync(`/exerciseInfo/${this.state.exercise.id}`);
       this.props.navigate(`/exercises`);
     }
     catch (error) {

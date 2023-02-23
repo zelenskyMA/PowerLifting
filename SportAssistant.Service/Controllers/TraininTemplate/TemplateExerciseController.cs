@@ -9,7 +9,7 @@ namespace SportAssistant.Service.Controllers.TraininTemplate
     public class TemplateExerciseController : BaseController
     {
         [HttpGet]
-        [Route("get")]
+        [Route("{id}")]
         public async Task<TemplateExercise> GetAsync([FromServices] ICommand<TemplateExerciseGetByIdQuery.Param, TemplateExercise> command, int id)
         {
             var result = await command.ExecuteAsync(new TemplateExerciseGetByIdQuery.Param() { Id = id });
@@ -17,7 +17,7 @@ namespace SportAssistant.Service.Controllers.TraininTemplate
         }
 
         [HttpGet]
-        [Route("getByDay")]
+        [Route("getByDay/{dayId}")]
         public async Task<List<TemplateExercise>> GetByDay([FromServices] ICommand<TemplateExerciseGetByDaysQuery.Param, List<TemplateExercise>> command, int dayId)
         {
             var result = await command.ExecuteAsync(new TemplateExerciseGetByDaysQuery.Param() { DayIds = new List<int>() { dayId } });
@@ -25,15 +25,13 @@ namespace SportAssistant.Service.Controllers.TraininTemplate
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<bool> CreateAsync([FromServices] ICommand<TemplateExerciseCreateCommand.Param, bool> command, TemplateExerciseCreateCommand.Param param)
         {
             var result = await command.ExecuteAsync(param);
             return result;
         }
 
-        [HttpPost]
-        [Route("update")]
+        [HttpPut]
         public async Task<bool> UpdateAsync([FromServices] ICommand<TemplateExerciseUpdateCommand.Param, bool> command, TemplateExerciseUpdateCommand.Param param)
         {
             var result = await command.ExecuteAsync(param);

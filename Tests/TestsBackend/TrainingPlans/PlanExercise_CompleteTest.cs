@@ -62,7 +62,7 @@ public class PlanExercise_CompleteTest : BaseTest
         //Assert
         response.Should().BeTrue();
 
-        var exercise = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var exercise = Client.Get<PlanExercise>($"/planExercise/{planExId}");
         exercise.Should().NotBeNull();
         exercise.Settings.First(t => t.Id == settingId).Completed.Should().BeTrue(); // закрыто
     }
@@ -84,7 +84,7 @@ public class PlanExercise_CompleteTest : BaseTest
         //Assert
         response.Should().BeTrue();
 
-        var exercise = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var exercise = Client.Get<PlanExercise>($"/planExercise/{planExId}");
         exercise.Should().NotBeNull();
         exercise.Settings.First(t => t.Id == settingId).Completed.Should().BeTrue(); // закрыто
     }

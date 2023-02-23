@@ -19,7 +19,7 @@ public class PlanDay_GetTest : BaseTest
         var planDayId = Factory.Data.PlanDays.First().Id;
 
         //Act
-        var response = Client.Get($"/planDay/get?id={planDayId}");
+        var response = Client.Get($"/planDay/{planDayId}");
 
         //Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
@@ -32,7 +32,7 @@ public class PlanDay_GetTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
 
         //Act
-        var response = Client.Get($"/planDay/get?id=-1");
+        var response = Client.Get($"/planDay/-1");
 
         //Assert
         string respContentString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -47,7 +47,7 @@ public class PlanDay_GetTest : BaseTest
         var planDayId = Factory.Data.PlanDays.First().Id;
 
         //Act
-        var response = Client.Get($"/planDay/get?id={planDayId}");
+        var response = Client.Get($"/planDay/{planDayId}");
 
         //Assert
         response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
@@ -61,7 +61,7 @@ public class PlanDay_GetTest : BaseTest
         var planDayId = Factory.Data.PlanDays.First().Id;
 
         //Act
-        var response = Client.Get<PlanDay>($"/planDay/get?id={planDayId}");
+        var response = Client.Get<PlanDay>($"/planDay/{planDayId}");
 
         //Assert
         response.Should().NotBeNull();
@@ -76,7 +76,7 @@ public class PlanDay_GetTest : BaseTest
         var planDayId = Factory.Data.PlanDays.First().Id;
 
         //Act
-        var response = Client.Get<PlanDay>($"/planDay/get?id={planDayId}");
+        var response = Client.Get<PlanDay>($"/planDay/{planDayId}");
 
         //Assert
         response.Should().NotBeNull();

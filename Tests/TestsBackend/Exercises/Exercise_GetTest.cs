@@ -18,7 +18,7 @@ public class Exercise_GetTest : BaseTest
     public void Exercise_GetById_UnAuthorized_Fail()
     {
         Factory.Actions.UnAuthorize(Client);
-        var response = Client.Get($"/exerciseInfo/get?id={Constants.ExType1Id}");
+        var response = Client.Get($"/exerciseInfo/{Constants.ExType1Id}");
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
     }
 
@@ -27,7 +27,7 @@ public class Exercise_GetTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var response = Client.Get<Exercise>($"/exerciseInfo/get?id=-1");
+        var response = Client.Get<Exercise>($"/exerciseInfo/-1");
 
         //Assert
         response.Should().NotBeNull(); // заглушка
@@ -40,7 +40,7 @@ public class Exercise_GetTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var response = Client.Get<Exercise>($"/exerciseInfo/get?id={Constants.ExType1Id}");
+        var response = Client.Get<Exercise>($"/exerciseInfo/{Constants.ExType1Id}");
 
         //Assert
         response.Should().NotBeNull();
@@ -76,7 +76,7 @@ public class Exercise_GetTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
         var exName = "testEx1";
         var request = new Exercise() { Name = exName, ExerciseTypeId = 1, ExerciseSubTypeId = Constants.SubTypeId };
-        var createResult = Client.Post<bool>($"/exerciseInfo/update", request);
+        var createResult = Client.Post<bool>($"/exerciseInfo/", request);
         createResult.Should().BeTrue();
 
         //Act - Assert
@@ -92,7 +92,7 @@ public class Exercise_GetTest : BaseTest
         // откат
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getEditingList");
         var personalItem = items.FirstOrDefault(t => t.Name == exName);
-        var deleteResponse = Client.Post<bool>($"/exerciseInfo/delete?id={personalItem.Id}");
+        var deleteResponse = Client.Delete<bool>($"/exerciseInfo/{personalItem.Id}");
         deleteResponse.Should().BeTrue();
     }
 }

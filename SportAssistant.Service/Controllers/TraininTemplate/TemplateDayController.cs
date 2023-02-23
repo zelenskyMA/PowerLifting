@@ -10,7 +10,7 @@ namespace SportAssistant.Service.Controllers.TraininTemplate
     public class TemplateDayController : BaseController
     {
         [HttpGet]
-        [Route("get")]
+        [Route("{id}")]
         public async Task<TemplateDay> GetAsync([FromServices] ICommand<TemplateDayGetByIdQuery.Param, TemplateDay> command, int id)
         {
             var result = await command.ExecuteAsync(new TemplateDayGetByIdQuery.Param() { Id = id });

@@ -19,7 +19,7 @@ public class PlanExercise_GetTest : BaseTest
         var planExId = Factory.Data.PlanDays.First().Exercises.First();
 
         //Act
-        var response = Client.Get($"/planExercise/get?id={planExId}");
+        var response = Client.Get($"/planExercise/{planExId}");
 
         //Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
@@ -29,7 +29,7 @@ public class PlanExercise_GetTest : BaseTest
     public void Get_PlanExercise_WrongId_Fail()
     {
         Factory.Actions.AuthorizeUser(Client);
-        var response = Client.Get<PlanExercise>($"/planExercise/get?id=-1");
+        var response = Client.Get<PlanExercise>($"/planExercise/-1");
         response.Should().NotBeNull(); // заглушка
         response.Id.Should().Be(0);
     }
@@ -42,7 +42,7 @@ public class PlanExercise_GetTest : BaseTest
         var planExId = Factory.Data.PlanDays.First().Exercises.First().Id;
 
         //Act
-        var response = Client.Get($"/planExercise/get?id={planExId}");
+        var response = Client.Get($"/planExercise/{planExId}");
 
         //Assert
         response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
@@ -56,7 +56,7 @@ public class PlanExercise_GetTest : BaseTest
         var planExId = Factory.Data.PlanDays.First().Exercises.First().Id;
 
         //Act
-        var response = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var response = Client.Get<PlanExercise>($"/planExercise/{planExId}");
 
         //Assert
         response.Should().NotBeNull();
@@ -71,7 +71,7 @@ public class PlanExercise_GetTest : BaseTest
         var planExId = Factory.Data.PlanDays.First().Exercises.First().Id;
 
         //Act
-        var response = Client.Get<PlanExercise>($"/planExercise/get?id={planExId}");
+        var response = Client.Get<PlanExercise>($"/planExercise/{planExId}");
 
         //Assert
         response.Should().NotBeNull();
@@ -82,7 +82,7 @@ public class PlanExercise_GetTest : BaseTest
     public void GetByDay_PlanExercise_WrongId_Fail()
     {
         Factory.Actions.AuthorizeUser(Client);
-        var response = Client.Get<List<PlanExercise>>($"/planExercise/getByDay?dayId=-1");
+        var response = Client.Get<List<PlanExercise>>($"/planExercise/getByDay/-1");
         response.Should().BeEmpty();
     }
 
@@ -94,7 +94,7 @@ public class PlanExercise_GetTest : BaseTest
         var dayId = Factory.Data.PlanDays.First().Id;
 
         //Act
-        var response = Client.Get($"/planExercise/getByDay?dayId={dayId}");
+        var response = Client.Get($"/planExercise/getByDay/{dayId}");
 
         //Assert
         response.ReadErrorMessage().Should().Match("У вас нет прав на просмотр данной информации*");
@@ -108,7 +108,7 @@ public class PlanExercise_GetTest : BaseTest
         var dayId = Factory.Data.PlanDays.First().Id;
 
         //Act
-        var response = Client.Get<List<PlanExercise>>($"/planExercise/getByDay?dayId={dayId}");
+        var response = Client.Get<List<PlanExercise>>($"/planExercise/getByDay/{dayId}");
 
         //Assert
         response.Should().NotBeNull();
@@ -124,7 +124,7 @@ public class PlanExercise_GetTest : BaseTest
         var dayId = Factory.Data.PlanDays.First().Id;
 
         //Act
-        var response = Client.Get<List<PlanExercise>>($"/planExercise/getByDay?dayId={dayId}");
+        var response = Client.Get<List<PlanExercise>>($"/planExercise/getByDay/{dayId}");
 
         //Assert
         response.Should().NotBeNull();

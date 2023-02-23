@@ -15,10 +15,10 @@ public class Exercise_DeleteTest : BaseTest
     public void Exercise_Delete_WrongId_Fail()
     {
         Factory.Actions.AuthorizeUser(Client);
-        var response = Client.Post($"/exerciseInfo/delete?id=-1");
+        var response = Client.Delete($"/exerciseInfo/-1");
         response.ReadErrorMessage().Should().Match("Выбранное упражнение не существует*");
 
-        response = Client.Post($"/exerciseInfo/delete?id=1000");
+        response = Client.Delete($"/exerciseInfo/1000");
         response.ReadErrorMessage().Should().Match("Выбранное упражнение не существует*");
     }
 
@@ -30,7 +30,7 @@ public class Exercise_DeleteTest : BaseTest
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getPlanningList");
 
         //Act
-        var response = Client.Post($"/exerciseInfo/delete?id={items[5].Id}");
+        var response = Client.Delete($"/exerciseInfo/{items[5].Id}");
 
         //Assert
         response.ReadErrorMessage().Should().Match("Базовый справочник упражнений редактируют только администраторы*");
@@ -45,7 +45,7 @@ public class Exercise_DeleteTest : BaseTest
         var count = items.Count();
 
         //Act
-        var response = Client.Post<bool>($"/exerciseInfo/delete?id={items[5].Id}");
+        var response = Client.Delete<bool>($"/exerciseInfo/{items[5].Id}");
 
         //Assert
         response.Should().BeTrue();
@@ -61,19 +61,19 @@ public class Exercise_DeleteTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
         var exName = "zzz";
         var request = new Exercise() { Name = exName, ExerciseTypeId = 1, ExerciseSubTypeId = Constants.SubTypeId };
-        Client.Post<bool>($"/exerciseInfo/update", request);
+        Client.Post<bool>($"/exerciseInfo/", request);
 
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getEditingList");
         var personalItem = items.FirstOrDefault(t => t.Name == exName);
 
         //Act - Assert | by admin
         Factory.Actions.AuthorizeAdmin(Client);
-        var response = Client.Post($"/exerciseInfo/delete?id={personalItem.Id}");
+        var response = Client.Delete($"/exerciseInfo/{personalItem.Id}");
         response.ReadErrorMessage().Should().Match("У вас нет прав на редактирование данного упражнения*");
 
         //Act - Assert | by admin
         Factory.Actions.AuthorizeCoach(Client);
-        response = Client.Post($"/exerciseInfo/delete?id={personalItem.Id}");
+        response = Client.Delete($"/exerciseInfo/{personalItem.Id}");
         response.ReadErrorMessage().Should().Match("У вас нет прав на редактирование данного упражнения*");
     }
 
@@ -84,14 +84,14 @@ public class Exercise_DeleteTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
         var exName = "gfjg";
         var request = new Exercise() { Name = exName, ExerciseTypeId = 1, ExerciseSubTypeId = Constants.SubTypeId };
-        Client.Post<bool>($"/exerciseInfo/update", request);
+        Client.Post<bool>($"/exerciseInfo/", request);
 
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getEditingList");
         var personalItem = items.FirstOrDefault(t => t.Name == exName);
         personalItem.Should().NotBeNull();
 
         //Act
-        var response = Client.Post<bool>($"/exerciseInfo/delete?id={personalItem.Id}");
+        var response = Client.Delete<bool>($"/exerciseInfo/{personalItem.Id}");
 
         //Assert
         response.Should().BeTrue();
