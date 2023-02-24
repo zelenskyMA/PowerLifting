@@ -2,13 +2,13 @@
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models;
 using SportAssistant.Domain.Models.Basic;
 using SportAssistant.Domain.Models.Coaching;
 using SportAssistant.Domain.Models.TrainingPlan;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Domain.Models.UserData;
 
 namespace SportAssistant.Application.Common

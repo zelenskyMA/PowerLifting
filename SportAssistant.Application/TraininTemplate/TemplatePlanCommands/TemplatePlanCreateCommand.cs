@@ -1,10 +1,10 @@
 ﻿using SportAssistant.Domain.CustomExceptions;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
 {
     /// <summary>
     /// Создание шаблона тренировочного плана

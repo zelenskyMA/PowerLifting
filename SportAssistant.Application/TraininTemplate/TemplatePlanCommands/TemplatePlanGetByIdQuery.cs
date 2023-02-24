@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using SportAssistant.Domain.CustomExceptions;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 
-namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
 {
     /// <summary>
     /// Получение шаблона для тренировочного плана по Ид.

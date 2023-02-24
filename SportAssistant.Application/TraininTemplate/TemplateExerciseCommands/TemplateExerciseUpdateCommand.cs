@@ -1,11 +1,11 @@
 ﻿using SportAssistant.Domain.CustomExceptions;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateExerciseCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
 {
     /// <summary>
     /// Обновление упражнения в сете для шаблона дня. Создание поднятий (template exercise settings)

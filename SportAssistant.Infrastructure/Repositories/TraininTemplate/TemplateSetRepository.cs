@@ -1,8 +1,8 @@
-﻿using SportAssistant.Domain.DbModels.TraininTemplate;
+﻿using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Infrastructure.Common;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Infrastructure.Repositories.TraininTemplate
+namespace SportAssistant.Infrastructure.Repositories.TrainingTemplate
 {
     public class TemplateSetRepository : CrudRepo<TemplateSetDb>
     {

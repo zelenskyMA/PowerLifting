@@ -1,8 +1,8 @@
 ﻿using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateDayCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateDayCommands
 {
     /// <summary>
     /// Получение тренировочного дня из шаблона по Ид.

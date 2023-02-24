@@ -1,7 +1,7 @@
 ﻿using SportAssistant.Domain.DbModels.Common;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SportAssistant.Domain.DbModels.TraininTemplate
+namespace SportAssistant.Domain.DbModels.TrainingTemplate
 {
     [Table("TemplateDays", Schema = "plan")]
     public class TemplateDayDb : EntityDb

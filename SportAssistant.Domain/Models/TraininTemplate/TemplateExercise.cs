@@ -1,7 +1,7 @@
 ﻿using SportAssistant.Domain.Models.Common;
 using SportAssistant.Domain.Models.TrainingPlan;
 
-namespace SportAssistant.Domain.Models.TraininTemplate
+namespace SportAssistant.Domain.Models.TrainingTemplate
 {
     public class TemplateExercise : Entity
     {

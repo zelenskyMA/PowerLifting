@@ -1,6 +1,6 @@
 ﻿using SportAssistant.Domain.Models.Common;
 using SportAssistant.Domain.Models.TrainingPlan;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 using System;
 using System.Collections.Generic;
 using System.Linq;

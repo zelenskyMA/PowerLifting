@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportAssistant.Application.TraininTemplate.TemplateSetCommands;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Application.TrainingTemplate.TemplateSetCommands;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 
-namespace SportAssistant.Service.Controllers.TraininTemplate
+namespace SportAssistant.Service.Controllers.TrainingTemplate
 {
     [Route("templateSet")]
     public class TemplateSetController : BaseController

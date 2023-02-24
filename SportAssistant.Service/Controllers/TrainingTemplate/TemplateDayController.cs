@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportAssistant.Application.TraininTemplate.TemplateDayCommands;
+using SportAssistant.Application.TrainingTemplate.TemplateDayCommands;
 using SportAssistant.Domain.Interfaces.Common.Operations;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 
-namespace SportAssistant.Service.Controllers.TraininTemplate
+namespace SportAssistant.Service.Controllers.TrainingTemplate
 {
 
     [Route("templateDay")]

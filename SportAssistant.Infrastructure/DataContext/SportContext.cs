@@ -2,7 +2,7 @@
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.DbModels.UserData;
 
 namespace SportAssistant.Infrastructure.DataContext

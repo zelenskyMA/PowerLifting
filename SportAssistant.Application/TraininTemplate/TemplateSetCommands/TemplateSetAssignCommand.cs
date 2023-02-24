@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Coaching.Application;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Models.Coaching;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
 {
     /// <summary>
     /// Назначение тренировочного цикла, или шаблона в цикле, группе спортсменов 

@@ -1,10 +1,10 @@
-﻿using SportAssistant.Domain.DbModels.TraininTemplate;
+﻿using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateExerciseCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
 {
     /// <summary>
     /// Шаблон сета упражнений в рамках тренировочного дня.

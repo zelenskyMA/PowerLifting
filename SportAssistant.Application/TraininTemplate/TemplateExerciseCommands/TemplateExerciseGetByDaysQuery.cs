@@ -1,8 +1,8 @@
 ﻿using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateExerciseCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
 {
     /// <summary>
     /// Получение запланированных упражнений по Ид дней в шаблоне.

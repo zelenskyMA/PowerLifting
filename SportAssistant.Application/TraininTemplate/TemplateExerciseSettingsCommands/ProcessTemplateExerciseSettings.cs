@@ -3,10 +3,10 @@ using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateExerciseSettingsCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseSettingsCommands
 {
     public class ProcessTemplateExerciseSettings : IProcessTemplateExerciseSettings
     {
