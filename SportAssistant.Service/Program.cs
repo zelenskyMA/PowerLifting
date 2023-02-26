@@ -19,6 +19,7 @@ using SportAssistant.Application.TrainingTemplate.TemplateDayCommands;
 using SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands;
 using SportAssistant.Application.TrainingTemplate.TemplateExerciseSettingsCommands;
 using SportAssistant.Application.TrainingTemplate.TemplatePlanCommands;
+using SportAssistant.Application.TraininTemplate.TemplateSetCommands;
 using SportAssistant.Application.UserData;
 using SportAssistant.Application.UserData.Auth;
 using SportAssistant.Application.UserData.Auth.Interfaces;
@@ -81,6 +82,7 @@ public partial class Program
         builder.Services.AddScoped<ITrainingCountersSetup, TrainingCountersSetup>();
 
         builder.Services.AddScoped<IProcessSetUserId, ProcessSetUserId>();
+        builder.Services.AddScoped<IProcessTemplateSet, ProcessTemplateSet>();        
         builder.Services.AddScoped<IProcessTemplatePlan, ProcessTemplatePlan>();
         builder.Services.AddScoped<IProcessTemplateDay, ProcessTemplateDay>();
         builder.Services.AddScoped<IProcessTemplateExercise, ProcessTemplateExercise>();

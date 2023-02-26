@@ -43,6 +43,20 @@ public class TemplatePlan_ChangeTest : BaseTest
     }
 
     [Fact]
+    public void Create_TmpltPlan_ByOthers_Fail()
+    {
+        //Arrange
+        Factory.Actions.AuthorizeSecondCoach(Client);
+        var request = new TemplatePlanCreateCommand.Param() { SetId = Factory.Data.TemplateSet.Id, Name = "xzczvbv" };
+
+        //Act
+        var response = Client.Post($"/templatePlan", request);
+
+        //Assert
+        response.ReadErrorMessage().Should().Match("У вас нет права изменять данные в выбранном тренировочном цикле*");
+    }
+
+    [Fact]
     public void Create_TmpltPlan_NotCoach_Fail()
     {
         //Arrange
@@ -140,7 +154,7 @@ public class TemplatePlan_ChangeTest : BaseTest
         var response = Client.Put($"/templatePlan", tmplt);
 
         //Assert
-        response.ReadErrorMessage().Should().Match("У вас нет прав на изменение выбранного шаблона*");
+        response.ReadErrorMessage().Should().Match("У вас нет права изменять данные в выбранном тренировочном цикле*");
     }
 
     [Fact]

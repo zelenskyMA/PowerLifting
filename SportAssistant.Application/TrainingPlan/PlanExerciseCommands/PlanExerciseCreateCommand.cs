@@ -93,7 +93,6 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
         private async Task<int> GetAndCheckUserId(int dayId)
         {
             var userId = await _processPlanUserId.GetByDayId(dayId);
-
             return await _processPlan.PlanningAllowedForUserAsync(userId);
         }
 

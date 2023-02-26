@@ -1,4 +1,5 @@
-﻿using SportAssistant.Domain.DbModels.TrainingTemplate;
+﻿using SportAssistant.Domain.CustomExceptions;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 
@@ -27,17 +28,27 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         }
 
         /// <inheritdoc />
+        public async Task<int> GetBySetId(int id)
+        {
+            var set = await _templateSetRepository.FindOneAsync(t => t.Id == id);
+            if (set == null)
+            {
+                throw new BusinessException($"Не найден цикл с Ид {id}");
+            }
+
+            return set.CoachId;
+        }
+
+        /// <inheritdoc />
         public async Task<int> GetByPlanId(int id)
         {
             var plan = await _templatePlanRepository.FindOneAsync(t => t.Id == id);
             if (plan == null)
             {
-                return 0;
+                throw new BusinessException($"Не найден шаблон с Ид {id}");
             }
 
-            var set = await _templateSetRepository.FindOneAsync(t => t.Id == plan.TemplateSetId);
-
-            return set?.CoachId ?? 0;
+            return await GetBySetId(plan.TemplateSetId);
         }
 
         /// <inheritdoc />
@@ -46,7 +57,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             var day = await _templateDayRepository.FindOneAsync(t => t.Id == id);
             if (day == null)
             {
-                return 0;
+                throw new BusinessException($"Не найден день шаблона с Ид {id}");
             }
 
             return await GetByPlanId(day.TemplatePlanId);
@@ -58,7 +69,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             var planExercise = await _templateExerciseRepository.FindOneAsync(t => t.Id == id);
             if (planExercise == null)
             {
-                return 0;
+                throw new BusinessException($"Не найдено упражнение в дне шаблона с Ид {id}");
             }
 
             return await GetByDayId(planExercise.TemplateDayId);

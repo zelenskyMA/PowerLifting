@@ -25,10 +25,14 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
 
         public async Task<List<PlanExercise>> ExecuteAsync(Param param)
         {
-            var userId = await _processPlanUserId.GetByDayId(param.DayId);
-            await _processPlan.ViewAllowedForDataOfUserAsync(userId);
-
             var exercises = await _processPlanExercise.GetByDaysAsync(new List<int>() { param.DayId });
+
+            if (exercises.Count > 0) //запрет просмотра чужих данных
+            {
+                var userId = await _processPlanUserId.GetByDayId(param.DayId);
+                await _processPlan.ViewAllowedForDataOfUserAsync(userId);
+            }
+
             return exercises;
         }
 

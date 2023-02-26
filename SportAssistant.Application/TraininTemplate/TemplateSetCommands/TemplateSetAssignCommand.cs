@@ -36,7 +36,7 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
 
         public async Task<bool> ExecuteAsync(Param param)
         {
-            (List<TemplatePlanDb> templates, TrainingGroupInfo groupInfo) = await ValidateAssignmentAsync(param);
+            (List<TemplatePlanDb> templates, TrainingGroupInfo groupInfo) = await VerifyRequestAsync(param);
 
             foreach (var user in groupInfo.Users)
             {
@@ -59,7 +59,7 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
             return true;
         }
 
-        private async Task<(List<TemplatePlanDb> templates, TrainingGroupInfo groupInfo)> ValidateAssignmentAsync(Param param)
+        private async Task<(List<TemplatePlanDb> templates, TrainingGroupInfo groupInfo)> VerifyRequestAsync(Param param)
         {
             var templateSetDb = await _templateSetRepository.FindOneAsync(t => t.Id == param.SetId && t.CoachId == _user.Id);
             if (templateSetDb == null)

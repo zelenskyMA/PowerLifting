@@ -16,7 +16,7 @@ public class TemplatePlan_DeleteTest : BaseTest
     {
         Factory.Actions.AuthorizeNoCoachUser(Client);
         var response = Client.Delete($"/templatePlan/{Factory.Data.TemplateSet.Templates[0].Id}");
-        response.ReadErrorMessage().Should().Match("У вас нет прав на удаление шаблона*");
+        response.ReadErrorMessage().Should().Match("У вас нет права изменять данные в выбранном тренировочном цикле*");
     }
 
     [Fact]

@@ -12,13 +12,19 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
     public class TemplateExerciseCreateCommand : ICommand<TemplateExerciseCreateCommand.Param, bool>
     {
         private readonly IProcessTemplateExercise _processTemplateExercise;
+        private readonly IProcessTemplateSet _processTemplateSet;
+        private readonly IProcessSetUserId _processSetUserId;
         private readonly ICrudRepo<TemplateExerciseDb> _templateExerciseRepository;
 
         public TemplateExerciseCreateCommand(
             IProcessTemplateExercise processTemplateExercise,
+            IProcessTemplateSet processTemplateSet,
+            IProcessSetUserId processSetUserId,
             ICrudRepo<TemplateExerciseDb> templateExerciseRepository)
         {
             _processTemplateExercise = processTemplateExercise;
+            _processTemplateSet = processTemplateSet;
+            _processSetUserId = processSetUserId;
             _templateExerciseRepository = templateExerciseRepository;
         }
 
@@ -28,6 +34,8 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
             {
                 return false;
             }
+
+            await VerifyRequestAsync(param.DayId);
 
             //удаляем лишние записи вместе со связями
             var templateExercisesDb = await _templateExerciseRepository.FindAsync(t => t.TemplateDayId == param.DayId);
@@ -65,8 +73,13 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
 
                 await _templateExerciseRepository.CreateAsync(templateExercise);
             }
-
             return true;
+        }
+
+        private async Task VerifyRequestAsync(int dayId)
+        {
+            var ownerId = await _processSetUserId.GetByDayId(dayId);
+            await _processTemplateSet.ChangingAllowedForUserAsync(ownerId);
         }
 
         public class Param

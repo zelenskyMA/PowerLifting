@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
@@ -17,28 +16,28 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
     {
         private readonly ITrainingCountersSetup _trainingCountersSetup;
         private readonly IProcessTemplateExercise _processTemplateExercise;
+        private readonly IProcessTemplateSet _processTemplateSet;
         private readonly IProcessSetUserId _processSetUserId;
 
         private readonly ICrudRepo<TemplatePlanDb> _templatePlanRepository;
         private readonly ICrudRepo<TemplateDayDb> _templateDayRepository;
-        private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public TemplatePlanGetByIdQuery(
             ITrainingCountersSetup trainingCountersSetup,
             IProcessTemplateExercise processTemplateExercise,
+            IProcessTemplateSet processTemplateSet,
             IProcessSetUserId processSetUserId,
             ICrudRepo<TemplatePlanDb> templatePlanRepository,
             ICrudRepo<TemplateDayDb> templateDayRepository,
-            IUserProvider user,
             IMapper mapper)
         {
             _trainingCountersSetup = trainingCountersSetup;
             _processTemplateExercise = processTemplateExercise;
+            _processTemplateSet = processTemplateSet;
             _processSetUserId = processSetUserId;
             _templatePlanRepository = templatePlanRepository;
             _templateDayRepository = templateDayRepository;
-            _user = user;
             _mapper = mapper;
         }
 
@@ -52,11 +51,8 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
 
             if (templatePlanDb != null) // чужие данные смотреть нельзя
             {
-                var setUserId = await _processSetUserId.GetByPlanId(param.Id);
-                if (setUserId != _user.Id)
-                {
-                    throw new DataException();
-                }
+                var ownerId = await _processSetUserId.GetByPlanId(param.Id);
+                await _processTemplateSet.ViewAllowedForDataOfUserAsync(ownerId);
             }
 
             var templatePlan = _mapper.Map<TemplatePlan>(templatePlanDb);

@@ -20,7 +20,7 @@ namespace SportAssistant.Service.Controllers.TrainingTemplate
         [Route("getByDay/{dayId}")]
         public async Task<List<TemplateExercise>> GetByDay([FromServices] ICommand<TemplateExerciseGetByDaysQuery.Param, List<TemplateExercise>> command, int dayId)
         {
-            var result = await command.ExecuteAsync(new TemplateExerciseGetByDaysQuery.Param() { DayIds = new List<int>() { dayId } });
+            var result = await command.ExecuteAsync(new TemplateExerciseGetByDaysQuery.Param() { DayId = dayId });
             return result;
         }
 
