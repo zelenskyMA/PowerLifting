@@ -31,7 +31,7 @@ class GroupUserCardPanel extends Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var cardData = await GetAsync(`/userInfo/getCard?userId=${this.props.params.id}`);
+    var cardData = await GetAsync(`/userInfo/getCard/${this.props.params.id}`);
     var coachGroupsData = await GetAsync(`/trainingGroups/getList`);
 
     var push = cardData.achivements.find(t => t.exerciseTypeId === 1);
@@ -52,7 +52,7 @@ class GroupUserCardPanel extends Component {
   changeGroup = async () => {
     try {
       var userGroup = { userId: this.props.params.id, groupId: this.state.selectedGroupId };
-      await PostAsync(`/groupUser/update`, userGroup);
+      await PostAsync(`/groupUser/assign`, userGroup);
     }
     catch (error) { this.setState({ error: error.message }); }
   }

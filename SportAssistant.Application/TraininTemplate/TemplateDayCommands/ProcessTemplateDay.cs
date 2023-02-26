@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateDayCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateDayCommands
 {
     public class ProcessTemplateDay : IProcessTemplateDay
     {
@@ -16,7 +16,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateDayCommands
         private readonly ITrainingCountersSetup _trainingCountersSetup;
         private readonly IContextProvider _contextProvider;
         private readonly IMapper _mapper;
-       
+
         public ProcessTemplateDay(
             IProcessTemplateExercise processTemplateExercise,
             ICrudRepo<TemplateDayDb> templateDayRepository,

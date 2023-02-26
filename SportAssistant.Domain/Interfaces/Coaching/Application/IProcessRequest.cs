@@ -8,8 +8,8 @@ namespace SportAssistant.Domain.Interfaces.Coaching.Application
         /// Получение имени тренера
         /// </summary>
         /// <param name="userId">Ид тренера</param>
-        /// <returns></returns>
-        Task<string> GetCoachName(int userId);
+        /// <returns>Ид тренера из БД и его имя для отображения на UI</returns>
+        Task<(int foundId, string name)> GetCoachName(int userId);
 
         /// <summary>
         /// Получение заявки на обучение по Ид пользователя

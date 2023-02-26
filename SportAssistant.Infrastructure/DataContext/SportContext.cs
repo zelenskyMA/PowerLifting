@@ -2,7 +2,7 @@
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.DbModels.UserData;
 
 namespace SportAssistant.Infrastructure.DataContext
@@ -26,7 +26,7 @@ namespace SportAssistant.Infrastructure.DataContext
         public DbSet<DictionaryTypeDb> DictionaryTypes { get; set; }
         public DbSet<SettingsDb> Settings { get; set; }
         public DbSet<EmailMessageDb> EmailMessages { get; set; }
-                
+
         public DbSet<UserDb> Users { get; set; }
         public DbSet<UserInfoDb> UsersInfo { get; set; }
         public DbSet<UserAchivementDb> UserAchivements { get; set; }

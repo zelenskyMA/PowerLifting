@@ -26,19 +26,19 @@ namespace SportAssistant.Application.Dictionaryies
         public async Task<List<DictionaryItem>> GetItemsAsync(List<int> ids)
         {
             var items = await _itemRepository.FindAsync(t => ids.Contains(t.Id));
-            return items.Select(t => _mapper.Map<DictionaryItem>(t)).ToList();
+            return items.Select(_mapper.Map<DictionaryItem>).ToList();
         }
 
         public async Task<List<DictionaryItem>> GetItemsByTypeIdAsync(DictionaryTypes typeId)
         {
             var items = await _itemRepository.FindAsync(t => t.TypeId == (int)typeId);
-            return items.Select(t => _mapper.Map<DictionaryItem>(t)).ToList();
+            return items.Select(_mapper.Map<DictionaryItem>).ToList();
         }
 
         public async Task<List<DictionaryType>> GetTypesAsync()
         {
             var itemTypes = await _typeRepository.GetAllAsync();
-            return itemTypes.Select(t => _mapper.Map<DictionaryType>(t)).ToList();
+            return itemTypes.Select(_mapper.Map<DictionaryType>).ToList();
         }
     }
 }

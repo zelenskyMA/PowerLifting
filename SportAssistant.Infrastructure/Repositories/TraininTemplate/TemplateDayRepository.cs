@@ -1,4 +1,4 @@
-﻿using SportAssistant.Domain.DbModels.TraininTemplate;
+﻿using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Infrastructure.Common;
 using SportAssistant.Infrastructure.DataContext;
 

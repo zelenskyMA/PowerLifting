@@ -39,6 +39,11 @@ namespace SportAssistant.Application.TrainingPlan.ExerciseCommands
                 throw new BusinessException("Выбранное упражнение не существует");
             }
 
+            if (!exercisesDb.Where(t => allowedUserIds.Contains(t.UserId) && !t.Closed).Any())
+            {
+                throw new BusinessException("У вас нет прав на редактирование данного упражнения");
+            }
+
             var exerciseDb = exercisesDb.First();
             bool isAdmin = await _userRoleCommands.IHaveRole(UserRoles.Admin);
             if (!isAdmin && !(exerciseDb.UserId > 0))

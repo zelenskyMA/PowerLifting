@@ -30,11 +30,13 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
         }
 
         /// <inheritdoc />
-        public async Task<string> GetCoachName(int userId)
+        public async Task<(int foundId, string name)> GetCoachName(int userId)
         {
             var infoDb = (await _userInfoRepository.FindAsync(t => t.UserId == userId)).FirstOrDefault();
             var info = _mapper.Map<UserInfo>(infoDb);
-            return UserNaming.GetLegalShortName(info.FirstName, info.Surname, info.Patronimic, "Аноним");
+            var name = UserNaming.GetLegalShortName(info?.FirstName, info?.Surname, info?.Patronimic, "Аноним");
+
+            return (infoDb?.UserId ?? 0, name);
         }
 
         /// <inheritdoc />
@@ -47,7 +49,7 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
             }
 
             var request = _mapper.Map<TrainingRequest>(requestDb);
-            request.CoachName = await GetCoachName(request.CoachId);
+            request.CoachName = (await GetCoachName(request.CoachId)).name;
 
             return request;
         }
@@ -62,6 +64,6 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
             {
                 _trainingRequestRepository.Delete(requestDb);
             }
-        }        
+        }
     }
 }

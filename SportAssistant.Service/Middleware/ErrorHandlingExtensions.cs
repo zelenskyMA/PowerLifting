@@ -40,10 +40,10 @@ namespace SportAssistant.Service.Middleware
                     _ => StatusCodes.Status500InternalServerError,
                 };
 
-                var error = new
+                var error = new CustomError()
                 {
                     Message = e.Message,
-                    Detail = e.StackTrace, // env.IsDevelopment() || env.IsEnvironment("Debug") ? e.StackTrace : null,
+                    Detail = env.IsDevelopment() || env.IsEnvironment("Debug") ? e.StackTrace : null,
                     ExtData = e.Data?.Count > 0 ? e.Data : null,
                 };
 

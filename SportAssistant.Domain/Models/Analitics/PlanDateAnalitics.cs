@@ -1,7 +1,4 @@
-﻿using SportAssistant.Domain.Models.Common;
-using System.Collections.Generic;
-
-namespace SportAssistant.Domain.Models.Analitics
+﻿namespace SportAssistant.Domain.Models.Analitics
 {
     public class PlanCounterAnalitics
     {

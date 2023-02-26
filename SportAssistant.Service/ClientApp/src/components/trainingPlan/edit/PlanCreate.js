@@ -22,7 +22,7 @@ class PlanCreate extends React.Component {
 
   onPlanCreate = async () => {
     try {
-      const planId = await PostAsync("trainingPlan/create", { creationDate: DateToUtc(this.state.date), userId: this.props.params.groupUserId });
+      const planId = await PostAsync("trainingPlan", { creationDate: DateToUtc(this.state.date), userId: this.props.params.groupUserId });
       this.props.navigate(`/editPlanDays/${planId}`);
     }
     catch (error) {

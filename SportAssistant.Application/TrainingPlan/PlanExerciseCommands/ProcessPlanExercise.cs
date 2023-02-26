@@ -4,7 +4,7 @@ using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Infrastructure.DataContext;
 
 namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
@@ -43,8 +43,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
         /// <inheritdoc />
         public async Task<List<PlanExercise>> GetByDaysAsync(List<int> dayIds)
         {
-            var planExerciseDb = await _planExerciseRepository.FindAsync(t => dayIds.Contains(t.PlanDayId));
-            var exercises = await PrepareExerciseDataAsync(planExerciseDb);
+            var planExercisesDb = await _planExerciseRepository.FindAsync(t => dayIds.Contains(t.PlanDayId));
+            var exercises = await PrepareExerciseDataAsync(planExercisesDb);
             return exercises;
         }
 

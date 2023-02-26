@@ -72,11 +72,11 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
         /// <inheritdoc />
         public async Task<PlanDay?> GetCurrentDay(int userId)
         {
-            var now = DateTime.Now.Date; ;
+            var now = DateTime.Now.Date;
 
             var dbPlans = await _planRepository.FindAsync(t =>
                 t.UserId == userId &&
-                t.StartDate <= now && t.StartDate >= now.AddDays(-6));
+                t.StartDate.Date <= now && t.StartDate.Date >= now.AddDays(-6));
             if (!dbPlans.Any())
             {
                 return null;

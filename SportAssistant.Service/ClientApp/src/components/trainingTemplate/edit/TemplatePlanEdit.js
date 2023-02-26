@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import { connect } from "react-redux";
 import { Button, Col, Container, Row } from "reactstrap";
-import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { DeleteAsync, GetAsync, PutAsync } from "../../../common/ApiActions";
 import { ErrorPanel, InputText } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
@@ -27,7 +27,7 @@ class TemplatePlanEdit extends React.Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var planData = await GetAsync(`/templatePlan/get?Id=${this.props.params.id}`);
+    var planData = await GetAsync(`/templatePlan/${this.props.params.id}`);
     this.setState({ plan: planData, days: planData.trainingDays, typeCounters: planData.typeCountersSum  });
   }
 
@@ -36,13 +36,13 @@ class TemplatePlanEdit extends React.Component {
   onSetExercises = (dayId) => { this.props.navigate(`/editTemplateExercises/${this.props.params.id}/${dayId}`); }
 
   onConfirmPlan = async () => {
-    var setId = await PostAsync("/templatePlan/update", this.state.plan);
+    var setId = await PutAsync("/templatePlan", this.state.plan);
     this.props.navigate(`/templateSet/${setId}`);
   }
 
   onConfirmDelete = async () => {
     try {
-      var setId = await PostAsync("/templatePlan/delete", { id: this.props.params.id });
+      var setId = await DeleteAsync(`/templatePlan/${this.props.params.id}`);
       this.props.navigate(`/templateSet/${setId}`);
     }
     catch (error) {

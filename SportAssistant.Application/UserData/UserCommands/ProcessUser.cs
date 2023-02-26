@@ -35,7 +35,7 @@ namespace SportAssistant.Application.UserData.UserCommands
             _mapper = mapper;
 
             _passwordManager = new PasswordManager();
-        }              
+        }
 
         /// <inheritdoc />
         public async Task<UserDb> TryToLogin(string login, string password)
@@ -100,7 +100,7 @@ namespace SportAssistant.Application.UserData.UserCommands
             }
             catch
             {
-                throw new BusinessException("Формат логина не соответствует почте.");
+                throw new BusinessException("Формат логина не соответствует формату почты. Например 'user@email.ru'");
             }
         }
 

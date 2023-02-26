@@ -6,6 +6,6 @@
 
         public string Name { get; set; }
 
-        public List<DateValueModel> Values { get; set; } = new List<DateValueModel>();     
+        public List<DateValueModel> Values { get; set; } = new List<DateValueModel>();
     }
 }

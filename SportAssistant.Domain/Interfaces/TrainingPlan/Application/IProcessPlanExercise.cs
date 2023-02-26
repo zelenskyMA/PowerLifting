@@ -1,6 +1,6 @@
 ﻿using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Models.TrainingPlan;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 
 namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
 {

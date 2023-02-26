@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import { connect } from "react-redux";
 import { Button, Col, Container, Row } from "reactstrap";
-import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { GetAsync, DeleteAsync } from "../../../common/ApiActions";
 import { ErrorPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal, Locale } from "../../../common/LocalActions";
@@ -28,7 +28,7 @@ class PlanDaysEdit extends React.Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var plan = await GetAsync(`/trainingPlan/get?Id=${this.props.params.planId}`);
+    var plan = await GetAsync(`/trainingPlan/${this.props.params.planId}`);
     var url = plan.isMyPlan ? `/plansList` : `/groupUser/${plan.userId}`;
 
     this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum, backUrl: url });
@@ -38,7 +38,7 @@ class PlanDaysEdit extends React.Component {
 
   onConfirmDelete = async () => {
     try {
-      await PostAsync("/trainingPlan/delete", { id: this.props.params.planId });
+      await DeleteAsync(`/trainingPlan/${this.props.params.planId}`);
       this.props.navigate(this.state.backUrl);
     }
     catch (error) {

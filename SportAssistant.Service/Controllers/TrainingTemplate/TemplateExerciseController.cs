@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportAssistant.Application.TraininTemplate.TemplateExerciseCommands;
+using SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands;
 using SportAssistant.Domain.Interfaces.Common.Operations;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 
-namespace SportAssistant.Service.Controllers.TraininTemplate
+namespace SportAssistant.Service.Controllers.TrainingTemplate
 {
     [Route("templateExercise")]
     public class TemplateExerciseController : BaseController
     {
         [HttpGet]
-        [Route("get")]
+        [Route("{id}")]
         public async Task<TemplateExercise> GetAsync([FromServices] ICommand<TemplateExerciseGetByIdQuery.Param, TemplateExercise> command, int id)
         {
             var result = await command.ExecuteAsync(new TemplateExerciseGetByIdQuery.Param() { Id = id });
@@ -17,23 +17,21 @@ namespace SportAssistant.Service.Controllers.TraininTemplate
         }
 
         [HttpGet]
-        [Route("getByDay")]
+        [Route("getByDay/{dayId}")]
         public async Task<List<TemplateExercise>> GetByDay([FromServices] ICommand<TemplateExerciseGetByDaysQuery.Param, List<TemplateExercise>> command, int dayId)
         {
-            var result = await command.ExecuteAsync(new TemplateExerciseGetByDaysQuery.Param() { DayIds = new List<int>() { dayId } });
+            var result = await command.ExecuteAsync(new TemplateExerciseGetByDaysQuery.Param() { DayId = dayId });
             return result;
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<bool> CreateAsync([FromServices] ICommand<TemplateExerciseCreateCommand.Param, bool> command, TemplateExerciseCreateCommand.Param param)
         {
             var result = await command.ExecuteAsync(param);
             return result;
         }
 
-        [HttpPost]
-        [Route("update")]
+        [HttpPut]
         public async Task<bool> UpdateAsync([FromServices] ICommand<TemplateExerciseUpdateCommand.Param, bool> command, TemplateExerciseUpdateCommand.Param param)
         {
             var result = await command.ExecuteAsync(param);

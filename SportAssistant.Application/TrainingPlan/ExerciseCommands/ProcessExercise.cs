@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.UserData.Auth.Interfaces;
-using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
-using SportAssistant.Domain.Enums;
 using SportAssistant.Domain.Interfaces;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
-using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
 
 namespace SportAssistant.Application.TrainingPlan.ExerciseCommands
@@ -25,8 +21,8 @@ namespace SportAssistant.Application.TrainingPlan.ExerciseCommands
             _exerciseRepository = exerciseRepository;
             _processDictionary = dictionaryCommands;
             _mapper = mapper;
-        }                
-       
+        }
+
         /// <inheritdoc />
         public async Task<Exercise?> GetAsync(int id) => (await GetAsync(new List<int>() { id })).FirstOrDefault();
 

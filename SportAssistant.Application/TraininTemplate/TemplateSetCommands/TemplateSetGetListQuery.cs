@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using SportAssistant.Application.UserData.Auth.Interfaces;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
 {
     /// <summary>
     /// Получение списка циклов для тренера

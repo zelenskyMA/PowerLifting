@@ -1,5 +1,5 @@
-﻿using SportAssistant.Domain.DbModels.TraininTemplate;
-using SportAssistant.Domain.Models.TraininTemplate;
+﻿using SportAssistant.Domain.DbModels.TrainingTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 
 namespace SportAssistant.Domain.Interfaces.TrainingTemplate.Application
 {

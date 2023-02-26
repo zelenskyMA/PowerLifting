@@ -9,6 +9,7 @@ import '../../styling/Common.css';
 import '../../styling/Custom.css';
 import CoachHomePanel from "../coaching/CoachHomePanel";
 import PlanDayViewPanel from "../trainingPlan/view/PlanDayViewPanel";
+import LoginUserPanel from "../userData/auth/LoginUserPanel";
 
 const mapStateToProps = store => {
   return {
@@ -67,7 +68,7 @@ class Home extends Component {
     return (
       <div className="first-page-text first-page-spaceTop">
         <h1 className="spaceBottom">{lngStr('general.appName')}</h1>
-        <h3>{lngStr('appSetup.user.loginOrRegister')}</h3>
+        <LoginUserPanel />        
       </div>);
   }
 

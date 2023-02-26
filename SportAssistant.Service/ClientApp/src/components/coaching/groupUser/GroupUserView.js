@@ -19,7 +19,7 @@ class GroupUserView extends Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var cardData = await GetAsync(`/userInfo/getCard?userId=${this.props.params.id}`);
+    var cardData = await GetAsync(`/userInfo/getCard/${this.props.params.id}`);
     this.setState({ userName: cardData.userName });
   }
 

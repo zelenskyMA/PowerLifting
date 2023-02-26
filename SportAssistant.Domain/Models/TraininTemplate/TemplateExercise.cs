@@ -1,7 +1,7 @@
 ﻿using SportAssistant.Domain.Models.Common;
 using SportAssistant.Domain.Models.TrainingPlan;
 
-namespace SportAssistant.Domain.Models.TraininTemplate
+namespace SportAssistant.Domain.Models.TrainingTemplate
 {
     public class TemplateExercise : Entity
     {
@@ -19,7 +19,7 @@ namespace SportAssistant.Domain.Models.TraininTemplate
         /// <summary>
         /// Расчетное поле. Нагрузка. Процент общего поднятого веса при выполнении упражнения.
         /// </summary>
-        public int WeightLoadPercentage { get; set; } = 0;        
+        public int WeightLoadPercentage { get; set; } = 0;
 
         public Exercise? Exercise { get; set; } = new Exercise();
 

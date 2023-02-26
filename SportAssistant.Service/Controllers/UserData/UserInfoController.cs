@@ -9,7 +9,6 @@ namespace SportAssistant.Service.Controllers.UserData
     public class UserInfoController : BaseController
     {
         [HttpGet]
-        [Route("get")]
         public async Task<UserInfo> GetAsync([FromServices] ICommand<UserInfoGetQuery.Param, UserInfo> command)
         {
             var result = await command.ExecuteAsync(new UserInfoGetQuery.Param());
@@ -17,7 +16,7 @@ namespace SportAssistant.Service.Controllers.UserData
         }
 
         [HttpGet]
-        [Route("getCard")]
+        [Route("getCard/{userId}")]
         public async Task<UserCard> GetCardAsync([FromServices] ICommand<UserInfoGetCardQuery.Param, UserCard> command, int userId)
         {
             var result = await command.ExecuteAsync(new UserInfoGetCardQuery.Param() { UserId = userId });
@@ -25,10 +24,9 @@ namespace SportAssistant.Service.Controllers.UserData
         }
 
         [HttpPost]
-        [Route("update")]
-        public async Task<bool> UpdateAsync([FromServices] ICommand<UserInfoUpdateCommand.Param, bool> command, UserInfo userInfo)
+        public async Task<bool> UpdateAsync([FromServices] ICommand<UserInfoUpdateCommand.Param, bool> command, UserInfoUpdateCommand.Param param)
         {
-            var result = await command.ExecuteAsync(new UserInfoUpdateCommand.Param() { Info = userInfo });
+            var result = await command.ExecuteAsync(param);
             return result;
         }
     }

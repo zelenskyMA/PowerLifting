@@ -28,7 +28,7 @@ public class ProcessGroup : IProcessGroup
         _user = user;
         _mapper = mapper;
     }
-    
+
     /// <inheritdoc />
     public async Task<TrainingGroup> GetUserGroupAsync(int userId)
     {
@@ -70,6 +70,8 @@ public class ProcessGroup : IProcessGroup
             Users = users
         };
 
+        groupInfo.Group.ParticipantsCount = users.Count();
+
         return groupInfo;
     }
 
@@ -81,7 +83,7 @@ public class ProcessGroup : IProcessGroup
             return new List<TrainingGroup>();
         }
 
-        var groups = groupsDb.Select(t => _mapper.Map<TrainingGroup>(t)).OrderBy(t => t.Name).ToList();
+        var groups = groupsDb.Select(_mapper.Map<TrainingGroup>).OrderBy(t => t.Name).ToList();
         foreach (var item in groups)
         {
             item.ParticipantsCount = (await _trainingGroupUserRepository.FindAsync(t => t.GroupId == item.Id)).Count();

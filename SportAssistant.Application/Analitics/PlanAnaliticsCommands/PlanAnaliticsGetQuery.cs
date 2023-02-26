@@ -14,6 +14,7 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
     /// </summary>
     public class PlanAnaliticsGetQuery : ICommand<PlanAnaliticsGetQuery.Param, PlanAnalitics>
     {
+        private readonly IProcessPlan _processPlan;
         private readonly IProcessPlanExercise _processPlanExercise;
         private readonly ITrainingCountersSetup _trainingCountersSetup;
 
@@ -23,6 +24,7 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
         private readonly IMapper _mapper;
 
         public PlanAnaliticsGetQuery(
+            IProcessPlan processPlan,
             IProcessPlanExercise processPlanExercise,
             ITrainingCountersSetup trainingCountersSetup,
             ICrudRepo<PlanDb> trainingPlanRepository,
@@ -30,6 +32,7 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
             IUserProvider user,
             IMapper mapper)
         {
+            _processPlan = processPlan;
             _processPlanExercise = processPlanExercise;
             _trainingCountersSetup = trainingCountersSetup;
             _trainingPlanRepository = trainingPlanRepository;
@@ -40,6 +43,8 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
 
         public async Task<PlanAnalitics> ExecuteAsync(Param param)
         {
+            await _processPlan.ViewAllowedForDataOfUserAsync(param.UserId);
+
             var plans = await PreparePlansWithCounters(param);
             var analitics = new PlanAnalitics();
             if (plans.Count == 0)
@@ -94,14 +99,16 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
         {
             var userId = param.UserId == 0 ? _user.Id : param.UserId;
 
+            // получаем планы, полностью попадающие в выбранный отрезок времени.
             var lastPlanDate = param.FinishDate.Date.AddDays(-6);
             var plans = (await _trainingPlanRepository.FindAsync(t => t.UserId == userId &&
                 t.StartDate >= param.StartDate.Date && t.StartDate <= lastPlanDate))
-                .Select(t => _mapper.Map<Plan>(t)).ToList();
+                .Select(_mapper.Map<Plan>).ToList();
 
+            // заполняем дто планов для подсчета аналитики
             var planIds = plans.Select(t => t.Id).ToList();
             var planDays = (await _trainingDayRepository.FindAsync(t => planIds.Contains(t.PlanId)))
-                .Select(t => _mapper.Map<PlanDay>(t)).ToList();
+                .Select(_mapper.Map<PlanDay>).ToList();
 
             var planExercises = await _processPlanExercise.GetByDaysAsync(planDays.Select(t => t.Id).ToList());
 

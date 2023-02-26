@@ -14,11 +14,18 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         Task<int> AssignPlanAsync(int templateId, DateTime creationDate, int userId);
 
         /// <summary>
-        /// Проверка допустимости создавать / менять план пользователя текущему пользователю.
+        /// Проверка допустимости создания / обновления плана текущим пользователем.
         /// </summary>
         /// <param name="userIdForCheck">Ид пользователя, которому принадлежит план</param>
         /// <returns></returns>
         Task<int> PlanningAllowedForUserAsync(int userIdForCheck);
+
+        /// <summary>
+        /// Проверка допустимости просмотра данных пользователя userIdForCheck текущим пользователем.
+        /// </summary>
+        /// <param name="userIdForCheck">Ид пользователя, которому принадлежит план</param>
+        /// <returns></returns>
+        Task<bool> ViewAllowedForDataOfUserAsync(int userIdForCheck);
 
         /// <summary>
         /// проверка количества активных планов. Не позволяем планировать слишком много.

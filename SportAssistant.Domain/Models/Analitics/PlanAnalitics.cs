@@ -1,23 +1,20 @@
-﻿using static SportAssistant.Domain.Models.Analitics.TypeCounterAnalitics;
+﻿namespace SportAssistant.Domain.Models.Analitics;
 
-namespace SportAssistant.Domain.Models.Analitics
+public class PlanAnalitics
 {
-    public class PlanAnalitics
-    {
-        /// <summary>
-        /// Plan counter data, sorted by plan dates
-        /// </summary>
-        public List<PlanCounterAnalitics> PlanCounters { get; set; } = new List<PlanCounterAnalitics>();
+    /// <summary>
+    /// Сводные данные в разрезе плана, отсортированные по датам
+    /// </summary>
+    public List<PlanCounterAnalitics> PlanCounters { get; set; } = new List<PlanCounterAnalitics>();
 
-        /// <summary>
-        /// plan exercise subTypes counters, solted by plan dates
-        /// </summary>
-        public List<TypeCounterAnalitics> TypeCounters { get; set; } = new List<TypeCounterAnalitics>();
+    /// <summary>
+    /// Сводные данные по подтипам упражнений в планах, отсортированные по датам
+    /// </summary>
+    public List<TypeCounterAnalitics> TypeCounters { get; set; } = new List<TypeCounterAnalitics>();
 
-        /// <summary>
-        /// Contains entries for each plan in analitics set. Used as full dataset for chart data selection.
-        /// All real data will be taken from TypeCounters by entries, presented here.
-        /// </summary>
-        public List<DateValueModel> FullTypeCounterList { get; set; } = new List<DateValueModel>();
-    }
+    /// <summary>
+    /// Содержит записи для каждого плана в сете аналитики. Используется как полноценный датасет для контрола графиков.
+    /// Основные данные будут получены из данных в TypeCounters.
+    /// </summary>
+    public List<DateValueModel> FullTypeCounterList { get; set; } = new List<DateValueModel>();
 }

@@ -1,5 +1,5 @@
 ﻿using SportAssistant.Domain.Models.TrainingPlan;
-using SportAssistant.Domain.Models.TraininTemplate;
+using SportAssistant.Domain.Models.TrainingTemplate;
 
 namespace SportAssistant.Application.Common.Actions.TrainingCounters
 {

@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Button, Col, Row } from "reactstrap";
-import { GetAsync, PostAsync } from "../../common/ApiActions";
+import { GetAsync, PostAsync, DeleteAsync } from "../../common/ApiActions";
 import { DropdownControl, ErrorPanel, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
@@ -22,7 +22,7 @@ class RequestAcceptView extends Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var requestData = await GetAsync(`/trainingRequests/get?id=${this.props.params.requestId}`);
+    var requestData = await GetAsync(`/trainingRequests/${this.props.params.requestId}`);
     var coachGroupsData = await GetAsync(`/trainingGroups/getList`);
 
     this.setState({ request: requestData, coachGroups: coachGroupsData, error: '', loading: false });
@@ -32,7 +32,7 @@ class RequestAcceptView extends Component {
 
   rejectRequest = async () => {
     try {
-      await PostAsync(`/trainingRequests/remove?userId=${this.state.request.userId}`);
+      await DeleteAsync(`/trainingRequests/${this.state.request.userId}`);
       this.props.navigate(`/coachConsole`);
     }
     catch (error) { this.setState({ error: error.message }); }
@@ -41,7 +41,7 @@ class RequestAcceptView extends Component {
   acceptRequest = async () => {
     try {
       var userGroup = { userId: this.state.request.userId, groupId: this.state.selectedGroupId };
-      await PostAsync(`/groupUser/update`, userGroup);
+      await PostAsync(`/groupUser/assign`, userGroup);
       this.props.navigate(`/coachConsole`);
     }
     catch (error) { this.setState({ error: error.message }); }

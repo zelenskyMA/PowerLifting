@@ -62,9 +62,7 @@ namespace SportAssistant.Application.UserData.Auth
             Random random = CreateRandomizer();
 
             // This array will hold password characters.
-            char[] password = null;
-
-            password = new char[random.Next(8, 10)];
+            char[] password = new char[random.Next(8, 10)];
 
             // Index of the next character to be added to password.
             int nextCharIdx;

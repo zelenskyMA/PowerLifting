@@ -20,7 +20,7 @@ class PlanDayEdit extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    var data = await GetAsync(`/planDay/get?id=${this.props.params.id}`);
+    var data = await GetAsync(`/planDay/${this.props.params.id}`);
     this.setState({ planDay: data, loading: false });
   }
 

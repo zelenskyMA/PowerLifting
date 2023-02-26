@@ -9,7 +9,7 @@ using SportAssistant.Domain.Interfaces.Common.Repositories;
 namespace SportAssistant.Application.Coaching.TrainingGroupUserCommands
 {
     /// <summary>
-    /// Отказ спортсмена от тренера. Если есть заявка - ее отмена автором.
+    /// Отмена заявки или отказ от действующего тренера спортсменом.
     /// </summary>
     public class GroupUserRejectCommand : ICommand<GroupUserRejectCommand.Param, bool>
     {

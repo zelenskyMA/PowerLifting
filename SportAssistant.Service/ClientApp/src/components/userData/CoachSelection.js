@@ -21,7 +21,7 @@ class CoachSelection extends Component {
   }
 
   onRowDblClick = async row => {
-    await PostAsync(`/trainingRequests/create?coachId=${row.values.id}`);
+    await PostAsync(`/trainingRequests/${row.values.id}`);
     this.props.navigate("/userCabinet");
   }
 

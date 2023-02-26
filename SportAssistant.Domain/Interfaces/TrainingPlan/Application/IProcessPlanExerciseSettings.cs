@@ -26,6 +26,6 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         /// </summary>
         /// <param name="exerciseIds">Поднятия для удаления</param>
         /// <returns></returns>
-        Task DeleteByPlanExerciseIdsAsync(List<int> exerciseIds);       
+        Task DeleteByPlanExerciseIdsAsync(List<int> exerciseIds);
     }
 }

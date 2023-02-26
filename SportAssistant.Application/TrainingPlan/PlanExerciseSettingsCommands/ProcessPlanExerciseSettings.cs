@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.Settings;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -19,7 +18,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
         private readonly ICrudRepo<PlanExerciseSettingsDb> _exerciseSettingsRepository;
         private readonly IContextProvider _contextProvider;
         private readonly IMapper _mapper;
-        
+
         public ProcessPlanExerciseSettings(
             IProcessUserAchivements processUserAchivements,
             IProcessSettings processSettings,
@@ -56,6 +55,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
         /// <inheritdoc />
         public async Task UpdateAsync(int userId, int planExerciseId, int exerciseTypeId, List<PlanExerciseSettings> settingsList)
         {
+            // проверка настроек и отсутствие данных
             var settings = await _processSettings.GetAsync();
             if (settingsList.Count > settings.MaxLiftItems)
             {
@@ -68,21 +68,24 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
                 return;
             }
 
+            // не сможем посчитать проценты без рекорда
             var achivement = await _processUserAchivements.GetByExerciseTypeAsync(userId, exerciseTypeId);
             if (achivement == null || achivement.Result == 0)
             {
                 throw new BusinessException("Рекорд спортсмена не указан. Нельзя запланировать тренировку.");
             }
 
-            var newIds = settingsList.Select(t => t.Id);
-            _exerciseSettingsRepository.DeleteList(existingSettingsDb.Where(t => !newIds.Contains(t.Id)).ToList());
+            // удаляем старые сеттинги
+            var incomeIds = settingsList.Select(t => t.Id);
+            _exerciseSettingsRepository.DeleteList(existingSettingsDb.Where(t => !incomeIds.Contains(t.Id)).ToList());
 
             var percentages = await GetPercentageListAsync();
             var settingsListDb = existingSettingsDb
-                .Where(t => newIds.Contains(t.Id))
+                .Where(t => incomeIds.Contains(t.Id))
                 .Union(settingsList.Where(t => t.Id == 0).Select(t => _mapper.Map<PlanExerciseSettingsDb>(t)))
                 .ToList();
 
+            // обновляем данные в старых записях (existingSettingsDb). В БД их уже нет.
             foreach (var item in settingsListDb)
             {
                 var updatedSettings = settingsList.FirstOrDefault(t => t.Id != 0 && t.Id == item.Id);
@@ -96,6 +99,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
                     item.Completed = updatedSettings.Completed;
                 }
 
+                // расчет процентовки
                 var result = item.Weight * 100 / achivement.Result;
                 var percentage = percentages.FirstOrDefault(t => t.MinValue <= result && t.MaxValue >= result);
                 percentage ??= percentages.OrderByDescending(t => t.MaxValue).First();
@@ -104,6 +108,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
                 item.PercentageId = percentage.Id;
             }
 
+            // сохранение
             await _exerciseSettingsRepository.CreateListAsync(settingsListDb.Where(t => t.Id == 0).ToList());
             _exerciseSettingsRepository.UpdateList(settingsListDb.Where(t => t.Id != 0).ToList());
         }

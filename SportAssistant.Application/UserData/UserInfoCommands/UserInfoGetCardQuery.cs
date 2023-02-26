@@ -61,7 +61,7 @@ namespace SportAssistant.Application.UserData.UserInfoCommands
                 throw new BusinessException("Пользователь не найден.");
             }
 
-            var info = await _processUserInfo.GetInfo(param.UserId);
+            var info = await _processUserInfo.GetInfo(userDb.Id);
 
             //доступно для просмотра админу, тренеру и себе
             if (!(await _userRoleCommands.IHaveRole(UserRoles.Admin) || info.CoachId == _user.Id || userDb.Id == _user.Id))
@@ -75,8 +75,8 @@ namespace SportAssistant.Application.UserData.UserInfoCommands
                 UserName = UserNaming.GetLegalFullName(info),
                 Login = userDb.Email,
                 BaseInfo = info,
-                GroupInfo = await _processTrainingGroups.GetUserGroupAsync(param.UserId),
-                Achivements = await _processUserAchivements.GetAsync(param.UserId)
+                GroupInfo = await _processTrainingGroups.GetUserGroupAsync(userDb.Id),
+                Achivements = await _processUserAchivements.GetAsync(userDb.Id)
             };
 
             if (userDb.Blocked)

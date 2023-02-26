@@ -1,7 +1,7 @@
 ﻿using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.Settings.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
@@ -78,6 +78,23 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
                 throw new BusinessException("У вас нет права планировать тренировки данного пользователя");
             }
             return userIdForCheck;
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> ViewAllowedForDataOfUserAsync(int userIdForCheck)
+        {
+            if (userIdForCheck == 0 || userIdForCheck == _user.Id) // проверяем на свой запрос
+            {
+                return true;
+            }
+
+            var info = await _processUserInfo.GetInfo(userIdForCheck);
+            if (info?.CoachId != _user.Id) // проверяем на тренерский запрос
+            {
+                throw new DataException(); // не свой и не тренерский
+            }
+
+            return true;
         }
 
         /// <inheritdoc />

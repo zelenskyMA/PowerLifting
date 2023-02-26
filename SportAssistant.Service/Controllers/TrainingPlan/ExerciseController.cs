@@ -18,7 +18,7 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
         }
 
         [HttpGet]
-        [Route("get")]
+        [Route("{id}")]
         public async Task<Exercise> Get([FromServices] ICommand<ExerciseGetByIdQuery.Param, Exercise> command, int id)
         {
             var result = await command.ExecuteAsync(new ExerciseGetByIdQuery.Param() { Id = id });
@@ -50,15 +50,14 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
         }
 
         [HttpPost]
-        [Route("update")]
         public async Task<bool> UpdateAsync([FromServices] ICommand<ExerciseUpdateCommand.Param, bool> command, Exercise exercise)
         {
             var result = await command.ExecuteAsync(new ExerciseUpdateCommand.Param() { Exercise = exercise });
             return result;
         }
 
-        [HttpPost]
-        [Route("delete")]
+        [HttpDelete]
+        [Route("{id}")]
         public async Task<bool> DeleteAsync([FromServices] ICommand<ExerciseDeleteCommand.Param, bool> command, int id)
         {
             var result = await command.ExecuteAsync(new ExerciseDeleteCommand.Param() { Id = id });

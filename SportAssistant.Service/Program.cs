@@ -15,10 +15,11 @@ using SportAssistant.Application.TrainingPlan.PlanCommands;
 using SportAssistant.Application.TrainingPlan.PlanDayCommands;
 using SportAssistant.Application.TrainingPlan.PlanExerciseCommands;
 using SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands;
-using SportAssistant.Application.TraininTemplate.TemplateDayCommands;
-using SportAssistant.Application.TraininTemplate.TemplateExerciseCommands;
-using SportAssistant.Application.TraininTemplate.TemplateExerciseSettingsCommands;
-using SportAssistant.Application.TraininTemplate.TemplatePlanCommands;
+using SportAssistant.Application.TrainingTemplate.TemplateDayCommands;
+using SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands;
+using SportAssistant.Application.TrainingTemplate.TemplateExerciseSettingsCommands;
+using SportAssistant.Application.TrainingTemplate.TemplatePlanCommands;
+using SportAssistant.Application.TraininTemplate.TemplateSetCommands;
 using SportAssistant.Application.UserData;
 using SportAssistant.Application.UserData.Auth;
 using SportAssistant.Application.UserData.Auth.Interfaces;
@@ -40,7 +41,7 @@ using SportAssistant.Service.Middleware;
 using System.Text;
 using ConfigurationManager = SportAssistant.Service.Extensions.ConfigurationManager;
 
-internal class Program
+public partial class Program
 {
     private static void Main(string[] args)
     {
@@ -80,6 +81,8 @@ internal class Program
         builder.Services.AddScoped<IProcessExercise, ProcessExercise>();
         builder.Services.AddScoped<ITrainingCountersSetup, TrainingCountersSetup>();
 
+        builder.Services.AddScoped<IProcessSetUserId, ProcessSetUserId>();
+        builder.Services.AddScoped<IProcessTemplateSet, ProcessTemplateSet>();        
         builder.Services.AddScoped<IProcessTemplatePlan, ProcessTemplatePlan>();
         builder.Services.AddScoped<IProcessTemplateDay, ProcessTemplateDay>();
         builder.Services.AddScoped<IProcessTemplateExercise, ProcessTemplateExercise>();
@@ -95,7 +98,7 @@ internal class Program
         builder.Services.AddScoped<IProcessUserAchivements, ProcessUserAchivements>();
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
-        
+
         builder.Services.AddScoped<IProcessEmail, ProcessEmail>();
         builder.Services.AddScoped<IResetPasswordEmailHandler, ResetPasswordEmailHandler>();
 

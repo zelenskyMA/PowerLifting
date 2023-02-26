@@ -50,7 +50,9 @@ class RegisterUser extends React.Component {
             </Col>
           </Row>
 
-          <Button className="spaceTop first-page-button" onClick={() => this.onRegister()}>{lngStr('general.actions.confirm')}</Button>
+          <Button className="spaceTop spaceRight first-page-button" onClick={() => this.onRegister()}>{lngStr('general.actions.confirm')}</Button>
+          <Button className="spaceTop first-page-button" onClick={() => this.props.navigate(`/`)}>{lngStr('general.actions.back')}</Button>
+
         </Container>
       </>
     );

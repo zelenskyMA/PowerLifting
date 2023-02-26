@@ -5,17 +5,17 @@ export const RECEIVE_SETTINGS = "RECEIVE_SETTINGS";
 export const CHANGE_MODAL_VISIBILITY = "CHANGE_MODAL_VISIBILITY";
 
 export async function updateUserInfo(userInfo, dispatch) {
-  await PostAsync(`/userInfo/update`, userInfo);
+  await PostAsync(`/userInfo`, { info: userInfo });
   setUserInfo(dispatch);
 }
 
 export async function setUserInfo(dispatch) {
-  const response = await GetAsync("/userInfo/get");
+  const response = await GetAsync("/userInfo");
   dispatch({ type: RECEIVE_USER_INFO, result: response });
 }
 
 export async function initApp(dispatch) {
-  const response = await GetAsync("/appSettings/get");
+  const response = await GetAsync("/appSettings");
   dispatch({ type: RECEIVE_SETTINGS, result: response });
 
   setUserInfo(dispatch);

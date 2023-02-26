@@ -1,11 +1,11 @@
 ﻿using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Application.TraininTemplate.TemplatePlanCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
 {
     public class ProcessTemplatePlan : IProcessTemplatePlan
     {

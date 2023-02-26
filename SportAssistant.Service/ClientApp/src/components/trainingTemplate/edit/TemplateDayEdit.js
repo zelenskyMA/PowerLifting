@@ -19,7 +19,7 @@ class TemplateDayEdit extends Component {
   componentDidMount() { this.getInitData(); }
 
   async getInitData() {
-    var data = await GetAsync(`/templateDay/get?id=${this.props.params.id}`);
+    var data = await GetAsync(`/templateDay/${this.props.params.id}`);
     this.setState({ templateDay: data, loading: false });
   }
 

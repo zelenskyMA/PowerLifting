@@ -16,7 +16,7 @@ namespace SportAssistant.Application.Common
 
         public int?[] MyOnly => new int?[] { _user.Id };
 
-        public int?[] CommonOnly => new int?[] { null, 0};
+        public int?[] CommonOnly => new int?[] { null, 0 };
 
     }
 }

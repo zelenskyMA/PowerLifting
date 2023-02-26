@@ -10,6 +10,7 @@ namespace SportAssistant.Service.Controllers
     {
         [HttpGet]
         [Route("getPlanAnalitics")]
+        [Route("getPlanAnalitics/{userId}")]
         public async Task<PlanAnalitics> GetPlanAnaliticsAsync(
             [FromServices] ICommand<PlanAnaliticsGetQuery.Param, PlanAnalitics> command,
             DateTime startDate, DateTime finishDate, int userId = 0)

@@ -1,8 +1,8 @@
 ﻿import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Button, Col, Label, Row } from "reactstrap";
-import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { InputNumber, InputCheckbox, InputText, LoadingPanel } from "../../common/controls/CustomControls";
+import { Button, Col, Row } from "reactstrap";
+import { DeleteAsync, GetAsync, PostAsync } from "../../common/ApiActions";
+import { InputCheckbox, InputNumber, InputText, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import { changeModalVisibility, updateUserInfo } from "../../stores/appStore/appActions";
 import '../../styling/Common.css';
@@ -31,8 +31,8 @@ class UserCabinet extends Component {
 
   getInitData = async () => {
     const [info, achivementsData, trainingRequestData] = await Promise.all([
-      GetAsync("/userInfo/get"),
-      GetAsync("/userAchivement/get"),
+      GetAsync("/userInfo"),
+      GetAsync("/userAchivement"),
       GetAsync("/trainingRequests/getMyRequest")
     ]);
 
@@ -48,14 +48,14 @@ class UserCabinet extends Component {
 
   createRequest = () => { this.props.navigate("/coachSelection"); }
   cancelRequest = async () => {
-    await PostAsync(`/trainingRequests/remove`);
+    await DeleteAsync(`/trainingRequests`);
     var trainingRequestData = await GetAsync("/trainingRequests/getMyRequest");
     this.setState({ trainingRequest: trainingRequestData });
   }
 
   onConfirmRejectCoach = async () => {
     await PostAsync(`/groupUser/reject`);
-    var info = await GetAsync("/userInfo/get");
+    var info = await GetAsync("/userInfo");
     this.setState({ userInfo: info });
   }
 
@@ -73,7 +73,7 @@ class UserCabinet extends Component {
 
   confirmAsync = async () => {
     await this.props.updateUserInfo(this.state.userInfo);
-    await PostAsync(`/userAchivement/create`, [this.state.pushAchivement, this.state.jerkAchivement]);
+    await PostAsync(`/userAchivement`, { achivements: [this.state.pushAchivement, this.state.jerkAchivement] });
     this.props.navigate("/");
   }
 
@@ -147,11 +147,9 @@ class UserCabinet extends Component {
         </Row>
 
         <Row className="spaceTop">
-          <Col xs={6}>
-            <Label check>
+          <Col xs={10}>            
               <span style={{ marginRight: '20px' }} >{lngStr('coaching.myTrainer')}:</span>
-              {this.coachRequestView(lngStr)}
-            </Label>
+              {this.coachRequestView(lngStr)}            
           </Col>
         </Row>
 
@@ -163,14 +161,14 @@ class UserCabinet extends Component {
     if (this.state.userInfo.coachLegalName) {
       return (<>
         <strong className="spaceRight" >{this.state.userInfo.coachLegalName}</strong>
-        <Button color="primary" onClick={() => this.rejectCoach()}>{lngStr('general.actions.giveUp')}</Button >
+        <Button color="primary" onClick={() => this.rejectCoach()}>{lngStr('general.actions.giveUp')}</Button>
       </>);
     }
 
     if (this.state.trainingRequest.coachName) {
       return (<>
         <strong className="spaceRight" >{lngStr('coaching.request.forTrainer')} {this.state.trainingRequest.coachName}</strong>
-        <Button color="primary" onClick={() => this.cancelRequest()}>{lngStr('general.actions.cancel')}</Button >
+        <Button color="primary" onClick={() => this.cancelRequest()}>{lngStr('general.actions.cancel')}</Button>
       </>
       );
     }

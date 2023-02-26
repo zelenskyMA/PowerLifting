@@ -25,7 +25,7 @@ class TemplateSetListView extends Component {
 
   createTemplateSet = async () => {
     try {
-      await PostAsync("/templateSet/create", this.state.newSet);
+      await PostAsync("/templateSet", this.state.newSet);
       await this.getInitData();
     }
     catch (error) {

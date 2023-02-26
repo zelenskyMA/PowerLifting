@@ -9,7 +9,7 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
     public class PlanDayController : BaseController
     {
         [HttpGet]
-        [Route("get")]
+        [Route("{id}")]
         public async Task<PlanDay> GetAsync([FromServices] ICommand<PlanDayGetByIdQuery.Param, PlanDay> command, int id)
         {
             var result = await command.ExecuteAsync(new PlanDayGetByIdQuery.Param() { Id = id });
@@ -32,11 +32,11 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
             return result;
         }
 
-        [HttpPost]
-        [Route("clear")]
-        public async Task<bool> ClearAsync([FromServices] ICommand<PlanDayClearCommand.Param, bool> command, PlanDayClearCommand.Param param)
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<bool> ClearAsync([FromServices] ICommand<PlanDayClearCommand.Param, bool> command, int id)
         {
-            var result = await command.ExecuteAsync(param);
+            var result = await command.ExecuteAsync(new PlanDayClearCommand.Param() { Id = id });
             return result;
         }
     }

@@ -3,6 +3,7 @@ using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Enums;
+using SportAssistant.Domain.Interfaces;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.UserData.Application;
@@ -16,6 +17,7 @@ namespace SportAssistant.Application.TrainingPlan.ExerciseCommands
     public class ExerciseUpdateCommand : ICommand<ExerciseUpdateCommand.Param, bool>
     {
         private readonly IUserRoleCommands _userRoleCommands;
+        private readonly IProcessDictionary _dictionaryCommands;
 
         private readonly ICrudRepo<ExerciseDb> _exerciseRepository;
         private readonly IUserProvider _user;
@@ -23,11 +25,13 @@ namespace SportAssistant.Application.TrainingPlan.ExerciseCommands
 
         public ExerciseUpdateCommand(
          IUserRoleCommands userRoleCommands,
+         IProcessDictionary dictionaryCommands,
          ICrudRepo<ExerciseDb> exerciseRepository,
          IUserProvider user,
          IMapper mapper)
         {
             _userRoleCommands = userRoleCommands;
+            _dictionaryCommands = dictionaryCommands;
             _exerciseRepository = exerciseRepository;
             _user = user;
             _mapper = mapper;
@@ -36,7 +40,7 @@ namespace SportAssistant.Application.TrainingPlan.ExerciseCommands
         /// <inheritdoc />
         public async Task<bool> ExecuteAsync(Param param)
         {
-            Validate(param.Exercise);
+            await ValidateAsync(param.Exercise);
 
             var allowedUserIds = new int?[] { null, 0, _user.Id };
             var exercisesDb = await _exerciseRepository.FindAsync(t => allowedUserIds.Contains(t.UserId) && !t.Closed);
@@ -76,26 +80,29 @@ namespace SportAssistant.Application.TrainingPlan.ExerciseCommands
             return true;
         }
 
-        private void Validate(Exercise exercise)
+        private async Task ValidateAsync(Exercise exercise)
         {
             if (exercise == null)
             {
                 throw new BusinessException("Укажите упражнение");
             }
 
-            if (exercise.ExerciseTypeId == 0)
-            {
-                throw new BusinessException("Укажите тип упражнения");
-            }
-
-            if (exercise.ExerciseSubTypeId == 0)
-            {
-                throw new BusinessException("Укажите подтип упражнения");
-            }
-
             if (string.IsNullOrEmpty(exercise.Name))
             {
                 throw new BusinessException("Название обязательно для заполнения");
+            }
+
+            var exTypes = (await _dictionaryCommands.GetItemsByTypeIdAsync(DictionaryTypes.ExerciseType)).Select(t => t.Id);
+            var exSubTypes = (await _dictionaryCommands.GetItemsByTypeIdAsync(DictionaryTypes.ExerciseSubType)).Select(t => t.Id);
+
+            if (!exTypes.Contains(exercise.ExerciseTypeId))
+            {
+                throw new BusinessException("Укажите существующий тип упражнения");
+            }
+
+            if (!exSubTypes.Contains(exercise.ExerciseSubTypeId))
+            {
+                throw new BusinessException("Укажите существующий подтип упражнения");
             }
         }
 

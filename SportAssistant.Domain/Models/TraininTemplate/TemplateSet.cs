@@ -1,6 +1,6 @@
 ﻿using SportAssistant.Domain.Models.Common;
 
-namespace SportAssistant.Domain.DbModels.TraininTemplate
+namespace SportAssistant.Domain.DbModels.TrainingTemplate
 {
     public class TemplateSet : Entity
     {

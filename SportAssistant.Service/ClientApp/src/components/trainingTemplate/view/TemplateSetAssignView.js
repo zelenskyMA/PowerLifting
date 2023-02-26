@@ -25,7 +25,7 @@ class TemplateSetAssignView extends Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var groupData = await GetAsync(`/trainingGroups/get?id=${this.props.params.groupId}`);
+    var groupData = await GetAsync(`/trainingGroups/${this.props.params.groupId}`);
     var templateSets = await GetAsync("/templateSet/getList");
     this.setState({ groupInfo: groupData, templateSets: templateSets, loading: false });
   }
@@ -34,7 +34,7 @@ class TemplateSetAssignView extends Component {
   onSelectionChange = (propName, value) => { this.setState(prevState => ({ error: '', selectedInfo: { ...prevState.selectedInfo, [propName]: value } })); }
 
   onSetSelect = async (id) => {
-    var templateSetData = await GetAsync(`/templateSet/get?id=${id}`);
+    var templateSetData = await GetAsync(`/templateSet/${id}`);
 
     this.onSelectionChange("setId", id);
     this.setState({ templatePlans: templateSetData.templates || [] });

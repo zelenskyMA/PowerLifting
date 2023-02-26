@@ -1,11 +1,6 @@
 ﻿using SportAssistant.Domain.Models.Common;
 using SportAssistant.Domain.Models.TrainingPlan;
-using SportAssistant.Domain.Models.TraininTemplate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SportAssistant.Domain.Models.TrainingTemplate;
 
 namespace SportAssistant.Application.Common.Actions.TrainingCounters
 {

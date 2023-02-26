@@ -7,7 +7,7 @@ using SportAssistant.Domain.Models.Coaching;
 namespace SportAssistant.Application.Coaching.TrainingGroupCommands
 {
     /// <summary>
-    /// Получение запланированного упражнения по его Ид.
+    /// Получение тренерской группы по ее Ид.
     /// </summary>
     public class GroupGetByIdQuery : ICommand<GroupGetByIdQuery.Param, TrainingGroupInfo>
     {
@@ -27,8 +27,9 @@ namespace SportAssistant.Application.Coaching.TrainingGroupCommands
             var groupInfo = await _processGroup.GetGroupInfoByIdAsync(param.Id);
 
             var userIds = groupInfo.Users.Select(t => t.Id).ToList();
-            var allActivePlans = await _trainingPlanRepository.FindAsync(
-               t => userIds.Contains(t.UserId) && t.StartDate.AddDays(7) >= DateTime.Now.Date);
+            var allActivePlans = await _trainingPlanRepository.FindAsync(t =>
+                userIds.Contains(t.UserId) &&
+                t.StartDate.AddDays(7) >= DateTime.Now.Date);
 
             foreach (var user in groupInfo.Users)
             {

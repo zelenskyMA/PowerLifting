@@ -15,7 +15,7 @@ namespace SportAssistant.Application.TrainingPlan.ExerciseCommands
         {
             _processExercise = processExercise;
         }
-        
+
         public async Task<Exercise> ExecuteAsync(Param param)
         {
             var result = await _processExercise.GetAsync(param.Id) ?? new Exercise();

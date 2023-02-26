@@ -1,5 +1,4 @@
-﻿using SportAssistant.Application.TrainingPlan.PlanCommands;
-using SportAssistant.Domain.CustomExceptions;
+﻿using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -36,7 +35,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
 
         public async Task<bool> ExecuteAsync(Param param)
         {
-            if (param.Exercises.Count == 0)
+            if (param.Exercises == null || param.Exercises.Count == 0)
             {
                 return false;
             }
@@ -94,7 +93,6 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
         private async Task<int> GetAndCheckUserId(int dayId)
         {
             var userId = await _processPlanUserId.GetByDayId(dayId);
-
             return await _processPlan.PlanningAllowedForUserAsync(userId);
         }
 

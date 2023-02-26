@@ -41,13 +41,13 @@ namespace SportAssistant.Application.UserData.UserCommands
 
         public class Param
         {
-            public string Login { get; set; }
+            public string Login { get; set; } = string.Empty;
 
             public string? OldPassword { get; set; }
 
-            public string Password { get; set; }
+            public string Password { get; set; } = string.Empty;
 
-            public string PasswordConfirm { get; set; }
+            public string PasswordConfirm { get; set; } = string.Empty;
         }
     }
 }

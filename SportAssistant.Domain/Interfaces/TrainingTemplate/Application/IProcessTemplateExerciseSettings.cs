@@ -1,4 +1,4 @@
-﻿using SportAssistant.Domain.Models.TraininTemplate;
+﻿using SportAssistant.Domain.Models.TrainingTemplate;
 
 namespace SportAssistant.Domain.Interfaces.TrainingTemplate.Application
 {
@@ -10,7 +10,7 @@ namespace SportAssistant.Domain.Interfaces.TrainingTemplate.Application
         /// </summary>
         /// <param name="exerciseIds">Список Ид запланированных упражнений</param>
         /// <returns></returns>
-        Task<List<TemplateExerciseSettings>> GetAsync(List<int> exerciseIds);       
+        Task<List<TemplateExerciseSettings>> GetAsync(List<int> exerciseIds);
 
         /// <summary>
         /// Удаление поднятий в упражнениях из списка

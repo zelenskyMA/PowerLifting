@@ -4,7 +4,7 @@ using SportAssistant.Domain.Interfaces.UserData.Application;
 namespace SportAssistant.Application.Administration.AdministrationCommands
 {
     /// <summary>
-    /// Apply block changes for selected user
+    /// Изменение статуса блокировки для выбранного пользователя.
     /// </summary>
     public class ApplyBlockCommand : ICommand<ApplyBlockCommand.Param, bool>
     {

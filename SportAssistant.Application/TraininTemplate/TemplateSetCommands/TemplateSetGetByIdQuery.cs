@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
 {
     /// <summary>
     /// Получение тренировочного цикла по Ид
@@ -39,7 +39,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 
             var templateSet = _mapper.Map<TemplateSet>(templateSetDb);
             templateSet.Templates = (await _templatePlanRepository.FindAsync(t => t.TemplateSetId == templateSet.Id))
-                .Select(t => _mapper.Map<TemplatePlan>(t)).ToList();
+                .Select(_mapper.Map<TemplatePlan>).ToList();
 
             return templateSet;
         }

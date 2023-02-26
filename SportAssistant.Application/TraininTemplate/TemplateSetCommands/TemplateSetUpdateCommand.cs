@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
 {
     /// <summary>
     /// Обновление данных тренировочного цикла
@@ -31,6 +31,12 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
             if (string.IsNullOrEmpty(param.TemplateSet.Name))
             {
                 throw new BusinessException("Необходимо указать новое название цикла");
+            }
+
+            var duplicateSetDb = await _templateSetRepository.FindOneAsync(t => t.Name == param.TemplateSet.Name && t.CoachId == _user.Id);
+            if (duplicateSetDb != null)
+            {
+                throw new BusinessException("Тренировочный цикл с указанным именем уже существует");
             }
 
             var templateSetDb = await _templateSetRepository.FindOneAsync(t => t.Id == param.TemplateSet.Id && t.CoachId == _user.Id);

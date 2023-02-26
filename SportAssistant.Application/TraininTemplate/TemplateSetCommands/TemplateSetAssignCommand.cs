@@ -1,14 +1,13 @@
-﻿using AutoMapper;
-using SportAssistant.Application.UserData.Auth.Interfaces;
+﻿using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
-using SportAssistant.Domain.DbModels.TraininTemplate;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Coaching.Application;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Models.Coaching;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
 {
     /// <summary>
     /// Назначение тренировочного цикла, или шаблона в цикле, группе спортсменов 
@@ -37,7 +36,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
 
         public async Task<bool> ExecuteAsync(Param param)
         {
-            (List<TemplatePlanDb> templates, TrainingGroupInfo groupInfo) = await ValidateAssignmentAsync(param);
+            (List<TemplatePlanDb> templates, TrainingGroupInfo groupInfo) = await VerifyRequestAsync(param);
 
             foreach (var user in groupInfo.Users)
             {
@@ -60,7 +59,7 @@ namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
             return true;
         }
 
-        private async Task<(List<TemplatePlanDb> templates, TrainingGroupInfo groupInfo)> ValidateAssignmentAsync(Param param)
+        private async Task<(List<TemplatePlanDb> templates, TrainingGroupInfo groupInfo)> VerifyRequestAsync(Param param)
         {
             var templateSetDb = await _templateSetRepository.FindOneAsync(t => t.Id == param.SetId && t.CoachId == _user.Id);
             if (templateSetDb == null)

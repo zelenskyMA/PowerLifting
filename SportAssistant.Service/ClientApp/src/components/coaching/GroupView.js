@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Button } from "reactstrap";
-import { GetAsync, PostAsync } from "../../common/ApiActions";
+import { GetAsync, DeleteAsync } from "../../common/ApiActions";
 import { ErrorPanel, LoadingPanel, TableControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
@@ -20,7 +20,7 @@ class GroupView extends Component {
   componentDidMount() { this.getGroupData(); }
 
   getGroupData = async () => {
-    var groupData = await GetAsync(`/trainingGroups/get?id=${this.props.params.groupId}`);
+    var groupData = await GetAsync(`/trainingGroups/${this.props.params.groupId}`);
     this.setState({ group: groupData.group, users: groupData.users, error: '', loading: false });
   }
 
@@ -28,7 +28,7 @@ class GroupView extends Component {
 
   deleteGroup = async () => {
     try {
-      await PostAsync("/trainingGroups/delete", { id: this.props.params.groupId });
+      await DeleteAsync(`/trainingGroups/${this.props.params.groupId}`);
       this.props.navigate(`/coachConsole`);
     }
     catch (error) {

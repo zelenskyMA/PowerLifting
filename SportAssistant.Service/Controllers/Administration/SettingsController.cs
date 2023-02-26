@@ -9,7 +9,6 @@ namespace SportAssistant.Service.Controllers.Administration
     public class SettingsController : BaseController
     {
         [HttpGet]
-        [Route("get")]
         public async Task<AppSettings> GetAsync([FromServices] ICommand<SettingsGetQuery.Param, AppSettings> command)
         {
             var result = await command.ExecuteAsync(new SettingsGetQuery.Param() { });
@@ -17,10 +16,9 @@ namespace SportAssistant.Service.Controllers.Administration
         }
 
         [HttpPost]
-        [Route("update")]
-        public async Task<bool> UpdateAsync([FromServices] ICommand<SettingsUpdateCommand.Param, bool> command, AppSettings settings)
+        public async Task<bool> UpdateAsync([FromServices] ICommand<SettingsUpdateCommand.Param, bool> command, SettingsUpdateCommand.Param param)
         {
-            var result = await command.ExecuteAsync(new SettingsUpdateCommand.Param() { Settings = settings });
+            var result = await command.ExecuteAsync(param);
             return result;
         }
 

@@ -34,7 +34,7 @@ namespace SportAssistant.Application.Settings
                 }
 
                 prop.SetValue(settings, value, null);
-            }           
+            }
 
             return settings;
         }

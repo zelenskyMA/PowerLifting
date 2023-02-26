@@ -42,7 +42,9 @@ class ResetUserPassword extends React.Component {
             </Col>
           </Row>
 
-          <Button className="spaceTop first-page-button" onClick={() => this.onReset()}>{lngStr('general.actions.continue')}</Button>
+          <Button className="spaceTop spaceRight first-page-button" onClick={() => this.onReset()}>{lngStr('general.actions.continue')}</Button>
+          <Button className="spaceTop first-page-button" onClick={() => this.props.navigate(`/`)}>{lngStr('general.actions.back')}</Button>
+
         </Container>
       </>
     );

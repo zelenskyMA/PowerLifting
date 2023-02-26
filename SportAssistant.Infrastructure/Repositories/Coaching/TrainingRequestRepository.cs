@@ -30,9 +30,9 @@ namespace SportAssistant.Infrastructure.Repositories.Coaching
         public async Task<List<UserInfoDb>> GetUsersAsync(List<int> requestedUserIds)
         {
             var users = from info in Context.UsersInfo
-                          join user in Context.Users on info.UserId equals user.Id
-                          where requestedUserIds.Contains(user.Id) && !user.Blocked
-                          select info;
+                        join user in Context.Users on info.UserId equals user.Id
+                        where requestedUserIds.Contains(user.Id) && !user.Blocked
+                        select info;
 
             return await users.ToListAsync();
         }

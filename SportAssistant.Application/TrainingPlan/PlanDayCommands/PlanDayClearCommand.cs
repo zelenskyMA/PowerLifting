@@ -29,19 +29,13 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
 
         public async Task<bool> ExecuteAsync(Param param)
         {
-            await GetAndCheckUserId(param.Id);
+            var userId = await _processPlanUserId.GetByDayId(param.Id);
+            await _processPlan.PlanningAllowedForUserAsync(userId);
 
             var planExercisesDb = await _planExerciseRepository.FindAsync(t => t.PlanDayId == param.Id);
             await _processPlanExercise.DeletePlanExercisesAsync(planExercisesDb);
 
             return true;
-        }
-
-        private async Task<int> GetAndCheckUserId(int dayId)
-        {
-            var userId = await _processPlanUserId.GetByDayId(dayId);
-
-            return await _processPlan.PlanningAllowedForUserAsync(userId);
         }
 
         public class Param
