@@ -32,9 +32,19 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
         public async Task<int> ExecuteAsync(Param param)
         {
             var templatePlanDb = await _templatePlanRepository.FindOneAsync(t => t.Id == param.Id);
+            var setId = await VerifyTemplatePlanAsync(templatePlanDb, param.Id);
+
+            await _processTemplatePlan.DeleteTemplateAsync(templatePlanDb);
+
+            return setId; // нужен для корректной навигации в UI
+        }
+
+        private async Task<int> VerifyTemplatePlanAsync(TemplatePlanDb? templatePlanDb, int id)
+        {
+            
             if (templatePlanDb == null)
             {
-                throw new BusinessException($"Шаблон с ид {param.Id} не найден");
+                throw new BusinessException($"Шаблон с ид {id} не найден");
             }
 
             var templateSetDb = await _templateSetRepository.FindOneAsync(t => t.Id == templatePlanDb.TemplateSetId && t.CoachId == _user.Id);
@@ -42,8 +52,6 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
             {
                 throw new BusinessException($"У вас нет прав на удаление шаблона '{templatePlanDb.Name}'");
             }
-
-            await _processTemplatePlan.DeleteTemplateAsync(templatePlanDb);
 
             return templateSetDb.Id;
         }

@@ -1,7 +1,9 @@
 ﻿using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingTemplate;
+using SportAssistant.Domain.Enums;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
+using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Infrastructure.DataContext;
 
 namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
@@ -11,15 +13,18 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
     /// </summary>
     public class TemplatePlanCreateCommand : ICommand<TemplatePlanCreateCommand.Param, int>
     {
+        private readonly IUserRoleCommands _userRoleCommands;
         private readonly ICrudRepo<TemplatePlanDb> _templatePlanRepository;
         private readonly ICrudRepo<TemplateDayDb> _templateDayRepository;
         private readonly IContextProvider _provider;
 
         public TemplatePlanCreateCommand(
+            IUserRoleCommands userRoleCommands,
             ICrudRepo<TemplatePlanDb> templatePlanRepository,
             ICrudRepo<TemplateDayDb> templateDayRepository,
             IContextProvider provider)
         {
+            _userRoleCommands = userRoleCommands;
             _templatePlanRepository = templatePlanRepository;
             _templateDayRepository = templateDayRepository;
             _provider = provider;
@@ -27,18 +32,9 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
 
         public async Task<int> ExecuteAsync(Param param)
         {
-            if (string.IsNullOrWhiteSpace(param.Name))
-            {
-                throw new BusinessException("Необходимо указать название шаблона");
-            }
+            await VerifyTemplatePlanAsync(param.Name);
 
-            var templatePlanDb = await _templatePlanRepository.FindOneAsync(t => t.Name == param.Name);
-            if (templatePlanDb != null)
-            {
-                throw new BusinessException("Тренировочный шаблон с указанным именем уже существует");
-            }
-
-            templatePlanDb = new TemplatePlanDb()
+            var templatePlanDb = new TemplatePlanDb()
             {
                 TemplateSetId = param.SetId,
                 Name = param.Name,
@@ -54,6 +50,25 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
             }
 
             return templatePlanDb.Id;
+        }
+
+        private async Task VerifyTemplatePlanAsync(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new BusinessException("Необходимо указать название шаблона");
+            }
+
+            if (!await _userRoleCommands.IHaveRole(UserRoles.Coach))
+            {
+                throw new RoleException();
+            }
+
+            var templatePlanDb = await _templatePlanRepository.FindOneAsync(t => t.Name == name);
+            if (templatePlanDb != null)
+            {
+                throw new BusinessException("Тренировочный шаблон с указанным именем уже существует");
+            }
         }
 
         public class Param

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
@@ -16,21 +17,28 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
     {
         private readonly ITrainingCountersSetup _trainingCountersSetup;
         private readonly IProcessTemplateExercise _processTemplateExercise;
+        private readonly IProcessSetUserId _processSetUserId;
+
         private readonly ICrudRepo<TemplatePlanDb> _templatePlanRepository;
         private readonly ICrudRepo<TemplateDayDb> _templateDayRepository;
+        private readonly IUserProvider _user;
         private readonly IMapper _mapper;
 
         public TemplatePlanGetByIdQuery(
             ITrainingCountersSetup trainingCountersSetup,
             IProcessTemplateExercise processTemplateExercise,
+            IProcessSetUserId processSetUserId,
             ICrudRepo<TemplatePlanDb> templatePlanRepository,
             ICrudRepo<TemplateDayDb> templateDayRepository,
+            IUserProvider user,
             IMapper mapper)
         {
             _trainingCountersSetup = trainingCountersSetup;
             _processTemplateExercise = processTemplateExercise;
+            _processSetUserId = processSetUserId;
             _templatePlanRepository = templatePlanRepository;
             _templateDayRepository = templateDayRepository;
+            _user = user;
             _mapper = mapper;
         }
 
@@ -42,9 +50,18 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
                 throw new BusinessException("Шаблон не найден");
             }
 
+            if (templatePlanDb != null) // чужие данные смотреть нельзя
+            {
+                var setUserId = await _processSetUserId.GetByPlanId(param.Id);
+                if (setUserId != _user.Id)
+                {
+                    throw new DataException();
+                }
+            }
+
             var templatePlan = _mapper.Map<TemplatePlan>(templatePlanDb);
 
-            var days = (await _templateDayRepository.FindAsync(t => t.TemplatePlanId == templatePlanDb.Id)).Select(t => _mapper.Map<TemplateDay>(t)).ToList();
+            var days = (await _templateDayRepository.FindAsync(t => t.TemplatePlanId == templatePlanDb.Id)).Select(_mapper.Map<TemplateDay>).ToList();
             var exercises = await _processTemplateExercise.GetByDaysAsync(days.Select(t => t.Id).ToList());
             foreach (var day in days)
             {

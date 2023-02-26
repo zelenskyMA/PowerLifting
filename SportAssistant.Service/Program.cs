@@ -79,7 +79,8 @@ public partial class Program
         builder.Services.AddScoped<IProcessPlanExerciseSettings, ProcessPlanExerciseSettings>();
         builder.Services.AddScoped<IProcessExercise, ProcessExercise>();
         builder.Services.AddScoped<ITrainingCountersSetup, TrainingCountersSetup>();
-
+        
+        builder.Services.AddScoped<IProcessSetUserId, ProcessSetUserId>();
         builder.Services.AddScoped<IProcessTemplatePlan, ProcessTemplatePlan>();
         builder.Services.AddScoped<IProcessTemplateDay, ProcessTemplateDay>();
         builder.Services.AddScoped<IProcessTemplateExercise, ProcessTemplateExercise>();
