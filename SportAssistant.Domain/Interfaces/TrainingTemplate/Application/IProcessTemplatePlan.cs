@@ -1,5 +1,4 @@
-﻿using SportAssistant.Domain.CustomExceptions;
-using SportAssistant.Domain.DbModels.TrainingTemplate;
+﻿using SportAssistant.Domain.DbModels.TrainingTemplate;
 
 namespace SportAssistant.Domain.Interfaces.TrainingTemplate.Application
 {

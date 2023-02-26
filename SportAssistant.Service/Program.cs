@@ -79,7 +79,7 @@ public partial class Program
         builder.Services.AddScoped<IProcessPlanExerciseSettings, ProcessPlanExerciseSettings>();
         builder.Services.AddScoped<IProcessExercise, ProcessExercise>();
         builder.Services.AddScoped<ITrainingCountersSetup, TrainingCountersSetup>();
-        
+
         builder.Services.AddScoped<IProcessSetUserId, ProcessSetUserId>();
         builder.Services.AddScoped<IProcessTemplatePlan, ProcessTemplatePlan>();
         builder.Services.AddScoped<IProcessTemplateDay, ProcessTemplateDay>();
@@ -96,7 +96,7 @@ public partial class Program
         builder.Services.AddScoped<IProcessUserAchivements, ProcessUserAchivements>();
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
-        
+
         builder.Services.AddScoped<IProcessEmail, ProcessEmail>();
         builder.Services.AddScoped<IResetPasswordEmailHandler, ResetPasswordEmailHandler>();
 

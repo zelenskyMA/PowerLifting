@@ -34,7 +34,7 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
             }
 
             var coaches = coachesDb
-                .Where(t=> t.UserId != _user.Id) // не предлагать пользователю самого себя тренером
+                .Where(t => t.UserId != _user.Id) // не предлагать пользователю самого себя тренером
                 .Select(_mapper.Map<CoachInfo>).ToList();
 
             foreach (var item in coaches)

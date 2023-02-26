@@ -41,7 +41,7 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
 
         private async Task<int> VerifyTemplatePlanAsync(TemplatePlanDb? templatePlanDb, int id)
         {
-            
+
             if (templatePlanDb == null)
             {
                 throw new BusinessException($"Шаблон с ид {id} не найден");

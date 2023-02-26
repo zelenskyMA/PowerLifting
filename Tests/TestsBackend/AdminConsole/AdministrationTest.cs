@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using FluentAssertions;
+﻿using FluentAssertions;
 using SportAssistant.Application.Administration.AdministrationCommands;
 using SportAssistant.Domain.Models.UserData;
 using System.Net;
@@ -57,7 +56,7 @@ public class AdministrationTest : BaseTest
     {
         var userId = Factory.Data.GetUserId(Constants.UserLogin);
         var adminId = Factory.Data.GetUserId(Constants.AdminLogin);
-        
+
         Factory.Actions.AuthorizeUser(Client);
 
         //User has no rights to add role
@@ -169,7 +168,7 @@ public class AdministrationTest : BaseTest
         newInfo.BlockReason.Reason.Should().Be(reason);
 
         // откат
-        request = new ApplyBlockCommand.Param() { UserId = userId, Status = false};
+        request = new ApplyBlockCommand.Param() { UserId = userId, Status = false };
         response = Client.Post<bool>("/administration/applyBlock", request);
         response.Should().BeTrue();
     }

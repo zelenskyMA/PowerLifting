@@ -18,7 +18,7 @@ public class TemplatePlan_ChangeTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
         var request = new TemplatePlanCreateCommand.Param() { SetId = Factory.Data.TemplateSet.Id, Name = string.Empty };
-        
+
         //Act
         var response = Client.Post($"/templatePlan", request);
 
@@ -30,7 +30,7 @@ public class TemplatePlan_ChangeTest : BaseTest
     public void Create_TmpltPlan_DuplicateName_Fail()
     {
         //Arrange
-        Factory.Actions.AuthorizeCoach(Client);        
+        Factory.Actions.AuthorizeCoach(Client);
         var tmplt = Client.Get<TemplatePlan>($"/templatePlan/{Factory.Data.TemplateSet.Templates[0].Id}");
 
         var request = new TemplatePlanCreateCommand.Param() { SetId = Factory.Data.TemplateSet.Id, Name = tmplt.Name };

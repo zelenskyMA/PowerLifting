@@ -1,6 +1,4 @@
 ﻿using FluentAssertions;
-using SportAssistant.Application.Coaching.TrainingGroupCommands;
-using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models.Coaching;
 using TestFramework;
 using TestFramework.TestExtensions;
@@ -43,7 +41,7 @@ public class Group_GetTest : BaseTest
         response.Group.ParticipantsCount.Should().BeGreaterThan(0);
         response.Users.Count.Should().BeGreaterThan(0);
 
-        var user = response.Users.FirstOrDefault(t=> t.Id == Factory.Data.GetUserId(Constants.UserLogin));
+        var user = response.Users.FirstOrDefault(t => t.Id == Factory.Data.GetUserId(Constants.UserLogin));
         user.Should().NotBeNull();
         user.FullName.Should().NotBeNullOrEmpty();
         user.ActivePlansCount.Should().BeGreaterThan(0);
@@ -81,7 +79,7 @@ public class Group_GetTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
         var planDays = Factory.Data.PlanDays;
-        
+
         //Act
         var groupsInfo = Client.Get<List<TrainingGroupWorkout>>($"/trainingGroups/getWorkoutList");
 
@@ -92,5 +90,5 @@ public class Group_GetTest : BaseTest
         info.GroupName.Should().Be(Constants.GroupName);
         info.PlanDay.PlanId.Should().Be(planDays[0].PlanId);
         info.PlanDay.Id.Should().Be(planDays[0].Id);
-    }   
+    }
 }

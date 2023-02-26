@@ -37,7 +37,7 @@ namespace SportAssistant.Application.UserData.UserAchivementCommands
         }
 
         public class Param
-        {         
+        {
             /// <summary>
             /// Ид упражнения в плане. Используется для получения ид исполнителя плана.
             /// Это может быть не ид запрашивающего, когда  тренер назначает упражнения ученику по его рекордам.

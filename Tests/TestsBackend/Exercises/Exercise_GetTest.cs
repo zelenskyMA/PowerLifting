@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using SportAssistant.Domain.Models.TrainingPlan;
-using System.Xml.Linq;
 using TestFramework;
 using TestFramework.TestExtensions;
 using TestsBackend;

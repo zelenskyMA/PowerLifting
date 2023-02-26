@@ -12,7 +12,7 @@ namespace TrainingPlans;
 public class PlanExercise_UpdateTest : BaseTest
 {
     private readonly string comment = "update comment";
-    private readonly  int weight = 5000;
+    private readonly int weight = 5000;
 
     public PlanExercise_UpdateTest(ServiceTestFixture<Program> factory) : base(factory) { }
 

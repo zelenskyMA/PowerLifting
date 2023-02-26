@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.TrainingPlan.PlanCommands;
 using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;

@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
-using SportAssistant.Application.TrainingPlan.PlanExerciseCommands;
 using SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands;
-using SportAssistant.Domain.Models.Basic;
 using SportAssistant.Domain.Models.TrainingPlan;
 using TestFramework;
 using TestFramework.TestExtensions;

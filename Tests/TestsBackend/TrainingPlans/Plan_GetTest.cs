@@ -139,7 +139,8 @@ public class Plan_GetTest : BaseTest
     }
 
 
-    private void VerifyPlanCheck(Plan plan, int? planId) {
+    private void VerifyPlanCheck(Plan plan, int? planId)
+    {
         // план
         plan.Should().NotBeNull();
         plan.Id.Should().Be(planId);

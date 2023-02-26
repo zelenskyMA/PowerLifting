@@ -8,7 +8,6 @@ using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
-using System.Linq;
 
 namespace SportAssistant.Application.TrainingPlan.ExerciseCommands
 {

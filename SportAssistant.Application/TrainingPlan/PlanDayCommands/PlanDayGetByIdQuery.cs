@@ -14,7 +14,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
         private readonly IProcessPlanUserId _processPlanUserId;
 
         public PlanDayGetByIdQuery(
-            IProcessPlanDay processPlanDay, 
+            IProcessPlanDay processPlanDay,
             IProcessPlan processPlan,
             IProcessPlanUserId processPlanUserId)
         {

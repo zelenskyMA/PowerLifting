@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using FluentAssertions;
+﻿using FluentAssertions;
 using SportAssistant.Application.Settings;
 using SportAssistant.Domain.Models.Basic;
 using System.Net;
@@ -86,5 +85,5 @@ public class SettingsTest : BaseTest
         //Откат изменений
         settings.MaxActivePlans = backup;
         Client.Post<bool>("/appSettings", new SettingsUpdateCommand.Param() { Settings = settings });
-    }    
+    }
 }

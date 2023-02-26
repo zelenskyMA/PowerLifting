@@ -114,8 +114,8 @@ public class TemplateSet_DeleteAssignTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
         var setId = Factory.Data.TemplateSet.Id;
-        var group = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList").First(t=> t.Name == Constants.SecondGroupName);
-        var request = new TemplateSetAssignCommand.Param() { SetId = setId, GroupId = group.Id, StartDate = DateTime.Now };        
+        var group = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList").First(t => t.Name == Constants.SecondGroupName);
+        var request = new TemplateSetAssignCommand.Param() { SetId = setId, GroupId = group.Id, StartDate = DateTime.Now };
 
         //Act
         var response = Client.Post<bool>($"/templateSet/assign", request);
@@ -125,7 +125,7 @@ public class TemplateSet_DeleteAssignTest : BaseTest
 
         var userId = Factory.Data.GetUserId(Constants.User2Login);
         var plans = Client.Get<Plans>($"/trainingPlan/getList/{userId}");
-        plans.ActivePlans.FirstOrDefault(t=> t.StartDate.Date == DateTime.Now.Date).Should().NotBeNull();
+        plans.ActivePlans.FirstOrDefault(t => t.StartDate.Date == DateTime.Now.Date).Should().NotBeNull();
     }
 
     [Fact]

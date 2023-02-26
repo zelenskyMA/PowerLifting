@@ -1,5 +1,4 @@
-﻿using SportAssistant.Application.TrainingPlan.PlanCommands;
-using SportAssistant.Domain.DbModels.TrainingPlan;
+﻿using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;

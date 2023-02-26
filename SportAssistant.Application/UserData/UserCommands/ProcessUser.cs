@@ -35,7 +35,7 @@ namespace SportAssistant.Application.UserData.UserCommands
             _mapper = mapper;
 
             _passwordManager = new PasswordManager();
-        }              
+        }
 
         /// <inheritdoc />
         public async Task<UserDb> TryToLogin(string login, string password)

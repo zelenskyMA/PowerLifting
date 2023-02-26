@@ -42,7 +42,7 @@ namespace SportAssistant.Service.Controllers.UserData
             var result = await command.ExecuteAsync(param);
             return result;
         }
-                
+
         [HttpGet, Authorize]
         [Route("refreshToken")]
         public async Task<TokenModel> RefreshTokenAsync([FromServices] ICommand<UserRefreshTokenCommand.Param, TokenModel> command)

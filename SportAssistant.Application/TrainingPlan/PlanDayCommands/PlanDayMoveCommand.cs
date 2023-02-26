@@ -3,7 +3,6 @@ using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
-using SportAssistant.Domain.Models.TrainingPlan;
 
 namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
 {

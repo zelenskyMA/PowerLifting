@@ -8,7 +8,7 @@ using SportAssistant.Domain.Models.Coaching;
 
 namespace SportAssistant.Application.Coaching.TrainingGroupUserCommands
 {
-    public class ProcessGroupUser: IProcessGroupUser
+    public class ProcessGroupUser : IProcessGroupUser
     {
         private readonly ICrudRepo<TrainingGroupDb> _trainingGroupRepository;
         private readonly ICrudRepo<UserInfoDb> _userInfoRepository;

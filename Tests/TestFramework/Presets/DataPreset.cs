@@ -1,7 +1,6 @@
 ﻿using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models.TrainingPlan;
-using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Infrastructure.DataContext;
 using System;
 using System.Collections.Generic;

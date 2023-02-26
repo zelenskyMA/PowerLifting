@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SportAssistant.Application.Settings;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -19,7 +18,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
         private readonly ICrudRepo<PlanExerciseSettingsDb> _exerciseSettingsRepository;
         private readonly IContextProvider _contextProvider;
         private readonly IMapper _mapper;
-        
+
         public ProcessPlanExerciseSettings(
             IProcessUserAchivements processUserAchivements,
             IProcessSettings processSettings,
@@ -62,7 +61,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
             {
                 throw new BusinessException("Лимит поднятий в упражнении превышен.");
             }
-            
+
             var existingSettingsDb = await _exerciseSettingsRepository.FindAsync(t => t.PlanExerciseId == planExerciseId);
             if (existingSettingsDb.Count() == 0 && (settingsList == null || settingsList.Count == 0))
             {

@@ -16,7 +16,7 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateDayCommands
         private readonly ITrainingCountersSetup _trainingCountersSetup;
         private readonly IContextProvider _contextProvider;
         private readonly IMapper _mapper;
-       
+
         public ProcessTemplateDay(
             IProcessTemplateExercise processTemplateExercise,
             ICrudRepo<TemplateDayDb> templateDayRepository,

@@ -28,7 +28,7 @@ public class ProcessGroup : IProcessGroup
         _user = user;
         _mapper = mapper;
     }
-    
+
     /// <inheritdoc />
     public async Task<TrainingGroup> GetUserGroupAsync(int userId)
     {

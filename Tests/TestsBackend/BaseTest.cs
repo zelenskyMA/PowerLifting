@@ -15,7 +15,7 @@ public class BaseTest : IClassFixture<ServiceTestFixture<Program>>
         Factory = factory;
         Client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
-            AllowAutoRedirect= false,
+            AllowAutoRedirect = false,
         });
     }
 }

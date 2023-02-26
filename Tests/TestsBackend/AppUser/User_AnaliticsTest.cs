@@ -58,7 +58,7 @@ public class User_AnaliticsTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
 
         // 2 плана
-        var startDate = ToIso(DateTime.Now.AddDays(-10)); 
+        var startDate = ToIso(DateTime.Now.AddDays(-10));
         var finishDate = ToIso(DateTime.Now.AddDays(10));
 
         var response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics?startDate={startDate}&finishDate={finishDate}");

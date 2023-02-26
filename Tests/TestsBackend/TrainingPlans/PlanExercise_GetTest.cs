@@ -131,7 +131,7 @@ public class PlanExercise_GetTest : BaseTest
         response.Count().Should().Be(2);
         VerifyPlanExerciseCheck(response[0], response[0].Id);
     }
-    
+
 
     private void VerifyPlanExerciseCheck(PlanExercise planExercise, int? planExId)
     {

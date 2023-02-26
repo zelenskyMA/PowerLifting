@@ -74,7 +74,7 @@ public class TemplateDay_GetTest : BaseTest
         tmpltDay.DayNumber.Should().BeGreaterThan(0);
         tmpltDay.WeightLoadPercentageSum.Should().BeGreaterThan(0);
         tmpltDay.LiftCounterSum.Should().BeGreaterThan(0);
-        
+
         tmpltDay.Percentages.Should().NotBeNull();
         tmpltDay.Percentages[0].Id.Should().BeGreaterThan(0);
         tmpltDay.Percentages[0].MaxValue.Should().BeGreaterThan(0);

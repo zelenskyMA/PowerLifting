@@ -58,7 +58,7 @@ public class ServiceTestFixture<TStartup>
     /// <summary>
     /// Получение билдера моделей с тестовыми данными
     /// </summary>
-    public FixtureBuilder GetBuilder() => new(new CustomPropertyBuilder());   
+    public FixtureBuilder GetBuilder() => new(new CustomPropertyBuilder());
 
     protected override void Dispose(bool disposing)
     {

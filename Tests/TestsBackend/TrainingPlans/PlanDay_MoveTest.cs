@@ -56,7 +56,7 @@ public class PlanDay_MoveTest : BaseTest
         request = new PlanDayMoveCommand.Param() { Id = planDay.Id, PlanId = planDay.PlanId.Value, TargetDate = planDay.ActivityDate.AddDays(100) };
         response = Client.Post($"/planDay/move", request);
         response.ReadErrorMessage().Should().Match("В вашем текущем тренировочном плане нет указанной даты*");
-    }   
+    }
 
     [Fact]
     public void Move_PlanDay_ByOthers_Fail()

@@ -24,7 +24,7 @@ namespace SportAssistant.Application.Common
 
             CreateMap<DictionaryDb, DictionaryItem>().ReverseMap();
             CreateMap<DictionaryTypeDb, DictionaryType>().ReverseMap();
-            CreateMap<EmailMessageDb, EmailMessage>().ReverseMap();            
+            CreateMap<EmailMessageDb, EmailMessage>().ReverseMap();
         }
 
         private void UserProfile()

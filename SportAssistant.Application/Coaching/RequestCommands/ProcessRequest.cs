@@ -64,6 +64,6 @@ namespace SportAssistant.Application.Coaching.TrainingRequestCommands
             {
                 _trainingRequestRepository.Delete(requestDb);
             }
-        }        
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace SportAssistant.Application.Coaching.TrainingGroupCommands
             if (groupDb.CoachId != _user.Id)
             {
                 throw new BusinessException($"Нельзя редактировать чужую группу.");
-            }                        
+            }
 
             if (groupDb.Name != param.Group.Name)
             {

@@ -10,7 +10,7 @@ namespace Coaching;
 public class UserGroup_RemoveTest : BaseTest
 {
     public UserGroup_RemoveTest(ServiceTestFixture<Program> factory) : base(factory) { }
-   
+
     [Fact]
     public void User_Remove_NoGroup_Fail()
     {

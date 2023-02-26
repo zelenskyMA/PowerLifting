@@ -15,7 +15,7 @@ internal class CustomPropertyBuilder : PropertyBuilder
         {
             return propData.GenerateAsId();
         }
-       
+
         if (propNameLower.Contains("mail"))
         {
             return $"{propNameLower}@testserver.com";
@@ -25,7 +25,7 @@ internal class CustomPropertyBuilder : PropertyBuilder
         {
             return $"Test {propName}";
         }
-        
+
         /*
         if (propType.IsGenericType
         && propType.GetGenericTypeDefinition() == typeof(IList<>)

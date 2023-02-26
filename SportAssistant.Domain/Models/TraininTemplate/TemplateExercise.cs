@@ -19,7 +19,7 @@ namespace SportAssistant.Domain.Models.TrainingTemplate
         /// <summary>
         /// Расчетное поле. Нагрузка. Процент общего поднятого веса при выполнении упражнения.
         /// </summary>
-        public int WeightLoadPercentage { get; set; } = 0;        
+        public int WeightLoadPercentage { get; set; } = 0;
 
         public Exercise? Exercise { get; set; } = new Exercise();
 

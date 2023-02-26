@@ -27,8 +27,8 @@ namespace SportAssistant.Application.Coaching.TrainingGroupCommands
             var groupInfo = await _processGroup.GetGroupInfoByIdAsync(param.Id);
 
             var userIds = groupInfo.Users.Select(t => t.Id).ToList();
-            var allActivePlans = await _trainingPlanRepository.FindAsync(t => 
-                userIds.Contains(t.UserId) && 
+            var allActivePlans = await _trainingPlanRepository.FindAsync(t =>
+                userIds.Contains(t.UserId) &&
                 t.StartDate.AddDays(7) >= DateTime.Now.Date);
 
             foreach (var user in groupInfo.Users)
