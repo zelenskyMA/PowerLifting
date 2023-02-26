@@ -60,7 +60,7 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
             await _processTemplateSet.ChangingAllowedForUserAsync(ownerId);
 
             var duplicateDb = await _templatePlanRepository.FindOneAsync(t => t.Name == newName && t.TemplateSetId == setId);
-            if (duplicateDb != null)
+            if (duplicateDb != null && duplicateDb.Id != id)
             {
                 throw new BusinessException("Тренировочный шаблон с указанным именем уже существует в выбранном цикле");
             }

@@ -158,6 +158,21 @@ public class TemplatePlan_ChangeTest : BaseTest
     }
 
     [Fact]
+    public void Update_TmpltPlan_NoChange_Success()
+    {
+        //Arrange
+        Factory.Actions.AuthorizeCoach(Client);
+        var planId = Factory.Data.TemplateSet.Templates[0].Id;
+        var tmplt = Client.Get<TemplatePlan>($"/templatePlan/{planId}");
+
+        //Act
+        var response = Client.Put<int>($"/templatePlan", tmplt);
+
+        //Assert
+        response.Should().Be(Factory.Data.TemplateSet.Id);
+    }
+
+    [Fact]
     public void Update_TmpltPlan_Success()
     {
         //Arrange
