@@ -34,7 +34,7 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
             }
 
             var duplicateSetDb = await _templateSetRepository.FindOneAsync(t => t.Name == param.TemplateSet.Name && t.CoachId == _user.Id);
-            if (duplicateSetDb != null)
+            if (duplicateSetDb != null && duplicateSetDb.Id != param.TemplateSet.Id)
             {
                 throw new BusinessException("Тренировочный цикл с указанным именем уже существует");
             }

@@ -108,7 +108,7 @@ public class TemplateSet_ChangeTest : BaseTest
         var newName = "duplicate name";
         Client.Post<bool>($"/templateSet", new TemplateSetCreateCommand.Param() { Name = newName }); // создаем 1 экземпляр
 
-        var setItem = Client.Get<List<TemplateSet>>($"/templateSet/getList").First(); // готовим старый цикл
+        var setItem = Client.Get<List<TemplateSet>>($"/templateSet/getList").First(t=> t.Name != newName); // готовим старый цикл
         var request = new TemplateSet()
         {
             Id = setItem.Id,
@@ -121,6 +121,21 @@ public class TemplateSet_ChangeTest : BaseTest
 
         //assert
         response.ReadErrorMessage().Should().Match("Тренировочный цикл с указанным именем уже существует*");
+    }
+
+
+    [Fact]
+    public void Update_TmpltSet_NoChange_Success()
+    {
+        //Arrange
+        Factory.Actions.AuthorizeCoach(Client);
+        var setItem = Client.Get<List<TemplateSet>>($"/templateSet/getList").First();
+
+        //Act
+        var response = Client.Put<bool>($"/templateSet", setItem);
+
+        //assert
+        response.Should().BeTrue();
     }
 
     [Fact]
