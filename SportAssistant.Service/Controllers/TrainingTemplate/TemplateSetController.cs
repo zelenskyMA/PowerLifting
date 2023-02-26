@@ -25,7 +25,7 @@ namespace SportAssistant.Service.Controllers.TrainingTemplate
         }
 
         [HttpPost]
-        public async Task<int> CreateAsync([FromServices] ICommand<TemplateSetCreateCommand.Param, int> command, TemplateSetCreateCommand.Param param)
+        public async Task<bool> CreateAsync([FromServices] ICommand<TemplateSetCreateCommand.Param, bool> command, TemplateSetCreateCommand.Param param)
         {
             var result = await command.ExecuteAsync(param);
             return result;

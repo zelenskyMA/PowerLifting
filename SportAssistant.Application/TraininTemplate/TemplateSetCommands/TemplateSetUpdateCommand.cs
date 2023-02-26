@@ -33,6 +33,12 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
                 throw new BusinessException("Необходимо указать новое название цикла");
             }
 
+            var duplicateSetDb = await _templateSetRepository.FindOneAsync(t => t.Name == param.TemplateSet.Name && t.CoachId == _user.Id);
+            if (duplicateSetDb != null)
+            {
+                throw new BusinessException("Тренировочный цикл с указанным именем уже существует");
+            }
+
             var templateSetDb = await _templateSetRepository.FindOneAsync(t => t.Id == param.TemplateSet.Id && t.CoachId == _user.Id);
             if (templateSetDb == null)
             {

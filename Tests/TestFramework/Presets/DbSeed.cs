@@ -1,13 +1,14 @@
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
+using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models.TrainingPlan;
+using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Infrastructure.DataContext;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 
 namespace TestFramework.Presets;
 
@@ -99,18 +100,113 @@ public static class DbSeed
         return result;
     }
 
+    public static TemplateSet CreateTemplateSet(SportContext ctx, int coachId)
+    {
+        //тренировочный цикл
+        var templateSet = new TemplateSetDb() { Name = "test set", CoachId = coachId };
+        ctx.TemplateSets.Add(templateSet);
+        ctx.SaveChanges();
+
+        //шаблон плана
+        var plan = new TemplatePlanDb() { Name = "test tmplt 1", TemplateSetId = templateSet.Id };
+        ctx.TemplatePlans.Add(plan);
+        ctx.SaveChanges();
+
+        //7 плановых дней в шаблоне
+        var planDays = new List<TemplateDayDb>() { };
+        for (int i = 0; i < 7; i++)
+        {
+            planDays.Add(new TemplateDayDb() { TemplatePlanId = plan.Id, DayNumber = i + 1 });
+        }
+        ctx.TemplateDays.AddRange(planDays);
+        ctx.SaveChanges();
+
+        //упражнения по дням
+        var exercises = new List<TemplateExerciseDb>() {
+            new TemplateExerciseDb(){ TemplateDayId = planDays[0].Id, Order = 1, ExerciseId = 1 },
+            new TemplateExerciseDb(){ TemplateDayId = planDays[0].Id, Order = 2, ExerciseId = 20},
+
+            new TemplateExerciseDb(){ TemplateDayId = planDays[1].Id, Order = 1, ExerciseId = 91},
+            new TemplateExerciseDb(){ TemplateDayId = planDays[1].Id, Order = 2, ExerciseId = 61},
+        };
+        ctx.TemplateExercises.AddRange(exercises);
+        ctx.SaveChanges();
+
+        var exSettings = new List<TemplateExerciseSettingsDb>() {
+            new TemplateExerciseSettingsDb(){ TemplateExerciseId = exercises[0].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, WeightPercentage = 100, PercentageId = 1 },
+            new TemplateExerciseSettingsDb(){ TemplateExerciseId = exercises[0].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, WeightPercentage = 80, PercentageId = 2  },
+            new TemplateExerciseSettingsDb(){ TemplateExerciseId = exercises[1].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, WeightPercentage = 100, PercentageId = 1 },
+            new TemplateExerciseSettingsDb(){ TemplateExerciseId = exercises[1].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, WeightPercentage = 80, PercentageId = 2, },
+
+            new TemplateExerciseSettingsDb(){ TemplateExerciseId = exercises[2].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, WeightPercentage = 100, PercentageId = 1 },
+            new TemplateExerciseSettingsDb(){ TemplateExerciseId = exercises[2].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, WeightPercentage = 80, PercentageId = 2, },
+            new TemplateExerciseSettingsDb(){ TemplateExerciseId = exercises[3].Id, Iterations= 2, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, WeightPercentage = 100, PercentageId = 1 },
+            new TemplateExerciseSettingsDb(){ TemplateExerciseId = exercises[3].Id, Iterations= 1, ExercisePart1=1, ExercisePart2 = 2, ExercisePart3 = 3, WeightPercentage = 80, PercentageId = 2  },
+        };
+        ctx.TemplateExerciseSettings.AddRange(exSettings);
+        ctx.SaveChanges();
+
+        var days = new List<TemplateDay>();
+        foreach (var planDay in planDays)
+        {
+            var dayExercises = exercises.Where(t => t.TemplateDayId == planDay.Id).ToList();
+            var settings = exSettings.Where(t => dayExercises.Select(t => t.Id).Contains(t.TemplateExerciseId)).ToList();
+
+            days.Add(new TemplateDay()
+            {
+                Id = planDay.Id,
+                TemplatePlanId = plan.Id,
+                DayNumber = planDay.DayNumber,
+                Exercises = dayExercises.Count == 0 ? new List<TemplateExercise>() :
+                    new List<TemplateExercise>() {
+                        new TemplateExercise() {
+                            Id = dayExercises[0].Id,
+                            Exercise = new Exercise(){ Id = dayExercises[0].ExerciseId, ExerciseTypeId = 2 },
+                            Settings = settings.Count == 0 ? new List<TemplateExerciseSettings>() : new List<TemplateExerciseSettings>()
+                            {
+                                new TemplateExerciseSettings() { Id = settings[0].Id }, new TemplateExerciseSettings() { Id = settings[1].Id }
+                            }
+                        },
+                        new TemplateExercise() {
+                            Id = dayExercises[1].Id,
+                            Exercise = new Exercise(){ Id = dayExercises[1].ExerciseId, ExerciseTypeId = 1 },
+                            Settings = settings.Count == 0 ? new List<TemplateExerciseSettings>() : new List<TemplateExerciseSettings>()
+                            {
+                                new TemplateExerciseSettings() { Id = settings[2].Id }, new TemplateExerciseSettings() { Id = settings[3].Id }
+                            }
+                        }
+                    }
+            });
+        }
+
+        var set = new TemplateSet() { Id = templateSet.Id, CoachId = coachId, Name = templateSet.Name };
+        set.Templates = new List<TemplatePlan>() {
+            new TemplatePlan() {
+                Id = plan.Id,
+                Name = plan.Name,
+                TrainingDays = days,
+            }
+        };
+
+        return set;
+    }
+
     private static void UsersSetup(SportContext ctx, List<UserDb> users)
     {
         ctx.Users.AddRange(users);
         ctx.SaveChanges();
 
-        var mainUuserId = users.First(t => t.Email == Constants.UserLogin).Id;
+        var mainUserId = users.First(t => t.Email == Constants.UserLogin).Id;
+        var main2UserId = users.First(t => t.Email == Constants.User2Login).Id;
         var adminId = users.First(t => t.Email == Constants.AdminLogin).Id;
         var coachId = users.First(t => t.Email == Constants.CoachLogin).Id;
 
         //user info
-        var noCoachUsers = new List<int>() { coachId, users.First(t => t.Email == Constants.NoCoachUserLogin).Id,
-            users.First(t => t.Email == Constants.SecondCoachLogin).Id};
+        var noCoachUsers = new List<int>() {
+            coachId,
+            users.First(t => t.Email == Constants.NoCoachUserLogin).Id,
+            users.First(t => t.Email == Constants.SecondCoachLogin).Id
+        };
 
         foreach (var user in users)
         {
@@ -131,7 +227,14 @@ public static class DbSeed
         ctx.UserRoles.Add(new UserRoleDb() { UserId = coachId, RoleId = 11 });
         ctx.UserRoles.Add(new UserRoleDb() { UserId = users.First(t => t.Email == Constants.SecondCoachLogin).Id, RoleId = 11 });
 
-        ctx.UserAchivements.Add(new UserAchivementDb() { UserId = mainUuserId, CreationDate = DateTime.Now.AddDays(-1), ExerciseTypeId = 1, Result = 20 });
+        var achivements = new List<UserAchivementDb>() {
+            new UserAchivementDb() { UserId = mainUserId, CreationDate = DateTime.Now.AddDays(-1), ExerciseTypeId = 1, Result = 20 },
+            new UserAchivementDb() { UserId = main2UserId, CreationDate = DateTime.Now.AddDays(-1), ExerciseTypeId = 1, Result = 50 },
+            new UserAchivementDb() { UserId = main2UserId, CreationDate = DateTime.Now.AddDays(-1), ExerciseTypeId = 2, Result = 120 },
+        };
+        ctx.UserAchivements.AddRange(achivements);
+
+
 
         //set blocked user
         ctx.UserBlockHistoryItems.Add(new UserBlockHistoryDb()
@@ -148,17 +251,20 @@ public static class DbSeed
     private static void AddCoachGroupData(SportContext ctx, List<UserDb> users)
     {
         var coachId = users.First(t => t.Email == Constants.CoachLogin).Id;
+        var coach2Id = users.First(t => t.Email == Constants.SecondCoachLogin).Id;
         var userId = users.First(t => t.Email == Constants.UserLogin).Id;
 
         var groups = new List<TrainingGroupDb>()
         {
             new TrainingGroupDb() { CoachId = coachId, Name = Constants.GroupName },
             new TrainingGroupDb() { CoachId = coachId, Name = Constants.SecondGroupName },
+            new TrainingGroupDb() { CoachId = coach2Id, Name = Constants.GroupName },
         };
         ctx.TrainingGroups.AddRange(groups);
         ctx.SaveChanges();
 
         ctx.TrainingGroupUsers.Add(new TrainingGroupUserDb() { GroupId = groups[0].Id, UserId = userId });
+        ctx.TrainingGroupUsers.Add(new TrainingGroupUserDb() { GroupId = groups[1].Id, UserId = users.First(t => t.Email == Constants.User2Login).Id });
         ctx.SaveChanges();
     }
 

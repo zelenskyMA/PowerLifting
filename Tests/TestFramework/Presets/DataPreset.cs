@@ -1,5 +1,7 @@
-﻿using SportAssistant.Domain.DbModels.UserData;
+﻿using SportAssistant.Domain.DbModels.TrainingTemplate;
+using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models.TrainingPlan;
+using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Infrastructure.DataContext;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,8 @@ public class DataPreset
     /// <summary> Предсозданный план для тестов</summary>
     public List<PlanDay> PlanDays { get; }
 
+    public TemplateSet TemplateSet { get; set; }
+
     public DataPreset(SportContext ctx)
     {
         Users = new List<UserDb>() {
@@ -28,14 +32,17 @@ public class DataPreset
             new UserDb() { Id = 2, Email = Constants.CoachLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
             new UserDb() { Id = 3, Email = Constants.SecondCoachLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
             new UserDb() { Id = 4, Email = Constants.UserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
-            new UserDb() { Id = 5, Email = Constants.BlockedUserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, Blocked = true },
-            new UserDb() { Id = 6, Email = Constants.NoCoachUserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
+            new UserDb() { Id = 5, Email = Constants.User2Login, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
+            new UserDb() { Id = 6, Email = Constants.BlockedUserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, Blocked = true },
+            new UserDb() { Id = 7, Email = Constants.NoCoachUserLogin, Password = Constants.EncriptedPwd, Salt = Constants.Salt, },
         };
 
         DbSeed.InitializeDbForTests(ctx, Users);
         PlanDays = DbSeed.CreatePlan(ctx, GetUserId(Constants.UserLogin), DateTime.Now); //Active plan
         DbSeed.CreatePlan(ctx, GetUserId(Constants.UserLogin), DateTime.Now.AddDays(-10)); // 1 old plan
         DbSeed.CreatePlan(ctx, GetUserId(Constants.UserLogin), DateTime.Now.AddDays(-20)); // 2 old plan
+
+        TemplateSet = DbSeed.CreateTemplateSet(ctx, GetUserId(Constants.CoachLogin)); // template set
     }
 
     public int GetUserId(string login) => Users.First(t => t.Email == login).Id;

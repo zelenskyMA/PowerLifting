@@ -9,6 +9,7 @@ public class ActionsPreset
 {
     public void AuthorizeAdmin(HttpClient client) => Authorize(client, Constants.AdminLogin);
     public void AuthorizeCoach(HttpClient client) => Authorize(client, Constants.CoachLogin);
+    public void AuthorizeSecondCoach(HttpClient client) => Authorize(client, Constants.SecondCoachLogin);
     public void AuthorizeUser(HttpClient client) => Authorize(client, Constants.UserLogin);
     public void AuthorizeNoCoachUser(HttpClient client) => Authorize(client, Constants.NoCoachUserLogin);
 

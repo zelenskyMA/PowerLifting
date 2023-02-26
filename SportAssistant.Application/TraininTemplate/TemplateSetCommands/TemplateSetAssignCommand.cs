@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using SportAssistant.Application.UserData.Auth.Interfaces;
+﻿using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Coaching.Application;

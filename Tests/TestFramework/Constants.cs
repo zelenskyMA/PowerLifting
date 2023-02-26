@@ -9,7 +9,8 @@ public static class Constants
     public static string CoachLogin => "coach@mail.ru";
     public static string SecondCoachLogin => "secondCoach@mail.ru";
     public static string UserLogin => "user@mail.ru";
-    public static string NoCoachUserLogin => "user2@mail.ru";
+    public static string User2Login => "user2@mail.ru";
+    public static string NoCoachUserLogin => "noCoach@mail.ru";
     public static string BlockedUserLogin => "blocked@mail.ru";
     public static string Password => "asdf123";
     public static string Salt => "1CCFD3C98A";
