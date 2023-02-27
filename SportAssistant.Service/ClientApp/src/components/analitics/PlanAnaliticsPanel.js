@@ -52,10 +52,10 @@ class PlanAnaliticsPanel extends Component {
             <p>{lngStr('analitics.buildingGraph')}</p>
           </Col>
           <Col xs={3}>
-            <InputDate label={lngStr('general.common.from' + ':') } propName="startDate" onChange={this.onValueChange} initialValue={this.state.startDate?.toISOString()?.substring(0, 10)} />
+            <InputDate label={lngStr('general.common.from') + ':'} propName="startDate" onChange={this.onValueChange} initialValue={this.state.startDate?.toISOString()?.substring(0, 10)} />
           </Col>
           <Col xs={3}>
-            <InputDate label={lngStr('general.common.to' + ':')} propName="finishDate" onChange={this.onValueChange} initialValue={this.state.finishDate?.toISOString()?.substring(0, 10)} />
+            <InputDate label={lngStr('general.common.to') + ':'} propName="finishDate" onChange={this.onValueChange} initialValue={this.state.finishDate?.toISOString()?.substring(0, 10)} />
           </Col>
         </Row>
 

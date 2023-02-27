@@ -23,6 +23,18 @@ html {
   margin-right: 20px !important;
 }
 
+.help-menu-item {
+  color: cornsilk !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  margin-top: 6px !important;
+}
+
+  .help-menu-item:hover {
+    filter: brightness(85%);
+  }
+
+
 .menu-first-page-item {
   color: cornsilk !important;
   font-size: 24px !important;
