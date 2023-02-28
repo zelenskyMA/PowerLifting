@@ -1,10 +1,10 @@
 ﻿import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Button, Row, Col } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
-import { ErrorPanel, DropdownControl, LoadingPanel } from "../../../common/controls/CustomControls";
-import { changeModalVisibility } from "../../../stores/appStore/appActions";
+import { DropdownControl, ErrorPanel, LoadingPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
+import { changeModalVisibility } from "../../../stores/appStore/appActions";
 import '../../../styling/Common.css';
 
 const mapDispatchToProps = dispatch => {
@@ -31,20 +31,25 @@ class GroupUserCardPanel extends Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var cardData = await GetAsync(`/userInfo/getCard/${this.props.params.id}`);
-    var coachGroupsData = await GetAsync(`/trainingGroups/getList`);
+    try {
+      const [cardData, coachGroupsData] = await Promise.all([
+        GetAsync(`/userInfo/getCard/${this.props.params.id}`),
+        GetAsync(`/trainingGroups/getList`)
+      ]);
 
-    var push = cardData.achivements.find(t => t.exerciseTypeId === 1);
-    var jerk = cardData.achivements.find(t => t.exerciseTypeId === 2);
+      var push = cardData.achivements.find(t => t.exerciseTypeId === 1);
+      var jerk = cardData.achivements.find(t => t.exerciseTypeId === 2);
 
-    this.setState({
-      card: cardData,
-      coachGroups: coachGroupsData,
-      pushAchivement: push,
-      jerkAchivement: jerk,
-      error: '',
-      loading: false
-    });
+      this.setState({
+        card: cardData,
+        coachGroups: coachGroupsData,
+        pushAchivement: push,
+        jerkAchivement: jerk,
+        error: '',
+        loading: false
+      });
+    }
+    catch (error) { this.setState({ error: error.message, loading: false }); }
   }
 
   onGroupSelect = (id) => { this.setState({ error: '', selectedGroupId: id }); }

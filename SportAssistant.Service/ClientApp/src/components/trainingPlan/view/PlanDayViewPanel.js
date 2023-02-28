@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { Col, Row, UncontrolledTooltip } from 'reactstrap';
 import { PostAsync } from "../../../common/ApiActions";
-import { LoadingPanel } from "../../../common/controls/CustomControls";
+import { ErrorPanel, LoadingPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 import '../../../styling/Common.css';
@@ -20,6 +20,8 @@ class PlanDayViewPanel extends Component {
     this.state = {
       selectedModalData: Object,
       completedExercises: [],
+      loading: true,
+      error: '',
     };
   }
 
@@ -29,14 +31,17 @@ class PlanDayViewPanel extends Component {
     var completed = [];
     var planDay = this.props.planDay;
 
-    planDay.exercises.map((planExercise, i) => {
-      planDay.percentages.map(percentage => {
-        var state = planExercise.settings.filter(t => t.percentage.id === percentage.id).some(r => r.completed);
-        completed = [...completed, { id: planExercise.id + "_" + percentage.id, state: state }];
-      })
-    });
+    try {
+      planDay.exercises.map((planExercise, i) => {
+        planDay.percentages.map(percentage => {
+          var state = planExercise.settings.filter(t => t.percentage.id === percentage.id).some(r => r.completed);
+          completed = [...completed, { id: planExercise.id + "_" + percentage.id, state: state }];
+        })
+      });
 
-    this.setState({ completedExercises: completed });
+      this.setState({ completedExercises: completed, loading: false });
+    }
+    catch (error) { this.setState({ error: error.message, loading: false }); }
   }
 
   onCompleteExercise = async () => {
@@ -82,48 +87,52 @@ class PlanDayViewPanel extends Component {
     var planDay = this.props.planDay;
 
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th className="nameColumn">{lngStr('training.exercise.header')}</th>
-            {planDay.percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
-            <th className="intColumn text-center">{lngStr('training.entity.liftCounter')}</th>
-            <th className="intColumn text-center">{lngStr('training.entity.weightLoad')}</th>
-            <th className="intColumn text-center">{lngStr('training.entity.intensity')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {planDay.exercises.map((planExercise, i) =>
-            <tr key={'planTr' + i}>
-              <td id={'exercise' + planExercise.id}>
-                {planExercise.exercise.name}
-                {planExercise.comments && <strong style={{ color: '#9706EF' }}> * {' '}</strong>}
-              </td>
-              <ExerciseTooltip planExercise={planExercise} idPrefix={'exercise' + planExercise.id} />
+      <>
+        <ErrorPanel errorMessage={this.state.error} />
 
-              {planDay.percentages.map(percentage =>
-                <td key={percentage.id} className="text-center">
-                  {this.exerciseSettingsPanel(percentage, planExercise, lngStr)}
-                </td>
-              )}
-              <td className="text-center"><strong>{planExercise.liftCounter}</strong></td>
-              <td className="text-center"><strong>{planExercise.weightLoad}</strong></td>
-              <td className="text-center"><strong>{planExercise.intensity}</strong></td>
+        <table className='table table-striped' aria-labelledby="tabelLabel">
+          <thead>
+            <tr>
+              <th className="nameColumn">{lngStr('training.exercise.header')}</th>
+              {planDay.percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
+              <th className="intColumn text-center">{lngStr('training.entity.liftCounter')}</th>
+              <th className="intColumn text-center">{lngStr('training.entity.weightLoad')}</th>
+              <th className="intColumn text-center">{lngStr('training.entity.intensity')}</th>
             </tr>
-          )}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
-            {planDay.liftIntensities.map((intensity, i) =>
-              <td key={'kph' + i} className="text-center"> {intensity.value} </td>
+          </thead>
+          <tbody>
+            {planDay.exercises.map((planExercise, i) =>
+              <tr key={'planTr' + i}>
+                <td id={'exercise' + planExercise.id}>
+                  {planExercise.exercise.name}
+                  {planExercise.comments && <strong style={{ color: '#9706EF' }}> * {' '}</strong>}
+                </td>
+                <ExerciseTooltip planExercise={planExercise} idPrefix={'exercise' + planExercise.id} />
+
+                {planDay.percentages.map(percentage =>
+                  <td key={percentage.id} className="text-center">
+                    {this.exerciseSettingsPanel(percentage, planExercise, lngStr)}
+                  </td>
+                )}
+                <td className="text-center"><strong>{planExercise.liftCounter}</strong></td>
+                <td className="text-center"><strong>{planExercise.weightLoad}</strong></td>
+                <td className="text-center"><strong>{planExercise.intensity}</strong></td>
+              </tr>
             )}
-            <td className="text-center"><strong>{planDay.liftCounterSum}</strong></td>
-            <td className="text-center"><strong>{planDay.weightLoadSum}</strong></td>
-            <td className="text-center"><strong>{planDay.intensitySum}</strong></td>
-          </tr>
-        </tfoot>
-      </table>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
+              {planDay.liftIntensities.map((intensity, i) =>
+                <td key={'kph' + i} className="text-center"> {intensity.value} </td>
+              )}
+              <td className="text-center"><strong>{planDay.liftCounterSum}</strong></td>
+              <td className="text-center"><strong>{planDay.weightLoadSum}</strong></td>
+              <td className="text-center"><strong>{planDay.intensitySum}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </>
     );
   }
 

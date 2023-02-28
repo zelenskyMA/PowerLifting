@@ -39,9 +39,11 @@ class NavMenu extends Component {
             <>
               <NavbarBrand className="menu-first-page-item" tag={Link} to="/">{lngStr('general.common.main')}</NavbarBrand>
 
-            <NavbarBrand className="help-menu-item" tag={Link} to="/help/0">{lngStr('general.common.help')}</NavbarBrand>
+              <NavbarBrand className="help-menu-item" tag={Link} to="/help/0" title={lngStr('general.common.help')}>
+              <img src="/img/help_icon.png" width="30" height="30" className="rounded mx-auto d-block" />
+              </NavbarBrand>
 
-            <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
+              <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             </>
           }
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
