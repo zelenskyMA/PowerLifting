@@ -43,8 +43,8 @@ public class User_AnaliticsTest : BaseTest
     public void User_Analitics_ByOwner_Nothing_Success()
     {
         Factory.Actions.AuthorizeUser(Client);
-        var startDate = ToIso(DateTime.Now); // план есть, но он не попадает полностью в выбранный период
-        var finishDate = ToIso(DateTime.Now.AddDays(1));
+        var startDate = ToIso(DateTime.Now.AddDays(10));
+        var finishDate = ToIso(DateTime.Now.AddDays(20));
 
         var response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics?startDate={startDate}&finishDate={finishDate}");
         response.TypeCounters.Should().HaveCount(0);
@@ -66,8 +66,13 @@ public class User_AnaliticsTest : BaseTest
         response.PlanCounters.Should().HaveCount(2);
         response.FullTypeCounterList.Should().HaveCount(2);
 
+        var plan = response.PlanCounters[0]; // проверяем, что в подсчете учавствуют только завершенные поднятия
+        plan.IntensitySum.Should().Be(80);
+        plan.LiftCounterSum.Should().Be(12);
+        plan.WeightLoadSum.Should().Be(960);
+
         // 1 плана
-        startDate = ToIso(DateTime.Now.AddDays(-8));
+        startDate = ToIso(DateTime.Now);
         finishDate = ToIso(DateTime.Now.AddDays(10));
 
         response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics?startDate={startDate}&finishDate={finishDate}");
@@ -79,7 +84,7 @@ public class User_AnaliticsTest : BaseTest
     [Fact]
     public void User_Analitics_ByCoach_Success()
     {
-        Factory.Actions.AuthorizeUser(Client);
+        Factory.Actions.AuthorizeCoach(Client);
         var userId = Factory.Data.GetUserId(Constants.UserLogin);
 
         // 2 плана
@@ -92,7 +97,7 @@ public class User_AnaliticsTest : BaseTest
         response.FullTypeCounterList.Should().HaveCount(2);
 
         // 1 плана
-        startDate = ToIso(DateTime.Now.AddDays(-8));
+        startDate = ToIso(DateTime.Now);
         finishDate = ToIso(DateTime.Now.AddDays(10));
 
         response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics/{userId}?startDate={startDate}&finishDate={finishDate}");

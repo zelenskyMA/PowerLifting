@@ -64,16 +64,17 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
                 });
             }
 
-            // собираем плановые данные
+            // готовим собранные данные к показу в инструменте графиков
             foreach (var plan in plans.OrderBy(t => t.StartDate).ToList())
             {
-                var dataKey = plan.FinishDate.ToString("dd/MM/yy");
+                var dataKey = plan.FinishDate.ToString("dd/MM/yy"); // ключ - дата, как одна из двух метрик
 
                 analitics.PlanCounters.Add(new PlanCounterAnalitics()
                 {
                     StartDate = plan.StartDate,
                     Name = dataKey,
 
+                    //вычисляем суммы полученных данных по планам
                     LiftCounterSum = plan.TrainingDays.Sum(t => t.LiftCounterSum),
                     IntensitySum = plan.TrainingDays.Sum(t => t.IntensitySum),
                     WeightLoadSum = plan.TrainingDays.Sum(t => t.WeightLoadSum),
@@ -81,6 +82,7 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
 
                 analitics.FullTypeCounterList.Add(new DateValueModel() { Name = dataKey });
 
+                // готовим данные для графика по типам упражнений
                 foreach (var item in plan.TypeCountersSum)
                 {
                     var currentTypeCounter = analitics.TypeCounters.First(t => t.Id == item.Id);
@@ -95,29 +97,35 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
             return analitics;
         }
 
+        /// <summary>
+        /// Собираем данные и считаем метрики по тренировочным дням
+        /// </summary>
+        /// <param name="param">Период выборки данных</param>
+        /// <returns></returns>
         private async Task<List<Plan>> PreparePlansWithCounters(Param param)
         {
             var userId = param.UserId == 0 ? _user.Id : param.UserId;
 
-            // получаем планы, полностью попадающие в выбранный отрезок времени.
-            var lastPlanDate = param.FinishDate.Date.AddDays(-6);
-            var plans = (await _trainingPlanRepository.FindAsync(t => t.UserId == userId &&
-                t.StartDate >= param.StartDate.Date && t.StartDate <= lastPlanDate))
-                .Select(_mapper.Map<Plan>).ToList();
+            // получаем планы, попадающие в выбранный отрезок времени. Для этого уменьшаем начало периода на длину одного плана
+            var startPlanDate = param.StartDate.Date.AddDays(-6);
+            var finishPlanDate = param.FinishDate.Date;
+            var plans = (await _trainingPlanRepository.FindAsync(t => t.UserId == userId && 
+                t.StartDate >= startPlanDate && t.StartDate <= finishPlanDate)).Select(_mapper.Map<Plan>).ToList();
 
-            // заполняем дто планов для подсчета аналитики
+            // получаем дни, четко попадающие в указанный период, лишние дни в планах не учитываем
             var planIds = plans.Select(t => t.Id).ToList();
-            var planDays = (await _trainingDayRepository.FindAsync(t => planIds.Contains(t.PlanId)))
-                .Select(_mapper.Map<PlanDay>).ToList();
+            var planDays = (await _trainingDayRepository.FindAsync(t => planIds.Contains(t.PlanId) && 
+                param.StartDate.Date <= t.ActivityDate && t.ActivityDate <= finishPlanDate)).Select(_mapper.Map<PlanDay>).ToList();
 
-            var planExercises = await _processPlanExercise.GetByDaysAsync(planDays.Select(t => t.Id).ToList());
-
+            // получаем упражнения и считаем статистику по ним. Записываем в дни
+            var planExercises = await _processPlanExercise.GetByDaysAsync(planDays.Select(t => t.Id).ToList(), true); // отсекаем незавершенные поднятия
             foreach (var planDay in planDays)
             {
                 planDay.Exercises = planExercises.Where(t => t.PlanDayId == planDay.Id).OrderBy(t => t.Order).ToList();
                 _trainingCountersSetup.SetDayCounters(planDay);
             }
 
+            // считаем статистику по дням и записываем их в планы
             foreach (var plan in plans)
             {
                 plan.TrainingDays = planDays.Where(t => t.PlanId == plan.Id).ToList();
