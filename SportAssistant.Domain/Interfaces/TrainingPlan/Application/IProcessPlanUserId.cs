@@ -15,4 +15,11 @@ public interface IProcessPlanUserId
     /// <param name="id">Ид запланированного упражнения</param>
     /// <returns></returns>
     Task<int> GetByPlanExerciseId(int id);
+
+    /// <summary>
+    /// Получение Ид спортсмена по Ид поднятия в упражнении плана
+    /// </summary>
+    /// <param name="id">Ид запланированного упражнения</param>
+    /// <returns></returns>
+    Task<int> GetByPlanExerciseSettingsId(int id);
 }

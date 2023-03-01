@@ -44,8 +44,8 @@ class HelpMainView extends Component {
         {pageId === 5 && <UsrItemTrainingAnaliticsView />}
         {pageId === 6 && <UsrItemWorkWithCoachView />}
 
-        {pageId === 20 && lngStr('topMenuItem.coach')}
-        {pageId === 21 && "С начала."}
+        {pageId === 20 && ""}
+        {pageId === 21 && ""}
       </>
     );
   }

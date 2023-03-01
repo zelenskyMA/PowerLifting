@@ -22,7 +22,7 @@ export function UsrHeaderView({ }) {
 
       <div className="spaceTop">{GetAsHtml('topMenuItem.sportsman.footer1')}</div>
 
-      <div className="spaceMinTop">{GetMsgWithUrl('https://www.youtube.com/watch?v=ePA1jqfuQ1E')}</div>
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/xm4eycOJywU')}</div>
     </>
   );
 }
@@ -30,7 +30,7 @@ export function UsrHeaderView({ }) {
 export function UsrItemExerciseCreationView({ }) {
   return (
     <>
-      {GetAsHtml('sportsman.exerciseCreation.header')}
+      {GetAsHtml('sportsman.exerciseCreation.header1')}
       <div className="spaceTop">
         {GetAsHtml('sportsman.exerciseCreation.stepsHeader')}
         <div className="spaceLeft spaceMinTop">{GetAsHtml('sportsman.exerciseCreation.step1')}</div>
@@ -43,7 +43,7 @@ export function UsrItemExerciseCreationView({ }) {
       <div className="spaceTop">{GetAsHtml('sportsman.exerciseCreation.footer1')}</div>
       <div className="spaceMinTop">{GetAsHtml('sportsman.exerciseCreation.footer2')}</div>
 
-      <div className="spaceMinTop">{GetMsgWithUrl('https://www.youtube.com/watch?v=ePA1jqfuQ1E')}</div>
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/UsuxqVWl5ac')}</div>
     </>
   );
 }
@@ -68,7 +68,7 @@ export function UsrItemPlanningView({ }) {
       <div className="spaceTop">{GetAsHtml('sportsman.planning.footer1')}</div>
       <div className="spaceMinTop">{GetAsHtml('sportsman.planning.footer2')}</div>
 
-      <div className="spaceMinTop">{GetMsgWithUrl('https://www.youtube.com/watch?v=ePA1jqfuQ1E')}</div>
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/H_BtuiClZFk')}</div>
     </>
   );
 }
@@ -89,7 +89,7 @@ export function UsrItemCancelAndTransferView({ }) {
 
       <div className="spaceTop">{GetAsHtml('sportsman.cancelAndTransfer.footer1')}</div>
 
-      <div className="spaceMinTop">{GetMsgWithUrl('https://www.youtube.com/watch?v=ePA1jqfuQ1E')}</div>
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/wgAI27nP4OM')}</div>
     </>
   );
 }
@@ -98,8 +98,8 @@ export function UsrItemCompliteTrainingView({ }) {
   return (
     <>
       {GetAsHtml('sportsman.compliteTraining.header1')}
-      {GetAsHtml('sportsman.compliteTraining.header2')}
-      {GetAsHtml('sportsman.compliteTraining.header3')}
+      <div className="spaceMinTop">{GetAsHtml('sportsman.compliteTraining.header2')}</div>
+      <div className="spaceMinTop">{GetAsHtml('sportsman.compliteTraining.header3')}</div>
       <div className="spaceTop">
         {GetAsHtml('sportsman.compliteTraining.stepsHeader')}
         <div className="spaceLeft spaceMinTop">{GetAsHtml('sportsman.compliteTraining.step1')}</div>
@@ -111,7 +111,7 @@ export function UsrItemCompliteTrainingView({ }) {
 
       <div className="spaceTop">{GetAsHtml('sportsman.compliteTraining.footer1')}</div>
 
-      <div className="spaceMinTop">{GetMsgWithUrl('https://www.youtube.com/watch?v=ePA1jqfuQ1E')}</div>
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/zTF7Q4hhgGQ')}</div>
     </>
   );
 }
@@ -128,9 +128,9 @@ export function UsrItemTrainingAnaliticsView({ }) {
       </div>
 
       <div className="spaceTop">{GetAsHtml('sportsman.trainingAnalitics.footer1')}</div>
-      <div className="spaceTop">{GetAsHtml('sportsman.trainingAnalitics.footer2')}</div>
+      <div className="spaceMinTop">{GetAsHtml('sportsman.trainingAnalitics.footer2')}</div>
 
-      <div className="spaceMinTop">{GetMsgWithUrl('https://www.youtube.com/watch?v=ePA1jqfuQ1E')}</div>
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/icRt3dhrwsk')}</div>
     </>
   );
 }
@@ -139,7 +139,7 @@ export function UsrItemWorkWithCoachView({ }) {
   return (
     <>
       {GetAsHtml('sportsman.workWithCoach.header1')}
-      {GetAsHtml('sportsman.workWithCoach.header2')}
+      <div className="spaceMinTop">{GetAsHtml('sportsman.workWithCoach.header2')}</div>
       <div className="spaceTop">
         {GetAsHtml('sportsman.workWithCoach.stepsHeader')}
         <div className="spaceLeft spaceMinTop">{GetAsHtml('sportsman.workWithCoach.step1')}</div>
@@ -149,10 +149,10 @@ export function UsrItemWorkWithCoachView({ }) {
       </div>
 
       <div className="spaceTop">{GetAsHtml('sportsman.workWithCoach.footer1')}</div>
-      <div className="spaceTop">{GetAsHtml('sportsman.workWithCoach.footer2')}</div>
-      <div className="spaceTop">{GetAsHtml('sportsman.workWithCoach.footer3')}</div>
+      <div className="spaceMinTop">{GetAsHtml('sportsman.workWithCoach.footer2')}</div>
+      <div className="spaceMinTop">{GetAsHtml('sportsman.workWithCoach.footer3')}</div>
 
-      <div className="spaceMinTop">{GetMsgWithUrl('https://www.youtube.com/watch?v=ePA1jqfuQ1E')}</div>
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/bcMZ8-akMvU')}</div>
     </>
   );
 }
