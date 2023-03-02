@@ -60,20 +60,20 @@ class HelpMainView extends Component {
           }}
           items={[
             {
-              title: 'Спортсмену',
+              title: lngStr('help:topMenuItem.toSportsman'),
               itemId: '/help/0',
               //elemBefore: () => <Icon name="category" />,
               subNav: [
-                { itemId: '/help/1', title: lngStr('help:menuItem.exerciseCreation') },
-                { itemId: '/help/2', title: lngStr('help:menuItem.planning') },
-                { itemId: '/help/3', title: lngStr('help:menuItem.cancelAndTransfer') },
-                { itemId: '/help/4', title: lngStr('help:menuItem.compliteTraining') },
-                { itemId: '/help/5', title: lngStr('help:menuItem.trainingAnalitics') },
-                { itemId: '/help/6', title: lngStr('help:menuItem.workWithCoach') },
+                { itemId: '/help/1', title: lngStr('help:menuItem.sportsman.exerciseCreation') },
+                { itemId: '/help/2', title: lngStr('help:menuItem.sportsman.planning') },
+                { itemId: '/help/3', title: lngStr('help:menuItem.sportsman.cancelAndTransfer') },
+                { itemId: '/help/4', title: lngStr('help:menuItem.sportsman.compliteTraining') },
+                { itemId: '/help/5', title: lngStr('help:menuItem.sportsman.trainingAnalitics') },
+                { itemId: '/help/6', title: lngStr('help:menuItem.sportsman.workWithCoach') },
               ],
             },
             {
-              title: 'Тренеру',
+              title: lngStr('help:topMenuItem.toCoach'),
               itemId: '/help/20',
               //elemBefore: () => <Icon name="category" />,
               subNav: [

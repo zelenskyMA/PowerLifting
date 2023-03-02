@@ -1,9 +1,16 @@
 ﻿import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { Button, Col, Row } from "reactstrap";
 import { GetAsync, PostAsync, PutAsync, DeleteAsync } from "../../../common/ApiActions";
 import { ErrorPanel, InputText, LoadingPanel, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
+
+const mapStateToProps = store => {
+  return {
+    userInfo: store.app.myInfo,
+  }
+}
 
 class TemplateSetView extends Component {
   constructor(props) {
@@ -12,6 +19,7 @@ class TemplateSetView extends Component {
     this.state = {
       templateSet: Object,
       newTemplatePlan: { setId: parseInt(this.props.params.id, 10), name: '' },
+      backRedirectUrl: this.props.userInfo?.coachOnly ? `/templateSetList` : `/coachConsole`,
       error: '',
       loading: true
     };
@@ -33,7 +41,7 @@ class TemplateSetView extends Component {
   onDeleteTemplateSet = async () => {
     try {
       await DeleteAsync(`/templateSet/${this.props.params.id}`);
-      this.props.navigate(`/templateSetList`);
+      this.props.navigate(this.state.backRedirectUrl);
     }
     catch (error) {
       this.setState({ error: error.message });
@@ -90,10 +98,10 @@ class TemplateSetView extends Component {
           </Col>
         </Row>
 
-        <Button color="primary" className="spaceTop" outline onClick={() => this.props.navigate('/templateSetList')}>{lngStr('general.actions.back')}</Button>
+        <Button color="primary" className="spaceTop" outline onClick={() => this.props.navigate(this.state.backRedirectUrl)}>{lngStr('general.actions.back')}</Button>
       </>
     );
   }
 }
 
-export default WithRouter(TemplateSetView);
+export default WithRouter(connect(mapStateToProps, null)(TemplateSetView))

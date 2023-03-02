@@ -4,15 +4,30 @@
   },
 
   "menuItem": {
-    "exerciseCreation": "Создание упражнений",
-    "planning": "Планирование",
-    "cancelAndTransfer": "Перенос и отмена тренировок",
-    "compliteTraining": "Выполнение тренировки",
-    "trainingAnalitics": "Анализ проделанной работы",
-    "workWithCoach": "Работа с тренером"
+    "sportsman": {
+      "exerciseCreation": "Создание упражнений",
+      "planning": "Планирование",
+      "cancelAndTransfer": "Перенос и отмена тренировок",
+      "compliteTraining": "Выполнение тренировки",
+      "trainingAnalitics": "Анализ проделанной работы",
+      "workWithCoach": "Работа с тренером"
+    },
+    "coach": {
+      "menuSetup": "Настройка меню",
+      "groupSetup": "Работа с группами",
+      "requestManagement": "Обработка заявок спортсменов",
+      "manageUserInGroup": "Работа со спортсменом в группе",
+      "beforePlanning": "Подготовка к планированию",
+      "setPlanning": "Создание тренировочного цикла",
+      "trainingAssignment": "Назначение тренировок",
+      "trainingCorrection": "Коректировка тренировок"
+    }
   },
 
   "topMenuItem": {
+    "toSportsman": "Спортсмену",
+    "toCoach": "Тренеру",
+
     "sportsman": {
       "header": "Спортивный ассистент предназначен для планирования, корректировки и анализа результатов тренировок. Спортсмен может заниматься планированием как самостоятельно, так и с помощью тренера.",
       "stepsHeader": "Для успешного планирования необходимо:",
