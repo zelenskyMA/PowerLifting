@@ -7,6 +7,8 @@ namespace SportAssistant.Domain.DbModels.TrainingTemplate
     {
         public string Name { get; set; }
 
+        public int Order { get; set; }
+
         /// <summary>
         /// Расчетные данные. Количество упражнений по подтипам в сумме за все дни плана.
         /// </summary>

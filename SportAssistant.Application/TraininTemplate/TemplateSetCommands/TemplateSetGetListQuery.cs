@@ -31,12 +31,13 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateSetCommands
         public async Task<List<TemplateSet>> ExecuteAsync(Param param)
         {
             var setsDb = await _templateSetRepository.FindAsync(t => t.CoachId == _user.Id);
-            var sets = setsDb.Select(t => _mapper.Map<TemplateSet>(t)).OrderBy(t => t.Name).ToList();
+            var sets = setsDb.Select(_mapper.Map<TemplateSet>).OrderBy(t => t.Name).ToList();
 
             foreach (var item in sets)
             {
                 item.Templates = (await _templatePlanRepository.FindAsync(t => t.TemplateSetId == item.Id))
-                    .Select(t => _mapper.Map<TemplatePlan>(t)).ToList();
+                    .Select(_mapper.Map<TemplatePlan>)
+                    .OrderBy(t => t.Order).ToList();
             }
 
             return sets;

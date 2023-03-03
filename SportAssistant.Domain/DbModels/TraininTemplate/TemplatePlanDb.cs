@@ -9,5 +9,7 @@ namespace SportAssistant.Domain.DbModels.TrainingTemplate
         public int TemplateSetId { get; set; }
 
         public string Name { get; set; }
+
+        public int Order { get; set; }
     }
 }
