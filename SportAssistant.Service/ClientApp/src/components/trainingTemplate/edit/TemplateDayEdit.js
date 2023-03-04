@@ -42,7 +42,7 @@ class TemplateDayEdit extends Component {
               <th className="nameColumn" >{lngStr('training.exercise.header')}</th>
               {this.state.templateDay.percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
               <th className="intColumn text-center">{lngStr('training.entity.liftCounter')}</th>
-              <th style={{ width: '110px' }} className=" intColumntext-center">{lngStr('training.entity.weightLoad')} %</th>
+              <th style={{ width: '110px' }} className="intColumn text-center">{lngStr('training.entity.weightLoad')} %</th>
             </tr>
           </thead>
           <tbody>

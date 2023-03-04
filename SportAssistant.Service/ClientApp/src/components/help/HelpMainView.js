@@ -6,9 +6,13 @@ import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 import '../../styling/Custom.css';
 import {
-  UsrHeaderView, UsrItemExerciseCreationView, UsrItemPlanningView, UsrItemCancelAndTransferView, UsrItemCompliteTrainingView,
-  UsrItemTrainingAnaliticsView, UsrItemWorkWithCoachView
+  Usr_Header, Usr_ExerciseCreation, Usr_Planning, Usr_CancelAndTransfer, Usr_CompliteTraining,
+  Usr_TrainingAnalitics, Usr_WorkWithCoach
 } from "./pages/SportsmanView";
+import {
+  Coach_Header, Coach_MenuSetup, Coach_GroupSetup, Coach_RequestManagement, Coach_ManageUserInGroup,
+  Coach_BeforePlanning, Coach_SetPlanning, Coach_TrainingAssignment, Coach_TrainingCorrection
+} from "./pages/CoachView";
 
 class HelpMainView extends Component {
   constructor() {
@@ -25,27 +29,34 @@ class HelpMainView extends Component {
           {this.menuPanel(lngStr)}
         </Col>
         <Col xs={9}>
-          {this.dataPanel(lngStr)}
+          {this.dataPanel()}
         </Col>
       </Row>
     );
   }
 
-  dataPanel = (lngStr) => {
+  dataPanel = () => {
     var pageId = parseInt(this.props.params.id, 10);
 
     return (
       <>
-        {pageId === 0 && <UsrHeaderView />}
-        {pageId === 1 && <UsrItemExerciseCreationView />}
-        {pageId === 2 && <UsrItemPlanningView />}
-        {pageId === 3 && <UsrItemCancelAndTransferView />}
-        {pageId === 4 && <UsrItemCompliteTrainingView />}
-        {pageId === 5 && <UsrItemTrainingAnaliticsView />}
-        {pageId === 6 && <UsrItemWorkWithCoachView />}
+        {pageId === 0 && <Usr_Header />}
+        {pageId === 1 && <Usr_ExerciseCreation />}
+        {pageId === 2 && <Usr_Planning />}
+        {pageId === 3 && <Usr_CancelAndTransfer />}
+        {pageId === 4 && <Usr_CompliteTraining />}
+        {pageId === 5 && <Usr_TrainingAnalitics />}
+        {pageId === 6 && <Usr_WorkWithCoach />}
 
-        {pageId === 20 && ""}
-        {pageId === 21 && ""}
+        {pageId === 20 && <Coach_Header />}
+        {pageId === 21 && <Coach_MenuSetup />}
+        {pageId === 22 && <Coach_GroupSetup />}
+        {pageId === 23 && <Coach_RequestManagement />}
+        {pageId === 24 && <Coach_ManageUserInGroup />}
+        {pageId === 25 && <Coach_BeforePlanning />}
+        {pageId === 26 && <Coach_SetPlanning />}
+        {pageId === 27 && <Coach_TrainingAssignment />}
+        {pageId === 28 && <Coach_TrainingCorrection />}
       </>
     );
   }
@@ -77,8 +88,14 @@ class HelpMainView extends Component {
               itemId: '/help/20',
               //elemBefore: () => <Icon name="category" />,
               subNav: [
-                { itemId: '/help/21', title: lngStr('help:menuItem.exerciseCreation') },
-                { itemId: '/help/22', title: 'Заявки спортсменов', },
+                { itemId: '/help/21', title: lngStr('help:menuItem.coach.menuSetup') },
+                { itemId: '/help/22', title: lngStr('help:menuItem.coach.groupSetup') },
+                { itemId: '/help/23', title: lngStr('help:menuItem.coach.requestManagement') },
+                { itemId: '/help/24', title: lngStr('help:menuItem.coach.manageUserInGroup') },
+                { itemId: '/help/25', title: lngStr('help:menuItem.coach.beforePlanning') },
+                { itemId: '/help/26', title: lngStr('help:menuItem.coach.setPlanning') },
+                { itemId: '/help/27', title: lngStr('help:menuItem.coach.trainingAssignment') },
+                { itemId: '/help/28', title: lngStr('help:menuItem.coach.trainingCorrection') },
               ],
             },
           ]}

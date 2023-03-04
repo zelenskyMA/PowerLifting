@@ -10,10 +10,10 @@ import { GetAsHtml, GetMsgWithUrl } from "./CommonHelpActions";
 "footer2": ""
 */
 
-export function UsrHeaderView({ }) {
+export function Usr_Header({ }) {
   return (
     <>
-      {GetAsHtml('topMenuItem.sportsman.header')}
+      {GetAsHtml('topMenuItem.sportsman.header1')}
       <div className="spaceMinTop">
         {GetAsHtml('topMenuItem.sportsman.stepsHeader')}
         <div className="spaceLeft spaceMinTop">{GetAsHtml('topMenuItem.sportsman.step1')}</div>
@@ -27,7 +27,7 @@ export function UsrHeaderView({ }) {
   );
 }
 
-export function UsrItemExerciseCreationView({ }) {
+export function Usr_ExerciseCreation({ }) {
   return (
     <>
       {GetAsHtml('sportsman.exerciseCreation.header1')}
@@ -48,7 +48,7 @@ export function UsrItemExerciseCreationView({ }) {
   );
 }
 
-export function UsrItemPlanningView({ }) {
+export function Usr_Planning({ }) {
   return (
     <>
       {GetAsHtml('sportsman.planning.header')}
@@ -73,7 +73,7 @@ export function UsrItemPlanningView({ }) {
   );
 }
 
-export function UsrItemCancelAndTransferView({ }) {
+export function Usr_CancelAndTransfer({ }) {
   return (
     <>
       {GetAsHtml('sportsman.cancelAndTransfer.header')}
@@ -94,7 +94,7 @@ export function UsrItemCancelAndTransferView({ }) {
   );
 }
 
-export function UsrItemCompliteTrainingView({ }) {
+export function Usr_CompliteTraining({ }) {
   return (
     <>
       {GetAsHtml('sportsman.compliteTraining.header1')}
@@ -116,7 +116,7 @@ export function UsrItemCompliteTrainingView({ }) {
   );
 }
 
-export function UsrItemTrainingAnaliticsView({ }) {
+export function Usr_TrainingAnalitics({ }) {
   return (
     <>
       {GetAsHtml('sportsman.trainingAnalitics.header')}
@@ -135,7 +135,7 @@ export function UsrItemTrainingAnaliticsView({ }) {
   );
 }
 
-export function UsrItemWorkWithCoachView({ }) {
+export function Usr_WorkWithCoach({ }) {
   return (
     <>
       {GetAsHtml('sportsman.workWithCoach.header1')}

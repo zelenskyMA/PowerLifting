@@ -7,9 +7,15 @@ import WithRouter from "../../../common/extensions/WithRouter";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 import '../../../styling/Common.css';
 
+const mapStateToProps = store => {
+  return {
+    userInfo: store.app.myInfo,
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
-    changeModalVisibility: (modalInfo) => changeModalVisibility(modalInfo, dispatch)
+    changeModalVisibility: (modalInfo) => changeModalVisibility(modalInfo, dispatch),
   }
 }
 
@@ -23,6 +29,7 @@ class GroupUserCardPanel extends Component {
       selectedGroupId: 0,
       pushAchivement: Object, // толчок, id = 1
       jerkAchivement: Object, // рывок, id = 2
+      backRedirectUrl: this.props.userInfo?.coachOnly ? `/groupConsole` : `/coachConsole`,
       error: '',
       loading: true
     };
@@ -58,6 +65,7 @@ class GroupUserCardPanel extends Component {
     try {
       var userGroup = { userId: this.props.params.id, groupId: this.state.selectedGroupId };
       await PostAsync(`/groupUser/assign`, userGroup);
+      this.props.navigate(this.state.backRedirectUrl);
     }
     catch (error) { this.setState({ error: error.message }); }
   }
@@ -66,7 +74,7 @@ class GroupUserCardPanel extends Component {
     try {
       var userGroup = { userId: this.props.params.id, groupId: this.state.card?.groupInfo?.id };
       await PostAsync(`/groupUser/remove`, userGroup);
-      this.props.navigate(`/coachConsole`);
+      this.props.navigate(this.state.backRedirectUrl);
     }
     catch (error) { this.setState({ error: error.message }); }
   }
@@ -117,4 +125,4 @@ class GroupUserCardPanel extends Component {
   }
 }
 
-export default WithRouter(connect(null, mapDispatchToProps)(GroupUserCardPanel))
+export default WithRouter(connect(mapStateToProps, mapDispatchToProps)(GroupUserCardPanel))
