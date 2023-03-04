@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Button, Container } from 'reactstrap';
 import { DateToLocal } from "../../../common/LocalActions";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
-import { ErrorPanel, TableControl } from "../../../common/controls/CustomControls";
+import { ErrorPanel, TableControl, LoadingPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
@@ -20,7 +20,8 @@ class PlanExercisesEdit extends Component {
       exercises: [],
       selectedExercises: [],
       planDay: Object,
-      error: ''
+      error: '',
+      loading: true,
     };
   }
 
@@ -34,7 +35,7 @@ class PlanExercisesEdit extends Component {
     ]);
 
     var planExercisesData = planExercises.map((item, i) => item.exercise);
-    this.setState({ exercises: exerciseList, selectedExercises: planExercisesData, planDay: planDay });
+    this.setState({ exercises: exerciseList, selectedExercises: planExercisesData, planDay: planDay, loading: false });
   }
 
   confirmExercisesAsync = async () => {
@@ -83,6 +84,7 @@ class PlanExercisesEdit extends Component {
   }
 
   render() {
+    if (this.state.loading) { return (<LoadingPanel />); }
     const lngStr = this.props.lngStr;
 
     const columns = [

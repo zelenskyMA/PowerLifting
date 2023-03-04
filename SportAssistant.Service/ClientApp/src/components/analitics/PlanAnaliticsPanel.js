@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Col, Row } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
-import { InputDate, LineChartControl, LoadingPanel, TabControl } from "../../common/controls/CustomControls";
+import { InputDate, LineChartControl, LoadingPanel, TabControl, ErrorPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
@@ -19,20 +19,24 @@ class PlanAnaliticsPanel extends Component {
       analitics: [],
       startDate: startDate,
       finishDate: finishDate,
-      loading: true
+      loading: true,
+      error: ''
     };
   }
 
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var utcStartDate = new Date(this.state.startDate.getTime() - this.state.startDate.getTimezoneOffset() * 60 * 1000);
-    var utcFinishDate = new Date(this.state.finishDate.getTime() - this.state.finishDate.getTimezoneOffset() * 60 * 1000);
+    try {
+      var utcStartDate = new Date(this.state.startDate.getTime() - this.state.startDate.getTimezoneOffset() * 60 * 1000);
+      var utcFinishDate = new Date(this.state.finishDate.getTime() - this.state.finishDate.getTimezoneOffset() * 60 * 1000);
 
-    var request = `startDate=${utcStartDate.toISOString()}&finishDate=${utcFinishDate.toISOString()}`;
-    var analiticsData = await GetAsync(`/analitics/getPlanAnalitics/${this.props.groupUserId}?${request}`);
+      var request = `startDate=${utcStartDate.toISOString()}&finishDate=${utcFinishDate.toISOString()}`;
+      var analiticsData = await GetAsync(`/analitics/getPlanAnalitics/${this.props.groupUserId}?${request}`);
 
-    this.setState({ analitics: analiticsData, loading: false });
+      this.setState({ analitics: analiticsData, loading: false });
+    }
+    catch (error) { this.setState({ error: error.message, loading: false }); }
   }
 
   onValueChange = async (propName, value) => {
@@ -47,15 +51,17 @@ class PlanAnaliticsPanel extends Component {
 
     return (
       <>
+        <ErrorPanel errorMessage={this.state.error} />
+
         <Row className="spaceBottom">
           <Col xs={4}>
             <p>{lngStr('analitics.buildingGraph')}</p>
           </Col>
           <Col xs={3}>
-            <InputDate label={lngStr('general.common.from' + ':') } propName="startDate" onChange={this.onValueChange} initialValue={this.state.startDate?.toISOString()?.substring(0, 10)} />
+            <InputDate label={lngStr('general.common.from') + ':'} propName="startDate" onChange={this.onValueChange} initialValue={this.state.startDate?.toISOString()?.substring(0, 10)} />
           </Col>
           <Col xs={3}>
-            <InputDate label={lngStr('general.common.to' + ':')} propName="finishDate" onChange={this.onValueChange} initialValue={this.state.finishDate?.toISOString()?.substring(0, 10)} />
+            <InputDate label={lngStr('general.common.to') + ':'} propName="finishDate" onChange={this.onValueChange} initialValue={this.state.finishDate?.toISOString()?.substring(0, 10)} />
           </Col>
         </Row>
 

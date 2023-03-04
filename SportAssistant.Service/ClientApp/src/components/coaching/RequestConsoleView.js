@@ -38,7 +38,7 @@ class RequestConsoleView extends Component {
 
     return (
       <div className="spaceTop">
-        <p><strong>{lngStr('coaching.request.requesterList')}</strong> {lngStr('coaching.request.dblClickAccept')}</p>
+        <p><strong>{lngStr('coaching.request.requesterList')}</strong></p>
         <TableControl columnsInfo={columns} data={this.state.myRequests} rowClick={this.onRowlClick} />
       </div>
     );

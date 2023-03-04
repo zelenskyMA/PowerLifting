@@ -12,15 +12,18 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         private readonly ICrudRepo<PlanDb> _planRepository;
         private readonly ICrudRepo<PlanDayDb> _planDayRepository;
         private readonly ICrudRepo<PlanExerciseDb> _planExerciseRepository;
+        private readonly ICrudRepo<PlanExerciseSettingsDb> _exerciseSettingsRepository;
 
         public ProcessPlanUserId(
             ICrudRepo<PlanDb> planRepository,
             ICrudRepo<PlanDayDb> planDayRepository,
-            ICrudRepo<PlanExerciseDb> planExerciseRepository)
+            ICrudRepo<PlanExerciseDb> planExerciseRepository,
+            ICrudRepo<PlanExerciseSettingsDb> exerciseSettingsRepository)
         {
             _planRepository = planRepository;
             _planDayRepository = planDayRepository;
             _planExerciseRepository = planExerciseRepository;
+            _exerciseSettingsRepository = exerciseSettingsRepository;
         }
 
         /// <inheritdoc />
@@ -47,6 +50,18 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             }
 
             return await GetByDayId(planExercise.PlanDayId);
+        }
+
+        /// <inheritdoc />
+        public async Task<int> GetByPlanExerciseSettingsId(int id)
+        {
+            var planExerciseSettings = await _exerciseSettingsRepository.FindOneAsync(t => t.Id == id);
+            if (planExerciseSettings == null)
+            {
+                return 0;
+            }
+
+            return await GetByPlanExerciseId(planExerciseSettings.PlanExerciseId);
         }
     }
 }

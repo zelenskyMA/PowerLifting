@@ -41,15 +41,15 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
         }
 
         /// <inheritdoc />
-        public async Task<List<PlanExercise>> GetByDaysAsync(List<int> dayIds)
+        public async Task<List<PlanExercise>> GetByDaysAsync(List<int> dayIds, bool countOnlyCompleted = false)
         {
             var planExercisesDb = await _planExerciseRepository.FindAsync(t => dayIds.Contains(t.PlanDayId));
-            var exercises = await PrepareExerciseDataAsync(planExercisesDb);
+            var exercises = await PrepareExerciseDataAsync(planExercisesDb, countOnlyCompleted);
             return exercises;
         }
 
         /// <inheritdoc />
-        public async Task<List<PlanExercise>> PrepareExerciseDataAsync(List<PlanExerciseDb> planExercisesDb)
+        public async Task<List<PlanExercise>> PrepareExerciseDataAsync(List<PlanExerciseDb> planExercisesDb, bool countOnlyCompleted = false)
         {
             if (planExercisesDb.Count() == 0)
             {
@@ -61,13 +61,15 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
 
             var settings = await _processPlanExerciseSettings.GetAsync(planExercisesDb.Select(t => t.Id).ToList());
 
-            var planExercises = planExercisesDb.Select(t => _mapper.Map<PlanExercise>(t)).ToList();
+            var planExercises = planExercisesDb.Select(_mapper.Map<PlanExercise>).ToList();
             foreach (var item in planExercises)
             {
                 item.Exercise = exercises.First(t => t.Id == item.Exercise.Id).Clone();
                 item.Exercise.PlannedExerciseId = item.Id;
 
-                item.Settings = settings.Where(t => t.PlanExerciseId == item.Id).OrderBy(t => t.Weight).ToList();
+                item.Settings = countOnlyCompleted ?
+                    settings.Where(t => t.PlanExerciseId == item.Id && t.Completed).OrderBy(t => t.Weight).ToList() :
+                    settings.Where(t => t.PlanExerciseId == item.Id).OrderBy(t => t.Weight).ToList();
 
                 _trainingCountersSetup.SetExerciseCounters(item);
             }

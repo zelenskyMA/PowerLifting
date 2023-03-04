@@ -34,7 +34,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
 
             foreach (var item in excercisesDb)
             {
-                var planUserId = await _processPlanUserId.GetByPlanExerciseId(item.Id);
+                var planUserId = await _processPlanUserId.GetByPlanExerciseSettingsId(item.Id);
                 await _processPlan.PlanningAllowedForUserAsync(planUserId);
 
                 item.Completed = true;

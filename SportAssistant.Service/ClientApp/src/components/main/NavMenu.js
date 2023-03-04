@@ -1,16 +1,15 @@
-import { CoachTopMenu } from "./menu/CoachTopMenu";
-import { CommonTopMenu } from "./menu/CommonTopMenu";
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import {
-  Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink,
-  UncontrolledDropdown
+  Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, UncontrolledDropdown, NavItem, NavLink
 } from 'reactstrap';
 import WithRouter from "../../common/extensions/WithRouter";
 import { RemoveTokens } from '../../common/TokenActions';
 import '../../styling/Common.css';
 import '../../styling/NavMenu.css';
+import { CoachTopMenu } from "./menu/CoachTopMenu";
+import { CommonTopMenu } from "./menu/CommonTopMenu";
 
 const mapStateToProps = store => {
   return {
@@ -39,6 +38,11 @@ class NavMenu extends Component {
           {legalName &&
             <>
               <NavbarBrand className="menu-first-page-item" tag={Link} to="/">{lngStr('general.common.main')}</NavbarBrand>
+
+              <NavbarBrand className="help-menu-item" tag={Link} to="/help/0" title={lngStr('general.common.help')}>
+              <img src="/img/help_icon.png" width="30" height="30" className="rounded mx-auto d-block" />
+              </NavbarBrand>
+
               <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             </>
           }

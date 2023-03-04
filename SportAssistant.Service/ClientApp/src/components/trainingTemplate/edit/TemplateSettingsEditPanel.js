@@ -32,7 +32,7 @@ function Tooltip({ settingsList, idPrefix }) {
         return (
           <p key={`tooltip_${idPrefix}${Math.random()}`}>
             {
-              `${t('training.entity.weight')}: ${settings.weightPercentage} ${t('training.entity.iterations')}: ${settings.iterations} ${t('training.entity.repeates')}: ${settings.exercisePart1} | ${settings.exercisePart2} | ${settings.exercisePart3}`
+              `${t('training.entity.weight') + ' (%)'}: ${settings.weightPercentage} ${t('training.entity.iterations')}: ${settings.iterations} ${t('training.entity.repeates')}: ${settings.exercisePart1} | ${settings.exercisePart2} | ${settings.exercisePart3}`
             }
           </p>
         );

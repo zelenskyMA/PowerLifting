@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Button } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
-import { LoadingPanel, TabControl, TableControl } from "../../../common/controls/CustomControls";
+import { ErrorPanel, LoadingPanel, TabControl, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal } from "../../../common/LocalActions";
 
@@ -13,16 +13,20 @@ class PlansListPanel extends Component {
     this.state = {
       activePlans: [],
       expiredPlans: [],
-      loading: true
+      loading: true,
+      error: '',
     };
   }
 
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var plans = await GetAsync(`/trainingPlan/getList/${this.props.groupUserId}`);
+    try {
+      var plans = await GetAsync(`/trainingPlan/getList/${this.props.groupUserId}`);
 
-    this.setState({ activePlans: plans.activePlans, expiredPlans: plans.expiredPlans, loading: false });
+      this.setState({ activePlans: plans.activePlans, expiredPlans: plans.expiredPlans, loading: false });
+    }
+    catch (error) { this.setState({ error: error.message, loading: false }); }
   }
 
   onRowClick = async (row) => { this.props.navigate(`/editPlanDays/${row.values.id}`); }
@@ -41,6 +45,8 @@ class PlansListPanel extends Component {
 
     return (
       <>
+        <ErrorPanel errorMessage={this.state.error} />
+
         <TabControl data={[
           { id: 1, label: lngStr('training.active'), renderContent: () => this.activePlansContent(columns, lngStr) },
           { id: 2, label: lngStr('training.history'), renderContent: () => this.historyPlansContent(columns) }

@@ -10,15 +10,20 @@ class ExercisesView extends Component {
     super(props);
 
     this.state = {
-      exercises: []
+      exercises: [],
+      dictionaryExercises: [],
     };
   }
 
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    var exercisesData = await GetAsync("/exerciseInfo/getEditingList");
-    this.setState({ exercises: exercisesData });
+    const [customExercises, dictionaryExercises] = await Promise.all([
+      GetAsync("/exerciseInfo/getEditingList"),
+      GetAsync("/exerciseInfo/getAdminEditingList")
+    ]);
+    
+    this.setState({ exercises: customExercises, dictionaryExercises: dictionaryExercises });
   }
 
   onCreate = async () => { this.props.navigate(`/exercises/add`); }
@@ -44,6 +49,12 @@ class ExercisesView extends Component {
         )}
 
         <Button className="spaceTop" color="primary" onClick={() => this.onCreate()}>{lngStr('general.actions.create')}</Button>
+
+        <div className="spaceTop">
+          <h5>{lngStr('training.exercise.dictionary')}</h5>
+          <TableControl columnsInfo={columns} data={this.state.dictionaryExercises} />
+        </div>
+
       </div>
     );
   }

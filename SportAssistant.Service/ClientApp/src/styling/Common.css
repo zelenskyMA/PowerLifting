@@ -11,10 +11,23 @@
   margin-right: 30px !important;
 }
 
+.spaceLeft {
+  margin-left: 30px !important;
+}
+
+.space2Left {
+  margin-left: 60px !important;
+}
+
 .spaceBorder {
   margin-top: 15px;
   margin-left: 15px;
 }
+
+.spaceMinTop {
+  margin-top: 10px !important;
+}
+
 
 .intColumn {
   width: 25px;

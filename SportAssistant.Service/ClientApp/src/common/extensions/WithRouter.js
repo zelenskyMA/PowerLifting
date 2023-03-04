@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 const withRouter = WrappedComponent => props => {
   const params = useParams();
   const navigate = useNavigate();
-  const { t } = useTranslation(); // вытаскиваем вынкцию, которая в списке и называется 't'.
+  const { t } = useTranslation(['translation', 'help']); // вытаскиваем вынкцию, которая в списке и называется 't'.
 
   return (
     <WrappedComponent

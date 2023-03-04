@@ -48,6 +48,19 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
         }
 
         /// <inheritdoc />
+        public async Task UpdateTemplatesInSet(List<TemplatePlan> templatesList)
+        {
+            var ids = templatesList.Select(t => t.Id);
+            var templatePlansDb = await _templatePlanRepository.FindAsync(t => ids.Contains(t.Id));
+            foreach (var item in templatePlansDb)
+            {
+                item.Order = templatesList.IndexOf(templatesList.First(t=> t.Id == item.Id));
+            }
+
+            _templatePlanRepository.UpdateList(templatePlansDb);
+        }
+
+        /// <inheritdoc />
         public async Task DeleteTemplateAsync(TemplatePlanDb entity)
         {
             await _processTemplateDay.DeleteByTemplateIdAsync(entity.Id);

@@ -1,10 +1,16 @@
 ﻿import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { Button, Col, Row } from "reactstrap";
 import { GetAsync, PostAsync, DeleteAsync } from "../../common/ApiActions";
 import { DropdownControl, ErrorPanel, LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
+const mapStateToProps = store => {
+  return {
+    userInfo: store.app.myInfo,
+  }
+}
 
 class RequestAcceptView extends Component {
   constructor(props) {
@@ -14,6 +20,7 @@ class RequestAcceptView extends Component {
       request: Object,
       coachGroups: [],
       selectedGroupId: 0,
+      backRedirectUrl: this.props.userInfo?.coachOnly ? `/groupConsole` : `/coachConsole`,
       error: '',
       loading: true
     };
@@ -33,7 +40,8 @@ class RequestAcceptView extends Component {
   rejectRequest = async () => {
     try {
       await DeleteAsync(`/trainingRequests/${this.state.request.userId}`);
-      this.props.navigate(`/coachConsole`);
+
+      this.props.navigate(this.state.backRedirectUrl);
     }
     catch (error) { this.setState({ error: error.message }); }
   }
@@ -42,7 +50,8 @@ class RequestAcceptView extends Component {
     try {
       var userGroup = { userId: this.state.request.userId, groupId: this.state.selectedGroupId };
       await PostAsync(`/groupUser/assign`, userGroup);
-      this.props.navigate(`/coachConsole`);
+
+      this.props.navigate(this.state.backRedirectUrl);      
     }
     catch (error) { this.setState({ error: error.message }); }
   }
@@ -80,4 +89,4 @@ class RequestAcceptView extends Component {
   }
 }
 
-export default WithRouter(RequestAcceptView)
+export default WithRouter(connect(mapStateToProps, null)(RequestAcceptView))

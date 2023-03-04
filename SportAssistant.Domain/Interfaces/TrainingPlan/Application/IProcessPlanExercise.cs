@@ -10,8 +10,9 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         /// Получение запланированных упражнений по Ид дней в плане.
         /// </summary>
         /// <param name="dayIds">Список Ид дней в планах</param>
+        /// <param name="countOnlyCompleted">Учитывать в подсчете показателей только успешно завершенные Поднятия</param>
         /// <returns></returns>
-        Task<List<PlanExercise>> GetByDaysAsync(List<int> dayIds);
+        Task<List<PlanExercise>> GetByDaysAsync(List<int> dayIds, bool countOnlyCompleted = false);
 
         /// <summary>
         /// Создание нового упражнения в тренировочном дне
@@ -28,8 +29,9 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         /// Обогащаем данными модель запланированного упражнения
         /// </summary>
         /// <param name="planExercisesDb">Данные по упражнению из БД</param>
+        /// <param name="countOnlyCompleted">Учитывать в подсчете показателей только успешно завершенные Поднятия</param>
         /// <returns></returns>
-        Task<List<PlanExercise>> PrepareExerciseDataAsync(List<PlanExerciseDb> planExercisesDb);
+        Task<List<PlanExercise>> PrepareExerciseDataAsync(List<PlanExerciseDb> planExercisesDb, bool countOnlyCompleted = false);
 
         /// <summary>
         /// Удаление запланированных упражнений вместе с поднятиями (exerciseSettings)
