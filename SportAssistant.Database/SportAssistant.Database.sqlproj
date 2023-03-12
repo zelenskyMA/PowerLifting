@@ -75,6 +75,7 @@
   <ItemGroup>
     <None Include="SportAssistant.publish.xml" />
     <None Include="SportAssistant.1gb.publish.xml" />
+    <None Include="PostDeploy\Script1.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PostDeploy\Plan_PostDeployment.sql" />
