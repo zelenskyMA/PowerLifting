@@ -13,4 +13,3 @@ Post-Deployment Script Template
 :r .\Base_PostDeploy.sql
 :r .\User_PostDeployment.sql
 :r .\Plan_PostDeployment.sql
-:r .\Script1.sql

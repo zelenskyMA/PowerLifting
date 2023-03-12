@@ -1,7 +1,7 @@
 ﻿
 SET IDENTITY_INSERT DictionaryTypes ON
 
-  MERGE DictionaryTypes AS Target
+  MERGE INTO DictionaryTypes AS Target
   USING (VALUES 
     ( 1, 'Тип упражнений', 'Базовые типы упражнений'),
     ( 2, 'Категория упражнений', 'Подраздел в рамках базового типа упражнений'),
@@ -18,7 +18,7 @@ SET IDENTITY_INSERT DictionaryTypes OFF
 
 SET IDENTITY_INSERT Dictionaries ON
 
-  MERGE Dictionaries AS Target
+  MERGE INTO Dictionaries AS Target
   USING (VALUES 
     ( 1, 1, 'Толчковые', 'Упражнения на толчок штанги'),
     ( 2, 1, 'Рывковые', 'Упражнения на рывок штанги'),
@@ -60,18 +60,18 @@ SET IDENTITY_INSERT Dictionaries OFF
 
 SET IDENTITY_INSERT Settings ON
 
-  MERGE Settings AS Target
+  MERGE INTO Settings AS Target
   USING (VALUES 
-    ( 1, 'Максимум активных планов', 30, 'Предел активных планов, которые можно назначить'),
-    ( 2, 'Максимум упражнений в день', 10, 'Предел упражнений, которые можно назначить на один день'),
-    ( 3, 'Максимум поднятий в упражнении', 10, 'Предел поднятий, которые можно назначить в одно упражнение')
-  )	AS Source (Id, Name, Value, Description)
+    ( 1, 'Максимум активных планов', 'Предел активных планов, которые можно назначить', 30),
+    ( 2, 'Максимум упражнений в день', 'Предел упражнений, которые можно назначить на один день', 10),
+    ( 3, 'Максимум поднятий в упражнении', 'Предел поднятий, которые можно назначить в одно упражнение', 10)
+  )	AS Source (Id, Name, Description, Value)
     ON Source.[Id] = Target.[Id]
-  WHEN NOT MATCHED BY Target THEN INSERT (Id, Name, Value, Description) VALUES (Source.Id, Source.Name, Source.Value, Source.Description)
+  WHEN NOT MATCHED BY Target THEN INSERT (Id, Name, Description, Value) VALUES (Source.Id, Source.Name, Source.Description, Source.Value)
   WHEN MATCHED THEN UPDATE SET 
     Target.Name = Source.Name,
-    Target.Value = Source.Value,
-    Target.Description = Source.Description;
+    Target.Description = Source.Description,
+    Target.Value = Source.Value;
 
 SET IDENTITY_INSERT Settings OFF 
 
