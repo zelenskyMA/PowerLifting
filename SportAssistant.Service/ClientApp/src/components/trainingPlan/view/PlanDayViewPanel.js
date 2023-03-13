@@ -54,6 +54,13 @@ class PlanDayViewPanel extends Component {
     this.setState({ completedExercises: newValue });
   }
 
+  renderModal = (modalData, exerciseTypeId, lngStr) => {
+    switch (exerciseTypeId) {
+      case 3: this.onShowOfpExerciseModal(modalData, lngStr); break;
+      default: this.onShowExerciseModal(modalData, lngStr); break;
+    }
+  }
+
   onShowExerciseModal = (modalData, lngStr) => {
     this.setState({ selectedModalData: modalData });
 
@@ -71,6 +78,29 @@ class PlanDayViewPanel extends Component {
                   <span className="spaceRight"><i>{lngStr('training.entity.weight')}:</i>{' ' + item.weight}</span>
                   <span className="spaceRight"><i>{lngStr('training.entity.iterations')}:</i>{' ' + item.iterations}</span>
                   <span><i>{lngStr('training.entity.repeates')}:</i>{' '}{item.exercisePart1}{' | '}{item.exercisePart2}{' | '}{item.exercisePart3}</span>
+                </Col>
+              </Row>
+            );
+          }))
+      }
+    };
+    this.props.changeModalVisibility(modalInfo);
+  }
+
+  onShowOfpExerciseModal = (modalData, lngStr) => {
+    this.setState({ selectedModalData: modalData });
+
+    var modalInfo = {
+      isVisible: true,
+      headerText: modalData.name,
+      buttons: [{ name: lngStr('appSetup.modal.confirmExecution'), onClick: this.onCompleteExercise, color: "success" }],
+      body: () => {
+        return (
+          modalData.settings?.map((item, index) => {
+            return (
+              <Row className="spaceBottom" key={item.id}>
+                <Col>
+                  <span>{modalData.planExercise.extPlanData}</span>
                 </Col>
               </Row>
             );
@@ -147,14 +177,20 @@ class PlanDayViewPanel extends Component {
       return (<div> - </div>);
     }
 
-    var modalData = { id: itemId, name: planExercise.exercise.name, settings: settingsList };
+    var modalData = { id: itemId, name: planExercise.exercise.name, settings: settingsList, planExercise: planExercise };
     var exerciseState = this.state.completedExercises.find(t => t.id === modalData.id).state;
-    var imgPrefix = '/img/table/barbell';
+
+    var imgPrefix = '';
+    var exerciseTypeId = parseInt(planExercise.exercise.exerciseTypeId, 10);
+    switch (exerciseTypeId) {
+      case 3: imgPrefix = '/img/table/ofp'; break;
+      default: imgPrefix = '/img/table/barbell'; break;
+    }
 
     return (
       <>
-        <div role="button" className="text-center" id={idPrefix} onClick={() => this.onShowExerciseModal(modalData, lngStr)}>
-          <img src={exerciseState ? `${imgPrefix}Completed.png` : `${imgPrefix}Planned.png`} width="30" height="35" className="rounded mx-auto d-block" />
+        <div role="button" className="text-center" id={idPrefix} onClick={() => this.renderModal(modalData, exerciseTypeId, lngStr)}>
+          <img src={exerciseState ? `${imgPrefix}Completed.png` : `${imgPrefix}Planned.png`} width="35" height="35" className="rounded mx-auto d-block" />
         </div>
       </>
     );

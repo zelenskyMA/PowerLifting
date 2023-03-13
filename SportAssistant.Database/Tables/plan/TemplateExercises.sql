@@ -4,7 +4,8 @@
     [TemplateDayId] INT NOT NULL,
     [ExerciseId] INT NOT NULL,
     [Order] INT NOT NULL,
-    [Comments] NVARCHAR(500) NULL, 
+    [Comments] NVARCHAR(500) NULL,
+    [ExtPlanData] NVARCHAR(500) NULL,
     CONSTRAINT [PK_TemplateExercises] PRIMARY KEY ([Id]),
     FOREIGN KEY ([TemplateDayId]) REFERENCES [plan].[TemplateDays] ([Id]),
     FOREIGN KEY ([ExerciseId]) REFERENCES [plan].[Exercises] ([Id])

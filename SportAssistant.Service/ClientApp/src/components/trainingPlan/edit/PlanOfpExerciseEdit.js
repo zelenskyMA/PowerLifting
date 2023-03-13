@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
 import { Button, Col, Row } from "reactstrap";
 import { GetAsync, PutAsync } from "../../../common/ApiActions";
 import { ErrorPanel, InputTextArea, LoadingPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
-
-const mapStateToProps = store => {
-  return {
-    appSettings: store.app.settings,
-  }
-}
 
 /* ОФП упражнения с различными способами планирования (минуты, подходы и т.п.) */
 class PlanOfpExerciseEdit extends Component {
@@ -76,4 +69,4 @@ class PlanOfpExerciseEdit extends Component {
   }
 }
 
-export default WithRouter(connect(mapStateToProps, null)(PlanOfpExerciseEdit))
+export default WithRouter(PlanOfpExerciseEdit)

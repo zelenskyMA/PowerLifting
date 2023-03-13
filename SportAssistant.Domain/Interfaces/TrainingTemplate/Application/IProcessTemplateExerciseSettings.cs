@@ -23,8 +23,9 @@ namespace SportAssistant.Domain.Interfaces.TrainingTemplate.Application
         /// Обновление поднятий по списку в упражнении
         /// </summary>
         /// <param name="templateExerciseId">Ид упражнения в шаблоне</param>
+        /// <param name="exerciseTypeId">Ид типа упражнения</param>
         /// <param name="settingsList">Список поднятий</param>
         /// <returns></returns>
-        Task UpdateAsync(int templateExerciseId, List<TemplateExerciseSettings> settingsList);
+        Task UpdateAsync(int templateExerciseId, int exerciseTypeId, List<TemplateExerciseSettings> settingsList);
     }
 }

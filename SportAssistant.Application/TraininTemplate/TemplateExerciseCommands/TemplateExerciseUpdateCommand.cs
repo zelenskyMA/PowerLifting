@@ -1,9 +1,11 @@
 ﻿using SportAssistant.Domain.CustomExceptions;
+using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 using SportAssistant.Domain.Models.TrainingTemplate;
+using SportAssistant.Infrastructure.Repositories.TrainingPlan;
 
 namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
 {
@@ -35,13 +37,11 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
 
             await VerifyRequestAsync(templateExerciseDb, param.TemplateExercise.Id);
 
-            if (templateExerciseDb.Comments != param.TemplateExercise.Comments)
-            {
-                templateExerciseDb.Comments = param.TemplateExercise.Comments;
-                _templateExerciseRepository.Update(templateExerciseDb);
-            }
+            templateExerciseDb.Comments = param.TemplateExercise.Comments;
+            templateExerciseDb.ExtPlanData = param.TemplateExercise.ExtPlanData;
+            _templateExerciseRepository.Update(templateExerciseDb);
 
-            await _processTemplateExerciseSettings.UpdateAsync(param.TemplateExercise.Id, param.TemplateExercise.Settings);
+            await _processTemplateExerciseSettings.UpdateAsync(param.TemplateExercise.Id, param.TemplateExercise.Exercise.ExerciseTypeId, param.TemplateExercise.Settings);
             return true;
         }
 

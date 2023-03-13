@@ -63,7 +63,7 @@ class PlanDayEdit extends Component {
 
                 {this.state.planDay.percentages.map(item =>
                   <td key={item.id} className="text-center">
-                    <ExerciseSettingsEditPanel percentage={item} settings={planExercise.settings} />
+                    <ExerciseSettingsEditPanel percentage={item} planExercise={planExercise} />
                   </td>
                 )}
                 <td className="text-center"><strong>{planExercise.liftCounter}</strong></td>

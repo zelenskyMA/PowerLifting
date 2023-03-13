@@ -33,7 +33,7 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseSettingsCo
             var percentages = await GetPercentageListAsync();
 
             var settingsDb = await _exerciseSettingsRepository.FindAsync(t => exerciseIds.Contains(t.TemplateExerciseId));
-            var settings = settingsDb.Select(t => _mapper.Map<TemplateExerciseSettings>(t)).ToList();
+            var settings = settingsDb.Select(_mapper.Map<TemplateExerciseSettings>).ToList();
 
             foreach (var item in settings)
             {
@@ -45,8 +45,14 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseSettingsCo
         }
 
         /// <inheritdoc />
-        public async Task UpdateAsync(int templateExerciseId, List<TemplateExerciseSettings> settingsList)
+        public async Task UpdateAsync(int templateExerciseId, int exerciseTypeId, List<TemplateExerciseSettings> settingsList)
         {
+            if (exerciseTypeId == 3)
+            {
+                await UpdateOfpAsync(templateExerciseId);
+                return;
+            }
+
             var existingSettingsDb = await _exerciseSettingsRepository.FindAsync(t => t.TemplateExerciseId == templateExerciseId);
             if (existingSettingsDb.Count() == 0 && (settingsList == null || settingsList.Count == 0))
             {
@@ -98,6 +104,28 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseSettingsCo
             _exerciseSettingsRepository.DeleteList(settingsDb.Select(t => _mapper.Map<TemplateExerciseSettingsDb>(t)).ToList());
 
             await _contextProvider.AcceptChangesAsync();
+        }
+
+        /// <summary>
+        /// Обновление ОФП Упражнений. Они не содержат поднятий.
+        /// </summary>
+        private async Task UpdateOfpAsync(int templateExerciseId)
+        {
+            var existingSettingsDb = await _exerciseSettingsRepository.FindOneAsync(t => t.TemplateExerciseId == templateExerciseId);
+            if (existingSettingsDb != null)
+            {
+                return;
+            }
+
+            // Создаем сеттинги для отображения в колонке 100%. Они никогда не меняются
+            var percentages = await GetPercentageListAsync();
+            var exerciseSettingsDb = new TemplateExerciseSettingsDb()
+            {
+                TemplateExerciseId = templateExerciseId,
+                PercentageId = percentages.First(t => t.MaxValue == 99).Id,
+                WeightPercentage = 1
+            };
+            await _exerciseSettingsRepository.CreateAsync(exerciseSettingsDb);
         }
 
         /// <inheritdoc />

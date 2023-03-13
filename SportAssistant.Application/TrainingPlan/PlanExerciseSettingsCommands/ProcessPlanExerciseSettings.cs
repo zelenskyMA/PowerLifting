@@ -138,7 +138,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
         /// </summary>
         private async Task UpdateOfpAsync(int planExerciseId)
         {
-            var existingSettingsDb = await _exerciseSettingsRepository.FindAsync(t => t.PlanExerciseId == planExerciseId);
+            var existingSettingsDb = await _exerciseSettingsRepository.FindOneAsync(t => t.PlanExerciseId == planExerciseId);
             if (existingSettingsDb != null)
             {
                 return;
@@ -149,7 +149,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
             var exerciseSettingsDb = new PlanExerciseSettingsDb()
             {
                 PlanExerciseId = planExerciseId,
-                PercentageId = percentages.First(t => t.MinValue == 100).Id
+                PercentageId = percentages.First(t => t.MaxValue == 99).Id,
+                Weight = 1
             };
             await _exerciseSettingsRepository.CreateAsync(exerciseSettingsDb);
         }

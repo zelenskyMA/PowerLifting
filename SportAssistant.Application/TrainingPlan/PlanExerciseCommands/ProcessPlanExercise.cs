@@ -86,6 +86,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
                 ExerciseId = exerciseId,
                 Order = order,
                 Comments = templateExercise == null ? string.Empty : templateExercise.Comments,
+                ExtPlanData = templateExercise == null ? string.Empty : templateExercise.ExtPlanData,
             };
 
             await _planExerciseRepository.CreateAsync(planExercise);
