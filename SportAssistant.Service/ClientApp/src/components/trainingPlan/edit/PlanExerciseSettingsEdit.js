@@ -12,6 +12,7 @@ const mapStateToProps = store => {
   }
 }
 
+/* Стандартные упражнения со штангой */
 class PlanExerciseSettingsEdit extends Component {
   constructor() {
     super();

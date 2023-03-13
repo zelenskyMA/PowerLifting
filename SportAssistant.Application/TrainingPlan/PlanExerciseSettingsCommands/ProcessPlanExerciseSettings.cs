@@ -55,6 +55,12 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
         /// <inheritdoc />
         public async Task UpdateAsync(int userId, int planExerciseId, int exerciseTypeId, List<PlanExerciseSettings> settingsList)
         {
+            if (exerciseTypeId == 3)
+            {
+                await UpdateOfpAsync(planExerciseId);
+                return;
+            }
+
             // проверка настроек и отсутствие данных
             var settings = await _processSettings.GetAsync();
             if (settingsList.Count > settings.MaxLiftItems)
@@ -82,7 +88,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
             var percentages = await GetPercentageListAsync();
             var settingsListDb = existingSettingsDb
                 .Where(t => incomeIds.Contains(t.Id))
-                .Union(settingsList.Where(t => t.Id == 0).Select(t => _mapper.Map<PlanExerciseSettingsDb>(t)))
+                .Union(settingsList.Where(t => t.Id == 0).Select(_mapper.Map<PlanExerciseSettingsDb>))
                 .ToList();
 
             // обновляем данные в старых записях (existingSettingsDb). В БД их уже нет.
@@ -122,13 +128,33 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
             }
 
             var settingsDb = await _exerciseSettingsRepository.FindAsync(t => exerciseIds.Contains(t.PlanExerciseId));
-            _exerciseSettingsRepository.DeleteList(settingsDb.Select(t => _mapper.Map<PlanExerciseSettingsDb>(t)).ToList());
+            _exerciseSettingsRepository.DeleteList(settingsDb.Select(_mapper.Map<PlanExerciseSettingsDb>).ToList());
 
             await _contextProvider.AcceptChangesAsync();
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Обновление ОФП Упражнений. Они не содержат поднятий.
+        /// </summary>
+        private async Task UpdateOfpAsync(int planExerciseId)
+        {
+            var existingSettingsDb = await _exerciseSettingsRepository.FindAsync(t => t.PlanExerciseId == planExerciseId);
+            if (existingSettingsDb != null)
+            {
+                return;
+            }
+
+            // Создаем сеттинги для отображения в колонке 100%. Они никогда не меняются
+            var percentages = await GetPercentageListAsync();
+            var exerciseSettingsDb = new PlanExerciseSettingsDb()
+            {
+                PlanExerciseId = planExerciseId,
+                PercentageId = percentages.First(t => t.MinValue == 100).Id
+            };
+            await _exerciseSettingsRepository.CreateAsync(exerciseSettingsDb);
+        }
+
         private async Task<List<Percentage>> GetPercentageListAsync() => (await _precentageRepository.GetAllAsync())
-            .Select(t => _mapper.Map<Percentage>(t)).OrderBy(t => t.MinValue).ToList();
+            .Select(_mapper.Map<Percentage>).OrderBy(t => t.MinValue).ToList();
     }
 }
