@@ -123,7 +123,6 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseSettingsCo
             {
                 TemplateExerciseId = templateExerciseId,
                 PercentageId = percentages.First(t => t.MaxValue == 99).Id,
-                WeightPercentage = 1
             };
             await _exerciseSettingsRepository.CreateAsync(exerciseSettingsDb);
         }

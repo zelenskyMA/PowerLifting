@@ -7,7 +7,7 @@ export function ExerciseSettingsEditPanel({ percentage, planExercise }) {
   const { t } = useTranslation();
   var settingsList = planExercise.settings.filter(t => t.percentage.id === percentage.id).sort((a, b) => a.weight - b.weight);
 
-  if (settingsList.length === 0 || settingsList.filter(t => t.weight !== 0).length === 0) {
+  if (settingsList.length === 0) {
     return (<div> - </div>);
   }
     

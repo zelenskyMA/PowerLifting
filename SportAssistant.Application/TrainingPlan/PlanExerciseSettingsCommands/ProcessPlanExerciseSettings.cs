@@ -150,7 +150,6 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
             {
                 PlanExerciseId = planExerciseId,
                 PercentageId = percentages.First(t => t.MaxValue == 99).Id,
-                Weight = 1
             };
             await _exerciseSettingsRepository.CreateAsync(exerciseSettingsDb);
         }

@@ -7,7 +7,7 @@ export function TemplateSettingsEditPanel({ percentage, templateExercise }) {
   const { t } = useTranslation();
   var settingsList = templateExercise.settings.filter(t => t.percentage.id === percentage.id).sort((a, b) => a.weightPercentage - b.weightPercentage);
 
-  if (settingsList.length === 0 || settingsList.filter(t => t.weightPercentage !== 0).length === 0) {
+  if (settingsList.length === 0) {
     return (<div> - </div>);
   }
 
