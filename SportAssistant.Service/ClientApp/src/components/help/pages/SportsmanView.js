@@ -80,7 +80,7 @@ export function Usr_OfpPlanning({ }) {
       <div className="spaceMinTop">{GetAsHtml('sportsman.ofpPlanning.header2')}</div>
       <div className="spaceMinTop">{GetAsHtml('sportsman.ofpPlanning.footer')}</div>
 
-      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/H_BtuiClZFk')}</div>
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/q1rm9VNSmiw')}</div>
     </>
   );
 }
