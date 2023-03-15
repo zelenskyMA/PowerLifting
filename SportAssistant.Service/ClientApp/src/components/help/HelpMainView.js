@@ -6,7 +6,7 @@ import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 import '../../styling/Custom.css';
 import {
-  Usr_Header, Usr_ExerciseCreation, Usr_Planning, Usr_CancelAndTransfer, Usr_CompliteTraining,
+  Usr_Header, Usr_ExerciseCreation, Usr_Planning, Usr_OfpPlanning, Usr_CancelAndTransfer, Usr_CompliteTraining,
   Usr_TrainingAnalitics, Usr_WorkWithCoach
 } from "./pages/SportsmanView";
 import {
@@ -41,22 +41,23 @@ class HelpMainView extends Component {
     return (
       <>
         {pageId === 0 && <Usr_Header />}
-        {pageId === 1 && <Usr_ExerciseCreation />}
-        {pageId === 2 && <Usr_Planning />}
-        {pageId === 3 && <Usr_CancelAndTransfer />}
-        {pageId === 4 && <Usr_CompliteTraining />}
-        {pageId === 5 && <Usr_TrainingAnalitics />}
-        {pageId === 6 && <Usr_WorkWithCoach />}
+        {pageId === 10 && <Usr_ExerciseCreation />}
+        {pageId === 20 && <Usr_Planning />}
+        {pageId === 30 && <Usr_OfpPlanning />}        
+        {pageId === 40 && <Usr_CancelAndTransfer />}
+        {pageId === 50 && <Usr_CompliteTraining />}
+        {pageId === 60 && <Usr_TrainingAnalitics />}
+        {pageId === 70 && <Usr_WorkWithCoach />}
 
-        {pageId === 20 && <Coach_Header />}
-        {pageId === 21 && <Coach_MenuSetup />}
-        {pageId === 22 && <Coach_GroupSetup />}
-        {pageId === 23 && <Coach_RequestManagement />}
-        {pageId === 24 && <Coach_ManageUserInGroup />}
-        {pageId === 25 && <Coach_BeforePlanning />}
-        {pageId === 26 && <Coach_SetPlanning />}
-        {pageId === 27 && <Coach_TrainingAssignment />}
-        {pageId === 28 && <Coach_TrainingCorrection />}
+        {pageId === 200 && <Coach_Header />}
+        {pageId === 210 && <Coach_MenuSetup />}
+        {pageId === 220 && <Coach_GroupSetup />}
+        {pageId === 230 && <Coach_RequestManagement />}
+        {pageId === 240 && <Coach_ManageUserInGroup />}
+        {pageId === 250 && <Coach_BeforePlanning />}
+        {pageId === 260 && <Coach_SetPlanning />}
+        {pageId === 270 && <Coach_TrainingAssignment />}
+        {pageId === 280 && <Coach_TrainingCorrection />}
       </>
     );
   }
@@ -75,12 +76,13 @@ class HelpMainView extends Component {
               itemId: '/help/0',
               //elemBefore: () => <Icon name="category" />,
               subNav: [
-                { itemId: '/help/1', title: lngStr('help:menuItem.sportsman.exerciseCreation') },
-                { itemId: '/help/2', title: lngStr('help:menuItem.sportsman.planning') },
-                { itemId: '/help/3', title: lngStr('help:menuItem.sportsman.cancelAndTransfer') },
-                { itemId: '/help/4', title: lngStr('help:menuItem.sportsman.compliteTraining') },
-                { itemId: '/help/5', title: lngStr('help:menuItem.sportsman.trainingAnalitics') },
-                { itemId: '/help/6', title: lngStr('help:menuItem.sportsman.workWithCoach') },
+                { itemId: '/help/10', title: lngStr('help:menuItem.sportsman.exerciseCreation') },
+                { itemId: '/help/20', title: lngStr('help:menuItem.sportsman.planning') },
+                { itemId: '/help/30', title: lngStr('help:menuItem.sportsman.ofpPlanning') },
+                { itemId: '/help/40', title: lngStr('help:menuItem.sportsman.cancelAndTransfer') },
+                { itemId: '/help/50', title: lngStr('help:menuItem.sportsman.compliteTraining') },
+                { itemId: '/help/60', title: lngStr('help:menuItem.sportsman.trainingAnalitics') },
+                { itemId: '/help/70', title: lngStr('help:menuItem.sportsman.workWithCoach') },
               ],
             },
             {
@@ -88,14 +90,14 @@ class HelpMainView extends Component {
               itemId: '/help/20',
               //elemBefore: () => <Icon name="category" />,
               subNav: [
-                { itemId: '/help/21', title: lngStr('help:menuItem.coach.menuSetup') },
-                { itemId: '/help/22', title: lngStr('help:menuItem.coach.groupSetup') },
-                { itemId: '/help/23', title: lngStr('help:menuItem.coach.requestManagement') },
-                { itemId: '/help/24', title: lngStr('help:menuItem.coach.manageUserInGroup') },
-                { itemId: '/help/25', title: lngStr('help:menuItem.coach.beforePlanning') },
-                { itemId: '/help/26', title: lngStr('help:menuItem.coach.setPlanning') },
-                { itemId: '/help/27', title: lngStr('help:menuItem.coach.trainingAssignment') },
-                { itemId: '/help/28', title: lngStr('help:menuItem.coach.trainingCorrection') },
+                { itemId: '/help/210', title: lngStr('help:menuItem.coach.menuSetup') },
+                { itemId: '/help/220', title: lngStr('help:menuItem.coach.groupSetup') },
+                { itemId: '/help/230', title: lngStr('help:menuItem.coach.requestManagement') },
+                { itemId: '/help/240', title: lngStr('help:menuItem.coach.manageUserInGroup') },
+                { itemId: '/help/250', title: lngStr('help:menuItem.coach.beforePlanning') },
+                { itemId: '/help/260', title: lngStr('help:menuItem.coach.setPlanning') },
+                { itemId: '/help/270', title: lngStr('help:menuItem.coach.trainingAssignment') },
+                { itemId: '/help/280', title: lngStr('help:menuItem.coach.trainingCorrection') },
               ],
             },
           ]}
