@@ -73,6 +73,18 @@ export function Usr_Planning({ }) {
   );
 }
 
+export function Usr_OfpPlanning({ }) {
+  return (
+    <>
+      {GetAsHtml('sportsman.ofpPlanning.header1')}
+      <div className="spaceMinTop">{GetAsHtml('sportsman.ofpPlanning.header2')}</div>
+      <div className="spaceMinTop">{GetAsHtml('sportsman.ofpPlanning.footer')}</div>
+
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/H_BtuiClZFk')}</div>
+    </>
+  );
+}
+
 export function Usr_CancelAndTransfer({ }) {
   return (
     <>

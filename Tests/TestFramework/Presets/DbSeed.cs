@@ -279,6 +279,7 @@ public static class DbSeed
         ctx.Dictionaries.AddRange(new List<DictionaryDb>() {
             new() { Id = 1, TypeId = 1, Name = "Толчковые", Description = "толчок штанги" },
             new() { Id = 2, TypeId = 1, Name = "Рывковые", Description = "рывок штанги" },
+            new() { Id = 3, TypeId = 1, Name = "ОФП", Description = "общая физ. подготовка" },
 
             new() { Id = 10, TypeId = 3, Name = "Администратор", Description = "толчок штанги" },
             new() { Id = 11, TypeId = 3, Name = "Тренер", Description = "рывок штанги" },
@@ -287,7 +288,8 @@ public static class DbSeed
             new() { Id = 51, TypeId = 2, Name = "Толчок. Взятие на грудь", Description = string.Empty },
             new() { Id = 52, TypeId = 2, Name = "Толчок с груди", Description = string.Empty },
             new() { Id = 53, TypeId = 2, Name = "Толчок классический", Description = string.Empty },
-            new() { Id = 54, TypeId = 2, Name = "ОФП", Description = string.Empty },
+            new() { Id = 54, TypeId = 2, Name = "XXX", Description = string.Empty },
+            new() { Id = 55, TypeId = 2, Name = "ЯЯЯ", Description = string.Empty },
         });
 
         ctx.Settings.AddRange(new List<SettingsDb>() {
@@ -329,6 +331,8 @@ public static class DbSeed
             new ExerciseDb(){ Id = 61, ExerciseTypeId = 1, ExerciseSubTypeId = 53, Name = "Взятие на грудь + толчок", Description = string.Empty},
             new ExerciseDb(){ Id = 90, ExerciseTypeId = 2, ExerciseSubTypeId = 54, Name = "Тяга рывковая", Description = string.Empty},
             new ExerciseDb(){ Id = 91, ExerciseTypeId = 2, ExerciseSubTypeId = 54, Name = "Тяга рывковая с подставки", Description = string.Empty},
+
+            new ExerciseDb(){ Id = Constants.ExType3Id, ExerciseTypeId = 3, ExerciseSubTypeId = 55, Name = "Приседания", Description = string.Empty},
         });
     }
 }

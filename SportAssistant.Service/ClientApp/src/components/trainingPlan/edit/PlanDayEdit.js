@@ -24,7 +24,13 @@ class PlanDayEdit extends Component {
     this.setState({ planDay: data, loading: false });
   }
 
-  editSettings = (planExercise) => { this.props.navigate(`/editPlanExerciseSettings/${this.props.params.planId}/${planExercise.id}`); }
+  editSettings = (planExercise) => {
+    var exerciseTypeId = parseInt(planExercise.exercise.exerciseTypeId, 10);
+    switch (exerciseTypeId) {
+      case 3: this.props.navigate(`/editPlanOfpExercise/${this.props.params.planId}/${planExercise.id}`); break;
+      default: this.props.navigate(`/editPlanExerciseSettings/${this.props.params.planId}/${planExercise.id}`); break;
+    }
+  }
 
   confirmAsync = () => { this.props.navigate(`/editPlanDays/${this.props.params.planId}`); }
 
@@ -57,7 +63,7 @@ class PlanDayEdit extends Component {
 
                 {this.state.planDay.percentages.map(item =>
                   <td key={item.id} className="text-center">
-                    <ExerciseSettingsEditPanel percentage={item} settings={planExercise.settings} />
+                    <ExerciseSettingsEditPanel percentage={item} planExercise={planExercise} />
                   </td>
                 )}
                 <td className="text-center"><strong>{planExercise.liftCounter}</strong></td>

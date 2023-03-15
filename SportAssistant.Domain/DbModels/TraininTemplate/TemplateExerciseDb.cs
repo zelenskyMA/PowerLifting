@@ -13,5 +13,7 @@ namespace SportAssistant.Domain.DbModels.TrainingTemplate
         public int Order { get; set; }
 
         public string? Comments { get; set; }
+
+        public string? ExtPlanData { get; set; }
     }
 }

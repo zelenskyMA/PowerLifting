@@ -11,6 +11,8 @@ namespace SportAssistant.Domain.Models.TrainingTemplate
 
         public string? Comments { get; set; }
 
+        public string? ExtPlanData { get; set; }
+
         /// <summary>
         /// Расчетное поле. КПШ по упражнению. Количество Поднятий Штанги
         /// </summary>

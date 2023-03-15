@@ -95,7 +95,7 @@ public class PlanExercise_CreateTest : BaseTest
 
         var updatedDay = Client.Get<PlanDay>($"/planDay/{planDayId}");
         updatedDay.Exercises.Count.Should().Be(GetExercises().Count);
-    }
+    }    
 
     [Fact]
     public void Create_PlanExercise_ByOwner_Success()

@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
+using SportAssistant.Application.TrainingPlan.PlanExerciseCommands;
 using SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands;
+using SportAssistant.Domain.Models.TrainingPlan;
 using SportAssistant.Domain.Models.TrainingTemplate;
 using TestFramework;
 using TestFramework.TestExtensions;
@@ -76,5 +78,44 @@ public class TemplateExercise_UpdateTest : BaseTest
 
         newSetting.WeightPercentage.Should().Be(weight); // обновились настройки поднятия
         newSetting.Percentage.MaxValue.Should().BeLessThan(oldSetting.Percentage.MaxValue); // пересчет процентовки
+    }
+
+    [Fact]
+    public void CreateUpdate_OFP_TmpltExercise_Success()
+    {
+        //Arrange        
+        Factory.Actions.AuthorizeCoach(Client);
+
+        // создаем упражнение для последующего обновления
+        int dayCounter = 3;
+        var planDayId = Factory.Data.TemplateSet.Templates[0].TrainingDays[dayCounter].Id;
+        var exercise = Client.Get<Exercise>($"/exerciseInfo/{Constants.ExType3Id}");
+        var createRequest = new TemplateExerciseCreateCommand.Param() { DayId = planDayId, Exercises = new List<Exercise>() { exercise } };
+
+        var createResponse = Client.Post<bool>($"/templateExercise", createRequest);
+        createResponse.Should().BeTrue();
+        var createdDay = Client.Get<TemplateDay>($"/templateDay/{planDayId}");
+        createdDay.Exercises.Count.Should().Be(1);
+
+        // готовимся обновлять данные
+        var extData = "5 повторов";
+        var request = new TemplateExerciseUpdateCommand.Param() { TemplateExercise = createdDay.Exercises[0] };
+        request.TemplateExercise.Comments = comment;
+        request.TemplateExercise.ExtPlanData = extData;
+
+        //Act
+        var response = Client.Put<bool>($"/templateExercise", request);
+
+        //Assert
+        response.Should().BeTrue();
+        var updatedDay = Client.Get<TemplateDay>($"/templateDay/{planDayId}");
+        updatedDay.Exercises.Count.Should().Be(1);
+        updatedDay.Exercises.First().ExtPlanData.Should().Be(extData);
+
+        var settings = updatedDay.Exercises.First().Settings;
+        settings.Should().NotBeEmpty();
+        settings[0].WeightPercentage.Should().Be(0);
+        settings[0].Percentage.Should().NotBeNull();
+        settings[0].Percentage.MaxValue.Should().Be(99); // для офп процентовка в разбросе 90-100% всегда и только она.
     }
 }

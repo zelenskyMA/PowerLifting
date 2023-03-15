@@ -39,11 +39,9 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
 
             var userId = await GetAndCheckUserId(planExerciseDb.Id);
 
-            if (planExerciseDb.Comments != param.PlanExercise.Comments)
-            {
-                planExerciseDb.Comments = param.PlanExercise.Comments;
-                _planExerciseRepository.Update(planExerciseDb);
-            }
+            planExerciseDb.Comments = param.PlanExercise.Comments;
+            planExerciseDb.ExtPlanData = param.PlanExercise.ExtPlanData;
+            _planExerciseRepository.Update(planExerciseDb);
 
             await _processPlanExerciseSettings.UpdateAsync(userId, param.PlanExercise.Id, param.PlanExercise.Exercise.ExerciseTypeId, param.PlanExercise.Settings);
 

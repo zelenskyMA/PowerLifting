@@ -1,56 +1,77 @@
 ﻿
-
 SET IDENTITY_INSERT DictionaryTypes ON
 
-IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 1)
-  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 1, 'Тип упражнений', 'Базовые типы упражнений');
-IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 2)
-  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 2, 'Категория упражнений', 'Подраздел в рамках базового типа упражнений');
-IF NOT EXISTS (SELECT * FROM DictionaryTypes WHERE [Id] = 3)
-  INSERT INTO DictionaryTypes (Id, Name, Description) VALUES ( 3, 'Роль пользователя', 'Роли пользователей, определяющие набор их прав');
+  MERGE INTO DictionaryTypes AS Target
+  USING (VALUES 
+    ( 1, 'Тип упражнений', 'Базовые типы упражнений'),
+    ( 2, 'Категория упражнений', 'Подраздел в рамках базового типа упражнений'),
+    ( 3, 'Роль пользователя', 'Роли пользователей, определяющие набор их прав')
+  )	AS Source (Id, Name, Description)
+    ON Source.[Id] = Target.[Id]
+  WHEN NOT MATCHED BY Target THEN INSERT (Id, Name, Description) VALUES (Source.Id, Source.Name, Source.Description)
+  WHEN MATCHED THEN UPDATE SET 
+    Target.Name = Source.Name, 
+    Target.Description = Source.Description;
 
 SET IDENTITY_INSERT DictionaryTypes OFF 
 
 
 SET IDENTITY_INSERT Dictionaries ON
 
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 1)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 1, 1, 'Толчковые', 'Упражнения на толчок штанги');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 2)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 2, 1, 'Рывковые', 'Упражнения на рывок штанги');
+  MERGE INTO Dictionaries AS Target
+  USING (VALUES 
+    ( 1, 1, 'Толчковые', 'Упражнения на толчок штанги'),
+    ( 2, 1, 'Рывковые', 'Упражнения на рывок штанги'),
+    ( 3, 1, 'ОФП', 'Упражнения общей физической подготовки'),
 
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 10)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 10, 3, 'Администратор', 'Администратор сайта.');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 11)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 11, 3, 'Тренер', 'Продвинутый пользователь сайта. Управляет группами спортсменов.');
+    ( 10, 3, 'Администратор', 'Администратор сайта.'),
+    ( 11, 3, 'Тренер', 'Продвинутый пользователь сайта. Управляет группами спортсменов.'),
 
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 50)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 50, 2, 'Рывок классический', '');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 51)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 51, 2, 'Толчок. Взятие на грудь', '');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 52)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 52, 2, 'Толчок с груди', '');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 53)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 53, 2, 'Толчок классический', '');
-IF NOT EXISTS (SELECT * FROM Dictionaries WHERE [Id] = 54)
-  INSERT INTO Dictionaries (Id, TypeId, Name, Description) VALUES ( 54, 2, 'ОФП', '');
+    ( 50, 2, 'Рывок классический', ''),
+    ( 51, 2, 'Взятие на грудь', ''),
+    ( 52, 2, 'Толчок с груди', ''),
+    ( 54, 2, 'Рывок подсобные', ''),
+    ( 55, 2, 'Рывоковые ОФП упражнения', ''),
+
+    ( 53, 2, 'Толчок классический', ''),
+    ( 56, 2, 'Толчок классический подсобные', ''),
+    ( 57, 2, 'Толчковые ОФП упражнения', ''),
+    ( 58, 2, 'Взятие на грудь подсобные', ''),
+    ( 59, 2, 'Толчок с груди подсобные', ''),
+
+    ( 60, 2, 'Тяга Рывковая', ''),
+    ( 61, 2, 'Тяга Толчковая', ''),
+    ( 62, 2, 'Приседания на плечах', ''),
+    ( 63, 2, 'Приседания на груди', ''),
+
+    ( 64, 2, 'Силовые', ''),
+    ( 65, 2, 'Гимнастические', ''),
+    ( 66, 2, 'Кардио', '')
+  )	AS Source (Id, TypeId, Name, Description)
+    ON Source.[Id] = Target.[Id]
+  WHEN NOT MATCHED BY Target THEN INSERT (Id, TypeId, Name, Description) VALUES (Source.Id, Source.TypeId, Source.Name, Source.Description)
+  WHEN MATCHED THEN UPDATE SET 
+    Target.TypeId	= Source.TypeId,
+    Target.Name	= Source.Name,
+    Target.Description = Source.Description;
 
 SET IDENTITY_INSERT Dictionaries OFF
 
 
 SET IDENTITY_INSERT Settings ON
 
-IF NOT EXISTS (SELECT * FROM Settings WHERE [Id] = 1)
-  INSERT INTO Settings (Id, Name, Value, Description) VALUES ( 1, 'Максимум активных планов', 30,
-  'Предел активных планов, которые можно назначить');
-
-IF NOT EXISTS (SELECT * FROM Settings WHERE [Id] = 2)
-  INSERT INTO Settings (Id, Name, Value, Description) VALUES ( 2, 'Максимум упражнений в день', 10,
-  'Предел упражнений, которые можно назначить на один день');
-
-IF NOT EXISTS (SELECT * FROM Settings WHERE [Id] = 3)
-  INSERT INTO Settings (Id, Name, Value, Description) VALUES ( 3, 'Максимум поднятий в упражнении', 10,
-  'Предел поднятий, которые можно назначить в одно упражнение');
+  MERGE INTO Settings AS Target
+  USING (VALUES 
+    ( 1, 'Максимум активных планов', 'Предел активных планов, которые можно назначить', 30),
+    ( 2, 'Максимум упражнений в день', 'Предел упражнений, которые можно назначить на один день', 10),
+    ( 3, 'Максимум поднятий в упражнении', 'Предел поднятий, которые можно назначить в одно упражнение', 10)
+  )	AS Source (Id, Name, Description, Value)
+    ON Source.[Id] = Target.[Id]
+  WHEN NOT MATCHED BY Target THEN INSERT (Id, Name, Description, Value) VALUES (Source.Id, Source.Name, Source.Description, Source.Value)
+  WHEN MATCHED THEN UPDATE SET 
+    Target.Name = Source.Name,
+    Target.Description = Source.Description,
+    Target.Value = Source.Value;
 
 SET IDENTITY_INSERT Settings OFF 
 

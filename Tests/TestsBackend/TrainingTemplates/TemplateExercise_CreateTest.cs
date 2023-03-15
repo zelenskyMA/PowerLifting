@@ -90,7 +90,7 @@ public class TemplateExercise_CreateTest : BaseTest
         //Assert
         response.Should().BeTrue();
 
-        var updatedDay = Client.Get<PlanDay>($"/templateDay/{planDayId}");
+        var updatedDay = Client.Get<TemplateDay>($"/templateDay/{planDayId}");
         updatedDay.Exercises.Count.Should().Be(GetExercises().Count);
     }
 
@@ -107,7 +107,7 @@ public class TemplateExercise_CreateTest : BaseTest
             Exercises = new List<Exercise>() { GetExercises().First() } // берем только одно
         };
 
-        var testDay = Client.Get<PlanDay>($"/templateDay/{planDayId}"); // проверяем, что есть 2 упражнения
+        var testDay = Client.Get<TemplateDay>($"/templateDay/{planDayId}"); // проверяем, что есть 2 упражнения
         testDay.Exercises.Count.Should().Be(2);
 
         //Act
@@ -116,7 +116,7 @@ public class TemplateExercise_CreateTest : BaseTest
         //Assert
         response.Should().BeTrue();
 
-        var updatedDay = Client.Get<PlanDay>($"/templateDay/{planDayId}");
+        var updatedDay = Client.Get<TemplateDay>($"/templateDay/{planDayId}");
         updatedDay.Exercises.Count.Should().Be(1); // было 2, стало 1.
     }
 

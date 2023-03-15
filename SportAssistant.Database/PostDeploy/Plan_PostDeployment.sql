@@ -2,163 +2,233 @@
 
 SET IDENTITY_INSERT [plan].Percentages ON
 
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 1)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 1, ' < 30%', 'Меньше 30%', 0, 29);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 2)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 2, '30 - 40%', '', 30, 39);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 3)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 3, '40 - 50%', '', 40, 49);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 4)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 4, '50 - 60%', '', 50, 59);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 5)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 5, '60 - 70%', '', 60, 69);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 6)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 6, '70 - 80%', '', 70, 79);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 7)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 7, '80 - 90%', '', 80, 89);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 8)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 8, '90 - 100%', '', 90, 99);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 9)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 9, '100 - 110%', '', 100, 109);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 10)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 10, '110 - 120%', '', 110, 119);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 11)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 11, '120 - 130%', '', 120, 129);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 12)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 12, '130 - 140%', '', 130, 139);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 13)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 13, '140 - 150%', '', 140, 149);
-IF NOT EXISTS (SELECT * FROM [plan].Percentages WHERE [Id] = 14)
-  INSERT INTO [plan].Percentages (Id, Name, Description, MinValue, MaxValue) VALUES ( 14, '> 150%', 'Больше 150%', 150, 999);
+  MERGE INTO [plan].Percentages AS Target
+  USING (VALUES 
+    ( 1, ' < 30%', 'Меньше 30%', 0, 29),
+    ( 2, '30 - 40%', '', 30, 39),
+    ( 3, '40 - 50%', '', 40, 49),
+    ( 4, '50 - 60%', '', 50, 59),
+    ( 5, '60 - 70%', '', 60, 69),
+    ( 6, '70 - 80%', '', 70, 79),
+    ( 7, '80 - 90%', '', 80, 89),
+    ( 8, '90 - 100%', '', 90, 99),
+    ( 9, '100 - 110%', '', 100, 109),
+    ( 10, '110 - 120%', '', 110, 119),
+    ( 11, '120 - 130%', '', 120, 129),
+    ( 12, '130 - 140%', '', 130, 139),
+    ( 13, '140 - 150%', '', 140, 149),
+    ( 14, '> 150%', 'Больше 150%', 150, 999)
+  )	AS Source (Id, Name, Description, MinValue, MaxValue)
+    ON Source.[Id] = Target.[Id]
+  WHEN NOT MATCHED BY Target THEN INSERT (Id, Name, Description, MinValue, MaxValue) VALUES (Source.Id, Source.Name, Source.Description, Source.MinValue, Source.MaxValue)
+  WHEN MATCHED THEN UPDATE SET 
+    Target.Name = Source.Name,
+    Target.Description = Source.Description,
+    Target.MinValue = Source.MinValue,
+    Target.MaxValue = Source.MaxValue;
 
 SET IDENTITY_INSERT [plan].Percentages OFF 
 
 
 SET IDENTITY_INSERT [plan].Exercises ON
 
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 1)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 1, 2, 50, 'Рывок: Рывок классический', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 2)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 2, 2, 50, 'Рывок без разброса ног', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 3)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 3, 2, 50, 'Рывок с подставки', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 4)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 4, 2, 50, 'Рывок с плинтов ниже колен', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 5)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 5, 2, 50, 'Рывок с плинтов выше колен', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 6)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 6, 2, 50, 'Рывок с трех положений', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 7)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 7, 2, 50, 'Рывок с виса ниже колен', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 8)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 8, 2, 50, 'Рывок с виса выше колен', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 9)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 9, 2, 50, 'Рывок от бедра', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 10)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 10, 2, 50, 'Рывок от паха', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 11)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 11, 2, 50, 'Рывок с паузой', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 12)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 12, 2, 50, 'Рывок в стойку', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 13)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 13, 2, 50, 'Рывок в полуподсед', '');
+  MERGE INTO [plan].Exercises AS Target
+  USING (VALUES 
 
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 20)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 20, 1, 51, 'Взятие на грудь без разброса ног', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 21)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 21, 1, 51, 'Взятие на грудь с подставки', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 22)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 22, 1, 51, 'Взятие на грудь с плинтов ниже колен', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 23)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 23, 1, 51, 'Взятие на грудь с плинтов выше колен', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 24)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 24, 1, 51, 'Взятие на грудь с трех положений', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 25)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 25, 1, 51, 'Взятие на грудь с виса ниже колен', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 26)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 26, 1, 51, 'Взятие на грудь от бедра', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 27)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 27, 1, 51, 'Взятие на грудь от паха', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 28)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 28, 1, 51, 'Взятие на грудь с паузой', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 29)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 29, 1, 51, 'Взятие на грудь в стойку', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 30)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 30, 1, 51, 'Взятие на грудь в полуподсед', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 31)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 31, 1, 51, 'Взятие на грудь с приседаниями', '');
+-- Рывковые
+  -- -- Рывок классический
+    ( 1, 2, 50, 'Рывок классический', ''),
+    ( 2, 2, 50, 'Рывок без разброса ног', ''),
+    ( 12, 2, 50, 'Рывок в стойку', ''),
+    ( 13, 2, 50, 'Рывок в полуподсед', ''),
+    ( 515, 2, 50, 'Рывок с медленной тягой', ''),
+    ( 516, 2, 50, 'Рывок без захвата "замком"', ''),
+  -- -- Рывок подсобные
+    ( 3, 2, 54, 'Рывок с подставки', ''),
+    ( 4, 2, 54, 'Рывок с плинтов ниже колен', ''),
+    ( 5, 2, 54, 'Рывок с плинтов выше колен', ''),
+    ( 6, 2, 54, 'Рывок с трех положений', ''),
+    ( 614, 2, 54, 'Рывок в три положения', ''),
+    ( 7, 2, 54, 'Рывок с виса ниже колен', ''),
+    ( 8, 2, 54, 'Рывок с виса выше колен', ''),
+    ( 10, 2, 54, 'Рывок от паха', ''),
+    ( 9, 2, 54, 'Рывок с паузой 3 секунды ниже колен', ''),
+    ( 11, 2, 54, 'Рывок с паузой 3 секунды выше колен', ''),
+    ( 617, 2, 54, 'Рывок выше колен + рывок ниже колен', ''),
+    ( 618, 2, 54, 'Рывок ниже колен + рывок выше колен', ''),
+    ( 619, 2, 54, 'Рывок без разброса ног в полу подсед с виса выше колен', ''),
+    ( 600, 2, 54, 'Рывок без разброса ног + рывок классический', ''),
+    ( 601, 2, 54, 'Рывок в полуподсед + рывок классический', ''),
+    ( 602, 2, 54, 'Тяга рывковая до подрыва + рывок классический', ''),
+    ( 603, 2, 54, 'Тяга рывковая до колен + рывок классический', ''),
+    ( 604, 2, 54, 'Тяга рывковая+рывок с помоста', ''),
+    ( 605, 2, 54, 'Тяга рывковая+рывок с виса выше колен', ''),
+    ( 606, 2, 54, 'Тяга рывковая+рывок с виса ниже колен', ''),
+  -- -- Рывоковые ОФП упражнения
+    ( 84, 2, 55, 'Протяжка рывковая', ''),
+    ( 707, 2, 55, 'Протяжка рывковая без выхода на носки', ''),
+    ( 708, 2, 55, 'Протяжка рывковая в сед', ''),
+    ( 709, 2, 55, 'Протяжка рывковая + швунг жимовой', ''),
+    ( 710, 2, 55, 'Протяжка рывковая + швунг жимовой + приседание', ''),
+    ( 711, 2, 55, 'Протяжка рывковая + уходы в сед + приседание', ''),
+    ( 712, 2, 55, 'Протяжка рывковая + швунг жимовой + уходы в сед', ''),
+    ( 713, 2, 55, 'Протяжка рывковая + швунг + приседание', ''),
+    ( 714, 2, 55, 'Уходы рывковые', ''),
+    ( 85, 2, 55, 'Швунг рывковым хватом из-за головы', ''),
+    ( 86, 2, 55, 'Швунг рывковым хватом из-за головы в сед', ''),
+    ( 715, 2, 55, 'Швунг жимовой рывковым хватом из за головы', ''),
+    ( 716, 2, 55, 'Швунг жимовой рывковым хватом из за головы+приседания', ''),
+    ( 717, 2, 55, 'Жим рывковым хватом в седе', ''),
 
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 40)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 40, 1, 52, 'Приседания на груди + толчок', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 41)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 41, 1, 52, 'Толчок со стоек', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 42)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 42, 1, 52, 'Толчок с плинтов', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 43)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 43, 1, 52, 'Толчок с паузой в подседе', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 44)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 44, 1, 52, 'Толчок с паузой в ножницах', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 45)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 45, 1, 52, 'Толчок из-за головы', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 46)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 46, 1, 52, 'Швунг жимовой + толчок', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 47)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 47, 1, 52, 'Швунг толчковый', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 48)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 48, 1, 52, 'Швунг толчковый в сед', '');
+-- Толчковые
+  -- -- Толчок классический
+    ( 60, 1, 53, 'Толчок классический', ''),
+    ( 67, 1, 53, 'Взятие на грудь + швунг толчковый', ''),
+    ( 68, 1, 53, 'Взятие на грудь + швунг толчковый в сед', ''),
+    ( 869, 1, 53, 'Взятие на грудь в полуподсед + толчок с груди', ''),
+    ( 870, 1, 53, 'Взятие на грудь в полуподсед + швунг толчковый', ''),
+    ( 871, 1, 53, 'Взятие на грудь в стойку + толчок с груди', ''),
+    ( 872, 1, 53, 'Взятие на грудь в стойку + швунг толчковый', ''),
+  -- -- Толчок классический подсобные
+    ( 62, 1, 56, 'Взятие на грудь + швунг жимовой + толчок', ''),
+    ( 973, 1, 56, 'Взятие на грудь + швунг жимовой + швунг толчковый', ''),
+    ( 64, 1, 56, 'Взятие на грудь + швунг толчковый + толчок', ''),
+    ( 66, 1, 56, 'Взятие на грудь + толчок с паузой в ножницах', ''),
+    ( 63, 1, 56, 'Взятие на грудь + приседания + толчок', ''),
+    ( 974, 1, 56, 'Взятие на грудь + приседания + швунг толчковый', ''),
+    ( 975, 1, 56, 'Взятие на грудь в полу подсед + швунг жимовой + швунг толчковый', ''),
+  -- -- Толчковые ОФП упражнения
+    ( 1200, 1, 57, 'Протяжка на грудь', ''),
+    ( 1201, 1, 57, 'Протяжка на грудь без выхода на носки', ''),
+    ( 1202, 1, 57, 'Протяжка на грудь в сед', ''),
+    ( 1203, 1, 57, 'Протяжка на грудь + швунг жимовой', ''),
+    ( 1204, 1, 57, 'Протяжка на грудь + швунг жимовой + приседание', ''),
+    ( 1205, 1, 57, 'Протяжка на грудь + швунг толчковый + приседание', ''),
+    ( 1206, 1, 57, 'Протяжка на грудь + швунг жимовой + швунг толчковый', ''),
+    ( 1207, 1, 57, 'Швунг толчковым хватом из-за головы', ''),
+    ( 1208, 1, 57, 'Швунг толчковым хватом из-за головы в сед', ''),
+    ( 1209, 1, 57, 'Швунг толчковым хватом в сед', ''),
+    ( 1210, 1, 57, 'Приседания на груди + швунг жимовой из седа (трастер)', ''),
+    ( 1211, 1, 57, 'Взятие на грудь + швунг жим из седа (кластер)', ''),
+  -- -- Взятие на грудь
+    ( 1332, 1, 51, 'Взятие на грудь в сед', ''),
+    ( 30, 1, 51, 'Взятие на грудь в полуподсед', ''),
+    ( 29, 1, 51, 'Взятие на грудь в стойку', ''),
+    ( 20, 1, 51, 'Взятие на грудь без разброса ног в сед', ''),
+    ( 1333, 1, 51, 'Взятие на грудь без разброса ног в полуподсед', ''),
+    ( 1334, 1, 51, 'Взятие на грудь в три положения', ''),
+  -- -- Взятие на грудь подсобные
+    ( 21, 1, 58, 'Взятие на грудь с подставки', ''),
+    ( 1435, 1, 58, 'Взятие на грудь с подставки в полуподсед', ''),
+    ( 1436, 1, 58, 'Взятие на грудь с подставки в стойку', ''),
+    ( 22, 1, 58, 'Взятие на грудь с плинтов ниже колен', ''),
+    ( 23, 1, 58, 'Взятие на грудь с плинтов выше колен', ''),
+    ( 24, 1, 58, 'Взятие на грудь с трех положений', ''),
+    ( 25, 1, 58, 'Взятие на грудь с виса ниже колен', ''),
+    ( 1437, 1, 58, 'Взятие на грудь с виса выше колен', ''),
+    ( 31, 1, 58, 'Взятие на грудь + приседания', ''),
+    ( 28, 1, 58, 'Взятие на грудь с паузой ниже колен', ''),
+  -- -- Толчок с груди
+    ( 41, 1, 52, 'Толчок с груди со стоек', ''),
+    ( 47, 1, 52, 'Швунг толчковый со стоек', ''),
+    ( 48, 1, 52, 'Швунг толчковый в сед со стоек', ''),
+    ( 1549, 1, 52, 'Толчок с груди с плинтов', ''),
+    ( 40, 1, 52, 'Приседания на груди + толчок', ''),
+  -- -- Толчок с груди подсобные
+    ( 94, 1, 59, 'Швунг жимовой', ''),
+    ( 44, 1, 59, 'Толчок с паузой в ножницах', ''),
+    ( 43, 1, 59, 'Толчок с паузой в подседе', ''),
+    ( 46, 1, 59, 'Швунг жимовой + толчок', ''),
+    ( 1650, 1, 59, 'Швунг жимовой + швунг толчковой', ''),
+    ( 1651, 1, 59, 'Швунг жимовой + швунг толчковой + толчок с груди', ''),
+    ( 1652, 1, 59, 'Толчок со стоек из за головы', ''),
+    ( 1653, 1, 59, 'Толчок со стоек с дисками на краях', ''),
 
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 60)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 60, 1, 53, 'Толчок: Толчок классический', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 61)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 61, 1, 53, 'Взятие на грудь + толчок', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 62)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 62, 1, 53, 'Взятие на грудь + швунг жимовой + толчок', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 63)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 63, 1, 53, 'Взятие на грудь + приседания + толчок', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 64)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 64, 1, 53, 'Взятие на грудь + швунг толчковый + толчок', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 65)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 65, 1, 53, 'Взятие на грудь + толчок с паузой в подседе', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 66)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 66, 1, 53, 'Взятие на грудь + толчок с паузой в ножницах', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 67)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 67, 1, 53, 'Взятие на грудь + швунг толчковый', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 68)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 68, 1, 53, 'Взятие на грудь + швунг толчковый в сед', '');
+-- Базовые (толчковые и рывковые)
+  -- -- Тяга Рывковая
+    ( 80, 2, 60, 'Тяга рывковая', ''),
+    ( 81, 2, 60, 'Тяга рывковая с подставки', ''),
+    ( 82, 2, 60, 'Тяга рывковая с плинтов ниже колен', ''),
+    ( 83, 2, 60, 'Тяга рывковая с плинтов выше колен', ''),
+    ( 1788, 2, 60, 'Тяга рывковая с помоста + с виса выше колен', ''),
+    ( 1789, 2, 60, 'Тяга рывковая с помоста + с виса ниже колен', ''),
+    ( 1781, 2, 60, 'Тяга рывковая с остановкой ниже колен', ''),
+    ( 1782, 2, 60, 'Тяга рывковая без подрыва', ''),
+    ( 1783, 2, 60, 'Тяга рывковая с подрывом без выхода на носки', ''),
+    ( 1784, 2, 60, 'Тяга рывковая высокая', ''),
+    ( 1785, 2, 60, 'Тяга рывковая с остановкой в трех положениях', ''),
+  -- -- Тяга Толчковая
+    ( 90, 1, 61, 'Тяга толчковая', ''),
+    ( 91, 1, 61, 'Тяга толчковая с подставки', ''),
+    ( 92, 1, 61, 'Тяга толчковая с плинтов выше колена', ''),
+    ( 93, 1, 61, 'Тяга толчковая с плинтов ниже колена', ''),
+    ( 1898, 1, 61, 'Тяга толчковая без подрыва', ''),
+    ( 1899, 1, 61, 'Тяга толчковая с подрывом без выхода на носки', ''),
+    ( 1890, 1, 61, 'Тяга Толчковая с помоста + с виса выше колен', ''),
+    ( 1891, 1, 61, 'ТягаТолчковая с помоста + с виса ниже колен', ''),
+  -- -- Приседания на плечах
+    ( 96, 1, 62, 'Приседания на плечах', ''),
+    ( 1992, 1, 62, 'Приседания на плечах с остановкой в седе', ''),
+    ( 1993, 1, 62, 'Приседание на плечах медленно', ''),
+    ( 1994, 1, 62, 'Приседания на плечах ноги вместе', ''),
+    ( 1995, 1, 62, 'Приседания на плечах полуподсед', ''),
+  -- -- Приседания на груди
+    ( 97, 1, 63, 'Приседания на груди', ''),
+    ( 2096, 1, 63, 'Приседания на груди медленно', ''),
+    ( 2097, 1, 63, 'Приседания на груди ноги вместе', ''),
+    ( 2098, 1, 63, 'Приседания на груди с остановкой в полу подседе', ''),
+    ( 2099, 1, 63, 'Приседания на груди с остановкой в седе', ''),
 
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 80)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 80, 2, 54, 'Тяга рывковая', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 81)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 81, 2, 54, 'Тяга рывковая с подставки', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 82)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 82, 2, 54, 'Тяга рывковая с плинтов ниже колен', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 83)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 83, 2, 54, 'Тяга рывковая с плинтов выше колен', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 84)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 84, 2, 54, 'Протяжка рывковая', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 85)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 85, 2, 54, 'Швунг рывковым хватом из-за головы', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 86)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 86, 2, 54, 'Швунг рывковым хватом из-за головы в сед', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 87)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 87, 2, 54, 'Жим из-за головы рывковым хватом', '');
+-- ОФП
+  -- -- Силовые
+    ( 2101, 3, 64, 'Бицепс', ''),
+    ( 2102, 3, 64, 'Жим из-за головы рывковым хватом', ''),
+    ( 2103, 3, 64, 'Жим лежа', ''),
+    ( 2104, 3, 64, 'Жим с груди толчковым хватом сидя', ''),
+    ( 2105, 3, 64, 'Жим с груди толчковым хватом стоя', ''),
+    ( 2106, 3, 64, 'Наклоны со штангой на плечах', ''),
+    ( 2107, 3, 64, 'Наклоны через козла', ''),
+    ( 2108, 3, 64, 'Наклоны через козла + пресс', ''),
+    ( 2109, 3, 64, 'Отведение плеча', ''),
+    ( 2110, 3, 64, 'Приседания в ножницах', ''),
+    ( 2111, 3, 64, 'Разгибание бедра в блоке', ''),
+    ( 2112, 3, 64, 'Разгибание плеча', ''),
+    ( 2113, 3, 64, 'Разгибание плеча + отведение плеча', ''),
+    ( 2114, 3, 64, 'Сгибание бедра в блоке', ''),
+    ( 2115, 3, 64, 'Трицепс', ''),
+    ( 2116, 3, 64, 'Тяга средним хватом ноги прямые', ''),
+    ( 2117, 3, 64, 'Прыжки со штангой из седа', ''),
+    ( 2118, 3, 64, 'Прыжки со штангой из полу подседа', ''),
+  -- -- Гимнастические
+    ( 2251, 3, 65, 'Отжимание', ''),
+    ( 2252, 3, 65, 'Отжимание на брусьях', ''),
+    ( 2253, 3, 65, 'Подтягивание', ''),
+    ( 2254, 3, 65, 'Прыжки на возвышенность', ''),
+    ( 2255, 3, 65, 'Прыжки в длинну', ''),
+    ( 2256, 3, 65, 'Прыжки через перекладину', ''),
+    ( 2257, 3, 65, 'Бёрпи', ''),
+  -- -- Кардио
+    ( 2380, 3, 65, 'Велосипед', ''),
+    ( 2381, 3, 65, 'Скакалка', ''),
 
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 90)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 90, 1, 54, 'Тяга толчковая', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 91)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 91, 1, 54, 'Тяга толчковая с подставки', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 92)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 92, 1, 54, 'Тяга толчковая с плинтов выше колена', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 93)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 93, 1, 54, 'Тяга толчковая с плинтов ниже колена', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 94)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 94, 1, 54, 'Швунг жимовой', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 95)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 95, 1, 54, 'Швунг толчковый', '');
+-- Старые, не вошедшие в основную классификацию
+    ( 42, 1, 52, 'Толчок с плинтов (доп)', ''),
+    ( 45, 1, 52, 'Толчок из-за головы (доп)', ''),
+    ( 61, 1, 53, 'Взятие на грудь + толчок (доп)', ''),
+    ( 65, 1, 53, 'Взятие на грудь + толчок с паузой в подседе (доп)', ''),
+    ( 26, 1, 51, 'Взятие на грудь от бедра (доп)', ''),
+    ( 27, 1, 51, 'Взятие на грудь от паха (доп)', ''),
+    ( 87, 2, 54, 'Жим из-за головы рывковым хватом (доп)', ''),
+    ( 95, 1, 54, 'Швунг толчковый (доп)', '')
 
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 96)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 96, 1, 54, 'Приседания на плечах', '');
-IF NOT EXISTS (SELECT * FROM [plan].Exercises WHERE [Id] = 97)
-  INSERT INTO [plan].Exercises (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description) VALUES ( 97, 1, 54, 'Приседания на груди', '');
+  )	AS Source (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description)
+    ON Source.[Id] = Target.[Id]
+  WHEN NOT MATCHED BY Target THEN INSERT (Id, ExerciseTypeId, ExerciseSubTypeId, Name, Description)
+    VALUES (Source.Id, Source.ExerciseTypeId, Source.ExerciseSubTypeId, Source.Name, Source.Description)
+  WHEN MATCHED THEN UPDATE SET 
+    Target.ExerciseTypeId = Source.ExerciseTypeId,
+    Target.ExerciseSubTypeId = Source.ExerciseSubTypeId,
+    Target.Name = Source.Name,
+    Target.Description = Source.Description;
 
 SET IDENTITY_INSERT [plan].Exercises OFF 

@@ -9,7 +9,7 @@ namespace Exercises;
 
 public class Exercise_GetTest : BaseTest
 {
-    private readonly int countInDictionary = 10;
+    private readonly int countInDictionary = 11;
 
     public Exercise_GetTest(ServiceTestFixture<Program> factory) : base(factory) { }
 

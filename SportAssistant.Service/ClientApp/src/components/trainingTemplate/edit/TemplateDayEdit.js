@@ -23,7 +23,13 @@ class TemplateDayEdit extends Component {
     this.setState({ templateDay: data, loading: false });
   }
 
-  editSettings = (templateExercise) => { this.props.navigate(`/editTemplateExerciseSettings/${this.props.params.templateId}/${templateExercise.id}`); }
+  editSettings = (templateExercise) => {
+    var exerciseTypeId = parseInt(templateExercise.exercise.exerciseTypeId, 10);
+    switch (exerciseTypeId) {
+      case 3: this.props.navigate(`/editTemplateOfpExercise/${this.props.params.templateId}/${templateExercise.id}`); break;
+      default: this.props.navigate(`/editTemplateExerciseSettings/${this.props.params.templateId}/${templateExercise.id}`); break;
+    }
+  }
 
   confirmAsync = () => { this.props.navigate(`/editTemplatePlan/${this.props.params.templateId}`); }
 
@@ -54,7 +60,7 @@ class TemplateDayEdit extends Component {
 
                 {this.state.templateDay.percentages.map(item =>
                   <td key={item.id} className="text-center">
-                    <TemplateSettingsEditPanel percentage={item} settings={templateExercise.settings} />
+                    <TemplateSettingsEditPanel percentage={item} templateExercise={templateExercise} />
                   </td>
                 )}
                 <td className="text-center"><strong>{templateExercise.liftCounter}</strong></td>

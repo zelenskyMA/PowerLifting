@@ -4,6 +4,7 @@ import PlanDayEdit from "../components/trainingPlan/edit/PlanDayEdit";
 import PlanDayMove from "../components/trainingPlan/edit/PlanDayMove";
 import PlanExercisesEdit from "../components/trainingPlan/edit/PlanExercisesEdit";
 import PlanExerciseSettingsEdit from "../components/trainingPlan/edit/PlanExerciseSettingsEdit";
+import PlanOfpExerciseEdit from "../components/trainingPlan/edit/PlanOfpExerciseEdit";
 
 import PlansListView from "../components/trainingPlan/view/PlansListView";
 
@@ -16,6 +17,7 @@ const TrainingPlanRoutes = [
 
   { path: '/editPlanExercises/:planId/:id', element: <PlanExercisesEdit /> },
   { path: '/editPlanExerciseSettings/:planId/:id', element: <PlanExerciseSettingsEdit /> },
+  { path: '/editPlanOfpExercise/:planId/:id', element: <PlanOfpExerciseEdit /> },
 
   { path: '/plansList', element: <PlansListView /> }
 ];
