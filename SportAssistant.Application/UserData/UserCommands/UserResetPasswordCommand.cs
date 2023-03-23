@@ -28,6 +28,8 @@ namespace SportAssistant.Application.UserData.UserCommands
         /// <inheritdoc />
         public async Task<bool> ExecuteAsync(Param param)
         {
+            param.Login = param.Login.Trim();
+
             var userDb = (await _userRepository.FindAsync(t => t.Email == param.Login)).FirstOrDefault();
             if (userDb == null)
             {

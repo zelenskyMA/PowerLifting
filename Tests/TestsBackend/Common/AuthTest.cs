@@ -49,6 +49,21 @@ public class AuthTest : BaseTest
     }
 
     [Fact]
+    public void Login_WithSpace_Success()
+    {
+        var response = Client.Post<TokenModel>("/user/login", new UserLoginCommand.Param()
+        {
+            Login = $" {Constants.AdminLogin} ",
+            Password = Constants.Password
+        });
+
+        //Assert
+        response.Should().NotBeNull();
+        response.Token.IsNullOrEmpty().Should().BeFalse();
+        response.RefreshToken.IsNullOrEmpty().Should().BeFalse();
+    }
+
+    [Fact]
     public void Registration_Fail()
     {
         // no login
@@ -86,6 +101,22 @@ public class AuthTest : BaseTest
         var response = Client.Post<TokenModel>("/user/register", new UserRegisterCommand.Param()
         {
             Login = "regSuccessUser@mail.ru",
+            Password = testPwd,
+            PasswordConfirm = testPwd
+        });
+
+        //Assert
+        response.Should().NotBeNull();
+        response.Token.IsNullOrEmpty().Should().BeFalse();
+        response.RefreshToken.IsNullOrEmpty().Should().BeFalse();
+    }
+
+    [Fact]
+    public void Registration_WithSpaces_Success()
+    {
+        var response = Client.Post<TokenModel>("/user/register", new UserRegisterCommand.Param()
+        {
+            Login = " regSpaceUser@mail.ru ",
             Password = testPwd,
             PasswordConfirm = testPwd
         });
@@ -138,11 +169,11 @@ public class AuthTest : BaseTest
     }
 
     [Fact]
-    public void ChangePassword_Success()
+    public void ChangePassword_Spaces_Success()
     {
         var response = Client.Post<bool>("/user/changePassword", new UserChangePasswordCommand.Param()
         {
-            Login = Constants.UserLogin,
+            Login = $" {Constants.UserLogin} ",
             OldPassword = Constants.Password,
             Password = testPwd,
             PasswordConfirm = testPwd
@@ -160,7 +191,7 @@ public class AuthTest : BaseTest
             PasswordConfirm = Constants.Password
         });
         response.Should().BeTrue();
-    }
+    }    
 
     [Fact]
     public void ResetPassword_Fail()
@@ -183,6 +214,20 @@ public class AuthTest : BaseTest
     {
         //Arrange
         var resetLogin = "resetSuccessUser@mail.ru";
+        Client.Post<TokenModel>("/user/register", new UserRegisterCommand.Param() { Login = resetLogin, Password = testPwd, PasswordConfirm = testPwd });
+
+        //Act
+        var response = Client.Post<bool>("/user/resetPassword", new UserResetPasswordCommand.Param() { Login = resetLogin });
+
+        //Assert
+        response.Should().BeTrue();
+    }
+
+    [Fact]
+    public void ResetPassword_WithSpaces_Success()
+    {
+        //Arrange
+        var resetLogin = "resetSpaceUser@mail.ru";
         Client.Post<TokenModel>("/user/register", new UserRegisterCommand.Param() { Login = resetLogin, Password = testPwd, PasswordConfirm = testPwd });
 
         //Act
