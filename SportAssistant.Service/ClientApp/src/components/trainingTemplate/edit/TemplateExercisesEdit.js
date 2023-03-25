@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Button, Container } from 'reactstrap';
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
-import { ErrorPanel, TableControl } from "../../../common/controls/CustomControls";
+import { ErrorPanel, TableControl, Tooltip } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 
 const mapStateToProps = store => {
@@ -114,16 +114,19 @@ class TemplateExercisesEdit extends Component {
               {this.state.selectedExercises.map((row, index) =>
                 <tr key={index} role="button">
                   <td>
-                    <span onClick={() => this.rowMoveUp(index)} style={{ paddingRight: '7px' }} title={lngStr('general.common.up')} >
+                    <span id={'up' + index} onClick={() => this.rowMoveUp(index)} style={{ paddingRight: '7px' }}>
                       🔼
                     </span>
-                    <span onClick={() => this.rowMoveDown(index)} title={lngStr('general.common.down')}>
+                    <span id={'down' + index} onClick={() => this.rowMoveDown(index)}>
                       🔽
                     </span>
                   </td>
                   <td onDoubleClick={() => this.rowRemove(index)}>{row.name}</td>
                   <td onDoubleClick={() => this.rowRemove(index)}>{row.exerciseSubTypeName}</td>
                   <td onDoubleClick={() => this.rowRemove(index)}>{row.exerciseTypeName}</td>
+
+                  <Tooltip text={lngStr('general.common.up')} tooltipTargetId={'up' + index} />
+                  <Tooltip text={lngStr('general.common.down')} tooltipTargetId={'down' + index} />
                 </tr>
               )}
             </tbody>

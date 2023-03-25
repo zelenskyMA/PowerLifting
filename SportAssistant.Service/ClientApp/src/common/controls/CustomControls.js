@@ -14,10 +14,12 @@ import { ErrorPanel } from "./panels/ErrorPanel";
 import { InfoPanel } from "./panels/InfoPanel";
 import { LoadingPanel } from "./panels/LoadingPanel";
 
+import { Tooltip } from "./misc/TooltipControl";
 
 export {
   InputNumber, InputText, InputPassword, InputEmail, InputTextArea, InputDate, InputCheckbox,
   MultiTextInput, MultiNumberInput,
   TableControl, LineChartControl, TabControl, DropdownControl,
-  ErrorPanel, InfoPanel, LoadingPanel
+  ErrorPanel, InfoPanel, LoadingPanel,
+  Tooltip
 };
