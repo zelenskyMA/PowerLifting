@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { Button, Col, Container, Row } from "reactstrap";
 import { DeleteAsync, GetAsync, PutAsync } from "../../../common/ApiActions";
-import { ErrorPanel, InputText } from "../../../common/controls/CustomControls";
+import { ErrorPanel, InputText, Tooltip } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 
@@ -116,13 +116,15 @@ class TemplatePlanEdit extends React.Component {
             <div style={{ paddingTop: '7px', paddingLeft: '50px' }}><strong>{`${lngStr('general.common.day')} ${day.dayNumber}`}</strong></div>
           </Col>
           <Col style={{ paddingTop: '7px', paddingRight: '45px' }} >
-            <Button color="primary" outline onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
+            <Button id={'btnAssign' + day.dayNumber} color="primary" outline onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
           </Col>
         </Row>
         <hr style={{ width: '60%', paddingTop: "2px" }} />
         <Row>
           <Col>{this.countersPanel(day.exerciseTypeCounters, lngStr)}</Col>
         </Row>
+
+        <Tooltip text={lngStr('training.exercise.assign')} tooltipTargetId={'btnAssign' + day.dayNumber} />
       </Container>
     );
   }

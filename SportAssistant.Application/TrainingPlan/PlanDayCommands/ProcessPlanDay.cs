@@ -102,7 +102,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanDayCommands
             {
                 await _provider.AcceptChangesAsync();
                 var templateExercises = await _processTemplateExercise.GetByDaysAsync(new List<int>() { templateDayId });
-                foreach (var templateExercise in templateExercises)
+                foreach (var templateExercise in templateExercises.OrderBy(t=> t.Order))
                 {
                     await _processPlanExercise.CreateAsync(userId, trainingDay.Id, templateExercise.Exercise.Id, templateExercise.Order, templateExercise);
                 }

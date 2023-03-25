@@ -54,8 +54,8 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
 
             var settings = await _processTemplateExerciseSettings.GetAsync(templateExerciseDb.Select(t => t.Id).ToList());
 
-            var planExercises = templateExerciseDb.Select(t => _mapper.Map<TemplateExercise>(t)).ToList();
-            foreach (var item in planExercises)
+            var tmpltExercises = templateExerciseDb.Select(_mapper.Map<TemplateExercise>).ToList();
+            foreach (var item in tmpltExercises)
             {
                 item.Exercise = exercises.First(t => t.Id == item.Exercise.Id).Clone();
                 item.Exercise.PlannedExerciseId = item.Id;
@@ -65,7 +65,7 @@ namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
                 _trainingCountersSetup.SetExerciseCounters(item);
             }
 
-            return planExercises;
+            return tmpltExercises;
         }
 
         /// <inheritdoc />
