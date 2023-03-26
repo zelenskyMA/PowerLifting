@@ -69,7 +69,7 @@ class PlanAnaliticsPanel extends Component {
           { id: 1, label: lngStr('training.entity.liftCounter'), renderContent: () => this.Panel1Content(lngStr) },
           { id: 2, label: lngStr('training.entity.weightLoad'), renderContent: () => this.Panel2Content(lngStr) },
           { id: 3, label: lngStr('training.entity.intensity'), renderContent: () => this.Panel3Content(lngStr) },
-          { id: 4, label: lngStr('training.exercise.types'), renderContent: () => this.Panel4Content() },
+          { id: 4, label: lngStr('training.exercise.subTypes'), renderContent: () => this.Panel4Content() },
         ]} />
       </>
     );
