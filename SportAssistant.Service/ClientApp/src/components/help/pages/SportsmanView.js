@@ -141,8 +141,9 @@ export function Usr_TrainingAnalitics({ }) {
 
       <div className="spaceTop">{GetAsHtml('sportsman.trainingAnalitics.footer1')}</div>
       <div className="spaceMinTop">{GetAsHtml('sportsman.trainingAnalitics.footer2')}</div>
+      <div className="spaceMinTop">{GetAsHtml('sportsman.trainingAnalitics.footer3')}</div>
 
-      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/icRt3dhrwsk')}</div>
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/yQE889Rx6b4')}</div>
     </>
   );
 }

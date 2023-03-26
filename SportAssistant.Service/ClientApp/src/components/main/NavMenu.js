@@ -6,6 +6,7 @@ import {
 } from 'reactstrap';
 import WithRouter from "../../common/extensions/WithRouter";
 import { RemoveTokens } from '../../common/TokenActions';
+import { Tooltip } from "../../common/controls/CustomControls";
 import '../../styling/Common.css';
 import '../../styling/NavMenu.css';
 import { CoachTopMenu } from "./menu/CoachTopMenu";
@@ -39,9 +40,10 @@ class NavMenu extends Component {
             <>
               <NavbarBrand className="menu-first-page-item" tag={Link} to="/">{lngStr('general.common.main')}</NavbarBrand>
 
-              <NavbarBrand className="help-menu-item" tag={Link} to="/help/0" title={lngStr('general.common.help')}>
-              <img src="/img/help_icon.png" width="30" height="30" className="rounded mx-auto d-block" />
-              </NavbarBrand>
+              <NavbarBrand id="help" className="help-menu-item" tag={Link} to="/help/0">
+                <img src="/img/help_icon.png" width="30" height="30" className="rounded mx-auto d-block" />
+            </NavbarBrand>
+            <Tooltip text={lngStr('general.common.help')} tooltipTargetId="help" placement="bottom" />
 
               <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             </>

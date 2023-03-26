@@ -1,8 +1,8 @@
 ﻿import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Col, Row, UncontrolledTooltip } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import { PostAsync } from "../../../common/ApiActions";
-import { ErrorPanel, LoadingPanel } from "../../../common/controls/CustomControls";
+import { ErrorPanel, LoadingPanel, Tooltip } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 import '../../../styling/Common.css';
@@ -137,7 +137,7 @@ class PlanDayViewPanel extends Component {
                   {planExercise.exercise.name}
                   {planExercise.comments && <strong style={{ color: '#9706EF' }}> * {' '}</strong>}
                 </td>
-                <ExerciseTooltip planExercise={planExercise} idPrefix={'exercise' + planExercise.id} />
+                <Tooltip text={planExercise.comments} tooltipTargetId={'exercise' + planExercise.id} />
 
                 {planDay.percentages.map(percentage =>
                   <td key={percentage.id} className="text-center">
@@ -195,17 +195,6 @@ class PlanDayViewPanel extends Component {
       </>
     );
   }
-}
-
-function ExerciseTooltip({ planExercise, idPrefix }) {
-  var text = planExercise.comments;
-  if (!text) { return (<></>); }
-
-  return (
-    <UncontrolledTooltip placement="top" target={idPrefix}>
-      <p>{text}</p>
-    </UncontrolledTooltip>
-  );
 }
 
 export default WithRouter(connect(null, mapDispatchToProps)(PlanDayViewPanel));

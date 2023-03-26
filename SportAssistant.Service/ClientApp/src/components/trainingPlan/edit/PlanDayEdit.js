@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
-import { LoadingPanel } from "../../../common/controls/CustomControls";
+import { LoadingPanel, Tooltip } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal } from "../../../common/LocalActions";
 import '../../../styling/Common.css';
@@ -57,9 +57,10 @@ class PlanDayEdit extends Component {
           <tbody>
             {this.state.planDay.exercises.map((planExercise, i) =>
               <tr key={'planTr' + i}>
-                <td role="button" title={lngStr('general.actions.schedule')} onClick={() => this.editSettings(planExercise)}>
+                <td id={'exerciseName' + i} role="button" onClick={() => this.editSettings(planExercise)}>
                   {planExercise.exercise.name}
                 </td>
+                <Tooltip text={lngStr('general.actions.schedule')} tooltipTargetId={'exerciseName' + i} placement="left" />
 
                 {this.state.planDay.percentages.map(item =>
                   <td key={item.id} className="text-center">
