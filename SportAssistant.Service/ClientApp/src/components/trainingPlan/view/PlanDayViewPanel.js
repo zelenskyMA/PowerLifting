@@ -153,12 +153,12 @@ class PlanDayViewPanel extends Component {
           <tfoot>
             <tr>
               <td><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
-              {planDay.liftIntensities.map((intensity, i) =>
+              {planDay.counters.liftIntensities.map((intensity, i) =>
                 <td key={'kph' + i} className="text-center"> {intensity.value} </td>
               )}
-              <td className="text-center"><strong>{planDay.liftCounterSum}</strong></td>
-              <td className="text-center"><strong>{planDay.weightLoadSum}</strong></td>
-              <td className="text-center"><strong>{planDay.intensitySum}</strong></td>
+              <td className="text-center"><strong>{planDay.counters.liftCounterSum}</strong></td>
+              <td className="text-center"><strong>{planDay.counters.weightLoadSum}</strong></td>
+              <td className="text-center"><strong>{planDay.counters.intensitySum}</strong></td>
             </tr>
           </tfoot>
         </table>

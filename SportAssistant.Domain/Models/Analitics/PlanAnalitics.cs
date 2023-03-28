@@ -8,9 +8,9 @@ public class PlanAnalitics
     public List<PlanCounterAnalitics> PlanCounters { get; set; } = new List<PlanCounterAnalitics>();
 
     /// <summary>
-    /// Сводные данные по подтипам упражнений в планах, отсортированные по датам
+    /// Сводные данные по категориям упражнений в планах, отсортированные по датам
     /// </summary>
-    public List<TypeCounterAnalitics> TypeCounters { get; set; } = new List<TypeCounterAnalitics>();
+    public List<CategoryCounterAnalitics> TypeCounters { get; set; } = new List<CategoryCounterAnalitics>();
 
     /// <summary>
     /// Содержит записи для каждого плана в сете аналитики. Используется как полноценный датасет для контрола графиков.

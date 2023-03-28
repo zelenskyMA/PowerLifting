@@ -148,8 +148,8 @@ public class Plan_GetTest : BaseTest
         plan.StartDate.Date.Should().BeCloseTo(DateTime.Now.Date, new TimeSpan(1, 1, 1));
         plan.FinishDate.Date.Should().BeCloseTo(plan.StartDate.AddDays(6).Date, new TimeSpan(1, 1, 1));
 
-        plan.TypeCountersSum.Should().NotBeEmpty();
-        plan.TypeCountersSum.Where(t => t.Value > 0).Should().HaveCount(4);
+        plan.Counters.CategoryCountersSum.Should().NotBeEmpty();
+        plan.Counters.CategoryCountersSum.Where(t => t.Value > 0).Should().HaveCount(4);
 
         // тренировочный день плана
         plan.TrainingDays.Should().HaveCount(7);
@@ -158,13 +158,13 @@ public class Plan_GetTest : BaseTest
         day.PlanId.Should().Be(planId);
         day.ActivityDate.Should().Be(plan.StartDate);
 
-        day.WeightLoadSum.Should().BeGreaterThan(0);
-        day.IntensitySum.Should().BeGreaterThan(0);
-        day.LiftCounterSum.Should().BeGreaterThan(0);
+        day.Counters.WeightLoadSum.Should().BeGreaterThan(0);
+        day.Counters.IntensitySum.Should().BeGreaterThan(0);
+        day.Counters.LiftCounterSum.Should().BeGreaterThan(0);
 
-        day.ExerciseTypeCounters.Should().NotBeEmpty();
-        day.ExerciseTypeCounters[0].Value.Should().BeGreaterThan(0);
-        day.ExerciseTypeCounters[0].Name.Should().NotBeNullOrEmpty();
+        day.Counters.ExerciseTypeCounters.Should().NotBeEmpty();
+        day.Counters.ExerciseTypeCounters[0].Value.Should().BeGreaterThan(0);
+        day.Counters.ExerciseTypeCounters[0].Name.Should().NotBeNullOrEmpty();
 
         // Упражнения в тренировочном дне        
         day.Exercises.Should().HaveCount(2);

@@ -31,7 +31,7 @@ class PlanDaysEdit extends React.Component {
     var plan = await GetAsync(`/trainingPlan/${this.props.params.planId}`);
     var url = plan.isMyPlan ? `/plansList` : `/groupUser/${plan.userId}`;
 
-    this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.typeCountersSum, backUrl: url });
+    this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.counters.categoryCountersSum, backUrl: url });
   }
 
   onSetExercises = (dayId) => { this.props.navigate(`/editPlanExercises/${this.props.params.planId}/${dayId}`); }
@@ -111,12 +111,12 @@ class PlanDaysEdit extends React.Component {
           </Col>
           <Col style={{ paddingTop: '7px' }} >
             <Button id={dateName + 'btnAssign'} color="primary" outline style={{ width: '40px', marginRight: '10px' }} onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
-            <Button id={dateName + 'btnTransfer'} color="primary" outline style={{ width: '40px' }} disabled={day.exerciseTypeCounters.length == 0} onClick={() => this.props.navigate(`/movePlanDay/${this.props.params.planId}/${day.id}`)} >{' - '}</Button>
+            <Button id={dateName + 'btnTransfer'} color="primary" outline style={{ width: '40px' }} disabled={day.counters.exerciseTypeCounters.length == 0} onClick={() => this.props.navigate(`/movePlanDay/${this.props.params.planId}/${day.id}`)} >{' - '}</Button>
           </Col>
         </Row>
         <hr style={{ width: '60%', paddingTop: "2px" }} />
         <Row>
-          <Col>{this.countersPanel(day.exerciseTypeCounters, lngStr)}</Col>
+          <Col>{this.countersPanel(day.counters.exerciseTypeCounters, lngStr)}</Col>
         </Row>
 
         <Tooltip text={lngStr('training.exercise.assign')} tooltipTargetId={dateName + 'btnAssign'} />

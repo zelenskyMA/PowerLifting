@@ -1,6 +1,6 @@
 ﻿namespace SportAssistant.Domain.Models.Analitics
 {
-    public class TypeCounterAnalitics
+    public class CategoryCounterAnalitics
     {
         public int Id { get; set; }
 

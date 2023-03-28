@@ -13,11 +13,11 @@ namespace SportAssistant.Application.Common.Actions.TrainingCounters
                 return;
             }
 
-            day.WeightLoadSum = day.Exercises.Sum(t => t.WeightLoad);
-            day.LiftCounterSum = day.Exercises.Sum(t => t.LiftCounter);
-            day.IntensitySum = ExerciseIntensitySum(day.Exercises);
-            day.ExerciseTypeCounters = CountExerciseTypes(day.Exercises.Select(t => t.Exercise));
-            day.LiftIntensities = PercentageIntensities(day.Exercises);
+            day.Counters.WeightLoadSum = day.Exercises.Sum(t => t.WeightLoad);
+            day.Counters.LiftCounterSum = day.Exercises.Sum(t => t.LiftCounter);
+            day.Counters.IntensitySum = ExerciseIntensitySum(day.Exercises);
+            day.Counters.ExerciseTypeCounters = CountExerciseTypes(day.Exercises.Select(t => t.Exercise));
+            day.Counters.LiftIntensities = PercentageIntensities(day.Exercises);
         }
 
         public void SetTemplateDayCounters(TemplateDay day)
@@ -27,9 +27,9 @@ namespace SportAssistant.Application.Common.Actions.TrainingCounters
                 return;
             }
 
-            day.WeightLoadPercentageSum = day.Exercises.Sum(t => t.WeightLoadPercentage);
-            day.LiftCounterSum = day.Exercises.Sum(t => t.LiftCounter);
-            day.ExerciseTypeCounters = CountExerciseTypes(day.Exercises.Select(t => t.Exercise));
+            day.Counters.WeightLoadPercentageSum = day.Exercises.Sum(t => t.WeightLoadPercentage);
+            day.Counters.LiftCounterSum = day.Exercises.Sum(t => t.LiftCounter);
+            day.Counters.ExerciseTypeCounters = CountExerciseTypes(day.Exercises.Select(t => t.Exercise));
         }
 
         /// <summary> Cчитаем, сколько упражнений по подтипам в тренировочном дне. </summary>

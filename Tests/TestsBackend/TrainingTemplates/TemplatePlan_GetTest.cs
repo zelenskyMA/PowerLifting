@@ -67,7 +67,7 @@ public class TemplatePlan_GetTest : BaseTest
         // шаблон
         template.Id.Should().Be(tmpltId);
         template.Name.Should().NotBeNullOrEmpty();
-        template.TypeCountersSum.Should().NotBeEmpty();
+        template.Counters.CategoryCountersSum.Should().NotBeEmpty();
 
         // день в шаблоне
         template.TrainingDays.Should().NotBeEmpty();
@@ -75,13 +75,13 @@ public class TemplatePlan_GetTest : BaseTest
 
         tmpltDay.Id.Should().BeGreaterThan(0);
         tmpltDay.DayNumber.Should().BeGreaterThan(0);
-        tmpltDay.WeightLoadPercentageSum.Should().BeGreaterThan(0);
-        tmpltDay.LiftCounterSum.Should().BeGreaterThan(0);
+        tmpltDay.Counters.WeightLoadPercentageSum.Should().BeGreaterThan(0);
+        tmpltDay.Counters.LiftCounterSum.Should().BeGreaterThan(0);
         tmpltDay.Percentages.Should().BeNull();
 
-        tmpltDay.ExerciseTypeCounters.Should().NotBeEmpty();
-        tmpltDay.ExerciseTypeCounters[0].Value.Should().BeGreaterThan(0);
-        tmpltDay.ExerciseTypeCounters[0].Name.Should().NotBeNullOrEmpty();
+        tmpltDay.Counters.ExerciseTypeCounters.Should().NotBeEmpty();
+        tmpltDay.Counters.ExerciseTypeCounters[0].Value.Should().BeGreaterThan(0);
+        tmpltDay.Counters.ExerciseTypeCounters[0].Name.Should().NotBeNullOrEmpty();
 
         // Упражнения в тренировочном дне        
         tmpltDay.Exercises.Should().HaveCount(2);

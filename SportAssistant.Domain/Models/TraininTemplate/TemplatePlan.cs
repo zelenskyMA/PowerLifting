@@ -1,5 +1,6 @@
 ﻿using SportAssistant.Domain.Models.Common;
 using SportAssistant.Domain.Models.TrainingTemplate;
+using SportAssistant.Domain.Models.TraininTemplate;
 
 namespace SportAssistant.Domain.DbModels.TrainingTemplate
 {
@@ -9,11 +10,8 @@ namespace SportAssistant.Domain.DbModels.TrainingTemplate
 
         public int Order { get; set; }
 
-        /// <summary>
-        /// Расчетные данные. Количество упражнений по подтипам в сумме за все дни плана.
-        /// </summary>
-        public List<ValueEntity> TypeCountersSum { get; set; } = new List<ValueEntity>();
-
         public List<TemplateDay> TrainingDays { get; set; } = new List<TemplateDay>();
+
+        public CountersTemplatePlan Counters { get; set; } = new CountersTemplatePlan();
     }
 }

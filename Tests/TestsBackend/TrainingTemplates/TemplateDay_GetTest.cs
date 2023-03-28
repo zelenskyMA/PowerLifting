@@ -72,18 +72,18 @@ public class TemplateDay_GetTest : BaseTest
     {
         tmpltDay.Id.Should().Be(dayId);
         tmpltDay.DayNumber.Should().BeGreaterThan(0);
-        tmpltDay.WeightLoadPercentageSum.Should().BeGreaterThan(0);
-        tmpltDay.LiftCounterSum.Should().BeGreaterThan(0);
+        tmpltDay.Counters.WeightLoadPercentageSum.Should().BeGreaterThan(0);
+        tmpltDay.Counters.LiftCounterSum.Should().BeGreaterThan(0);
 
         tmpltDay.Percentages.Should().NotBeNull();
         tmpltDay.Percentages[0].Id.Should().BeGreaterThan(0);
         tmpltDay.Percentages[0].MaxValue.Should().BeGreaterThan(0);
         tmpltDay.Percentages[0].MinValue.Should().Be(0);
         tmpltDay.Percentages[0].Name.Should().NotBeNullOrEmpty();
-        tmpltDay.ExerciseTypeCounters.Should().NotBeEmpty();
+        tmpltDay.Counters.ExerciseTypeCounters.Should().NotBeEmpty();
 
-        tmpltDay.ExerciseTypeCounters[0].Value.Should().BeGreaterThan(0);
-        tmpltDay.ExerciseTypeCounters[0].Name.Should().NotBeNullOrEmpty();
+        tmpltDay.Counters.ExerciseTypeCounters[0].Value.Should().BeGreaterThan(0);
+        tmpltDay.Counters.ExerciseTypeCounters[0].Name.Should().NotBeNullOrEmpty();
 
         // Упражнения в тренировочном дне        
         tmpltDay.Exercises.Should().HaveCount(2);

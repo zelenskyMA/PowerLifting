@@ -28,7 +28,7 @@ class TemplatePlanEdit extends React.Component {
 
   getInitData = async () => {
     var planData = await GetAsync(`/templatePlan/${this.props.params.id}`);
-    this.setState({ plan: planData, days: planData.trainingDays, typeCounters: planData.typeCountersSum  });
+    this.setState({ plan: planData, days: planData.trainingDays, typeCounters: planData.counters.categoryCountersSum });
   }
 
   onPlanChange = (propName, value) => { this.setState(prevState => ({ error: '', plan: { ...prevState.plan, [propName]: value } })); }
@@ -121,7 +121,7 @@ class TemplatePlanEdit extends React.Component {
         </Row>
         <hr style={{ width: '60%', paddingTop: "2px" }} />
         <Row>
-          <Col>{this.countersPanel(day.exerciseTypeCounters, lngStr)}</Col>
+          <Col>{this.countersPanel(day.counters.exerciseTypeCounters, lngStr)}</Col>
         </Row>
 
         <Tooltip text={lngStr('training.exercise.assign')} tooltipTargetId={'btnAssign' + day.dayNumber} />

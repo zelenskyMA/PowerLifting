@@ -52,14 +52,14 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
                 return analitics;
             }
 
-            // "распрямляем" данные по подтипам упражнений.
-            var typeIds = plans.SelectMany(t => t.TypeCountersSum.Select(z => z.Id)).Distinct().ToList();
+            // "распрямляем" данные по категориям упражнений.
+            var typeIds = plans.SelectMany(t => t.Counters.CategoryCountersSum.Select(z => z.Id)).Distinct().ToList();
             foreach (var typeId in typeIds)
             {
-                analitics.TypeCounters.Add(new TypeCounterAnalitics()
+                analitics.TypeCounters.Add(new CategoryCounterAnalitics()
                 {
                     Id = typeId,
-                    Name = plans.Select(t => t.TypeCountersSum.FirstOrDefault(z => z.Id == typeId)).First(t => t?.Name != null).Name,
+                    Name = plans.Select(t => t.Counters.CategoryCountersSum.FirstOrDefault(z => z.Id == typeId)).First(t => t?.Name != null).Name,
                     Values = new List<DateValueModel>()
                 });
             }
@@ -75,15 +75,15 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
                     Name = dataKey,
 
                     //вычисляем суммы полученных данных по планам
-                    LiftCounterSum = plan.TrainingDays.Sum(t => t.LiftCounterSum),
-                    IntensitySum = plan.TrainingDays.Sum(t => t.IntensitySum),
-                    WeightLoadSum = plan.TrainingDays.Sum(t => t.WeightLoadSum),
+                    LiftCounterSum = plan.TrainingDays.Sum(t => t.Counters.LiftCounterSum),
+                    IntensitySum = plan.TrainingDays.Sum(t => t.Counters.IntensitySum),
+                    WeightLoadSum = plan.TrainingDays.Sum(t => t.Counters.WeightLoadSum),
                 });
 
                 analitics.FullTypeCounterList.Add(new DateValueModel() { Name = dataKey });
 
-                // готовим данные для графика по типам упражнений
-                foreach (var item in plan.TypeCountersSum)
+                // готовим данные для графика по категориям упражнений
+                foreach (var item in plan.Counters.CategoryCountersSum)
                 {
                     var currentTypeCounter = analitics.TypeCounters.First(t => t.Id == item.Id);
                     currentTypeCounter.Values.Add(new DateValueModel()

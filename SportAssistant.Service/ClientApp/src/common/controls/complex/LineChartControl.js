@@ -35,8 +35,20 @@ export function LineChartControl({ displayList, data = null, multidata = false }
         {
           displayList.map((item, i) =>
             multidata ?
-              <Line type="monotone" key={'lineChart_' + i} name={item.name} hide={lineProps[item.name] === true} dataKey={(data) => getValue(data, item.data)} stroke={colors[i]} dot={false} />
-              : <Line type="monotone" key={'lineChart_' + i} name={item.name} dataKey={item.id} stroke={colors[i]} />
+              <Line
+                type="monotone"
+                key={'lineChart_' + i}
+                name={item.name}
+                dataKey={(data) => getValue(data, item.data)}
+                stroke={colors[i]}
+                hide={lineProps[item.name] === true}
+                dot={false} /> :
+              <Line
+                type="monotone"
+                key={'lineChart_' + i}
+                name={item.name}
+                dataKey={item.id}
+                stroke={colors[i]} />
           )
         }
       </LineChart>

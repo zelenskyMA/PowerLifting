@@ -1,37 +1,24 @@
 ﻿using SportAssistant.Domain.Models.Common;
 using SportAssistant.Domain.Models.TrainingPlan;
+using SportAssistant.Domain.Models.TraininTemplate;
 
-namespace SportAssistant.Domain.Models.TrainingTemplate
+namespace SportAssistant.Domain.Models.TrainingTemplate;
+
+public class TemplateDay : Entity
 {
-    public class TemplateDay : Entity
-    {
-        public int TemplatePlanId { get; set; }
+    public int TemplatePlanId { get; set; }
 
-        public int DayNumber { get; set; }
+    public int DayNumber { get; set; }
 
-        /// <summary>
-        /// Расчетное поле. Сумма КПШ по всем упражнениям за день.
-        /// </summary>
-        public int LiftCounterSum { get; set; }
+    /// <summary>
+    /// Упражнения, назначенные на тренировочный день.
+    /// </summary>
+    public List<TemplateExercise>? Exercises { get; set; } = new List<TemplateExercise>();
 
-        /// <summary>
-        /// Расчетное поле. Суммарный процент Нагрузок по всем упражнениям за день.
-        /// </summary>
-        public int WeightLoadPercentageSum { get; set; }
+    /// <summary>
+    /// Процентовки, которые задействованы в плане на день
+    /// </summary>
+    public List<Percentage>? Percentages { get; set; }
 
-        /// <summary>
-        /// Расчетные данные. Количество упражнений по подтипам.
-        /// </summary>
-        public List<ValueEntity> ExerciseTypeCounters { get; set; } = new List<ValueEntity>();
-
-        /// <summary>
-        /// Упражнения, назначенные на тренировочный день.
-        /// </summary>
-        public List<TemplateExercise>? Exercises { get; set; } = new List<TemplateExercise>();
-
-        /// <summary>
-        /// Процентовки, которые задействованы в плане на день
-        /// </summary>
-        public List<Percentage>? Percentages { get; set; }
-    }
+    public CountersTemplateDay Counters { get; set; } = new CountersTemplateDay();
 }

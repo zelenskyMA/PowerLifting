@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Col, Row } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
+import { DateToUtc } from "../../common/LocalActions";
 import { InputDate, LineChartControl, LoadingPanel, TabControl, ErrorPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
@@ -28,10 +29,7 @@ class PlanAnaliticsPanel extends Component {
 
   getInitData = async () => {
     try {
-      var utcStartDate = new Date(this.state.startDate.getTime() - this.state.startDate.getTimezoneOffset() * 60 * 1000);
-      var utcFinishDate = new Date(this.state.finishDate.getTime() - this.state.finishDate.getTimezoneOffset() * 60 * 1000);
-
-      var request = `startDate=${utcStartDate.toISOString()}&finishDate=${utcFinishDate.toISOString()}`;
+      var request = `startDate=${DateToUtc(this.state.startDate).toISOString()}&finishDate=${DateToUtc(this.state.finishDate).toISOString()}`;
       var analiticsData = await GetAsync(`/analitics/getPlanAnalitics/${this.props.groupUserId}?${request}`);
 
       this.setState({ analitics: analiticsData, loading: false });
@@ -48,7 +46,6 @@ class PlanAnaliticsPanel extends Component {
     if (this.state.loading) { return (<LoadingPanel />); }
 
     const lngStr = this.props.lngStr;
-
     return (
       <>
         <ErrorPanel errorMessage={this.state.error} />
