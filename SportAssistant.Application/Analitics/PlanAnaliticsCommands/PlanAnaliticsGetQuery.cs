@@ -5,7 +5,10 @@ using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Models.Analitics;
+using SportAssistant.Domain.Models.Common;
 using SportAssistant.Domain.Models.TrainingPlan;
+using System.Data;
+using static SportAssistant.Domain.Models.Analitics.ChartDataItem;
 
 namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
 {
@@ -52,46 +55,22 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
                 return analitics;
             }
 
-            // "распрямляем" данные по категориям упражнений.
-            var typeIds = plans.SelectMany(t => t.Counters.CategoryCountersSum.Select(z => z.Id)).Distinct().ToList();
-            foreach (var typeId in typeIds)
-            {
-                analitics.TypeCounters.Add(new CategoryCounterAnalitics()
-                {
-                    Id = typeId,
-                    Name = plans.Select(t => t.Counters.CategoryCountersSum.FirstOrDefault(z => z.Id == typeId)).First(t => t?.Name != null).Name,
-                    Values = new List<DateValueModel>()
-                });
-            }
+            // "Распрямляем" данные. Перекладываем их из счетной модели в DTO для графика.
+            ConvertDataForChart(plans.SelectMany(t => t.Counters.CategoryCountersSum), analitics.CategoryCounters);
+            ConvertDataForChart(plans.SelectMany(t => t.Counters.WeightLoadsByCategory), analitics.WeightLoadsByCategory);
+            ConvertDataForChart(plans.SelectMany(t => t.Counters.LiftCountersByCategory), analitics.LiftCountersByCategory);
+            ConvertDataForChart(plans.SelectMany(t => t.Counters.IntensitiesByCategory), analitics.IntensitiesByCategory);
 
-            // готовим собранные данные к показу в инструменте графиков
+            // заполняем DTO модель значениями, проходя по всем доступным датам планов
             foreach (var plan in plans.OrderBy(t => t.StartDate).ToList())
             {
-                var dataKey = plan.FinishDate.ToString("dd/MM/yy"); // ключ - дата, как одна из двух метрик
+                var dataKey = plan.FinishDate.ToString("dd/MM/yy");
+                analitics.ChartDotsList.Add(new ChartDot() { Name = dataKey }); // формируем список всех возможных значений для оси Х
 
-                analitics.PlanCounters.Add(new PlanCounterAnalitics()
-                {
-                    StartDate = plan.StartDate,
-                    Name = dataKey,
-
-                    //вычисляем суммы полученных данных по планам
-                    LiftCounterSum = plan.TrainingDays.Sum(t => t.Counters.LiftCounterSum),
-                    IntensitySum = plan.TrainingDays.Sum(t => t.Counters.IntensitySum),
-                    WeightLoadSum = plan.TrainingDays.Sum(t => t.Counters.WeightLoadSum),
-                });
-
-                analitics.FullTypeCounterList.Add(new DateValueModel() { Name = dataKey });
-
-                // готовим данные для графика по категориям упражнений
-                foreach (var item in plan.Counters.CategoryCountersSum)
-                {
-                    var currentTypeCounter = analitics.TypeCounters.First(t => t.Id == item.Id);
-                    currentTypeCounter.Values.Add(new DateValueModel()
-                    {
-                        Name = dataKey,
-                        Value = item.Value
-                    });
-                }
+                AddValuesToChartDTO(plan.Counters.CategoryCountersSum, analitics.CategoryCounters, dataKey);
+                AddValuesToChartDTO(plan.Counters.WeightLoadsByCategory, analitics.WeightLoadsByCategory, dataKey);
+                AddValuesToChartDTO(plan.Counters.LiftCountersByCategory, analitics.LiftCountersByCategory, dataKey);
+                AddValuesToChartDTO(plan.Counters.IntensitiesByCategory, analitics.IntensitiesByCategory, dataKey);
             }
 
             return analitics;
@@ -109,12 +88,12 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
             // получаем планы, попадающие в выбранный отрезок времени. Для этого уменьшаем начало периода на длину одного плана
             var startPlanDate = param.StartDate.Date.AddDays(-6);
             var finishPlanDate = param.FinishDate.Date;
-            var plans = (await _trainingPlanRepository.FindAsync(t => t.UserId == userId && 
+            var plans = (await _trainingPlanRepository.FindAsync(t => t.UserId == userId &&
                 t.StartDate >= startPlanDate && t.StartDate <= finishPlanDate)).Select(_mapper.Map<Plan>).ToList();
 
             // получаем дни, четко попадающие в указанный период, лишние дни в планах не учитываем
             var planIds = plans.Select(t => t.Id).ToList();
-            var planDays = (await _trainingDayRepository.FindAsync(t => planIds.Contains(t.PlanId) && 
+            var planDays = (await _trainingDayRepository.FindAsync(t => planIds.Contains(t.PlanId) &&
                 param.StartDate.Date <= t.ActivityDate && t.ActivityDate <= finishPlanDate)).Select(_mapper.Map<PlanDay>).ToList();
 
             // получаем упражнения и считаем статистику по ним. Записываем в дни
@@ -133,6 +112,32 @@ namespace SportAssistant.Application.Analitics.PlanAnaliticsCommands
             }
 
             return plans;
+        }
+       
+        private void ConvertDataForChart(IEnumerable<ValueEntity> sourceList, List<ChartDataItem> targetList)
+        {
+            foreach (var itemId in sourceList.Select(t => t.Id).Distinct())
+            {
+                targetList.Add(new ChartDataItem()
+                {
+                    Id = itemId,
+                    Name = sourceList.FirstOrDefault(t => t.Id == itemId && t.Name != null)?.Name ?? string.Empty,
+                    Data = new List<KvModel>()
+                });
+            }
+        }
+
+        private void AddValuesToChartDTO(List<ValueEntity> sourceList, List<ChartDataItem> targetList, string dataKey)
+        {
+            foreach (var item in sourceList)
+            {
+                var currentTypeCounter = targetList.First(t => t.Id == item.Id);
+                currentTypeCounter.Data.Add(new KvModel()
+                {
+                    Name = dataKey,
+                    Value = item.Value
+                });
+            }
         }
 
         public class Param

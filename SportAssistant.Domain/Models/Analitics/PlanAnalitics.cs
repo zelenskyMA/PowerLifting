@@ -1,20 +1,32 @@
 ﻿namespace SportAssistant.Domain.Models.Analitics;
 
+/// <summary>
+/// DTO. Сет аналитики по планам из выборки.
+/// </summary>
 public class PlanAnalitics
 {
     /// <summary>
-    /// Сводные данные в разрезе плана, отсортированные по датам
+    /// Ось Х графика. Содержит все даты выборки.
     /// </summary>
-    public List<PlanCounterAnalitics> PlanCounters { get; set; } = new List<PlanCounterAnalitics>();
+    public List<ChartDot> ChartDotsList { get; set; } = new List<ChartDot>();
 
     /// <summary>
-    /// Сводные данные по категориям упражнений в планах, отсортированные по датам
+    /// Сводные данные по категориям упражнений в планах.
     /// </summary>
-    public List<CategoryCounterAnalitics> TypeCounters { get; set; } = new List<CategoryCounterAnalitics>();
+    public List<ChartDataItem> CategoryCounters { get; set; } = new List<ChartDataItem>();
 
     /// <summary>
-    /// Содержит записи для каждого плана в сете аналитики. Используется как полноценный датасет для контрола графиков.
-    /// Основные данные будут получены из данных в TypeCounters.
+    /// Сводные данные КПШ по категориям упражнений в планах.
     /// </summary>
-    public List<DateValueModel> FullTypeCounterList { get; set; } = new List<DateValueModel>();
+    public List<ChartDataItem> LiftCountersByCategory { get; set; } = new List<ChartDataItem>();
+
+    /// <summary>
+    /// Сводные данные Нагрузок по категориям упражнений в планах.
+    /// </summary>
+    public List<ChartDataItem> WeightLoadsByCategory { get; set; } = new List<ChartDataItem>();
+
+    /// <summary>
+    /// Сводные данные Интенсивности по категориям упражнений в планах.
+    /// </summary>
+    public List<ChartDataItem> IntensitiesByCategory { get; set; } = new List<ChartDataItem>();
 }

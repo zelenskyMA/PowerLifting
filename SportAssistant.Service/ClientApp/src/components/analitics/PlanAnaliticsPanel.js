@@ -63,31 +63,19 @@ class PlanAnaliticsPanel extends Component {
         </Row>
 
         <TabControl data={[
-          { id: 1, label: lngStr('training.entity.liftCounter'), renderContent: () => this.Panel1Content(lngStr) },
-          { id: 2, label: lngStr('training.entity.weightLoad'), renderContent: () => this.Panel2Content(lngStr) },
-          { id: 3, label: lngStr('training.entity.intensity'), renderContent: () => this.Panel3Content(lngStr) },
+          { id: 1, label: lngStr('training.entity.liftCounter'), renderContent: () => this.Panel1Content() },
+          { id: 2, label: lngStr('training.entity.weightLoad'), renderContent: () => this.Panel2Content() },
+          { id: 3, label: lngStr('training.entity.intensity'), renderContent: () => this.Panel3Content() },
           { id: 4, label: lngStr('training.exercise.subTypes'), renderContent: () => this.Panel4Content() },
         ]} />
       </>
     );
   }
 
-  Panel1Content = (lngStr) => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: lngStr('training.entity.liftCounter'), id: 'liftCounterSum' }]} />); }
-  Panel2Content = (lngStr) => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: lngStr('training.entity.weightLoad'), id: 'weightLoadSum' }]} />); }
-  Panel3Content = (lngStr) => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: lngStr('training.entity.intensity'), id: 'intensitySum' }]} />); }
-
-  Panel4Content = () => {
-    var exerciseTypesData = [];
-    for (var i = 0; i < this.state.analitics.typeCounters.length; i++) {
-      exerciseTypesData.push({
-        id: 'value',
-        data: this.state.analitics.typeCounters[i].values,
-        name: this.state.analitics.typeCounters[i].name
-      });
-    }
-
-    return (<LineChartControl data={this.state.analitics.fullTypeCounterList} displayList={exerciseTypesData} multidata="true" />);
-  }
+  Panel1Content = () => { return (<LineChartControl chartXDots={this.state.analitics.chartDotsList} linesDataList={this.state.analitics.liftCountersByCategory} />); }
+  Panel2Content = () => { return (<LineChartControl chartXDots={this.state.analitics.chartDotsList} linesDataList={this.state.analitics.weightLoadsByCategory} />); }
+  Panel3Content = () => { return (<LineChartControl chartXDots={this.state.analitics.chartDotsList} linesDataList={this.state.analitics.intensitiesByCategory} />); }
+  Panel4Content = () => { return (<LineChartControl chartXDots={this.state.analitics.chartDotsList} linesDataList={this.state.analitics.categoryCounters} />); }
 
 }
 

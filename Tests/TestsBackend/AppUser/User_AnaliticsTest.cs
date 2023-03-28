@@ -47,9 +47,11 @@ public class User_AnaliticsTest : BaseTest
         var finishDate = ToIso(DateTime.Now.AddDays(20));
 
         var response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics?startDate={startDate}&finishDate={finishDate}");
-        response.TypeCounters.Should().HaveCount(0);
-        response.PlanCounters.Should().HaveCount(0);
-        response.FullTypeCounterList.Should().HaveCount(0);
+        response.CategoryCounters.Should().HaveCount(0);
+        response.WeightLoadsByCategory.Should().HaveCount(0);
+        response.LiftCountersByCategory.Should().HaveCount(0);
+        response.IntensitiesByCategory.Should().HaveCount(0);
+        response.ChartDotsList.Should().HaveCount(0);
     }
 
     [Fact]
@@ -62,23 +64,23 @@ public class User_AnaliticsTest : BaseTest
         var finishDate = ToIso(DateTime.Now.AddDays(10));
 
         var response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics?startDate={startDate}&finishDate={finishDate}");
-        response.TypeCounters.Should().HaveCount(4);
-        response.PlanCounters.Should().HaveCount(2);
-        response.FullTypeCounterList.Should().HaveCount(2);
-
-        var plan = response.PlanCounters[0]; // проверяем, что в подсчете учавствуют только завершенные поднятия
-        plan.IntensitySum.Should().Be(80);
-        plan.LiftCounterSum.Should().Be(12);
-        plan.WeightLoadSum.Should().Be(960);
+        response.CategoryCounters.Should().HaveCount(2);
+        response.WeightLoadsByCategory.Should().HaveCount(3);
+        response.LiftCountersByCategory.Should().HaveCount(3);
+        response.IntensitiesByCategory.Should().HaveCount(3);
+        response.ChartDotsList.Should().HaveCount(2);
 
         // 1 плана
         startDate = ToIso(DateTime.Now);
         finishDate = ToIso(DateTime.Now.AddDays(10));
 
         response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics?startDate={startDate}&finishDate={finishDate}");
-        response.TypeCounters.Should().HaveCount(4);
-        response.PlanCounters.Should().HaveCount(1);
-        response.FullTypeCounterList.Should().HaveCount(1);
+        response.CategoryCounters.Should().HaveCount(2);
+        response.WeightLoadsByCategory.Should().HaveCount(3);
+        response.LiftCountersByCategory.Should().HaveCount(3);
+        response.IntensitiesByCategory.Should().HaveCount(3);
+
+        response.ChartDotsList.Should().HaveCount(1);
     }
 
     [Fact]
@@ -92,18 +94,23 @@ public class User_AnaliticsTest : BaseTest
         var finishDate = ToIso(DateTime.Now.AddDays(10));
 
         var response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics/{userId}?startDate={startDate}&finishDate={finishDate}");
-        response.TypeCounters.Should().HaveCount(4);
-        response.PlanCounters.Should().HaveCount(2);
-        response.FullTypeCounterList.Should().HaveCount(2);
+        response.CategoryCounters.Should().HaveCount(2);
+        response.WeightLoadsByCategory.Should().HaveCount(3);
+        response.LiftCountersByCategory.Should().HaveCount(3);
+        response.IntensitiesByCategory.Should().HaveCount(3);
+        response.ChartDotsList.Should().HaveCount(2);
 
         // 1 плана
         startDate = ToIso(DateTime.Now);
         finishDate = ToIso(DateTime.Now.AddDays(10));
 
         response = Client.Get<PlanAnalitics>($"/analitics/getPlanAnalitics/{userId}?startDate={startDate}&finishDate={finishDate}");
-        response.TypeCounters.Should().HaveCount(4);
-        response.PlanCounters.Should().HaveCount(1);
-        response.FullTypeCounterList.Should().HaveCount(1);
+        response.CategoryCounters.Should().HaveCount(2);
+        response.WeightLoadsByCategory.Should().HaveCount(3);
+        response.LiftCountersByCategory.Should().HaveCount(3);
+        response.IntensitiesByCategory.Should().HaveCount(3);
+
+        response.ChartDotsList.Should().HaveCount(1);
     }
 
 

@@ -15,9 +15,12 @@ namespace SportAssistant.Application.Common.Actions.TrainingCounters
 
             day.Counters.WeightLoadSum = day.Exercises.Sum(t => t.WeightLoad);
             day.Counters.LiftCounterSum = day.Exercises.Sum(t => t.LiftCounter);
-            day.Counters.IntensitySum = ExerciseIntensitySum(day.Exercises);
-            day.Counters.ExerciseTypeCounters = CountExerciseTypes(day.Exercises.Select(t => t.Exercise));
+            day.Counters.IntensitySum = day.Exercises.Sum(t => t.Intensity) / day.Exercises.Count();
             day.Counters.LiftIntensities = PercentageIntensities(day.Exercises);
+
+            day.Counters.ExerciseTypeCounters = SumExerciseCategories(day.Exercises.Select(t => t.Exercise));
+
+            SumExerciseCounters(day);
         }
 
         public void SetTemplateDayCounters(TemplateDay day)
@@ -29,11 +32,11 @@ namespace SportAssistant.Application.Common.Actions.TrainingCounters
 
             day.Counters.WeightLoadPercentageSum = day.Exercises.Sum(t => t.WeightLoadPercentage);
             day.Counters.LiftCounterSum = day.Exercises.Sum(t => t.LiftCounter);
-            day.Counters.ExerciseTypeCounters = CountExerciseTypes(day.Exercises.Select(t => t.Exercise));
+            day.Counters.ExerciseTypeCounters = SumExerciseCategories(day.Exercises.Select(t => t.Exercise));
         }
 
-        /// <summary> Cчитаем, сколько упражнений по подтипам в тренировочном дне. </summary>
-        private List<ValueEntity> CountExerciseTypes(IEnumerable<Exercise> exercises)
+        /// <summary> Суммирование данных по категориям упражнений в тренировочном дне. </summary>
+        private List<ValueEntity> SumExerciseCategories(IEnumerable<Exercise> exercises)
         {
             var typeCounters = new List<ValueEntity>();
             var groups = exercises.GroupBy(t => t.ExerciseSubTypeId);
@@ -50,15 +53,26 @@ namespace SportAssistant.Application.Common.Actions.TrainingCounters
             return typeCounters.OrderBy(t => t.Name).ToList();
         }
 
-        /// <summary> Расчет интенсивности по упражнению. Горизонтальная интенсивность </summary>
-        private int ExerciseIntensitySum(IEnumerable<PlanExercise> exercises)
+        /// <summary> Суммирование данных по категориям упражнений в тренировочном дне. </summary>
+        private void SumExerciseCounters(PlanDay day)
         {
-            if (exercises == null || exercises.Count() == 0)
-            {
-                return 0;
-            }
+            // создаем массимы со стартовым значанием "Общее количество"
+            day.Counters.WeightLoadsByCategory = new List<ValueEntity>() { new ValueEntity() { Id = -1, Value = day.Counters.WeightLoadSum } };
+            day.Counters.LiftCountersByCategory = new List<ValueEntity>() { new ValueEntity() { Id = -1, Value = day.Counters.LiftCounterSum } };
+            day.Counters.IntensitiesByCategory = new List<ValueEntity>() { new ValueEntity() { Id = -1, Value = day.Counters.IntensitySum } };
 
-            return exercises.Sum(t => t.Intensity) / exercises.Count();
+            // группируем данные по категории и записываем значение для каждой из них в массивы
+            var groups = day.Exercises.Select(t => t.Exercise).GroupBy(t => t.ExerciseSubTypeId);
+            foreach (var item in groups)
+            {
+                var id = item.First().ExerciseSubTypeId;
+                var name = item.First().ExerciseSubTypeName;
+                var dayExercises = day.Exercises.Where(t => t.Exercise.ExerciseSubTypeId == id);
+
+                day.Counters.WeightLoadsByCategory.Add(new ValueEntity() { Id = id, Name = name, Value = dayExercises.Sum(t => t.WeightLoad) });
+                day.Counters.LiftCountersByCategory.Add(new ValueEntity() { Id = id, Name = name, Value = dayExercises.Sum(t => t.LiftCounter) });
+                day.Counters.IntensitiesByCategory.Add(new ValueEntity() { Id = id, Name = name, Value = dayExercises.Sum(t => t.Intensity) / day.Exercises.Count() });
+            }
         }
 
         /// <summary> Расчет интенсивности по процетовке. Вертикальная интенсивность </summary>
