@@ -25,9 +25,9 @@ export function LineChartControl({ linesDataList, chartXDots = null, multidata =
   if (chartXDots?.length > 25) { return (<>{t('analitics.chartOverload')}</>); }
 
   var colors = [
-    '#000000', '#FF0000', '#0000FF', '#728C00', '#C19A6B', '#FF00FF', '#800000', '#008000', '#FFDB58', '#FFD700',
-    '#00BFFF', '#00FFFF', '#31906E', '#3C565B', '#C04000', '#827839', '#B8860B', '#806517', '#212F3C', '#641E16',
-    '#145A32', '#1B4F72', '#7D6608', '#17A589', '#808000'];
+    '#000000', '#FF0000', '#0000FF', '#728C00', '#C19A6B', '#FF00FF', '#800000', '#008000', '#FFDB58', '#17A589',
+    '#808000', '#00FFFF', '#31906E', '#3C565B', '#C04000', '#827839', '#B8860B', '#806517', '#212F3C', '#641E16',
+    '#145A32', '#1B4F72', '#7D6608', '#FFD700', '#00BFFF'];
 
   const ToggleLine = (e) => { setLineProps({ ...lineProps, [e.value]: !lineProps[e.value] }); };
 

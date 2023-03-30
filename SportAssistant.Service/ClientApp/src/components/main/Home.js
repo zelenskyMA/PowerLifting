@@ -51,8 +51,8 @@ class Home extends Component {
   }
 
   mainPanel = (lngStr) => {
-    if (this.state.loggedUser === false) { return (this.startScreenPanel(lngStr)); }
     if (this.state.loading) { return (<LoadingPanel />); }
+    if (this.state.loggedUser === false) { return (this.startScreenPanel(lngStr)); }
 
     if (this.props.userInfo?.coachOnly) { return (<CoachHomePanel userInfo={this.props.userInfo} />); }
 
