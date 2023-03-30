@@ -52,6 +52,8 @@ public partial class Program
         builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ConnectionDb"));
+        // builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ProdConnectionDb"));       
+
         builder.Services.AddSingleton(new MapperConfiguration(t => t.AddProfile(new MapperProfile())).CreateMapper());
 
         RegisterRepositories(builder);

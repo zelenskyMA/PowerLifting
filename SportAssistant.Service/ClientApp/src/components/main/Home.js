@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Spinner } from 'reactstrap';
 import { GetAsync } from "../../common/ApiActions";
+import { LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import { DateToLocal } from "../../common/LocalActions";
 import { GetToken } from '../../common/TokenActions';
@@ -51,7 +51,7 @@ class Home extends Component {
   }
 
   mainPanel = (lngStr) => {
-    if (this.state.loading) { return (<div className="spaceBorder"><Spinner size="sm" type="grow" /></div>); } // не локализован, в этот момент нет текстов
+    if (this.state.loading) { return (<LoadingPanel />); }
 
     if (this.state.loggedUser === false) { return (this.startScreenPanel(lngStr)); }
 
