@@ -24,9 +24,9 @@ namespace SportAssistant.Application.UserData.UserInfoCommands
         }
 
         /// <inheritdoc />
-        public async Task<UserInfo> GetInfo(int userId)
+        public async Task<UserInfo> GetInfo(int userId, bool coachInfoRequest = false)
         {
-            var infoDb = (await _userInfoRepository.FindAsync(t => t.UserId == userId)).FirstOrDefault();
+            var infoDb = (await _userInfoRepository.FindOneAsync(t => t.UserId == userId));
             if (infoDb == null)
             {
                 return new UserInfo();
@@ -36,9 +36,9 @@ namespace SportAssistant.Application.UserData.UserInfoCommands
             info.LegalName = UserNaming.GetLegalShortName(info.FirstName, info.Surname, info.Patronimic, "Кабинет");
             info.RolesInfo = await _userRoleCommands.GetUserRoles(userId);
 
-            if (info.CoachId > 0)
+            if (info.CoachId > 0 && !coachInfoRequest)
             {
-                info.CoachLegalName = (await GetInfo(info.CoachId.Value)).LegalName;
+                info.CoachLegalName = (await GetInfo(info.CoachId.Value, true)).LegalName;
             }
 
             return info;

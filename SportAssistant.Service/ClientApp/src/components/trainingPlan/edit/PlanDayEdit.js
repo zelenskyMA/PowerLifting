@@ -76,12 +76,12 @@ class PlanDayEdit extends Component {
           <tfoot>
             <tr>
               <td><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
-              {this.state.planDay.liftIntensities.map((intensity, i) =>
+              {this.state.planDay.counters.liftIntensities.map((intensity, i) =>
                 <td key={'kph' + i} className="text-center"> {intensity.value} </td>
               )}
-              <td className="text-center"><strong>{this.state.planDay.liftCounterSum}</strong></td>
-              <td className="text-center"><strong>{this.state.planDay.weightLoadSum}</strong></td>
-              <td className="text-center"><strong>{this.state.planDay.intensitySum}</strong></td>
+              <td className="text-center"><strong>{this.state.planDay.counters.liftCounterSum}</strong></td>
+              <td className="text-center"><strong>{this.state.planDay.counters.weightLoadSum}</strong></td>
+              <td className="text-center"><strong>{this.state.planDay.counters.intensitySum}</strong></td>
             </tr>
           </tfoot>
         </table>

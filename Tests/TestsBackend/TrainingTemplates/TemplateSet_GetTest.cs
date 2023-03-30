@@ -99,7 +99,7 @@ public class TemplateSet_GetTest : BaseTest
 
         template.Id.Should().BeGreaterThan(0);
         template.Name.Should().NotBeNullOrEmpty();
-        template.TypeCountersSum.Should().BeEmpty();
+        template.Counters.CategoryCountersSum.Should().BeEmpty();
 
         template.TrainingDays.Should().BeEmpty();
     }

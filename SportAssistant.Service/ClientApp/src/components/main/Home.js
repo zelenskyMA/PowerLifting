@@ -44,15 +44,16 @@ class Home extends Component {
     const lngStr = this.props.lngStr;
 
     return (
-      <>        
+      <>
         {this.mainPanel(lngStr)}
       </>
     );
   }
 
   mainPanel = (lngStr) => {
-    if (this.state.loggedUser === false) { return (this.startScreenPanel(lngStr)); }
     if (this.state.loading) { return (<LoadingPanel />); }
+
+    if (this.state.loggedUser === false) { return (this.startScreenPanel(lngStr)); }
 
     if (this.props.userInfo?.coachOnly) { return (<CoachHomePanel userInfo={this.props.userInfo} />); }
 
@@ -68,7 +69,7 @@ class Home extends Component {
     return (
       <div className="first-page-text first-page-spaceTop">
         <h1 className="spaceBottom">{lngStr('general.appName')}</h1>
-        <LoginUserPanel />        
+        <LoginUserPanel />
       </div>);
   }
 

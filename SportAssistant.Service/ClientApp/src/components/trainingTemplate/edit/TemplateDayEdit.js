@@ -73,8 +73,8 @@ class TemplateDayEdit extends Component {
             <tr>
               <td></td>
               {this.state.templateDay.percentages.map(() => <td></td>)}
-              <td className="text-center"><strong>{this.state.templateDay.liftCounterSum}</strong></td>
-              <td className="text-center"><strong>{this.state.templateDay.weightLoadPercentageSum}</strong></td>
+              <td className="text-center"><strong>{this.state.templateDay.counters.liftCounterSum}</strong></td>
+              <td className="text-center"><strong>{this.state.templateDay.counters.weightLoadPercentageSum}</strong></td>
             </tr>
           </tfoot>
         </table>

@@ -9,9 +9,6 @@ namespace Coaching;
 
 public class Group_GetTest : BaseTest
 {
-    private readonly string name = "test group";
-    private readonly string desc = "test description";
-
     public Group_GetTest(ServiceTestFixture<Program> factory) : base(factory) { }
 
     [Fact]

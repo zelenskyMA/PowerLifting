@@ -120,13 +120,13 @@ public class PlanDay_GetTest : BaseTest
         planDay.Id.Should().BeGreaterThan(0);
         planDay.ActivityDate.Should().BeAfter(DateTime.Now.AddDays(-1));
 
-        planDay.WeightLoadSum.Should().BeGreaterThan(0);
-        planDay.IntensitySum.Should().BeGreaterThan(0);
-        planDay.LiftCounterSum.Should().BeGreaterThan(0);
+        planDay.Counters.WeightLoadSum.Should().BeGreaterThan(0);
+        planDay.Counters.IntensitySum.Should().BeGreaterThan(0);
+        planDay.Counters.LiftCounterSum.Should().BeGreaterThan(0);
 
-        planDay.ExerciseTypeCounters.Should().NotBeEmpty();
-        planDay.ExerciseTypeCounters[0].Value.Should().BeGreaterThan(0);
-        planDay.ExerciseTypeCounters[0].Name.Should().NotBeNullOrEmpty();
+        planDay.Counters.ExerciseTypeCounters.Should().NotBeEmpty();
+        planDay.Counters.ExerciseTypeCounters[0].Value.Should().BeGreaterThan(0);
+        planDay.Counters.ExerciseTypeCounters[0].Name.Should().NotBeNullOrEmpty();
 
         // Упражнения в тренировочном дне        
         planDay.Exercises.Should().HaveCount(2);

@@ -92,8 +92,11 @@ class PlanDayMove extends Component {
 
         <div className="spaceTop">
           <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('training.confirmTransfer'), this.onMove, lngStr)}>{lngStr('general.actions.confirm')}</Button>
-          <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('appSetup.modal.confirmCancel'), this.onClear, lngStr)}>{lngStr('general.actions.cancel')}</Button>
           <Button color="primary" outline onClick={() => this.goBack()}>{lngStr('general.actions.back')}</Button>
+        </div>
+
+        <div className="spaceMinTop">
+          <Button color="primary" className="spaceRight" onClick={() => this.onAction(lngStr('training.plan.confirmPlanDayDeletion'), this.onClear, lngStr)}>{lngStr('training.plan.deletePlanDay')}</Button>
         </div>
       </>
     );

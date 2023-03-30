@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Col, Row } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
+import { DateToUtc } from "../../common/LocalActions";
 import { InputDate, LineChartControl, LoadingPanel, TabControl, ErrorPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
@@ -28,10 +29,7 @@ class PlanAnaliticsPanel extends Component {
 
   getInitData = async () => {
     try {
-      var utcStartDate = new Date(this.state.startDate.getTime() - this.state.startDate.getTimezoneOffset() * 60 * 1000);
-      var utcFinishDate = new Date(this.state.finishDate.getTime() - this.state.finishDate.getTimezoneOffset() * 60 * 1000);
-
-      var request = `startDate=${utcStartDate.toISOString()}&finishDate=${utcFinishDate.toISOString()}`;
+      var request = `startDate=${DateToUtc(this.state.startDate).toISOString()}&finishDate=${DateToUtc(this.state.finishDate).toISOString()}`;
       var analiticsData = await GetAsync(`/analitics/getPlanAnalitics/${this.props.groupUserId}?${request}`);
 
       this.setState({ analitics: analiticsData, loading: false });
@@ -48,7 +46,6 @@ class PlanAnaliticsPanel extends Component {
     if (this.state.loading) { return (<LoadingPanel />); }
 
     const lngStr = this.props.lngStr;
-
     return (
       <>
         <ErrorPanel errorMessage={this.state.error} />
@@ -66,31 +63,19 @@ class PlanAnaliticsPanel extends Component {
         </Row>
 
         <TabControl data={[
-          { id: 1, label: lngStr('training.entity.liftCounter'), renderContent: () => this.Panel1Content(lngStr) },
-          { id: 2, label: lngStr('training.entity.weightLoad'), renderContent: () => this.Panel2Content(lngStr) },
-          { id: 3, label: lngStr('training.entity.intensity'), renderContent: () => this.Panel3Content(lngStr) },
+          { id: 1, label: lngStr('training.entity.liftCounter'), renderContent: () => this.Panel1Content() },
+          { id: 2, label: lngStr('training.entity.weightLoad'), renderContent: () => this.Panel2Content() },
+          { id: 3, label: lngStr('training.entity.intensity'), renderContent: () => this.Panel3Content() },
           { id: 4, label: lngStr('training.exercise.subTypes'), renderContent: () => this.Panel4Content() },
         ]} />
       </>
     );
   }
 
-  Panel1Content = (lngStr) => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: lngStr('training.entity.liftCounter'), id: 'liftCounterSum' }]} />); }
-  Panel2Content = (lngStr) => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: lngStr('training.entity.weightLoad'), id: 'weightLoadSum' }]} />); }
-  Panel3Content = (lngStr) => { return (<LineChartControl data={this.state.analitics.planCounters} displayList={[{ name: lngStr('training.entity.intensity'), id: 'intensitySum' }]} />); }
-
-  Panel4Content = () => {
-    var exerciseTypesData = [];
-    for (var i = 0; i < this.state.analitics.typeCounters.length; i++) {
-      exerciseTypesData.push({
-        id: 'value',
-        data: this.state.analitics.typeCounters[i].values,
-        name: this.state.analitics.typeCounters[i].name
-      });
-    }
-
-    return (<LineChartControl data={this.state.analitics.fullTypeCounterList} displayList={exerciseTypesData} multidata="true" />);
-  }
+  Panel1Content = () => { return (<LineChartControl chartXDots={this.state.analitics.chartDotsList} linesDataList={this.state.analitics.liftCountersByCategory} />); }
+  Panel2Content = () => { return (<LineChartControl chartXDots={this.state.analitics.chartDotsList} linesDataList={this.state.analitics.weightLoadsByCategory} />); }
+  Panel3Content = () => { return (<LineChartControl chartXDots={this.state.analitics.chartDotsList} linesDataList={this.state.analitics.intensitiesByCategory} />); }
+  Panel4Content = () => { return (<LineChartControl chartXDots={this.state.analitics.chartDotsList} linesDataList={this.state.analitics.categoryCounters} />); }
 
 }
 
