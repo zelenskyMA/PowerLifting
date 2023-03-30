@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { Spinner } from 'reactstrap';
 import { GetAsync } from "../../common/ApiActions";
-import { LoadingPanel } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import { DateToLocal } from "../../common/LocalActions";
 import { GetToken } from '../../common/TokenActions';
@@ -44,14 +44,15 @@ class Home extends Component {
     const lngStr = this.props.lngStr;
 
     return (
-      <>        
+      <>
         {this.mainPanel(lngStr)}
       </>
     );
   }
 
   mainPanel = (lngStr) => {
-    if (this.state.loading) { return (<LoadingPanel />); }
+    if (this.state.loading) { return (<div className="spaceBorder"><Spinner size="sm" type="grow" /></div>); } // не локализован, в этот момент нет текстов
+
     if (this.state.loggedUser === false) { return (this.startScreenPanel(lngStr)); }
 
     if (this.props.userInfo?.coachOnly) { return (<CoachHomePanel userInfo={this.props.userInfo} />); }
@@ -68,7 +69,7 @@ class Home extends Component {
     return (
       <div className="first-page-text first-page-spaceTop">
         <h1 className="spaceBottom">{lngStr('general.appName')}</h1>
-        <LoginUserPanel />        
+        <LoginUserPanel />
       </div>);
   }
 
