@@ -9,6 +9,7 @@ using SportAssistant.Application.Common;
 using SportAssistant.Application.Common.Actions.EmailNotifications;
 using SportAssistant.Application.Common.Actions.TrainingCounters;
 using SportAssistant.Application.Dictionaryies;
+using SportAssistant.Application.ReportGeneration;
 using SportAssistant.Application.Settings;
 using SportAssistant.Application.TrainingPlan.ExerciseCommands;
 using SportAssistant.Application.TrainingPlan.PlanCommands;
@@ -31,6 +32,7 @@ using SportAssistant.Domain.Interfaces.Actions.EmailNotifications;
 using SportAssistant.Domain.Interfaces.Coaching.Application;
 using SportAssistant.Domain.Interfaces.Coaching.Repositories;
 using SportAssistant.Domain.Interfaces.Common;
+using SportAssistant.Domain.Interfaces.ReportGeneration;
 using SportAssistant.Domain.Interfaces.Settings.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
@@ -52,7 +54,7 @@ public partial class Program
         builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ConnectionDb"));
-        // builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ProdConnectionDb"));       
+        // builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ProdCopyConnectionDb"));       
 
         builder.Services.AddSingleton(new MapperConfiguration(t => t.AddProfile(new MapperProfile())).CreateMapper());
 
@@ -84,7 +86,7 @@ public partial class Program
         builder.Services.AddScoped<ITrainingCountersSetup, TrainingCountersSetup>();
 
         builder.Services.AddScoped<IProcessSetUserId, ProcessSetUserId>();
-        builder.Services.AddScoped<IProcessTemplateSet, ProcessTemplateSet>();        
+        builder.Services.AddScoped<IProcessTemplateSet, ProcessTemplateSet>();
         builder.Services.AddScoped<IProcessTemplatePlan, ProcessTemplatePlan>();
         builder.Services.AddScoped<IProcessTemplateDay, ProcessTemplateDay>();
         builder.Services.AddScoped<IProcessTemplateExercise, ProcessTemplateExercise>();
@@ -107,6 +109,9 @@ public partial class Program
         builder.Services.AddScoped<IProcessDictionary, ProcessDictionary>();
         builder.Services.AddScoped<IProcessSettings, ProcessSettings>();
         builder.Services.AddScoped<IUserProvider, UserProvider>();
+
+        builder.Services.AddScoped<IDataCollector, DataCollector>();
+        builder.Services.AddScoped<IFileCreation, FileCreation>();
     }
 
     private static void RegisterJwtAuth(WebApplicationBuilder builder)

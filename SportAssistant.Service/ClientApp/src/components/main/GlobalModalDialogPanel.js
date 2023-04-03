@@ -39,7 +39,7 @@ class GlobalModalDialogPanel extends Component {
         </ModalBody>
         <ModalFooter>
           {this.props.modal.buttons.map(item =>
-            <Button key={'modal_' + item.name} className="spaceRight"
+            <Button key={'modal_' + item.name}
               color={item.color || 'primary'} onClick={() => this.buttonClick(item.onClick)}>
               {item.name}
             </Button>

@@ -42,8 +42,8 @@ class NavMenu extends Component {
 
               <NavbarBrand id="help" className="help-menu-item" tag={Link} to="/help/0">
                 <img src="/img/help_icon.png" width="30" height="30" className="rounded mx-auto d-block" />
-            </NavbarBrand>
-            <Tooltip text={lngStr('general.common.help')} tooltipTargetId="help" placement="bottom" />
+              </NavbarBrand>
+              <Tooltip text={lngStr('general.common.help')} tooltipTargetId="help" placement="bottom" />
 
               <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             </>
