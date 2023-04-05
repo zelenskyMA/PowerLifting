@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace SportAssistant.Application.ReportGeneration;
 
-public class DataCollector: IDataCollector
+public class DataCollector : IDataCollector
 {
     private readonly IProcessPlanExercise _processPlanExercise;
     private readonly IProcessPlan _processPlan;
@@ -41,7 +41,10 @@ public class DataCollector: IDataCollector
         var planDays = await _planDayRepository.FindAsync(t => t.PlanId == dbPlan.Id);
         var planExercises = await _processPlanExercise.GetByDaysAsync(planDays.Select(t => t.Id).ToList(), completedOnly);
 
-        var report = new ReportData();
+        var report = new ReportData()
+        {
+            PlanStartDate = dbPlan.StartDate
+        };
 
         // тренировочный день
         foreach (var planDay in planDays.OrderBy(t => t.ActivityDate))
@@ -76,10 +79,11 @@ public class DataCollector: IDataCollector
     private ReportDay SetReportDay(ReportData report, PlanDayDb planDay)
     {
         var dayDate = planDay.ActivityDate;
+        var culture = new CultureInfo("ru-RU", true);
 
         ReportDay day = new()
         {
-            DayDate = $"{dayDate.ToString("dd.MM.yyyy")} {dayDate.ToString("dddd", new CultureInfo("ru-RU"))}",
+            DayDate = $"{culture.TextInfo.ToTitleCase(dayDate.ToString("dddd", culture))} {dayDate.ToString("dd.MM.yyyy")}",
         };
 
         report.Days.Add(day);
@@ -92,6 +96,7 @@ public class DataCollector: IDataCollector
         {
             OrderNumber = planExercise.Order,
             Name = planExercise.Exercise?.Name ?? string.Empty,
+            ExtPlanData = planExercise.ExtPlanData,
         };
 
         reportDay.Exercises.Add(exercise);

@@ -5,7 +5,7 @@ import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, LoadingPanel, TabControl, TableControl, Tooltip } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal } from "../../../common/LocalActions";
-import { SaveFile } from "../../../common/MiscActions";
+import { SaveExcelFile } from "../../../common/DownloadActions";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 
 const mapDispatchToProps = dispatch => {
@@ -45,8 +45,6 @@ class PlansListPanel extends Component {
   onDownloadAction = async (e, planId, planFileName, lngStr) => {
     e.stopPropagation();
 
-    planFileName += ".csv"
-
     var modalInfo = {
       isVisible: true,
       headerText: lngStr('appSetup.modal.confirm'),
@@ -55,7 +53,7 @@ class PlansListPanel extends Component {
           name: lngStr('report.downloadAll'),
           onClick: async () => {
             var report = await PostAsync(`/reports/generate`, { planId: planId, completedOnly: false });
-            SaveFile(planFileName, report);
+            SaveExcelFile(planFileName, report);
           },
           color: "success"
         },
@@ -63,7 +61,7 @@ class PlansListPanel extends Component {
           name: lngStr('report.downloadCompleted'),
           onClick: async () => {
             var report = await PostAsync(`/reports/generate`, { planId: planId, completedOnly: true });
-            SaveFile(planFileName, report);
+            SaveExcelFile(planFileName, report);
           },
           color: "success"
         },

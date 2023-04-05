@@ -6,5 +6,7 @@ public class ReportExercise
 
     public string Name { get; set; }
 
+    public string? ExtPlanData { get; set; }
+
     public List<ReportExerciseSettings> ExerciseSettings { get; set; } = new List<ReportExerciseSettings>();
 }
