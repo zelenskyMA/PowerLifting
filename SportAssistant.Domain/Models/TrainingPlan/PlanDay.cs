@@ -22,4 +22,6 @@ public class PlanDay : Entity
     public List<Percentage>? Percentages { get; set; }
 
     public CountersPlanDay Counters { get; set; } = new CountersPlanDay();
+
+    public OwnerOfPlan Owner { get; set; } = new OwnerOfPlan();
 }

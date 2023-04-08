@@ -90,10 +90,11 @@ class PlanExerciseSettingsEdit extends Component {
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
     const lngStr = this.props.lngStr;
+    var ownerName = this.state.planExercise?.owner?.name;
 
     return (
       <>
-        <h4><i>{this.state.planExercise.exercise.name}</i></h4>
+        <h4><i>{this.state.planExercise.exercise.name}{ownerName ? ' (' + ownerName + ')' : ''}</i></h4>
         <ErrorPanel errorMessage={this.state.error} />
 
         <Row style={{ marginTop: '5px', marginBottom: '25px' }}>

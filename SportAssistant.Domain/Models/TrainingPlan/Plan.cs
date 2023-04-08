@@ -6,6 +6,8 @@ namespace SportAssistant.Domain.Models.TrainingPlan
     {
         public int UserId { get; set; }
 
+        public OwnerOfPlan Owner { get; set; } = new OwnerOfPlan();
+
         public DateTime StartDate { get; set; }
 
         public bool IsMyPlan { get; set; }

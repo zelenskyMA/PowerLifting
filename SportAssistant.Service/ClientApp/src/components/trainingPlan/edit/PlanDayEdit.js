@@ -39,10 +39,11 @@ class PlanDayEdit extends Component {
 
     const lngStr = this.props.lngStr;
     var dateView = DateToLocal(this.state.planDay.activityDate);
+    var ownerName = this.state.planDay?.owner?.name;
 
     return (
       <>
-        <h4 className="spaceBottom">{lngStr('training.plan.trainingPlanFor')} {dateView}</h4>
+        <h4 className="spaceBottom">{lngStr('training.plan.trainingPlanFor')} {dateView}{ownerName ? ' (' + ownerName + ')' : ''}</h4>
 
         <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
