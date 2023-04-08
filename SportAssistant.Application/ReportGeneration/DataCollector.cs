@@ -2,6 +2,7 @@
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.ReportGeneration;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
+using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Domain.Models.ReportGeneration;
 using SportAssistant.Domain.Models.TrainingPlan;
 using System.Globalization;
@@ -10,17 +11,20 @@ namespace SportAssistant.Application.ReportGeneration;
 
 public class DataCollector : IDataCollector
 {
+    private readonly IProcessUserInfo _processUserInfo;
     private readonly IProcessPlanExercise _processPlanExercise;
     private readonly IProcessPlan _processPlan;
     private readonly ICrudRepo<PlanDb> _planRepository;
     private readonly ICrudRepo<PlanDayDb> _planDayRepository;
 
     public DataCollector(
+        IProcessUserInfo processUserInfo,
         IProcessPlanExercise processPlanExercise,
         IProcessPlan processPlan,
         ICrudRepo<PlanDb> planRepository,
         ICrudRepo<PlanDayDb> planDayRepository)
     {
+        _processUserInfo = processUserInfo;
         _processPlanExercise = processPlanExercise;
         _processPlan = processPlan;
         _planRepository = planRepository;
@@ -38,12 +42,15 @@ public class DataCollector : IDataCollector
 
         await _processPlan.ViewAllowedForDataOfUserAsync(dbPlan.UserId);
 
+        var info = await _processUserInfo.GetInfo(dbPlan.UserId);
+
         var planDays = await _planDayRepository.FindAsync(t => t.PlanId == dbPlan.Id);
         var planExercises = await _processPlanExercise.GetByDaysAsync(planDays.Select(t => t.Id).ToList(), completedOnly);
 
         var report = new ReportData()
         {
-            PlanStartDate = dbPlan.StartDate
+            PlanStartDate = dbPlan.StartDate,
+            PlanOwner = $"{info.Surname} {info.FirstName} {info.Patronimic}",
         };
 
         // тренировочный день

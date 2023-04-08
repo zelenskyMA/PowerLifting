@@ -36,10 +36,12 @@ public class FileCreation : IFileCreation
 
         SetGlobalStyles(sheet);
 
+        AddHeader(sheet, rowNum, report.PlanOwner);
+
         //дни
         foreach (var day in report.Days)
         {
-            AddHeader(sheet, rowNum, day.DayDate);
+            AddHeader(sheet, IncRow(ref rowNum), day.DayDate);
 
             // упражнения в дне
             for (int i = 1; i <= day.Exercises.Count; i++)
@@ -61,8 +63,6 @@ public class FileCreation : IFileCreation
                     CreateOfpExerciseGrid(sheet, topRow, bottomRow, i, exercise);
                 }
             }
-
-            IncRow(ref rowNum);
         }
     }
 
