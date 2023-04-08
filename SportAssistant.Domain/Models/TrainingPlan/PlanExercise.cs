@@ -37,5 +37,7 @@ namespace SportAssistant.Domain.Models.TrainingPlan
         public List<PlanExerciseSettings>? Settings { get; set; } = new List<PlanExerciseSettings>();
 
         public PlanExerciseSettings SettingsTemplate { get; set; } = new PlanExerciseSettings();
+
+        public OwnerOfPlan Owner { get; set; } = new OwnerOfPlan();
     }
 }

@@ -1,9 +1,18 @@
 ﻿import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { Button } from "reactstrap";
-import { GetAsync } from "../../../common/ApiActions";
-import { ErrorPanel, LoadingPanel, TabControl, TableControl } from "../../../common/controls/CustomControls";
+import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { ErrorPanel, LoadingPanel, TabControl, TableControl, Tooltip } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal } from "../../../common/LocalActions";
+import { SaveExcelFile } from "../../../common/DownloadActions";
+import { changeModalVisibility } from "../../../stores/appStore/appActions";
+
+const mapDispatchToProps = dispatch => {
+  return {
+    changeModalVisibility: (modalInfo) => changeModalVisibility(modalInfo, dispatch)
+  }
+}
 
 /*Используется в нескольких компонентах */
 class PlansListPanel extends Component {
@@ -33,12 +42,43 @@ class PlansListPanel extends Component {
 
   confirmAsync = async () => { this.props.navigate("/"); }
 
+  onDownloadAction = async (e, planId, planFileName, lngStr) => {
+    e.stopPropagation();
+
+    var modalInfo = {
+      isVisible: true,
+      headerText: lngStr('appSetup.modal.confirm'),
+      buttons: [
+        {
+          name: lngStr('report.downloadAll'),
+          onClick: async () => {
+            var report = await PostAsync(`/reports/generate`, { planId: planId, completedOnly: false });
+            SaveExcelFile(planFileName, report);
+          },
+          color: "success"
+        },
+        {
+          name: lngStr('report.downloadCompleted'),
+          onClick: async () => {
+            var report = await PostAsync(`/reports/generate`, { planId: planId, completedOnly: true });
+            SaveExcelFile(planFileName, report);
+          },
+          color: "success"
+        },
+      ],
+      body: () => { return (<p>{lngStr('report.selectDataForExport')}</p>) }
+    };
+
+    this.props.changeModalVisibility(modalInfo);
+  }
+
   render() {
     if (this.state.loading) { return (<LoadingPanel />); }
     const lngStr = this.props.lngStr;
 
     const columns = [
-      { Header: 'Id', accessor: 'id' },
+      { Header: 'Id', id: 'id', accessor: 'id' },
+      { Header: '', id: 'download', accessor: 'id', Cell: t => this.downloadCell(t, t.value, lngStr) },
       { Header: lngStr('training.startDate'), accessor: 'startDate', Cell: t => DateToLocal(t.value) },
       { Header: lngStr('training.endDate'), accessor: 'finishDate', Cell: t => DateToLocal(t.value) }
     ];
@@ -54,6 +94,18 @@ class PlansListPanel extends Component {
         />
       </>
     );
+  }
+
+  downloadCell = (record, planId, lngStr) => {
+    var planFileName = lngStr('report.exportPlanOf') + DateToLocal(record.row.original.startDate);
+
+    return (
+      <>
+        <img id={'downloadPlan' + planId} src="/img/download_icon.png" width="25" height="23" className="rounded mx-auto d-block"
+          onClick={(e) => this.onDownloadAction(e, planId, planFileName, lngStr)} />
+        <Tooltip text={lngStr('report.export') + ' ' + planFileName} tooltipTargetId={'downloadPlan' + planId} />
+      </>
+    )
   }
 
   activePlansContent = (columns, lngStr) => {
@@ -74,4 +126,4 @@ class PlansListPanel extends Component {
   }
 }
 
-export default WithRouter(PlansListPanel);
+export default WithRouter(connect(null, mapDispatchToProps)(PlansListPanel));

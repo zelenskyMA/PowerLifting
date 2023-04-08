@@ -10,7 +10,7 @@ const context =  [
 
   "/user", "/userInfo", "/userAchivement",
 
-  "/administration", "/dictionary", "/appSettings",
+  "/administration", "/dictionary", "/appSettings", "/reports",
 
   "/trainingRequests", "/trainingGroups", "/groupUser"
 ];

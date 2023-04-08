@@ -95,10 +95,11 @@ class PlanExercisesEdit extends Component {
     ];
 
     var dateView = DateToLocal(this.state.planDay.activityDate);
+    var ownerName = this.state.planDay?.owner?.name;
 
     return (
       <>
-        <h4>{lngStr('training.exercise.exercises')} {dateView}</h4>
+        <h4>{lngStr('training.exercise.exercises')} {dateView}{ownerName ? ' (' + ownerName + ')' : ''}</h4>
         <p><strong>{lngStr('training.exercise.list')}</strong> {lngStr('appSetup.control.dblClickSelect')}</p>
         <TableControl columnsInfo={columns} data={this.state.exercises} rowDblClick={this.onRowDblClick} />
 

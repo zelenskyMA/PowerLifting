@@ -18,8 +18,7 @@ class PlanDaysEdit extends React.Component {
     super(props);
 
     this.state = {
-      plannedDays: [],
-      typeCounters: [],
+      plan: [],
       backUrl: '',
       error: ''
     };
@@ -31,7 +30,7 @@ class PlanDaysEdit extends React.Component {
     var plan = await GetAsync(`/trainingPlan/${this.props.params.planId}`);
     var url = plan.isMyPlan ? `/plansList` : `/groupUser/${plan.userId}`;
 
-    this.setState({ plannedDays: plan.trainingDays, typeCounters: plan.counters.categoryCountersSum, backUrl: url });
+    this.setState({ plan: plan, backUrl: url });
   }
 
   onSetExercises = (dayId) => { this.props.navigate(`/editPlanExercises/${this.props.params.planId}/${dayId}`); }
@@ -58,12 +57,13 @@ class PlanDaysEdit extends React.Component {
 
   render() {
     const lngStr = this.props.lngStr;
-    const days = this.state.plannedDays;
+    var days = this.state.plan?.trainingDays ?? [];
     const placeHolder = lngStr('general.common.notSet');
+    var ownerName = this.state.plan?.owner?.name;
 
     return (
       <>
-        <h4>{lngStr('training.plannedDays')}</h4>
+        <h4>{lngStr('training.plannedDays')}{ownerName ? ' (' + ownerName + ')' : ''}</h4>
         <br />
         <ErrorPanel errorMessage={this.state.error} />
 
@@ -87,7 +87,7 @@ class PlanDaysEdit extends React.Component {
 
             <Col>
               <div><strong>{lngStr('training.exercise.total')}</strong></div>
-              {this.countersPanel(this.state.typeCounters, lngStr)}
+              {this.countersPanel(this.state.plan?.counters?.categoryCountersSum, lngStr)}
             </Col>
 
             <Col>{this.buttonPanel(lngStr)}</Col>
@@ -101,6 +101,7 @@ class PlanDaysEdit extends React.Component {
     const lngStr = this.props.lngStr;
     var dateName = new Date(day.activityDate).toLocaleString(Locale, { weekday: 'long' });
     dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
+    var dayCounters = day?.counters?.exerciseTypeCounters ?? [];
 
     return (
       <Container fluid>
@@ -111,12 +112,12 @@ class PlanDaysEdit extends React.Component {
           </Col>
           <Col style={{ paddingTop: '7px' }} >
             <Button id={dateName + 'btnAssign'} color="primary" outline style={{ width: '40px', marginRight: '10px' }} onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
-            <Button id={dateName + 'btnTransfer'} color="primary" outline style={{ width: '40px' }} disabled={day.counters.exerciseTypeCounters.length == 0} onClick={() => this.props.navigate(`/movePlanDay/${this.props.params.planId}/${day.id}`)} >{' - '}</Button>
+            <Button id={dateName + 'btnTransfer'} color="primary" outline style={{ width: '40px' }} disabled={dayCounters.length == 0} onClick={() => this.props.navigate(`/movePlanDay/${this.props.params.planId}/${day.id}`)} >{' - '}</Button>
           </Col>
         </Row>
         <hr style={{ width: '60%', paddingTop: "2px" }} />
         <Row>
-          <Col>{this.countersPanel(day.counters.exerciseTypeCounters, lngStr)}</Col>
+          <Col>{this.countersPanel(dayCounters, lngStr)}</Col>
         </Row>
 
         <Tooltip text={lngStr('training.exercise.assign')} tooltipTargetId={dateName + 'btnAssign'} />
@@ -128,7 +129,7 @@ class PlanDaysEdit extends React.Component {
   countersPanel(counters, lngStr) {
     var fontSize = "0.85rem";
 
-    if (counters.length == 0) {
+    if (!counters || counters.length == 0) {
       return (
         <span style={{ fontSize: fontSize }}>{lngStr('training.exercise.nothingAssigned')}</span>
       );

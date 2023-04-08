@@ -64,6 +64,15 @@
     }
   },
 
+  "report": {
+    "export": "Экспортировать",
+    "exportPlanOf": "план от ",
+    "downloadAll": "Все",
+    "downloadCompleted": "Только завершенные",
+
+    "selectDataForExport": "Определите, какие упражнения в плане необходимо учитывать при экспорте в виде Excel файла."
+  },
+
   "appSetup": {
     "admin": {
       "administration": "Администрирование",
