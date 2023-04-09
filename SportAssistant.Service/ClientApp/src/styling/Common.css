@@ -28,6 +28,9 @@
   margin-top: 10px !important;
 }
 
+.completeStatusColumn {
+  width: 40px !important;
+}
 
 .intColumn {
   width: 25px;

@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Col, Row } from 'reactstrap';
-import { PostAsync } from "../../../common/ApiActions";
+import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, LoadingPanel, Tooltip } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
@@ -18,6 +18,7 @@ class PlanDayViewPanel extends Component {
     super(props);
 
     this.state = {
+      planDay: Object,
       selectedModalData: Object,
       completedExercises: [],
       loading: true,
@@ -29,7 +30,7 @@ class PlanDayViewPanel extends Component {
 
   getInitData = async () => {
     var completed = [];
-    var planDay = this.props.planDay;
+    var planDay = await GetAsync(`/planDay/${this.props.planDay.id}`); // берем второй раз чтобы обеспечить обновляемость страницы, когда комплитим упражнения
 
     try {
       planDay.exercises.map((planExercise, i) => {
@@ -39,19 +40,14 @@ class PlanDayViewPanel extends Component {
         })
       });
 
-      this.setState({ completedExercises: completed, loading: false });
+      this.setState({ planDay: planDay, completedExercises: completed, loading: false });
     }
     catch (error) { this.setState({ error: error.message, loading: false }); }
   }
 
   onCompleteExercise = async () => {
     await PostAsync("/planExercise/complete", { ids: this.state.selectedModalData.settings.map(a => a.id) });
-
-    var current = this.state.completedExercises.find(t => t.id === this.state.selectedModalData.id);
-    current.state = true;
-
-    var newValue = [...this.state.completedExercises.filter(t => t.id !== this.state.selectedModalData.id), current]
-    this.setState({ completedExercises: newValue });
+    await this.getInitData();
   }
 
   renderModal = (modalData, exerciseTypeId, lngStr) => {
@@ -59,6 +55,11 @@ class PlanDayViewPanel extends Component {
       case 3: this.onShowOfpExerciseModal(modalData, lngStr); break;
       default: this.onShowExerciseModal(modalData, lngStr); break;
     }
+  }
+
+  changeCompletion = async (planExercise, isCompleted) => {
+    await PostAsync("/planExercise/complete", { ids: planExercise.settings.map(a => a.id), isCompleted: !isCompleted });
+    await this.getInitData();
   }
 
   onShowExerciseModal = (modalData, lngStr) => {
@@ -114,7 +115,7 @@ class PlanDayViewPanel extends Component {
     if (this.state.loading) { return (<LoadingPanel />); }
 
     const lngStr = this.props.lngStr;
-    var planDay = this.props.planDay;
+    var planDay = this.state.planDay;
 
     return (
       <>
@@ -123,6 +124,7 @@ class PlanDayViewPanel extends Component {
         <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
             <tr>
+              <th className="completeStatusColumn"></th>
               <th className="nameColumn">{lngStr('training.exercise.header')}</th>
               {planDay.percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
               <th className="intColumn text-center">{lngStr('training.entity.liftCounter')}</th>
@@ -133,6 +135,8 @@ class PlanDayViewPanel extends Component {
           <tbody>
             {planDay.exercises.map((planExercise, i) =>
               <tr key={'planTr' + i}>
+                {this.completionElement(planExercise, i, lngStr)}
+
                 <td id={'exercise' + planExercise.id}>
                   {planExercise.exercise.name}
                   {planExercise.comments && <strong style={{ color: '#9706EF' }}> * {' '}</strong>}
@@ -152,7 +156,7 @@ class PlanDayViewPanel extends Component {
           </tbody>
           <tfoot>
             <tr>
-              <td><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
+              <td colSpan="2"><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
               {planDay.counters.liftIntensities.map((intensity, i) =>
                 <td key={'kph' + i} className="text-center"> {intensity.value} </td>
               )}
@@ -193,6 +197,22 @@ class PlanDayViewPanel extends Component {
           <img src={exerciseState ? `${imgPrefix}Completed.png` : `${imgPrefix}Planned.png`} width="35" height="35" className="rounded mx-auto d-block" />
         </div>
       </>
+    );
+  }
+
+  completionElement(planExercise, index, lngStr) {
+    var itemId = 'completed' + index;
+    var imgPrefix = '/img/table/';
+
+    var isCompleted = planExercise.settings.length > 0 && !planExercise.settings.some(v => !v.completed);
+
+    return (
+      <td className="completeStatusColumn">
+        <div className="text-center" role="button" id={itemId} onClick={() => this.changeCompletion(planExercise, isCompleted)}>
+          <img src={isCompleted ? `${imgPrefix}completed.png` : `${imgPrefix}notCompleted.png`} width="35" height="35" className="rounded mx-auto d-block" />
+        </div>
+        <Tooltip text={lngStr('training.exercise.status')} tooltipTargetId={itemId} />
+      </td>
     );
   }
 }

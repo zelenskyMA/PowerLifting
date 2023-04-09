@@ -122,8 +122,9 @@ export function Usr_CompliteTraining({ }) {
       </div>
 
       <div className="spaceTop">{GetAsHtml('sportsman.compliteTraining.footer1')}</div>
+      <div className="spaceMinTop">{GetAsHtml('sportsman.compliteTraining.footer2')}</div>
 
-      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/zTF7Q4hhgGQ')}</div>
+      <div className="spaceTop">{GetMsgWithUrl('https://youtu.be/J3Hn_9AbN94')}</div>
     </>
   );
 }
