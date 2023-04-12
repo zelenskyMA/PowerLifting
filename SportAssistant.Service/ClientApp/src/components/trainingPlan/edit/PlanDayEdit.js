@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from "reactstrap";
-import { GetAsync } from "../../../common/ApiActions";
+import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { LoadingPanel, Tooltip } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal } from "../../../common/LocalActions";
@@ -32,6 +32,11 @@ class PlanDayEdit extends Component {
     }
   }
 
+  changeCompletion = async (planExercise, isCompleted) => {
+    await PostAsync("/planExercise/complete", { ids: planExercise.settings.map(a => a.id), isCompleted: !isCompleted });
+    await this.getInitData();
+  }
+
   confirmAsync = () => { this.props.navigate(`/editPlanDays/${this.props.params.planId}`); }
 
   render() {
@@ -48,6 +53,7 @@ class PlanDayEdit extends Component {
         <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
             <tr>
+              <th className="completeStatusColumn"></th>
               <th className="nameColumn">{lngStr('training.exercise.header')}</th>
               {this.state.planDay.percentages.map((item, i) => <th key={'planDayHeader' + i} className="text-center">{item.name}</th>)}
               <th className="intColumn text-center">{lngStr('training.entity.liftCounter')}</th>
@@ -58,10 +64,12 @@ class PlanDayEdit extends Component {
           <tbody>
             {this.state.planDay.exercises.map((planExercise, i) =>
               <tr key={'planTr' + i}>
+                {this.completionElement(planExercise, i, lngStr)}
+
                 <td id={'exerciseName' + i} role="button" onClick={() => this.editSettings(planExercise)}>
                   {planExercise.exercise.name}
                 </td>
-                <Tooltip text={lngStr('general.actions.schedule')} tooltipTargetId={'exerciseName' + i} placement="left" />
+                <Tooltip text={lngStr('general.actions.schedule')} tooltipTargetId={'exerciseName' + i} />
 
                 {this.state.planDay.percentages.map(item =>
                   <td key={item.id} className="text-center">
@@ -76,7 +84,7 @@ class PlanDayEdit extends Component {
           </tbody>
           <tfoot>
             <tr>
-              <td><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
+              <td colSpan="2"><i>{lngStr('training.entity.liftCounterByZones')}</i></td>
               {this.state.planDay.counters.liftIntensities.map((intensity, i) =>
                 <td key={'kph' + i} className="text-center"> {intensity.value} </td>
               )}
@@ -90,6 +98,22 @@ class PlanDayEdit extends Component {
         <Button className="spaceRight" color="primary" onClick={() => this.confirmAsync()}>{lngStr('general.actions.confirm')}</Button>
         <Button color="primary" outline onClick={() => this.props.navigate(`/editPlanExercises/${this.props.params.planId}/${this.props.params.id}`)}>{lngStr('general.actions.back')}</Button>
       </>
+    );
+  }
+
+  completionElement(planExercise, index, lngStr) {
+    var itemId = 'completed' + index;
+    var imgPrefix = '/img/table/'; 
+
+    var isCompleted = planExercise.settings.length > 0 && !planExercise.settings.some(v => !v.completed);
+
+    return (
+      <td className="completeStatusColumn">
+        <div className="text-center" role="button" id={itemId} onClick={() => this.changeCompletion(planExercise, isCompleted)}>
+          <img src={isCompleted ? `${imgPrefix}completed.png` : `${imgPrefix}notCompleted.png`} width="35" height="35" className="rounded mx-auto d-block" />
+        </div>
+        <Tooltip text={lngStr('training.exercise.status')} tooltipTargetId={itemId} />
+      </td>
     );
   }
 

@@ -37,7 +37,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
                 var planUserId = await _processPlanUserId.GetByPlanExerciseSettingsId(item.Id);
                 await _processPlan.PlanningAllowedForUserAsync(planUserId);
 
-                item.Completed = true;
+                item.Completed = param.IsCompleted;
             }
 
             _exerciseSettingsRepository.UpdateList(excercisesDb);
@@ -47,6 +47,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseSettingsCommands
         public class Param
         {
             public List<int> Ids { get; set; } = new List<int>();
+
+            public bool IsCompleted { get; set; } = true;
         }
     }
 }
