@@ -8,6 +8,10 @@ public class PlanCounters
 {
     public void SetPlanCounters(Plan plan)
     {
+        plan.Counters.WeightLoadSum = plan.TrainingDays.Sum(t => t.Exercises?.Sum(j => j.WeightLoad) ?? 0);
+        plan.Counters.LiftCounterSum = plan.TrainingDays.Sum(t => t.Exercises?.Sum(j => j.LiftCounter) ?? 0);
+        plan.Counters.IntensitySum = plan.TrainingDays.Sum(t => t.Exercises?.Sum(j => j.Intensity) ?? 0 / t.Exercises?.Count ?? 1);
+
         var listCounters = plan.TrainingDays.SelectMany(t => t.Counters.ExerciseTypeCounters).ToList();
         plan.Counters.CategoryCountersSum = CountExerciseTypes(listCounters).OrderBy(t => t.Name).ToList();
 
