@@ -8,6 +8,21 @@ namespace SportAssistant.Domain.Models.TrainingPlan;
 public class CountersPlan
 {
     /// <summary>
+    /// Сумма КПШ по всем упражнениям за все дни плана.
+    /// </summary>
+    public int LiftCounterSum { get; set; }
+
+    /// <summary>
+    /// Сумма Нагрузок по всем упражнениям за все дни плана.
+    /// </summary>
+    public int WeightLoadSum { get; set; }
+
+    /// <summary>
+    /// Сумма Интенсивности по всем упражнениям за все дни плана.
+    /// </summary>
+    public int IntensitySum { get; set; }
+
+    /// <summary>
     /// Количество упражнений по категориям (subType).
     /// </summary>
     public List<ValueEntity> CategoryCountersSum { get; set; } = new List<ValueEntity>();

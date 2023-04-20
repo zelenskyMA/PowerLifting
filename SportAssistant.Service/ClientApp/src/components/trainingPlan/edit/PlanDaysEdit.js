@@ -87,7 +87,7 @@ class PlanDaysEdit extends React.Component {
 
             <Col>
               <div><strong>{lngStr('training.exercise.total')}</strong></div>
-              {this.countersPanel(this.state.plan?.counters?.categoryCountersSum, lngStr)}
+              {this.countersPanel(this.state.plan?.counters, lngStr)}
             </Col>
 
             <Col>{this.buttonPanel(lngStr)}</Col>
@@ -101,7 +101,7 @@ class PlanDaysEdit extends React.Component {
     const lngStr = this.props.lngStr;
     var dateName = new Date(day.activityDate).toLocaleString(Locale, { weekday: 'long' });
     dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
-    var dayCounters = day?.counters?.exerciseTypeCounters ?? [];
+    var dayCounters = day?.counters;
 
     return (
       <Container fluid>
@@ -129,7 +129,7 @@ class PlanDaysEdit extends React.Component {
   countersPanel(counters, lngStr) {
     var fontSize = "0.85rem";
 
-    if (!counters || counters.length == 0) {
+    if (!counters) {
       return (
         <span style={{ fontSize: fontSize }}>{lngStr('training.exercise.nothingAssigned')}</span>
       );
@@ -137,12 +137,18 @@ class PlanDaysEdit extends React.Component {
 
     return (
       <>
-        {counters.map((item, i) =>
-          <Row key={i} style={{ fontSize: fontSize }}>
-            <Col>{item.name}</Col>
-            <Col>{item.value}</Col>
-          </Row>
-        )}
+        <Row style={{ fontSize: fontSize }}>
+          <Col>{lngStr('training.entity.liftCounter')}</Col>
+          <Col>{counters.liftCounterSum}</Col>
+        </Row>
+        <Row style={{ fontSize: fontSize }}>
+          <Col>{lngStr('training.entity.weightLoad')}</Col>
+          <Col>{counters.weightLoadSum}</Col>
+        </Row>
+        <Row style={{ fontSize: fontSize }}>
+          <Col>{lngStr('training.entity.intensity')}</Col>
+          <Col>{counters.intensitySum}</Col>
+        </Row>
       </>
     );
   }
