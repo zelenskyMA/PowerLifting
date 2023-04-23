@@ -1,10 +1,8 @@
 using AutoMapper;
+using LoggerLib.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NLog.Extensions.Logging;
-using NLog.Web;
 using SportAssistant.Application.Coaching.TrainingGroupCommands;
 using SportAssistant.Application.Coaching.TrainingGroupUserCommands;
 using SportAssistant.Application.Coaching.TrainingRequestCommands;
@@ -61,7 +59,7 @@ public partial class Program
 
         builder.Services.AddSingleton(new MapperConfiguration(t => t.AddProfile(new MapperProfile())).CreateMapper());
 
-        RegisterLogger(builder);
+        builder.RegisterLogger();
 
         RegisterRepositories(builder);
         RegisterApps(builder);
@@ -141,14 +139,6 @@ public partial class Program
                 });
     }
 
-    private static void RegisterLogger(WebApplicationBuilder builder)
-    {
-        builder.Logging.ClearProviders().SetMinimumLevel(LogLevel.Trace);
-        builder.Host.UseNLog();
-
-        NLog.LogManager.Configuration = new NLogLoggingConfiguration(builder.Configuration.GetSection("NLog"));
-    }
-
     private static void SetupApp(WebApplicationBuilder builder)
     {
         var app = builder.Build();
@@ -159,8 +149,6 @@ public partial class Program
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
-
-        // app.UseHttpLogging();
 
         app.UseAuthentication();
         app.UseAuthorization();

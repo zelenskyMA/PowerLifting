@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LoggerLib.Middleware;
+using Microsoft.AspNetCore.Mvc;
 using SportAssistant.Application.Dictionaryies;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Models;
 
 namespace SportAssistant.Service.Controllers
 {
-    [Route("dictionary")]
+    [Route("dictionary"), ExcludeLogItem]
     public class DictionaryController : BaseController
     {
         [HttpGet]
