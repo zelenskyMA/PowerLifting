@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using LoggerLib.Middleware;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportAssistant.Application.UserData.UserCommands;
 using SportAssistant.Application.UserData.UserCommands.UserCommands;
@@ -7,7 +8,7 @@ using SportAssistant.Domain.Models.UserData.Auth;
 
 namespace SportAssistant.Service.Controllers.UserData
 {
-    [ApiController]
+    [ApiController, ExcludeLogItem]
     [Route("user")]
     public class UserController : ControllerBase
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LoggerLib.Middleware;
+using Microsoft.AspNetCore.Mvc;
 using SportAssistant.Application.Settings;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Models.Basic;
@@ -8,7 +9,7 @@ namespace SportAssistant.Service.Controllers.Administration
     [Route("appSettings")]
     public class SettingsController : BaseController
     {
-        [HttpGet]
+        [HttpGet, ExcludeLogItem]
         public async Task<AppSettings> GetAsync([FromServices] ICommand<SettingsGetQuery.Param, AppSettings> command)
         {
             var result = await command.ExecuteAsync(new SettingsGetQuery.Param() { });

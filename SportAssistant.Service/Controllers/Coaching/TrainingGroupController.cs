@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LoggerLib.Middleware;
+using Microsoft.AspNetCore.Mvc;
 using SportAssistant.Application.Coaching.GroupCommands;
 using SportAssistant.Application.Coaching.TrainingGroupCommands;
 using SportAssistant.Domain.Interfaces.Common.Operations;
@@ -10,7 +11,7 @@ namespace SportAssistant.Service.Controllers.Coaching
     public class TrainingGroupController : BaseController
     {
         [HttpGet]
-        [Route("getList")]
+        [Route("getList"), ExcludeLogItem]
         public async Task<List<TrainingGroup>> GetListAsync([FromServices] ICommand<GroupGetListQuery.Param, List<TrainingGroup>> command)
         {
             var result = await command.ExecuteAsync(new GroupGetListQuery.Param() { });
@@ -26,7 +27,7 @@ namespace SportAssistant.Service.Controllers.Coaching
         }
 
         [HttpGet]
-        [Route("getWorkoutList")]
+        [Route("getWorkoutList"), ExcludeLogItem]
         public async Task<List<TrainingGroupWorkout>> GetAsync([FromServices] ICommand<GroupWorkoutGetListQuery.Param, List<TrainingGroupWorkout>> command)
         {
             var result = await command.ExecuteAsync(new GroupWorkoutGetListQuery.Param() { });

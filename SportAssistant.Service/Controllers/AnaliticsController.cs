@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LoggerLib.Middleware;
+using Microsoft.AspNetCore.Mvc;
 using SportAssistant.Application.Analitics.PlanAnaliticsCommands;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Models.Analitics;
 
 namespace SportAssistant.Service.Controllers
 {
-    [Route("analitics")]
+    [Route("analitics"), ExcludeLogItem]
     public class AnaliticsController : BaseController
     {
         [HttpGet]

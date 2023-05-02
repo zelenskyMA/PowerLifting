@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LoggerLib.Middleware;
+using Microsoft.AspNetCore.Mvc;
 using SportAssistant.Application.TrainingPlan.ExerciseCommands;
 using SportAssistant.Domain.Interfaces.Common;
 using SportAssistant.Domain.Interfaces.Common.Operations;
@@ -26,7 +27,7 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
         }
 
         [HttpGet]
-        [Route("getPlanningList")]
+        [Route("getPlanningList"), ExcludeLogItem]
         public async Task<List<Exercise>> GetPlanningListAsync([FromServices] ICommand<ExerciseGetByUsersQuery.Param, List<Exercise>> command)
         {
             var result = await command.ExecuteAsync(new ExerciseGetByUsersQuery.Param() { UserIds = _allowedUserIds.MyAndCommon });
@@ -34,7 +35,7 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
         }
 
         [HttpGet]
-        [Route("getEditingList")]
+        [Route("getEditingList"), ExcludeLogItem]
         public async Task<List<Exercise>> GetEditingListAsync([FromServices] ICommand<ExerciseGetByUsersQuery.Param, List<Exercise>> command)
         {
             var result = await command.ExecuteAsync(new ExerciseGetByUsersQuery.Param() { UserIds = _allowedUserIds.MyOnly });
@@ -42,7 +43,7 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
         }
 
         [HttpGet]
-        [Route("getAdminEditingList")]
+        [Route("getAdminEditingList"), ExcludeLogItem]
         public async Task<List<Exercise>> GetAdminEditingListAsync([FromServices] ICommand<ExerciseGetByUsersQuery.Param, List<Exercise>> command)
         {
             var result = await command.ExecuteAsync(new ExerciseGetByUsersQuery.Param() { UserIds = _allowedUserIds.CommonOnly });

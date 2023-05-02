@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LoggerLib.Middleware;
+using Microsoft.AspNetCore.Mvc;
 using SportAssistant.Application.ReportGeneration;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 
 namespace SportAssistant.Service.Controllers
 {
-    [Route("reports")]
+    [Route("reports"), ExcludeLogItem]
     public class ReportsController : BaseController
     {
         [HttpPost]

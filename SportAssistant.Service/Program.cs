@@ -1,4 +1,5 @@
 using AutoMapper;
+using LoggerLib.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -57,6 +58,9 @@ public partial class Program
         // builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ProdCopyConnectionDb"));       
 
         builder.Services.AddSingleton(new MapperConfiguration(t => t.AddProfile(new MapperProfile())).CreateMapper());
+
+        // TODO: Убрать комменты чтобы запустить логирование
+        // builder.RegisterLogger();
 
         RegisterRepositories(builder);
         RegisterApps(builder);
@@ -141,6 +145,7 @@ public partial class Program
         var app = builder.Build();
 
         app.UseCustomExceptionHandler(builder.Environment);
+        app.UseMiddleware<LoggingMiddleware>();
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();

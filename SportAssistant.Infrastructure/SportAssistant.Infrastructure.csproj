@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ExtProjects\LoggerLib\LoggerLib.csproj" />
     <ProjectReference Include="..\SportAssistant.Domain\SportAssistant.Domain.csproj" />
   </ItemGroup>
 

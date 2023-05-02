@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LoggerLib.Middleware;
+using Microsoft.AspNetCore.Mvc;
 using SportAssistant.Application.Coaching.TrainingRequestCommands;
 using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.Interfaces.Common.Operations;
@@ -34,7 +35,7 @@ namespace SportAssistant.Service.Controllers.Coaching
         }
 
         [HttpGet]
-        [Route("getCoachRequests")]
+        [Route("getCoachRequests"), ExcludeLogItem]
         public async Task<List<TrainingRequest>> GetCoachRequestsAsync([FromServices] ICommand<RequestGetForCoachQuery.Param, List<TrainingRequest>> command)
         {
             var result = await command.ExecuteAsync(new RequestGetForCoachQuery.Param() { });
@@ -42,7 +43,7 @@ namespace SportAssistant.Service.Controllers.Coaching
         }
 
         [HttpGet]
-        [Route("getCoaches")]
+        [Route("getCoaches"), ExcludeLogItem]
         public async Task<List<CoachInfo>> GetCoachesAsync([FromServices] ICommand<RequestGetAvailableCoachesQuery.Param, List<CoachInfo>> command)
         {
             var result = await command.ExecuteAsync(new RequestGetAvailableCoachesQuery.Param() { });
