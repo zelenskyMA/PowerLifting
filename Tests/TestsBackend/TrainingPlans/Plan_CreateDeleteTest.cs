@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using SportAssistant.Application.TrainingPlan.PlanCommands;
+using SportAssistant.Domain;
 using SportAssistant.Domain.Models.TrainingPlan;
 using TestFramework;
 using TestFramework.TestExtensions;
@@ -82,7 +83,7 @@ public class Plan_CreateDeleteTest : BaseTest
         var plan = Client.Get<Plan>($"/trainingPlan/{planId}"); // план создан
         plan.Should().NotBeNull();
         plan.Id.Should().Be(planId);
-        plan.TrainingDays.Count.Should().Be(7);
+        plan.TrainingDays.Count.Should().Be(AppConstants.DaysInPlan);
 
         //Act + Assert удаление
         var response = Client.Delete<bool>($"/trainingPlan/{planId}");
@@ -109,7 +110,7 @@ public class Plan_CreateDeleteTest : BaseTest
         var plan = Client.Get<Plan>($"/trainingPlan/{planId}"); // план создан
         plan.Should().NotBeNull();
         plan.Id.Should().Be(planId);
-        plan.TrainingDays.Count.Should().Be(7);
+        plan.TrainingDays.Count.Should().Be(AppConstants.DaysInPlan);
 
         //Act + Assert удаление
         var response = Client.Delete<bool>($"/trainingPlan/{planId}");

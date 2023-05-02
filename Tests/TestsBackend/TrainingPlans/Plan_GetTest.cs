@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using SportAssistant.Domain;
 using SportAssistant.Domain.Models.TrainingPlan;
 using TestFramework;
 using TestFramework.TestExtensions;
@@ -152,7 +153,7 @@ public class Plan_GetTest : BaseTest
         plan.Counters.CategoryCountersSum.Where(t => t.Value > 0).Should().HaveCount(4);
 
         // тренировочный день плана
-        plan.TrainingDays.Should().HaveCount(7);
+        plan.TrainingDays.Should().HaveCount(AppConstants.DaysInPlan);
         var day = plan.TrainingDays[0];
         day.Id.Should().BeGreaterThan(0);
         day.PlanId.Should().Be(planId);

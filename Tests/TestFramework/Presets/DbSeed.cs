@@ -1,3 +1,4 @@
+using SportAssistant.Domain;
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
@@ -32,7 +33,7 @@ public static class DbSeed
 
         //7 плановых дней
         var planDays = new List<PlanDayDb>() { };
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < AppConstants.DaysInPlan; i++)
         {
             planDays.Add(new PlanDayDb() { PlanId = plan.Id, ActivityDate = startDate.AddDays(i) });
         }
@@ -114,7 +115,7 @@ public static class DbSeed
 
         //7 плановых дней в шаблоне
         var planDays = new List<TemplateDayDb>() { };
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < AppConstants.DaysInPlan; i++)
         {
             planDays.Add(new TemplateDayDb() { TemplatePlanId = plan.Id, DayNumber = i + 1 });
         }
