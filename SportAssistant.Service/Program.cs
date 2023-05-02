@@ -59,7 +59,8 @@ public partial class Program
 
         builder.Services.AddSingleton(new MapperConfiguration(t => t.AddProfile(new MapperProfile())).CreateMapper());
 
-        builder.RegisterLogger();
+        // TODO: Убрать комменты чтобы запустить логирование
+        // builder.RegisterLogger();
 
         RegisterRepositories(builder);
         RegisterApps(builder);
