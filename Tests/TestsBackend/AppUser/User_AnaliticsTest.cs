@@ -28,7 +28,7 @@ public class User_AnaliticsTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeAdmin(Client);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
         var startDate = ToIso(DateTime.Now.AddDays(-10));
         var finishDate = ToIso(DateTime.Now.AddDays(10));
 
@@ -87,7 +87,7 @@ public class User_AnaliticsTest : BaseTest
     public void User_Analitics_ByCoach_Success()
     {
         Factory.Actions.AuthorizeCoach(Client);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
 
         // 2 плана
         var startDate = ToIso(DateTime.Now.AddDays(-10));

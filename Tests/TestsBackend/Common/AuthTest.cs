@@ -25,11 +25,11 @@ public class AuthTest : BaseTest
         response.ReadErrorMessage().Should().Match("Пользователь с указанным логином не найден.*");
 
         // wrong pwd
-        response = Client.Post("/user/login", new UserLoginCommand.Param() { Login = Constants.AdminLogin, Password = testPwd });
+        response = Client.Post("/user/login", new UserLoginCommand.Param() { Login = TestConstants.AdminLogin, Password = testPwd });
         response.ReadErrorMessage().Should().Match("Пароль указан не верно.*");
 
         // blocked user can't enter
-        response = Client.Post("/user/login", new UserLoginCommand.Param() { Login = Constants.BlockedUserLogin, Password = Constants.Password });
+        response = Client.Post("/user/login", new UserLoginCommand.Param() { Login = TestConstants.BlockedUserLogin, Password = TestConstants.Password });
         response.ReadErrorMessage().Should().Match("Пользователь заблокирован*");
     }
 
@@ -38,8 +38,8 @@ public class AuthTest : BaseTest
     {
         var response = Client.Post<TokenModel>("/user/login", new UserLoginCommand.Param()
         {
-            Login = Constants.AdminLogin,
-            Password = Constants.Password
+            Login = TestConstants.AdminLogin,
+            Password = TestConstants.Password
         });
 
         //Assert
@@ -53,8 +53,8 @@ public class AuthTest : BaseTest
     {
         var response = Client.Post<TokenModel>("/user/login", new UserLoginCommand.Param()
         {
-            Login = $" {Constants.AdminLogin} ",
-            Password = Constants.Password
+            Login = $" {TestConstants.AdminLogin} ",
+            Password = TestConstants.Password
         });
 
         //Assert
@@ -75,7 +75,7 @@ public class AuthTest : BaseTest
         response.ReadErrorMessage().Should().Match("Формат логина не соответствует*");
 
         // duplicate login
-        response = Client.Post("/user/register", new UserRegisterCommand.Param() { Login = Constants.AdminLogin, Password = testPwd, PasswordConfirm = testPwd });
+        response = Client.Post("/user/register", new UserRegisterCommand.Param() { Login = TestConstants.AdminLogin, Password = testPwd, PasswordConfirm = testPwd });
         response.ReadErrorMessage().Should().Match("Пользователь с указанным логином уже существует*");
 
         // empty password
@@ -160,11 +160,11 @@ public class AuthTest : BaseTest
 
 
         // user old password is wrong
-        response = Client.Post("/user/changePassword", new UserChangePasswordCommand.Param() { Login = Constants.UserLogin, OldPassword = "1", Password = testPwd, PasswordConfirm = testPwd });
+        response = Client.Post("/user/changePassword", new UserChangePasswordCommand.Param() { Login = TestConstants.UserLogin, OldPassword = "1", Password = testPwd, PasswordConfirm = testPwd });
         response.ReadErrorMessage().Should().Match("Пароль указан не верно*");
 
         // user was blocked - change prohibited
-        response = Client.Post("/user/changePassword", new UserChangePasswordCommand.Param() { Login = Constants.BlockedUserLogin, OldPassword = Constants.Password, Password = testPwd, PasswordConfirm = testPwd });
+        response = Client.Post("/user/changePassword", new UserChangePasswordCommand.Param() { Login = TestConstants.BlockedUserLogin, OldPassword = TestConstants.Password, Password = testPwd, PasswordConfirm = testPwd });
         response.ReadErrorMessage().Should().Match("Пользователь заблокирован, обратитесь к администрации*");
     }
 
@@ -173,8 +173,8 @@ public class AuthTest : BaseTest
     {
         var response = Client.Post<bool>("/user/changePassword", new UserChangePasswordCommand.Param()
         {
-            Login = $" {Constants.UserLogin} ",
-            OldPassword = Constants.Password,
+            Login = $" {TestConstants.UserLogin} ",
+            OldPassword = TestConstants.Password,
             Password = testPwd,
             PasswordConfirm = testPwd
         });
@@ -185,10 +185,10 @@ public class AuthTest : BaseTest
         //Откат изменений
         response = Client.Post<bool>("/user/changePassword", new UserChangePasswordCommand.Param()
         {
-            Login = Constants.UserLogin,
+            Login = TestConstants.UserLogin,
             OldPassword = testPwd,
-            Password = Constants.Password,
-            PasswordConfirm = Constants.Password
+            Password = TestConstants.Password,
+            PasswordConfirm = TestConstants.Password
         });
         response.Should().BeTrue();
     }    
@@ -205,7 +205,7 @@ public class AuthTest : BaseTest
         response.ReadErrorMessage().Should().Match("Пользователь с указанным логином не найден*");
 
         // user was blocked - reset prohibited
-        response = Client.Post("/user/resetPassword", new UserResetPasswordCommand.Param() { Login = Constants.BlockedUserLogin });
+        response = Client.Post("/user/resetPassword", new UserResetPasswordCommand.Param() { Login = TestConstants.BlockedUserLogin });
         response.ReadErrorMessage().Should().Match("Пользователь заблокирован, обратитесь к администрации*");
     }
 

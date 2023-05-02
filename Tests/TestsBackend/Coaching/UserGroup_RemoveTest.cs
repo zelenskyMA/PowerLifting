@@ -16,7 +16,7 @@ public class UserGroup_RemoveTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
-        var userId = Factory.Data.GetUserId(Constants.AdminLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.AdminLogin);
         var request = new TrainingGroupUser() { GroupId = 0, UserId = userId };
 
         //Act
@@ -46,7 +46,7 @@ public class UserGroup_RemoveTest : BaseTest
         //Arrange        
         var group = GetPredefinedGroup();
         Factory.Actions.AuthorizeAdmin(Client); //не владелец группы
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
         var request = new TrainingGroupUser() { GroupId = group.Id, UserId = userId };
 
         //Act
@@ -61,7 +61,7 @@ public class UserGroup_RemoveTest : BaseTest
     {
         //Arrange        
         var group = GetPredefinedGroup();
-        var userId = Factory.Data.GetUserId(Constants.UserLogin); // пользователь с тренером и группой
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin); // пользователь с тренером и группой
         var request = new TrainingGroupUser() { GroupId = group.Id, UserId = userId };
 
         var oldInfo = Client.Get<TrainingGroupInfo>($"/trainingGroups/{group.Id}"); //предпроверка - спортсмен в группе
@@ -78,7 +78,7 @@ public class UserGroup_RemoveTest : BaseTest
         // откат
         // 1) создание заявки
         Factory.Actions.AuthorizeUser(Client);
-        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
+        var coachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
         var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         createResult.Should().BeTrue();
 
@@ -93,7 +93,7 @@ public class UserGroup_RemoveTest : BaseTest
     {
         Factory.Actions.AuthorizeCoach(Client);
         var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
-        var group = groups.FirstOrDefault(t => t.Name == Constants.GroupName);
+        var group = groups.FirstOrDefault(t => t.Name == TestConstants.GroupName);
         group.Should().NotBeNull();
 
         return group;

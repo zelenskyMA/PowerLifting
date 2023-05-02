@@ -18,7 +18,7 @@ public class Exercise_CreateUpdateTest : BaseTest
     public void Exercise_Update_UnAuthorized_Fail()
     {
         Factory.Actions.UnAuthorize(Client);
-        var request = new Exercise() { Name = "test1", ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId };
+        var request = new Exercise() { Name = "test1", ExerciseTypeId = exTypeId, ExerciseSubTypeId = TestConstants.SubTypeId };
         var response = Client.Post($"/exerciseInfo", request);
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
     }
@@ -30,10 +30,10 @@ public class Exercise_CreateUpdateTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
 
         //Act - Assert
-        var response = Client.Post($"/exerciseInfo/", new Exercise() { Name = string.Empty, ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId });
+        var response = Client.Post($"/exerciseInfo/", new Exercise() { Name = string.Empty, ExerciseTypeId = exTypeId, ExerciseSubTypeId = TestConstants.SubTypeId });
         response.ReadErrorMessage().Should().Match("Название обязательно для заполнения");
 
-        response = Client.Post($"/exerciseInfo/", new Exercise() { Name = "sss", ExerciseTypeId = 0, ExerciseSubTypeId = Constants.SubTypeId });
+        response = Client.Post($"/exerciseInfo/", new Exercise() { Name = "sss", ExerciseTypeId = 0, ExerciseSubTypeId = TestConstants.SubTypeId });
         response.ReadErrorMessage().Should().Match("Укажите существующий тип упражнения");
 
         response = Client.Post($"/exerciseInfo/", new Exercise() { Name = "sss", ExerciseTypeId = exTypeId, ExerciseSubTypeId = 0 });
@@ -47,7 +47,7 @@ public class Exercise_CreateUpdateTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
 
         //Act - Assert
-        var response = Client.Post($"/exerciseInfo/", new Exercise() { Name = "nmk", ExerciseTypeId = 100, ExerciseSubTypeId = Constants.SubTypeId });
+        var response = Client.Post($"/exerciseInfo/", new Exercise() { Name = "nmk", ExerciseTypeId = 100, ExerciseSubTypeId = TestConstants.SubTypeId });
         response.ReadErrorMessage().Should().Match("Укажите существующий тип упражнения");
 
         response = Client.Post($"/exerciseInfo/", new Exercise() { Name = "nmk", ExerciseTypeId = exTypeId, ExerciseSubTypeId = 1000 });
@@ -60,7 +60,7 @@ public class Exercise_CreateUpdateTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var request = new Exercise() { Name = "test1", ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId };
+        var request = new Exercise() { Name = "test1", ExerciseTypeId = exTypeId, ExerciseSubTypeId = TestConstants.SubTypeId };
 
         //Act
         var createResponse = Client.Post<bool>($"/exerciseInfo/", request); // создаем успешно
@@ -114,7 +114,7 @@ public class Exercise_CreateUpdateTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
         var exName = "zzz";
-        var request = new Exercise() { Name = exName, ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId };
+        var request = new Exercise() { Name = exName, ExerciseTypeId = exTypeId, ExerciseSubTypeId = TestConstants.SubTypeId };
         Client.Post<bool>($"/exerciseInfo/", request);
 
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getEditingList");
@@ -140,7 +140,7 @@ public class Exercise_CreateUpdateTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
         var desc = "test description";
         var exName = "uuu";
-        var request = new Exercise() { Name = exName, ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId, Description = desc };
+        var request = new Exercise() { Name = exName, ExerciseTypeId = exTypeId, ExerciseSubTypeId = TestConstants.SubTypeId, Description = desc };
 
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getEditingList"); // проверяем, что нет упражнений
         items.FirstOrDefault(t => t.Name == exName).Should().BeNull();
@@ -159,11 +159,11 @@ public class Exercise_CreateUpdateTest : BaseTest
         item.Description.Should().Be(desc);
         item.Closed.Should().BeFalse();
         item.ExerciseTypeId.Should().Be(exTypeId);
-        item.ExerciseSubTypeId.Should().Be(Constants.SubTypeId);
+        item.ExerciseSubTypeId.Should().Be(TestConstants.SubTypeId);
         item.ExerciseTypeName.Should().NotBeNullOrEmpty();
         item.ExerciseSubTypeName.Should().NotBeNullOrEmpty();
 
-        item.UserId.Should().Be(Factory.Data.GetUserId(Constants.UserLogin));
+        item.UserId.Should().Be(Factory.Data.GetUserId(TestConstants.UserLogin));
         item.PlannedExerciseId.Should().Be(0);
     }
 
@@ -175,7 +175,7 @@ public class Exercise_CreateUpdateTest : BaseTest
         var desc = "test description";
         var exName = "ddd";
         var changeData = " sss";
-        var request = new Exercise() { Name = exName, ExerciseTypeId = exTypeId, ExerciseSubTypeId = Constants.SubTypeId, Description = desc };
+        var request = new Exercise() { Name = exName, ExerciseTypeId = exTypeId, ExerciseSubTypeId = TestConstants.SubTypeId, Description = desc };
         Client.Post<bool>($"/exerciseInfo/", request); // создаем упражнение
 
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getEditingList"); // проверяем, что есть личное упражнение
@@ -201,11 +201,11 @@ public class Exercise_CreateUpdateTest : BaseTest
         item.Description.Should().Be(desc + changeData);
         item.Closed.Should().BeFalse();
         item.ExerciseTypeId.Should().Be(exTypeId);
-        item.ExerciseSubTypeId.Should().Be(Constants.SubTypeId);
+        item.ExerciseSubTypeId.Should().Be(TestConstants.SubTypeId);
         item.ExerciseTypeName.Should().NotBeNullOrEmpty();
         item.ExerciseSubTypeName.Should().NotBeNullOrEmpty();
 
-        item.UserId.Should().Be(Factory.Data.GetUserId(Constants.UserLogin));
+        item.UserId.Should().Be(Factory.Data.GetUserId(TestConstants.UserLogin));
         item.PlannedExerciseId.Should().Be(0);
     }
 

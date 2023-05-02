@@ -60,7 +60,7 @@ public class Exercise_DeleteTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
         var exName = "zzz";
-        var request = new Exercise() { Name = exName, ExerciseTypeId = 1, ExerciseSubTypeId = Constants.SubTypeId };
+        var request = new Exercise() { Name = exName, ExerciseTypeId = 1, ExerciseSubTypeId = TestConstants.SubTypeId };
         Client.Post<bool>($"/exerciseInfo/", request);
 
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getEditingList");
@@ -83,7 +83,7 @@ public class Exercise_DeleteTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
         var exName = "gfjg";
-        var request = new Exercise() { Name = exName, ExerciseTypeId = 1, ExerciseSubTypeId = Constants.SubTypeId };
+        var request = new Exercise() { Name = exName, ExerciseTypeId = 1, ExerciseSubTypeId = TestConstants.SubTypeId };
         Client.Post<bool>($"/exerciseInfo/", request);
 
         var items = Client.Get<List<Exercise>>($"/exerciseInfo/getEditingList");

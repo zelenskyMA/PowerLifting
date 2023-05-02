@@ -1,4 +1,5 @@
-﻿using SportAssistant.Domain.CustomExceptions;
+﻿using SportAssistant.Domain;
+using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -47,7 +48,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             await _planRepository.CreateAsync(plan);
             await _provider.AcceptChangesAsync();
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < AppConstants.DaysInPlan; i++)
             {
                 await _processPlanDay.CreateAsync(userId, plan.Id, param.CreationDate.AddDays(i));
             }
@@ -58,6 +59,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         public class Param
         {
             public DateTime CreationDate { get; set; }
+
+            public int DaysCount { get; set; } = AppConstants.DaysInPlan;
 
             public int UserId { get; set; } = 0;
         }

@@ -87,7 +87,7 @@ public class Plan_GetTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
 
         //Act
         var response = Client.Get($"/trainingPlan/getList/{userId}");
@@ -101,7 +101,7 @@ public class Plan_GetTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
 
         //Act
         var response = Client.Get<Plans>($"/trainingPlan/getList/{userId}");
@@ -117,7 +117,7 @@ public class Plan_GetTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
 
         //Act
         var response = Client.Get<Plans>($"/trainingPlan/getList/{userId}");
@@ -128,13 +128,13 @@ public class Plan_GetTest : BaseTest
         response.ExpiredPlans.Should().HaveCount(2);
 
         var plan = response.ActivePlans[0];
-        plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == Constants.UserLogin).Id);
+        plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == TestConstants.UserLogin).Id);
         plan.StartDate.Date.Should().BeCloseTo(DateTime.Now.Date, new TimeSpan(1, 1, 1));
         plan.FinishDate.Date.Should().BeCloseTo(plan.StartDate.AddDays(6).Date, new TimeSpan(1, 1, 1));
         plan.TrainingDays.Should().HaveCount(0); // в списке планов нам нужны только заголовки, никаких деталей.
 
         plan = response.ExpiredPlans[0];
-        plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == Constants.UserLogin).Id);
+        plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == TestConstants.UserLogin).Id);
         plan.TrainingDays.Should().HaveCount(0); // в списке планов нам нужны только заголовки, никаких деталей.
     }
 
@@ -144,7 +144,7 @@ public class Plan_GetTest : BaseTest
         // план
         plan.Should().NotBeNull();
         plan.Id.Should().Be(planId);
-        plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == Constants.UserLogin).Id);
+        plan.UserId.Should().Be(Factory.Data.Users.First(t => t.Email == TestConstants.UserLogin).Id);
         plan.StartDate.Date.Should().BeCloseTo(DateTime.Now.Date, new TimeSpan(1, 1, 1));
         plan.FinishDate.Date.Should().BeCloseTo(plan.StartDate.AddDays(6).Date, new TimeSpan(1, 1, 1));
 

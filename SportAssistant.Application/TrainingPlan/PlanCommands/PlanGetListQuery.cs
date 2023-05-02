@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SportAssistant.Application.UserData.Auth.Interfaces;
+using SportAssistant.Domain;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -41,10 +42,10 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
 
             var plans = new Plans()
             {
-                ActivePlans = plansList.Where(t => t.StartDate.Date.AddDays(7) >= DateTime.Now.Date)
+                ActivePlans = plansList.Where(t => t.StartDate.Date.AddDays(AppConstants.DaysInPlan) >= DateTime.Now.Date)
                     .OrderBy(t => t.StartDate).ToList(),
 
-                ExpiredPlans = plansList.Where(t => t.StartDate.Date.AddDays(7) < DateTime.Now.Date)
+                ExpiredPlans = plansList.Where(t => t.StartDate.Date.AddDays(AppConstants.DaysInPlan) < DateTime.Now.Date)
                     .OrderByDescending(t => t.StartDate).ToList(),
             };
 

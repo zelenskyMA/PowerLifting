@@ -70,7 +70,7 @@ public class TemplateSet_ChangeTest : BaseTest
         var request = new TemplateSet()
         {
             Id = setId,
-            CoachId = Factory.Data.GetUserId(Constants.CoachLogin),
+            CoachId = Factory.Data.GetUserId(TestConstants.CoachLogin),
             Name = string.Empty
         };
 
@@ -89,7 +89,7 @@ public class TemplateSet_ChangeTest : BaseTest
         var request = new TemplateSet()
         {
             Id = 0,
-            CoachId = Factory.Data.GetUserId(Constants.CoachLogin),
+            CoachId = Factory.Data.GetUserId(TestConstants.CoachLogin),
             Name = "asdfsd"
         };
 
@@ -112,7 +112,7 @@ public class TemplateSet_ChangeTest : BaseTest
         var request = new TemplateSet()
         {
             Id = setItem.Id,
-            CoachId = Factory.Data.GetUserId(Constants.CoachLogin),
+            CoachId = Factory.Data.GetUserId(TestConstants.CoachLogin),
             Name = newName // пробуем сделать дубликат
         };
 
@@ -148,7 +148,7 @@ public class TemplateSet_ChangeTest : BaseTest
         var request = new TemplateSet()
         {
             Id = setItem.Id,
-            CoachId = Factory.Data.GetUserId(Constants.CoachLogin),
+            CoachId = Factory.Data.GetUserId(TestConstants.CoachLogin),
             Name = newName
         };
 

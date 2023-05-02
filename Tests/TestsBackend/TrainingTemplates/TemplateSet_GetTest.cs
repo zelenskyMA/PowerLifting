@@ -90,7 +90,7 @@ public class TemplateSet_GetTest : BaseTest
         // тренировочный цикл
         tmpltSet.Should().NotBeNull();
         tmpltSet.Id.Should().Be(setId);
-        tmpltSet.CoachId.Should().Be(Factory.Data.GetUserId(Constants.CoachLogin));
+        tmpltSet.CoachId.Should().Be(Factory.Data.GetUserId(TestConstants.CoachLogin));
         tmpltSet.Name.Should().NotBeNullOrEmpty();
 
         // шаблон

@@ -18,7 +18,7 @@ public class Group_CreateDeleteTest : BaseTest
     public void Create_Group_UnAuthorized_Fail()
     {
         Factory.Actions.UnAuthorize(Client);
-        var response = Client.Post($"/trainingGroups", NewGroup(Factory.Data.GetUserId(Constants.CoachLogin)));
+        var response = Client.Post($"/trainingGroups", NewGroup(Factory.Data.GetUserId(TestConstants.CoachLogin)));
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
     }
 
@@ -77,7 +77,7 @@ public class Group_CreateDeleteTest : BaseTest
 
         try
         {
-            group.CoachId = Factory.Data.GetUserId(Constants.CoachLogin);
+            group.CoachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
             group.Name.Should().Be(name);
             group.Description.Should().Be(desc);
             group.ParticipantsCount.Should().Be(0);
@@ -100,7 +100,7 @@ public class Group_CreateDeleteTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
         var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
-        var group = groups.FirstOrDefault(t => t.Name == Constants.GroupName);
+        var group = groups.FirstOrDefault(t => t.Name == TestConstants.GroupName);
 
         //Act
         var response = Client.Delete($"/trainingGroups/{group.Id}");
