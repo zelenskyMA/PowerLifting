@@ -6,6 +6,7 @@ import { ErrorPanel, Tooltip } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal, Locale } from "../../../common/LocalActions";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
+import '../../../styling/Common.css';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -73,17 +74,17 @@ class PlanDaysEdit extends React.Component {
         <br />
         <Container fluid>
           <Row>
-            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[0])}</Col>
-            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[1])}</Col>
-            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[2])}</Col>
+            <Col>{days.length >= 1 ? this.dayPanel(days[0]) : placeHolder}</Col>
+            <Col>{days.length >= 2 ? this.dayPanel(days[1]) : placeHolder}</Col>
+            <Col>{days.length >= 3 ? this.dayPanel(days[2]) : placeHolder}</Col>
           </Row>
           <Row style={{ marginTop: '100px' }}>
-            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[3])}</Col>
-            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[4])}</Col>
-            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[5])}</Col>
+            <Col>{days.length >= 4 ? this.dayPanel(days[3]) : placeHolder}</Col>
+            <Col>{days.length >= 5 ? this.dayPanel(days[4]) : placeHolder}</Col>
+            <Col>{days.length >= 6 ? this.dayPanel(days[5]) : placeHolder}</Col>
           </Row>
           <Row style={{ marginTop: '100px', marginBottom: '50px' }}>
-            <Col>{days.length === 0 ? placeHolder : this.dayPanel(days[6])}</Col>
+            <Col>{days.length >= 7 ? this.dayPanel(days[6]) : placeHolder}</Col>
 
             <Col>
               <div><strong>{lngStr('training.exercise.total')}</strong></div>
@@ -104,13 +105,13 @@ class PlanDaysEdit extends React.Component {
     var dayCounters = day?.counters;
 
     return (
-      <Container fluid>
+      <>
         <Row>
           <Col className="text-center">
             <div><strong>{dateName}</strong></div>
             <div>{DateToLocal(day.activityDate)}</div>
           </Col>
-          <Col style={{ paddingTop: '7px' }} >
+          <Col className="daysButtonSection" >
             <Button id={dateName + 'btnAssign'} color="primary" outline style={{ width: '40px', marginRight: '10px' }} onClick={() => this.onSetExercises(day.id)} >{' + '}</Button>
             <Button id={dateName + 'btnTransfer'} color="primary" outline style={{ width: '40px' }} disabled={dayCounters.length == 0} onClick={() => this.props.navigate(`/movePlanDay/${this.props.params.planId}/${day.id}`)} >{' - '}</Button>
           </Col>
@@ -122,7 +123,7 @@ class PlanDaysEdit extends React.Component {
 
         <Tooltip text={lngStr('training.exercise.assign')} tooltipTargetId={dateName + 'btnAssign'} />
         <Tooltip text={lngStr('training.exercise.transfer')} tooltipTargetId={dateName + 'btnTransfer'} />
-      </Container>
+      </>
     );
   }
 

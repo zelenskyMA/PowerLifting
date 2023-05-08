@@ -40,6 +40,10 @@
   width: 250px;
 }
 
+.daysButtonSection {
+  padding-top: 7px;
+}
+
 .inlineLink {
   width: 160px;
   margin-left: -15px;

@@ -39,7 +39,8 @@ namespace SportAssistant.Domain.Interfaces.TrainingPlan.Application
         /// </summary>
         /// <param name="creationDate">Дата нового плана</param>
         /// <param name="userId">Ид спортсмена</param>
+        /// <param name="daysCount">Кол - во дней в плане</param>
         /// <returns></returns>
-        Task<List<PlanDb>> GetCrossingPlansAsync(DateTime creationDate, int userId);
+        Task<List<PlanDb>> GetCrossingPlansAsync(DateTime creationDate, int userId, int daysCount = 0);
     }
 }

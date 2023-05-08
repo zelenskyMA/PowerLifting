@@ -7,6 +7,7 @@ using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.Settings.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.UserData.Application;
+using SportAssistant.Domain.Models.TrainingPlan;
 using SportAssistant.Infrastructure.DataContext;
 
 namespace SportAssistant.Application.TrainingPlan.PlanCommands;
@@ -18,6 +19,7 @@ public class ProcessPlan : IProcessPlan
     private readonly IProcessSettings _processSettings;
     private readonly ICrudRepo<PlanDb> _planRepository;
     private readonly ICrudRepo<TemplateDayDb> _templateDayRepository;
+    private readonly ICrudRepo<PlanDayDb> _planDayRepository;
     private readonly IContextProvider _provider;
     private readonly IUserProvider _user;
 
@@ -27,6 +29,7 @@ public class ProcessPlan : IProcessPlan
         IProcessSettings processSettings,
         ICrudRepo<PlanDb> planRepository,
         ICrudRepo<TemplateDayDb> templateDayRepository,
+        ICrudRepo<PlanDayDb> planDayRepository,
         IContextProvider provider,
         IUserProvider user)
     {
@@ -35,6 +38,7 @@ public class ProcessPlan : IProcessPlan
         _processSettings = processSettings;
         _planRepository = planRepository;
         _templateDayRepository = templateDayRepository;
+        _planDayRepository = planDayRepository;
         _provider = provider;
         _user = user;
     }
@@ -101,7 +105,7 @@ public class ProcessPlan : IProcessPlan
     /// <inheritdoc />
     public async Task CheckActivePlansLimitAsync(int userId)
     {
-        var startDate = DateTime.Now.Date.AddDays(-AppConstants.DaysInPlan);
+        var startDate = DateTime.Now.Date.AddDays(AppConstants.DaysInPlan);
         var activePlans = await _planRepository.FindAsync(t => t.UserId == userId && t.StartDate > startDate);
 
         var settings = await _processSettings.GetAsync();
@@ -112,15 +116,27 @@ public class ProcessPlan : IProcessPlan
     }
 
     /// <inheritdoc />
-    public async Task<List<PlanDb>> GetCrossingPlansAsync(DateTime creationDate, int userId)
+    public async Task<List<PlanDb>> GetCrossingPlansAsync(DateTime creationDate, int userId, int daysCount = 0)
     {
-        var prevPlanDate = creationDate.AddDays(-(AppConstants.DaysInPlan - 1));
-        var nextPlanDate = creationDate.AddDays(AppConstants.DaysInPlan - 1);
+        daysCount = daysCount == 0 ? AppConstants.DaysInPlan : daysCount;
+
+        var prevPlanDate = creationDate.AddDays(-(daysCount - 1));
+        var nextPlanDate = creationDate.AddDays(daysCount - 1);
 
         var crossingPlans = await _planRepository.FindAsync(t =>
             t.UserId == userId &&
             t.StartDate >= prevPlanDate &&
-            t.StartDate <= nextPlanDate);
+        t.StartDate <= nextPlanDate);
+
+        //не все планы на 7 дней. Берем по максимуму и убираем те, которые не дотягивают последним днем до начала нового плана.
+        foreach (var plan in crossingPlans.ToArray())
+        {
+            var planDay = (await _planDayRepository.FindAsync(t => t.PlanId == plan.Id)).OrderByDescending(t => t.ActivityDate).First();
+            if (planDay.ActivityDate < creationDate)
+            {
+                crossingPlans.Remove(plan);
+            }
+        }
 
         return crossingPlans;
     }
