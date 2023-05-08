@@ -1,4 +1,5 @@
-﻿using SportAssistant.Domain.CustomExceptions;
+﻿using SportAssistant.Domain;
+using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -33,10 +34,15 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         {
             param.CreationDate = param.CreationDate.Date;
 
+            if (param.DaysCount > 7 || param.DaysCount == 0)
+            {
+                throw new BusinessException("Можно включить от 1 до 7 дней в один тренировочный план.");
+            }
+
             var userId = await _processPlan.PlanningAllowedForUserAsync(param.UserId);
             await _processPlan.CheckActivePlansLimitAsync(userId);
 
-            var crossingPlansDb = await _processPlan.GetCrossingPlansAsync(param.CreationDate, userId);
+            var crossingPlansDb = await _processPlan.GetCrossingPlansAsync(param.CreationDate, userId, param.DaysCount);
             if (crossingPlansDb.Any())
             {
                 string errorDates = string.Join(", ", crossingPlansDb.Select(t => t.StartDate.ToString("dd/MM/yyyy")));
@@ -47,7 +53,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
             await _planRepository.CreateAsync(plan);
             await _provider.AcceptChangesAsync();
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < param.DaysCount; i++)
             {
                 await _processPlanDay.CreateAsync(userId, plan.Id, param.CreationDate.AddDays(i));
             }
@@ -58,6 +64,8 @@ namespace SportAssistant.Application.TrainingPlan.PlanCommands
         public class Param
         {
             public DateTime CreationDate { get; set; }
+
+            public int DaysCount { get; set; } = AppConstants.DaysInPlan;
 
             public int UserId { get; set; } = 0;
         }

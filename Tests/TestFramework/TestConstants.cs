@@ -3,7 +3,7 @@
 namespace TestFramework;
 
 [ExcludeFromCodeCoverage]
-public static class Constants
+public static class TestConstants
 {
     public static string AdminLogin => "admin@mail.ru";
     public static string CoachLogin => "coach@mail.ru";

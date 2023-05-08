@@ -159,7 +159,7 @@ public class PlanExercise_UpdateTest : BaseTest
         // создаем упражнение для последующего обновления
         int dayCounter = 3;
         var planDayId = Factory.Data.PlanDays[dayCounter].Id;
-        var exercise = Client.Get<Exercise>($"/exerciseInfo/{Constants.ExType3Id}");
+        var exercise = Client.Get<Exercise>($"/exerciseInfo/{TestConstants.ExType3Id}");
         var createRequest = new PlanExerciseCreateCommand.Param() { DayId = planDayId, Exercises = new List<Exercise>() { exercise } };
 
         var createResponse = Client.Post<bool>($"/planExercise", createRequest);

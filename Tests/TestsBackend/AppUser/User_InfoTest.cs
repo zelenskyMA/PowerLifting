@@ -58,7 +58,7 @@ public class User_InfoTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
 
         //Act
         var response = Client.Get($"/userInfo/getCard/{userId}");
@@ -73,7 +73,7 @@ public class User_InfoTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeAdmin(Client);
-        var userId = Factory.Data.GetUserId(Constants.AdminLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.AdminLogin);
         var request = new UserInfoUpdateCommand.Param() { Info = Factory.GetBuilder().Build().Create<UserInfo>() };
 
         var response = Client.Post<bool>("/userInfo", request);
@@ -83,7 +83,7 @@ public class User_InfoTest : BaseTest
         var card = Client.Get<UserCard>($"/userInfo/getCard/{userId}");
 
         //Assert обновления
-        card.Login.Should().BeEquivalentTo(Constants.AdminLogin);
+        card.Login.Should().BeEquivalentTo(TestConstants.AdminLogin);
         card.BaseInfo.Surname.Should().BeEquivalentTo(request.Info.Surname);
     }
 
@@ -92,14 +92,14 @@ public class User_InfoTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeAdmin(Client);
-        var blockedUserId = Factory.Data.GetUserId(Constants.BlockedUserLogin);
+        var blockedUserId = Factory.Data.GetUserId(TestConstants.BlockedUserLogin);
 
         //Act
         var card = Client.Get<UserCard>($"/userInfo/getCard/{blockedUserId}");
 
         //Assert
-        card.Login.Should().BeEquivalentTo(Constants.BlockedUserLogin);
-        card.BlockReason?.BlockerId.Should().Be(Factory.Data.GetUserId(Constants.AdminLogin));
+        card.Login.Should().BeEquivalentTo(TestConstants.BlockedUserLogin);
+        card.BlockReason?.BlockerId.Should().Be(Factory.Data.GetUserId(TestConstants.AdminLogin));
         card.BlockReason.Should().NotBeNull();
     }
 
@@ -108,14 +108,14 @@ public class User_InfoTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
-        var blockedUserId = Factory.Data.GetUserId(Constants.BlockedUserLogin);
+        var blockedUserId = Factory.Data.GetUserId(TestConstants.BlockedUserLogin);
 
         //Act
         var card = Client.Get<UserCard>($"/userInfo/getCard/{blockedUserId}");
 
         //Assert
-        card.Login.Should().BeEquivalentTo(Constants.BlockedUserLogin);
-        card.BlockReason?.BlockerId.Should().Be(Factory.Data.GetUserId(Constants.AdminLogin));
+        card.Login.Should().BeEquivalentTo(TestConstants.BlockedUserLogin);
+        card.BlockReason?.BlockerId.Should().Be(Factory.Data.GetUserId(TestConstants.AdminLogin));
         card.BlockReason.Should().NotBeNull();
     }
 }

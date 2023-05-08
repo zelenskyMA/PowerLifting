@@ -25,7 +25,7 @@ public class UserGroup_RejectTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
+        var coachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
 
         var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         createResult.Should().BeTrue();
@@ -48,7 +48,7 @@ public class UserGroup_RejectTest : BaseTest
         Factory.Actions.AuthorizeUser(Client);
 
         var info = Client.Get<UserInfo>("/userInfo");
-        info.CoachId.Should().Be(Factory.Data.GetUserId(Constants.CoachLogin));
+        info.CoachId.Should().Be(Factory.Data.GetUserId(TestConstants.CoachLogin));
 
         //Act
         var response = Client.Post<bool>("/groupUser/reject");
@@ -62,9 +62,9 @@ public class UserGroup_RejectTest : BaseTest
         // 1) готовим данные
         Factory.Actions.AuthorizeCoach(Client);
         var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
-        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
-        var request = new TrainingGroupUser() { GroupId = groups.FirstOrDefault(t => t.Name == Constants.GroupName).Id, UserId = userId };
+        var coachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
+        var request = new TrainingGroupUser() { GroupId = groups.FirstOrDefault(t => t.Name == TestConstants.GroupName).Id, UserId = userId };
         // 2) создание заявки
         Factory.Actions.AuthorizeUser(Client);
         var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");

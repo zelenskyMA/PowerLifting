@@ -46,9 +46,9 @@ public class Request_GetTest : BaseTest
 
             //Assert
             response.Should().NotBeNull();
-            response.UserId.Should().Be(Factory.Data.GetUserId(Constants.NoCoachUserLogin));
+            response.UserId.Should().Be(Factory.Data.GetUserId(TestConstants.NoCoachUserLogin));
             response.UserName.Should().NotBeEmpty();
-            response.CoachId.Should().Be(Factory.Data.GetUserId(Constants.CoachLogin));
+            response.CoachId.Should().Be(Factory.Data.GetUserId(TestConstants.CoachLogin));
             response.CoachName.Should().NotBeEmpty();
             response.CreationDate.Should().BeBefore(DateTime.Now);
         }
@@ -70,7 +70,7 @@ public class Request_GetTest : BaseTest
         response.Should().NotBeNull();
         response.Count.Should().BeGreaterThan(0);
 
-        var coach = response.FirstOrDefault(t => t.Id == Factory.Data.GetUserId(Constants.CoachLogin));
+        var coach = response.FirstOrDefault(t => t.Id == Factory.Data.GetUserId(TestConstants.CoachLogin));
         coach.Should().NotBeNull();
         coach.Name.Should().NotBeEmpty();
     }
@@ -145,8 +145,8 @@ public class Request_GetTest : BaseTest
             response.Should().NotBeNull();
             response.CoachName.Should().BeNullOrEmpty();
             response.UserName.Should().NotBeNullOrEmpty();
-            response.CoachId.Should().Be(Factory.Data.GetUserId(Constants.CoachLogin));
-            response.UserId.Should().Be(Factory.Data.GetUserId(Constants.NoCoachUserLogin));
+            response.CoachId.Should().Be(Factory.Data.GetUserId(TestConstants.CoachLogin));
+            response.UserId.Should().Be(Factory.Data.GetUserId(TestConstants.NoCoachUserLogin));
             response.UserAge.Should().BeGreaterThan(0);
             response.UserHeight.Should().BeGreaterThan(0);
             response.UserWeight.Should().BeGreaterThan(0);
@@ -170,7 +170,7 @@ public class Request_GetTest : BaseTest
     private void CreateRequest()
     {
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
+        var coachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
         var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         createResult.Should().BeTrue();
     }
@@ -180,7 +180,7 @@ public class Request_GetTest : BaseTest
     /// </summary>
     private void RemoveRequest()
     {
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
         Factory.Actions.AuthorizeNoCoachUser(Client);
         var removeResult = Client.Delete<bool>($"/trainingRequests/{userId}");
         removeResult.Should().BeTrue();

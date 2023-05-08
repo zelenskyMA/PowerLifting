@@ -17,7 +17,7 @@ public class Exercise_GetTest : BaseTest
     public void Exercise_GetById_UnAuthorized_Fail()
     {
         Factory.Actions.UnAuthorize(Client);
-        var response = Client.Get($"/exerciseInfo/{Constants.ExType1Id}");
+        var response = Client.Get($"/exerciseInfo/{TestConstants.ExType1Id}");
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
     }
 
@@ -39,11 +39,11 @@ public class Exercise_GetTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var response = Client.Get<Exercise>($"/exerciseInfo/{Constants.ExType1Id}");
+        var response = Client.Get<Exercise>($"/exerciseInfo/{TestConstants.ExType1Id}");
 
         //Assert
         response.Should().NotBeNull();
-        response.Id.Should().Be(Constants.ExType1Id);
+        response.Id.Should().Be(TestConstants.ExType1Id);
         response.Name.Should().NotBeEmpty();
         response.ExerciseSubTypeId.Should().BeGreaterThan(0);
         response.ExerciseTypeId.Should().BeGreaterThan(0);
@@ -74,7 +74,7 @@ public class Exercise_GetTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
         var exName = "testEx1";
-        var request = new Exercise() { Name = exName, ExerciseTypeId = 1, ExerciseSubTypeId = Constants.SubTypeId };
+        var request = new Exercise() { Name = exName, ExerciseTypeId = 1, ExerciseSubTypeId = TestConstants.SubTypeId };
         var createResult = Client.Post<bool>($"/exerciseInfo/", request);
         createResult.Should().BeTrue();
 

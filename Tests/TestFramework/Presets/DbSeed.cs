@@ -1,3 +1,4 @@
+using SportAssistant.Domain;
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
 using SportAssistant.Domain.DbModels.TrainingPlan;
@@ -32,7 +33,7 @@ public static class DbSeed
 
         //7 плановых дней
         var planDays = new List<PlanDayDb>() { };
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < AppConstants.DaysInPlan; i++)
         {
             planDays.Add(new PlanDayDb() { PlanId = plan.Id, ActivityDate = startDate.AddDays(i) });
         }
@@ -114,7 +115,7 @@ public static class DbSeed
 
         //7 плановых дней в шаблоне
         var planDays = new List<TemplateDayDb>() { };
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < AppConstants.DaysInPlan; i++)
         {
             planDays.Add(new TemplateDayDb() { TemplatePlanId = plan.Id, DayNumber = i + 1 });
         }
@@ -196,16 +197,16 @@ public static class DbSeed
         ctx.Users.AddRange(users);
         ctx.SaveChanges();
 
-        var mainUserId = users.First(t => t.Email == Constants.UserLogin).Id;
-        var main2UserId = users.First(t => t.Email == Constants.User2Login).Id;
-        var adminId = users.First(t => t.Email == Constants.AdminLogin).Id;
-        var coachId = users.First(t => t.Email == Constants.CoachLogin).Id;
+        var mainUserId = users.First(t => t.Email == TestConstants.UserLogin).Id;
+        var main2UserId = users.First(t => t.Email == TestConstants.User2Login).Id;
+        var adminId = users.First(t => t.Email == TestConstants.AdminLogin).Id;
+        var coachId = users.First(t => t.Email == TestConstants.CoachLogin).Id;
 
         //user info
         var noCoachUsers = new List<int>() {
             coachId,
-            users.First(t => t.Email == Constants.NoCoachUserLogin).Id,
-            users.First(t => t.Email == Constants.SecondCoachLogin).Id
+            users.First(t => t.Email == TestConstants.NoCoachUserLogin).Id,
+            users.First(t => t.Email == TestConstants.SecondCoachLogin).Id
         };
 
         foreach (var user in users)
@@ -225,7 +226,7 @@ public static class DbSeed
         // user roles
         ctx.UserRoles.Add(new UserRoleDb() { UserId = adminId, RoleId = 10 });
         ctx.UserRoles.Add(new UserRoleDb() { UserId = coachId, RoleId = 11 });
-        ctx.UserRoles.Add(new UserRoleDb() { UserId = users.First(t => t.Email == Constants.SecondCoachLogin).Id, RoleId = 11 });
+        ctx.UserRoles.Add(new UserRoleDb() { UserId = users.First(t => t.Email == TestConstants.SecondCoachLogin).Id, RoleId = 11 });
 
         var achivements = new List<UserAchivementDb>() {
             new UserAchivementDb() { UserId = mainUserId, CreationDate = DateTime.Now.AddDays(-1), ExerciseTypeId = 1, Result = 20 },
@@ -242,7 +243,7 @@ public static class DbSeed
             BlockerId = adminId,
             CreationDate = DateTime.Now,
             Reason = "test reason",
-            UserId = users.First(t => t.Email == Constants.BlockedUserLogin).Id,
+            UserId = users.First(t => t.Email == TestConstants.BlockedUserLogin).Id,
         });
 
         ctx.SaveChanges();
@@ -250,21 +251,21 @@ public static class DbSeed
 
     private static void AddCoachGroupData(SportContext ctx, List<UserDb> users)
     {
-        var coachId = users.First(t => t.Email == Constants.CoachLogin).Id;
-        var coach2Id = users.First(t => t.Email == Constants.SecondCoachLogin).Id;
-        var userId = users.First(t => t.Email == Constants.UserLogin).Id;
+        var coachId = users.First(t => t.Email == TestConstants.CoachLogin).Id;
+        var coach2Id = users.First(t => t.Email == TestConstants.SecondCoachLogin).Id;
+        var userId = users.First(t => t.Email == TestConstants.UserLogin).Id;
 
         var groups = new List<TrainingGroupDb>()
         {
-            new TrainingGroupDb() { CoachId = coachId, Name = Constants.GroupName },
-            new TrainingGroupDb() { CoachId = coachId, Name = Constants.SecondGroupName },
-            new TrainingGroupDb() { CoachId = coach2Id, Name = Constants.GroupName },
+            new TrainingGroupDb() { CoachId = coachId, Name = TestConstants.GroupName },
+            new TrainingGroupDb() { CoachId = coachId, Name = TestConstants.SecondGroupName },
+            new TrainingGroupDb() { CoachId = coach2Id, Name = TestConstants.GroupName },
         };
         ctx.TrainingGroups.AddRange(groups);
         ctx.SaveChanges();
 
         ctx.TrainingGroupUsers.Add(new TrainingGroupUserDb() { GroupId = groups[0].Id, UserId = userId });
-        ctx.TrainingGroupUsers.Add(new TrainingGroupUserDb() { GroupId = groups[1].Id, UserId = users.First(t => t.Email == Constants.User2Login).Id });
+        ctx.TrainingGroupUsers.Add(new TrainingGroupUserDb() { GroupId = groups[1].Id, UserId = users.First(t => t.Email == TestConstants.User2Login).Id });
         ctx.SaveChanges();
     }
 
@@ -284,7 +285,7 @@ public static class DbSeed
             new() { Id = 10, TypeId = 3, Name = "Администратор", Description = "толчок штанги" },
             new() { Id = 11, TypeId = 3, Name = "Тренер", Description = "рывок штанги" },
 
-            new() { Id = Constants.SubTypeId, TypeId = 2, Name = "Рывок классический", Description = string.Empty },
+            new() { Id = TestConstants.SubTypeId, TypeId = 2, Name = "Рывок классический", Description = string.Empty },
             new() { Id = 51, TypeId = 2, Name = "Толчок. Взятие на грудь", Description = string.Empty },
             new() { Id = 52, TypeId = 2, Name = "Толчок с груди", Description = string.Empty },
             new() { Id = 53, TypeId = 2, Name = "Толчок классический", Description = string.Empty },
@@ -321,18 +322,18 @@ public static class DbSeed
         });
 
         ctx.Exercises.AddRange(new List<ExerciseDb>() {
-            new ExerciseDb(){ Id = Constants.ExType2Id, ExerciseTypeId = 2, ExerciseSubTypeId = 50, Name = "Рывок классический", Description = string.Empty},
+            new ExerciseDb(){ Id = TestConstants.ExType2Id, ExerciseTypeId = 2, ExerciseSubTypeId = 50, Name = "Рывок классический", Description = string.Empty},
             new ExerciseDb(){ Id = 2, ExerciseTypeId = 2, ExerciseSubTypeId = 50, Name = "Рывок без разброса ног", Description = string.Empty},
             new ExerciseDb(){ Id = 20, ExerciseTypeId = 1, ExerciseSubTypeId = 51, Name = "Взятие на грудь без разброса ног", Description = string.Empty},
             new ExerciseDb(){ Id = 21, ExerciseTypeId = 1, ExerciseSubTypeId = 51, Name = "Взятие на грудь с подставки", Description = string.Empty},
-            new ExerciseDb(){ Id = Constants.ExType1Id, ExerciseTypeId = 1, ExerciseSubTypeId = 52, Name = "Приседания на груди + толчок", Description = string.Empty},
+            new ExerciseDb(){ Id = TestConstants.ExType1Id, ExerciseTypeId = 1, ExerciseSubTypeId = 52, Name = "Приседания на груди + толчок", Description = string.Empty},
             new ExerciseDb(){ Id = 41, ExerciseTypeId = 1, ExerciseSubTypeId = 52, Name = "Толчок со стоек", Description = string.Empty},
             new ExerciseDb(){ Id = 60, ExerciseTypeId = 1, ExerciseSubTypeId = 53, Name = "Толчок классический", Description = string.Empty},
             new ExerciseDb(){ Id = 61, ExerciseTypeId = 1, ExerciseSubTypeId = 53, Name = "Взятие на грудь + толчок", Description = string.Empty},
             new ExerciseDb(){ Id = 90, ExerciseTypeId = 2, ExerciseSubTypeId = 54, Name = "Тяга рывковая", Description = string.Empty},
             new ExerciseDb(){ Id = 91, ExerciseTypeId = 2, ExerciseSubTypeId = 54, Name = "Тяга рывковая с подставки", Description = string.Empty},
 
-            new ExerciseDb(){ Id = Constants.ExType3Id, ExerciseTypeId = 3, ExerciseSubTypeId = 55, Name = "Приседания", Description = string.Empty},
+            new ExerciseDb(){ Id = TestConstants.ExType3Id, ExerciseTypeId = 3, ExerciseSubTypeId = 55, Name = "Приседания", Description = string.Empty},
         });
     }
 }

@@ -114,7 +114,7 @@ public class TemplateSet_DeleteAssignTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
         var setId = Factory.Data.TemplateSet.Id;
-        var group = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList").First(t => t.Name == Constants.SecondGroupName);
+        var group = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList").First(t => t.Name == TestConstants.SecondGroupName);
         var request = new TemplateSetAssignCommand.Param() { SetId = setId, GroupId = group.Id, StartDate = DateTime.Now };
 
         //Act
@@ -123,7 +123,7 @@ public class TemplateSet_DeleteAssignTest : BaseTest
         //Assert
         response.Should().BeTrue();
 
-        var userId = Factory.Data.GetUserId(Constants.User2Login);
+        var userId = Factory.Data.GetUserId(TestConstants.User2Login);
         var plans = Client.Get<Plans>($"/trainingPlan/getList/{userId}");
         plans.ActivePlans.FirstOrDefault(t => t.StartDate.Date == DateTime.Now.Date).Should().NotBeNull();
     }
@@ -134,7 +134,7 @@ public class TemplateSet_DeleteAssignTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
         var setId = Factory.Data.TemplateSet.Id;
-        var group = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList").First(t => t.Name == Constants.SecondGroupName);
+        var group = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList").First(t => t.Name == TestConstants.SecondGroupName);
         var request = new TemplateSetAssignCommand.Param() { SetId = setId, GroupId = group.Id, StartDate = DateTime.Now.AddDays(20) };
 
         //Act
@@ -143,7 +143,7 @@ public class TemplateSet_DeleteAssignTest : BaseTest
         //Assert
         response.Should().BeTrue();
 
-        var userId = Factory.Data.GetUserId(Constants.User2Login);
+        var userId = Factory.Data.GetUserId(TestConstants.User2Login);
         var plans = Client.Get<Plans>($"/trainingPlan/getList/{userId}");
         plans.ActivePlans.FirstOrDefault(t => t.StartDate.Date == DateTime.Now.AddDays(20).Date).Should().NotBeNull();
     }

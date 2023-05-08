@@ -26,7 +26,7 @@ public class Group_GetTest : BaseTest
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
         var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
-        var group = groups.FirstOrDefault(t => t.Name == Constants.GroupName);
+        var group = groups.FirstOrDefault(t => t.Name == TestConstants.GroupName);
         group.Should().NotBeNull();
 
         //Act
@@ -34,11 +34,11 @@ public class Group_GetTest : BaseTest
 
         //Assert
         response.Should().NotBeNull();
-        response.Group.Name.Should().Be(Constants.GroupName);
+        response.Group.Name.Should().Be(TestConstants.GroupName);
         response.Group.ParticipantsCount.Should().BeGreaterThan(0);
         response.Users.Count.Should().BeGreaterThan(0);
 
-        var user = response.Users.FirstOrDefault(t => t.Id == Factory.Data.GetUserId(Constants.UserLogin));
+        var user = response.Users.FirstOrDefault(t => t.Id == Factory.Data.GetUserId(TestConstants.UserLogin));
         user.Should().NotBeNull();
         user.FullName.Should().NotBeNullOrEmpty();
         user.ActivePlansCount.Should().BeGreaterThan(0);
@@ -49,7 +49,7 @@ public class Group_GetTest : BaseTest
     {
         Factory.Actions.AuthorizeCoach(Client);
         var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
-        var group = groups.FirstOrDefault(t => t.Name == Constants.GroupName);
+        var group = groups.FirstOrDefault(t => t.Name == TestConstants.GroupName);
         group.Should().NotBeNull();
     }
 
@@ -58,7 +58,7 @@ public class Group_GetTest : BaseTest
     {
         Factory.Actions.AuthorizeUser(Client);
         var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
-        var group = groups.FirstOrDefault(t => t.Name == Constants.GroupName);
+        var group = groups.FirstOrDefault(t => t.Name == TestConstants.GroupName);
         group.Should().BeNull();
     }
 
@@ -84,7 +84,7 @@ public class Group_GetTest : BaseTest
         groupsInfo.Count.Should().Be(1);
 
         var info = groupsInfo.First();
-        info.GroupName.Should().Be(Constants.GroupName);
+        info.GroupName.Should().Be(TestConstants.GroupName);
         info.PlanDay.PlanId.Should().Be(planDays[0].PlanId);
         info.PlanDay.Id.Should().Be(planDays[0].Id);
     }

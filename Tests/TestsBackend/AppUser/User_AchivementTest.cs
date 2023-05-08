@@ -37,7 +37,7 @@ public class User_AchivementTest : BaseTest
     public void CreateUpdate_Achivements_Success()
     {
         //Arrange
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
         var request = new UserAchivementCreateCommand.Param()
         {
             Achivements = new List<UserAchivement>() {
@@ -70,7 +70,7 @@ public class User_AchivementTest : BaseTest
     public void Get_AchivementsByExercise_Owner_Success()
     {
         //Arrange
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
         var request = new UserAchivementCreateCommand.Param()
         {
             Achivements = new List<UserAchivement>() {

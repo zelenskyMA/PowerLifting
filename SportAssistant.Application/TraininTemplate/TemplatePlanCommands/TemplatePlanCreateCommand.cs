@@ -1,4 +1,5 @@
 ﻿using SportAssistant.Application.TraininTemplate.TemplateSetCommands;
+using SportAssistant.Domain;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.Enums;
@@ -52,7 +53,7 @@ namespace SportAssistant.Application.TrainingTemplate.TemplatePlanCommands
             await _templatePlanRepository.CreateAsync(templatePlanDb);
             await _provider.AcceptChangesAsync();
 
-            for (int i = 0; i < 7; i++) // 7 дней в плане. Завязано в ui
+            for (int i = 0; i < AppConstants.DaysInPlan; i++)
             {
                 var templateDay = new TemplateDayDb() { TemplatePlanId = templatePlanDb.Id, DayNumber = i + 1 };
                 await _templateDayRepository.CreateAsync(templateDay);

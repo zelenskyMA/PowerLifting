@@ -34,7 +34,7 @@ public class Group_UpdateTest : BaseTest
         //Arrange
         int groupId = CreateGroup();
         Factory.Actions.AuthorizeCoach(Client);
-        var request = new TrainingGroup() { Id = groupId, Name = Constants.GroupName, Description = newDesc };
+        var request = new TrainingGroup() { Id = groupId, Name = TestConstants.GroupName, Description = newDesc };
 
         //Act
         var response = Client.Put($"/trainingGroups", request);
@@ -88,7 +88,7 @@ public class Group_UpdateTest : BaseTest
             group.Should().BeNull();
             group = groups.FirstOrDefault(t => t.Name == newName);
             group.Should().NotBeNull();
-            group.CoachId = Factory.Data.GetUserId(Constants.CoachLogin);
+            group.CoachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
             group.Name.Should().Be(newName);
             group.Description.Should().Be(newDesc);
             group.ParticipantsCount.Should().Be(0);

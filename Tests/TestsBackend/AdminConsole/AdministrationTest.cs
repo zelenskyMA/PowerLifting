@@ -24,7 +24,7 @@ public class AdministrationTest : BaseTest
     public void Get_UserCard_No_Rights_Fail()
     {
         Factory.Actions.AuthorizeUser(Client);
-        var response = Client.Get($"/administration/getCard?login={Constants.BlockedUserLogin}");
+        var response = Client.Get($"/administration/getCard?login={TestConstants.BlockedUserLogin}");
         response.ReadErrorMessage().Should().Match("Нет прав для просмотра данной информации*");
     }
 
@@ -32,30 +32,30 @@ public class AdministrationTest : BaseTest
     public void Get_UserCard_ByLogin_Success()
     {
         Factory.Actions.AuthorizeAdmin(Client);
-        var response = Client.Get<UserCard>($"/administration/getCard?login={Constants.BlockedUserLogin}");
+        var response = Client.Get<UserCard>($"/administration/getCard?login={TestConstants.BlockedUserLogin}");
 
         //Assert
-        response.Login.Should().BeEquivalentTo(Constants.BlockedUserLogin);
+        response.Login.Should().BeEquivalentTo(TestConstants.BlockedUserLogin);
         response.BlockReason.Should().NotBeNull();
     }
 
     [Fact]
     public void Get_UserCard_ById_Success()
     {
-        var userId = Factory.Data.GetUserId(Constants.BlockedUserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.BlockedUserLogin);
         Factory.Actions.AuthorizeAdmin(Client);
         var response = Client.Get<UserCard>($"/administration/getCard?userId={userId}");
 
         //Assert
-        response.Login.Should().BeEquivalentTo(Constants.BlockedUserLogin);
+        response.Login.Should().BeEquivalentTo(TestConstants.BlockedUserLogin);
         response.BlockReason.Should().NotBeNull();
     }
 
     [Fact]
     public void Apply_Roles_No_Rights_Fail()
     {
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
-        var adminId = Factory.Data.GetUserId(Constants.AdminLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
+        var adminId = Factory.Data.GetUserId(TestConstants.AdminLogin);
 
         Factory.Actions.AuthorizeUser(Client);
 
@@ -87,11 +87,11 @@ public class AdministrationTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeAdmin(Client);
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
 
         // проверяем текущее значение
-        var oldInfo = Client.Get<UserCard>($"/administration/getCard?login={Constants.NoCoachUserLogin}");
-        oldInfo.Login.Should().BeEquivalentTo(Constants.NoCoachUserLogin);
+        var oldInfo = Client.Get<UserCard>($"/administration/getCard?login={TestConstants.NoCoachUserLogin}");
+        oldInfo.Login.Should().BeEquivalentTo(TestConstants.NoCoachUserLogin);
         oldInfo.BaseInfo.RolesInfo.IsCoach.Should().BeFalse();
 
         //Act - обновляем роли
@@ -100,8 +100,8 @@ public class AdministrationTest : BaseTest
         response.Should().BeTrue();
 
         //Assert
-        var newInfo = Client.Get<UserCard>($"/administration/getCard?login={Constants.NoCoachUserLogin}");
-        newInfo.Login.Should().BeEquivalentTo(Constants.NoCoachUserLogin);
+        var newInfo = Client.Get<UserCard>($"/administration/getCard?login={TestConstants.NoCoachUserLogin}");
+        newInfo.Login.Should().BeEquivalentTo(TestConstants.NoCoachUserLogin);
         newInfo.BaseInfo.RolesInfo.IsCoach.Should().BeTrue();
 
         // откат
@@ -113,7 +113,7 @@ public class AdministrationTest : BaseTest
     [Fact]
     public void Apply_Block_No_Rights_Fail()
     {
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
         Factory.Actions.AuthorizeUser(Client);
 
         //User has no rights to block
@@ -144,13 +144,13 @@ public class AdministrationTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeAdmin(Client);
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
-        var adminId = Factory.Data.GetUserId(Constants.AdminLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
+        var adminId = Factory.Data.GetUserId(TestConstants.AdminLogin);
         var reason = "test";
 
         // проверяем текущее значение
         var oldInfo = Client.Get<UserCard>($"/administration/getCard?userId={userId}");
-        oldInfo.Login.Should().BeEquivalentTo(Constants.NoCoachUserLogin);
+        oldInfo.Login.Should().BeEquivalentTo(TestConstants.NoCoachUserLogin);
         oldInfo.BlockReason.Should().BeNull();
 
         //Act - ставим блокировку
@@ -160,7 +160,7 @@ public class AdministrationTest : BaseTest
 
         //Assert
         var newInfo = Client.Get<UserCard>($"/administration/getCard?userId={userId}");
-        newInfo.Login.Should().BeEquivalentTo(Constants.NoCoachUserLogin);
+        newInfo.Login.Should().BeEquivalentTo(TestConstants.NoCoachUserLogin);
         newInfo.BlockReason.Should().NotBeNull();
         newInfo.BlockReason.BlockerId.Should().Be(adminId);
         newInfo.BlockReason.CreationDate.Should().BeBefore(DateTime.Now);

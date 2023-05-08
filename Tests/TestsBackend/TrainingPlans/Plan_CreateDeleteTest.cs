@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using SportAssistant.Application.TrainingPlan.PlanCommands;
+using SportAssistant.Domain;
 using SportAssistant.Domain.Models.TrainingPlan;
 using TestFramework;
 using TestFramework.TestExtensions;
@@ -17,7 +18,7 @@ public class Plan_CreateDeleteTest : BaseTest
     {
         //Arrange
         Factory.Actions.UnAuthorize(Client);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
         var request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now.AddDays(10), UserId = userId };
 
         //Act
@@ -32,7 +33,7 @@ public class Plan_CreateDeleteTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
 
         //Act + Assert
         var request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now.AddDays(6), UserId = userId };
@@ -49,7 +50,7 @@ public class Plan_CreateDeleteTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
         var request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now.AddDays(10), UserId = userId };
 
         //Act
@@ -72,7 +73,7 @@ public class Plan_CreateDeleteTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
         var request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now, UserId = userId };
 
         //Act + Assert создание
@@ -82,7 +83,7 @@ public class Plan_CreateDeleteTest : BaseTest
         var plan = Client.Get<Plan>($"/trainingPlan/{planId}"); // план создан
         plan.Should().NotBeNull();
         plan.Id.Should().Be(planId);
-        plan.TrainingDays.Count.Should().Be(7);
+        plan.TrainingDays.Count.Should().Be(AppConstants.DaysInPlan);
 
         //Act + Assert удаление
         var response = Client.Delete<bool>($"/trainingPlan/{planId}");
@@ -99,7 +100,7 @@ public class Plan_CreateDeleteTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
         var request = new PlanCreateCommand.Param() { CreationDate = DateTime.Now.AddDays(20), UserId = userId };
 
         //Act + Assert создание
@@ -109,7 +110,7 @@ public class Plan_CreateDeleteTest : BaseTest
         var plan = Client.Get<Plan>($"/trainingPlan/{planId}"); // план создан
         plan.Should().NotBeNull();
         plan.Id.Should().Be(planId);
-        plan.TrainingDays.Count.Should().Be(7);
+        plan.TrainingDays.Count.Should().Be(AppConstants.DaysInPlan);
 
         //Act + Assert удаление
         var response = Client.Delete<bool>($"/trainingPlan/{planId}");

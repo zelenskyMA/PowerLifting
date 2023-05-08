@@ -15,7 +15,7 @@ public class Request_CreateDeleteTest : BaseTest
     public void Create_Request_UnAuthorized_Fail()
     {
         Factory.Actions.UnAuthorize(Client);
-        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
+        var coachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
 
         var response = Client.Post($"/trainingRequests/{coachId}");
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
@@ -33,7 +33,7 @@ public class Request_CreateDeleteTest : BaseTest
     public void Create_Request_ToSelf_Fail()
     {
         Factory.Actions.AuthorizeCoach(Client);
-        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
+        var coachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
 
         var response = Client.Post($"/trainingRequests/{coachId}");
         response.ReadErrorMessage().Should().Match("Нельзя подать заявку самому себе*");
@@ -44,7 +44,7 @@ public class Request_CreateDeleteTest : BaseTest
     {
         // Arrange
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
+        var coachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
 
         var createResult = Client.Post<bool>($"/trainingRequests/{coachId}"); // создаем первую заявку
         createResult.Should().BeTrue();
@@ -62,7 +62,7 @@ public class Request_CreateDeleteTest : BaseTest
     {
         // Arrange
         Factory.Actions.AuthorizeUser(Client);
-        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
+        var coachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
 
         //Act
         var response = Client.Post($"/trainingRequests/{coachId}");
@@ -74,7 +74,7 @@ public class Request_CreateDeleteTest : BaseTest
     [Fact]
     public void Delete_Request_NotExisting_Success()
     {
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
         Factory.Actions.AuthorizeNoCoachUser(Client);
 
         var removeResult = Client.Delete<bool>($"/trainingRequests/{userId}");
@@ -86,8 +86,8 @@ public class Request_CreateDeleteTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var coachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
 
         // Успешно создали
         //Act
@@ -121,7 +121,7 @@ public class Request_CreateDeleteTest : BaseTest
     /// </summary>
     private void RemoveRequest()
     {
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
         var removeResult = Client.Delete<bool>($"/trainingRequests/{userId}");
         removeResult.Should().BeTrue();
     }

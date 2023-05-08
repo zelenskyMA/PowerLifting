@@ -1,4 +1,5 @@
-﻿using SportAssistant.Domain.DbModels.TrainingPlan;
+﻿using SportAssistant.Domain;
+using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.Interfaces.Coaching.Application;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
@@ -29,7 +30,7 @@ namespace SportAssistant.Application.Coaching.TrainingGroupCommands
             var userIds = groupInfo.Users.Select(t => t.Id).ToList();
             var allActivePlans = await _trainingPlanRepository.FindAsync(t =>
                 userIds.Contains(t.UserId) &&
-                t.StartDate.AddDays(7) >= DateTime.Now.Date);
+                t.StartDate.AddDays(AppConstants.DaysInPlan) >= DateTime.Now.Date);
 
             foreach (var user in groupInfo.Users)
             {

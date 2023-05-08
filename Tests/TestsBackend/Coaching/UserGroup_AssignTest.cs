@@ -17,7 +17,7 @@ public class UserGroup_AssignTest : BaseTest
         //Arrange
         var group = GetPredefinedGroup();
         Factory.Actions.UnAuthorize(Client);
-        var userId = Factory.Data.GetUserId(Constants.AdminLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.AdminLogin);
         var request = new TrainingGroupUser() { GroupId = group.Id, UserId = userId };
 
         //Act
@@ -33,7 +33,7 @@ public class UserGroup_AssignTest : BaseTest
     {
         //Arrange
         Factory.Actions.AuthorizeCoach(Client);
-        var userId = Factory.Data.GetUserId(Constants.AdminLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.AdminLogin);
         var request = new TrainingGroupUser() { GroupId = 0, UserId = userId };
 
         //Act
@@ -63,7 +63,7 @@ public class UserGroup_AssignTest : BaseTest
         //Arrange        
         var group = GetPredefinedGroup();
         Factory.Actions.AuthorizeAdmin(Client); //не владелец группы
-        var userId = Factory.Data.GetUserId(Constants.AdminLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.AdminLogin);
         var request = new TrainingGroupUser() { GroupId = group.Id, UserId = userId };
 
         //Act
@@ -78,7 +78,7 @@ public class UserGroup_AssignTest : BaseTest
     {
         //Arrange        
         var group = GetPredefinedGroup();
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
         var request = new TrainingGroupUser() { GroupId = group.Id, UserId = userId };
 
         //Act
@@ -93,8 +93,8 @@ public class UserGroup_AssignTest : BaseTest
     {
         //Arrange        
         var sourceGroup = GetPredefinedGroup();
-        var targetGroup = GetPredefinedGroup(Constants.SecondGroupName);
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var targetGroup = GetPredefinedGroup(TestConstants.SecondGroupName);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
         var request = new TrainingGroupUser() { GroupId = targetGroup.Id, UserId = userId };
 
         //  предпроверка - спортсмен в группе
@@ -123,7 +123,7 @@ public class UserGroup_AssignTest : BaseTest
     {
         //Arrange        
         var sourceGroup = GetPredefinedGroup();
-        var userId = Factory.Data.GetUserId(Constants.UserLogin);
+        var userId = Factory.Data.GetUserId(TestConstants.UserLogin);
         var request = new TrainingGroupUser() { GroupId = sourceGroup.Id, UserId = userId };
 
         //  предпроверка - спортсмен в группе
@@ -143,8 +143,8 @@ public class UserGroup_AssignTest : BaseTest
     public void User_Assign_RequestForAnotherCoach_Success() // новый пользователь с заявкой, но она к другому тренеру.
     {
         //Arrange        
-        var group = GetPredefinedGroup(Constants.GroupName);
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var group = GetPredefinedGroup(TestConstants.GroupName);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
         var request = new TrainingGroupUser() { GroupId = group.Id, UserId = userId };
 
         //  предпроверка - спортсмен не в группе
@@ -153,7 +153,7 @@ public class UserGroup_AssignTest : BaseTest
 
         // создание заявки
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var coachId = Factory.Data.GetUserId(Constants.SecondCoachLogin); // второй тренер
+        var coachId = Factory.Data.GetUserId(TestConstants.SecondCoachLogin); // второй тренер
         var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         createResult.Should().BeTrue();
 
@@ -177,8 +177,8 @@ public class UserGroup_AssignTest : BaseTest
     public void User_Assign_UserByRequest_Success()
     {
         //Arrange        
-        var group = GetPredefinedGroup(Constants.GroupName);
-        var userId = Factory.Data.GetUserId(Constants.NoCoachUserLogin);
+        var group = GetPredefinedGroup(TestConstants.GroupName);
+        var userId = Factory.Data.GetUserId(TestConstants.NoCoachUserLogin);
         var request = new TrainingGroupUser() { GroupId = group.Id, UserId = userId };
 
         //  предпроверка - спортсмен не в группе
@@ -187,7 +187,7 @@ public class UserGroup_AssignTest : BaseTest
 
         // создание заявки
         Factory.Actions.AuthorizeNoCoachUser(Client);
-        var coachId = Factory.Data.GetUserId(Constants.CoachLogin);
+        var coachId = Factory.Data.GetUserId(TestConstants.CoachLogin);
         var createResult = Client.Post<bool>($"/trainingRequests/{coachId}");
         createResult.Should().BeTrue();
 
@@ -213,7 +213,7 @@ public class UserGroup_AssignTest : BaseTest
 
     private TrainingGroup GetPredefinedGroup(string name = "")
     {
-        name = string.IsNullOrEmpty(name) ? Constants.GroupName : name;
+        name = string.IsNullOrEmpty(name) ? TestConstants.GroupName : name;
 
         Factory.Actions.AuthorizeCoach(Client);
         var groups = Client.Get<List<TrainingGroup>>($"/trainingGroups/getList");
