@@ -19,9 +19,9 @@ namespace SportAssistant.Service.Controllers.TrainingPlan
 
         [HttpGet]
         [Route("getByDay/{dayId}")]
-        public async Task<List<PlanExercise>> GetByDay([FromServices] ICommand<PlanExerciseGetByDaysQuery.Param, List<PlanExercise>> command, int dayId)
+        public async Task<List<PlanExercise>> GetByDay([FromServices] ICommand<PlanExerciseGetByDayQuery.Param, List<PlanExercise>> command, int dayId)
         {
-            var result = await command.ExecuteAsync(new PlanExerciseGetByDaysQuery.Param() { DayId = dayId });
+            var result = await command.ExecuteAsync(new PlanExerciseGetByDayQuery.Param() { DayId = dayId });
             return result;
         }
 

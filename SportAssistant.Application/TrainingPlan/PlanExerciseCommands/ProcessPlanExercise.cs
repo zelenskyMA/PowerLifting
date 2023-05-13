@@ -77,7 +77,7 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
             // для аналитики (countOnlyCompleted = true) важны не только цифры, но и наличие упражнений в списке. Убираем лишние.
             planExercises = countOnlyCompleted ? planExercises.Where(t => t.Settings.Count > 0).ToList() : planExercises;
 
-            return planExercises;
+            return planExercises.OrderBy(t => t.Order).ToList();
         }
 
         /// <inheritdoc />

@@ -7,13 +7,13 @@ namespace SportAssistant.Application.TrainingPlan.PlanExerciseCommands
     /// <summary>
     /// Получение запланированных упражнений по Ид дней в плане.
     /// </summary>
-    public class PlanExerciseGetByDaysQuery : ICommand<PlanExerciseGetByDaysQuery.Param, List<PlanExercise>>
+    public class PlanExerciseGetByDayQuery : ICommand<PlanExerciseGetByDayQuery.Param, List<PlanExercise>>
     {
         private readonly IProcessPlan _processPlan;
         private readonly IProcessPlanUserId _processPlanUserId;
         private readonly IProcessPlanExercise _processPlanExercise;
 
-        public PlanExerciseGetByDaysQuery(
+        public PlanExerciseGetByDayQuery(
             IProcessPlan processPlan,
             IProcessPlanUserId processPlanUserId,
             IProcessPlanExercise processPlanExercise)
