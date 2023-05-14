@@ -113,7 +113,7 @@ public class PlanExercise_GetTest : BaseTest
         //Assert
         response.Should().NotBeNull();
         response.Count().Should().Be(2);
-        VerifyPlanExerciseCheck(response[0], response[0].Id);
+        VerifyPlanExerciseCheck(response[1], response[1].Id);
     }
 
     [Fact]
@@ -129,7 +129,7 @@ public class PlanExercise_GetTest : BaseTest
         //Assert
         response.Should().NotBeNull();
         response.Count().Should().Be(2);
-        VerifyPlanExerciseCheck(response[0], response[0].Id);
+        VerifyPlanExerciseCheck(response[1], response[1].Id);
     }
 
 

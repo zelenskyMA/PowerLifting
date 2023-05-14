@@ -169,7 +169,8 @@ public class Plan_GetTest : BaseTest
 
         // Упражнения в тренировочном дне        
         day.Exercises.Should().HaveCount(2);
-        var dayExercise = day.Exercises[0];
+        day.Exercises[0].Order.Should().BeLessThan(day.Exercises[1].Order); // проверяем корректность сортировки упражнений в дне
+        var dayExercise = day.Exercises[1];
         dayExercise.Id.Should().BeGreaterThan(0);
         dayExercise.PlanDayId.Should().Be(plan.TrainingDays[0].Id);
         dayExercise.Intensity.Should().BeGreaterThan(0);

@@ -130,7 +130,7 @@ public class PlanDay_GetTest : BaseTest
 
         // Упражнения в тренировочном дне        
         planDay.Exercises.Should().HaveCount(2);
-        var dayExercise = planDay.Exercises[0];
+        var dayExercise = planDay.Exercises[1];
         dayExercise.Id.Should().BeGreaterThan(0);
         dayExercise.Intensity.Should().BeGreaterThan(0);
         dayExercise.LiftCounter.Should().BeGreaterThan(0);

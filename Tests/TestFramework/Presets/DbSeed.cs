@@ -42,11 +42,11 @@ public static class DbSeed
 
         //упражнения по дням
         var exercises = new List<PlanExerciseDb>() {
-            new PlanExerciseDb(){ PlanDayId = planDays[0].Id, Order = 1, ExerciseId = 1 },
-            new PlanExerciseDb(){ PlanDayId = planDays[0].Id, Order = 2, ExerciseId = 20},
+            new PlanExerciseDb(){ PlanDayId = planDays[0].Id, Order = 2, ExerciseId = 1 },
+            new PlanExerciseDb(){ PlanDayId = planDays[0].Id, Order = 1, ExerciseId = 20},
 
-            new PlanExerciseDb(){ PlanDayId = planDays[1].Id, Order = 1, ExerciseId = 91},
-            new PlanExerciseDb(){ PlanDayId = planDays[1].Id, Order = 2, ExerciseId = 61},
+            new PlanExerciseDb(){ PlanDayId = planDays[1].Id, Order = 2, ExerciseId = 91},
+            new PlanExerciseDb(){ PlanDayId = planDays[1].Id, Order = 1, ExerciseId = 61},
         };
         ctx.PlanExercises.AddRange(exercises);
         ctx.SaveChanges();
