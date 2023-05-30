@@ -2,12 +2,11 @@
 using SportAssistant.Infrastructure.Common;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Infrastructure.Repositories.TrainingPlan
+namespace SportAssistant.Infrastructure.Repositories.TrainingPlan;
+
+public class PercentageRepository : CrudRepo<PercentageDb>
 {
-    public class PercentageRepository : CrudRepo<PercentageDb>
+    public PercentageRepository(IContextProvider provider) : base(provider)
     {
-        public PercentageRepository(IContextProvider provider) : base(provider)
-        {
-        }
     }
 }

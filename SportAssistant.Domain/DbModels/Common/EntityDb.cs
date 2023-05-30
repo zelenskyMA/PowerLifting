@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SportAssistant.Domain.DbModels.Common
+namespace SportAssistant.Domain.DbModels.Common;
+
+public class EntityDb
 {
-    public class EntityDb
-    {
-        [Key]
-        public int Id { get; set; }
-    }
+    [Key]
+    public int Id { get; set; }
 }

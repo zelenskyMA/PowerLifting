@@ -1,7 +1,6 @@
-﻿namespace SportAssistant.Domain.Models.Common
+﻿namespace SportAssistant.Domain.Models.Common;
+
+public class Entity
 {
-    public class Entity
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

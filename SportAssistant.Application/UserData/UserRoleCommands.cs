@@ -9,86 +9,85 @@ using SportAssistant.Domain.Interfaces.UserData.Application;
 using SportAssistant.Domain.Models;
 using SportAssistant.Domain.Models.UserData;
 
-namespace SportAssistant.Application.UserData
+namespace SportAssistant.Application.UserData;
+
+public class UserRoleCommands : IUserRoleCommands
 {
-    public class UserRoleCommands : IUserRoleCommands
+    private readonly IProcessDictionary _processDictionary;
+
+    private readonly ICrudRepo<UserRoleDb> _userRoleRepository;
+    private readonly IUserProvider _user;
+    private readonly IMapper _mapper;
+
+    public UserRoleCommands(
+        IProcessDictionary dictionaryCommands,
+        ICrudRepo<UserRoleDb> userRoleRepository,
+        IUserProvider user,
+        IMapper mapper)
     {
-        private readonly IProcessDictionary _processDictionary;
+        _processDictionary = dictionaryCommands;
+        _userRoleRepository = userRoleRepository;
+        _user = user;
+        _mapper = mapper;
+    }
 
-        private readonly ICrudRepo<UserRoleDb> _userRoleRepository;
-        private readonly IUserProvider _user;
-        private readonly IMapper _mapper;
+    /// <inheritdoc />
+    public async Task<List<DictionaryItem>> GetRolesList() => await _processDictionary.GetItemsByTypeIdAsync(DictionaryTypes.UserRole);
 
-        public UserRoleCommands(
-            IProcessDictionary dictionaryCommands,
-            ICrudRepo<UserRoleDb> userRoleRepository,
-            IUserProvider user,
-            IMapper mapper)
+    /// <inheritdoc />
+    public async Task<RolesInfo> GetUserRoles(int userId)
+    {
+        var roles = (await _userRoleRepository.FindAsync(t => t.UserId == userId)).Select(t => _mapper.Map<UserRole>(t)).ToList();
+        var roleInfo = new RolesInfo();
+        foreach (var item in roles)
         {
-            _processDictionary = dictionaryCommands;
-            _userRoleRepository = userRoleRepository;
-            _user = user;
-            _mapper = mapper;
+            switch (item.RoleId)
+            {
+                case 10: roleInfo.IsAdmin = true; break;
+                case 11: roleInfo.IsCoach = true; break;
+            }
         }
 
-        /// <inheritdoc />
-        public async Task<List<DictionaryItem>> GetRolesList() => await _processDictionary.GetItemsByTypeIdAsync(DictionaryTypes.UserRole);
+        return roleInfo;
+    }
 
-        /// <inheritdoc />
-        public async Task<RolesInfo> GetUserRoles(int userId)
+    /// <inheritdoc />
+    public async Task<bool> IHaveRole(UserRoles role) =>
+        (await _userRoleRepository.FindAsync(t => t.UserId == _user.Id && t.RoleId == (int)role)).Any();
+
+    /// <inheritdoc />
+    public async Task AddRole(int userId, UserRoles role)
+    {
+        if (!await IHaveRole(UserRoles.Admin))
         {
-            var roles = (await _userRoleRepository.FindAsync(t => t.UserId == userId)).Select(t => _mapper.Map<UserRole>(t)).ToList();
-            var roleInfo = new RolesInfo();
-            foreach (var item in roles)
-            {
-                switch (item.RoleId)
-                {
-                    case 10: roleInfo.IsAdmin = true; break;
-                    case 11: roleInfo.IsCoach = true; break;
-                }
-            }
-
-            return roleInfo;
+            throw new RoleException();
         }
 
-        /// <inheritdoc />
-        public async Task<bool> IHaveRole(UserRoles role) =>
-            (await _userRoleRepository.FindAsync(t => t.UserId == _user.Id && t.RoleId == (int)role)).Any();
-
-        /// <inheritdoc />
-        public async Task AddRole(int userId, UserRoles role)
+        if ((await _userRoleRepository.FindAsync(t => t.UserId == userId && t.RoleId == (int)role)).Any())
         {
-            if (!await IHaveRole(UserRoles.Admin))
-            {
-                throw new RoleException();
-            }
-
-            if ((await _userRoleRepository.FindAsync(t => t.UserId == userId && t.RoleId == (int)role)).Any())
-            {
-                return;
-            }
-
-            await _userRoleRepository.CreateAsync(new UserRoleDb() { UserId = userId, RoleId = (int)role });
+            return;
         }
 
-        /// <inheritdoc />
-        public async Task RemoveRole(int userId, UserRoles role)
+        await _userRoleRepository.CreateAsync(new UserRoleDb() { UserId = userId, RoleId = (int)role });
+    }
+
+    /// <inheritdoc />
+    public async Task RemoveRole(int userId, UserRoles role)
+    {
+        if (!await IHaveRole(UserRoles.Admin))
         {
-            if (!await IHaveRole(UserRoles.Admin))
-            {
-                throw new RoleException();
-            }
+            throw new RoleException();
+        }
 
-            if (userId == _user.Id && role == UserRoles.Admin)
-            {
-                throw new BusinessException("Нельзя забрать роль администратора у самого себя");
-            }
+        if (userId == _user.Id && role == UserRoles.Admin)
+        {
+            throw new BusinessException("Нельзя забрать роль администратора у самого себя");
+        }
 
-            var roleDb = await _userRoleRepository.FindAsync(t => t.UserId == userId && t.RoleId == (int)role);
-            if (roleDb.Count != 0)
-            {
-                _userRoleRepository.Delete(roleDb.First());
-            }
+        var roleDb = await _userRoleRepository.FindAsync(t => t.UserId == userId && t.RoleId == (int)role);
+        if (roleDb.Count != 0)
+        {
+            _userRoleRepository.Delete(roleDb.First());
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿namespace SportAssistant.Domain.Models.TrainingPlan
-{
-    /// <summary>
-    /// КПШ по зонам интенсивности
-    /// </summary>
-    public class LiftIntensity
-    {
-        public Percentage? Percentage { get; set; }
+﻿namespace SportAssistant.Domain.Models.TrainingPlan;
 
-        public int Value { get; set; } = 0;
-    }
+/// <summary>
+/// КПШ по зонам интенсивности
+/// </summary>
+public class LiftIntensity
+{
+    public Percentage? Percentage { get; set; }
+
+    public int Value { get; set; } = 0;
 }

@@ -1,13 +1,12 @@
-﻿namespace SportAssistant.Domain.Interfaces.Common.Repositories
+﻿namespace SportAssistant.Domain.Interfaces.Common.Repositories;
+
+public interface IBaseRepo<T> where T : class
 {
-    public interface IBaseRepo<T> where T : class
-    {
-        Task<IEnumerable<T>> GetAllAsync();
+    Task<IEnumerable<T>> GetAllAsync();
 
-        Task CreateAsync(T entity);
+    Task CreateAsync(T entity);
 
-        void Update(T entity);
+    void Update(T entity);
 
-        void Delete(T entity);
-    }
+    void Delete(T entity);
 }

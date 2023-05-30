@@ -6,46 +6,45 @@ using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Models.Coaching;
 
-namespace SportAssistant.Application.Coaching.TrainingGroupUserCommands
+namespace SportAssistant.Application.Coaching.TrainingGroupUserCommands;
+
+/// <summary>
+/// Отказ тренера от спортсмена.Исключение его из тренировочной группы.
+/// </summary>
+public class GroupUserRemoveCommand : ICommand<GroupUserRemoveCommand.Param, bool>
 {
-    /// <summary>
-    /// Отказ тренера от спортсмена.Исключение его из тренировочной группы.
-    /// </summary>
-    public class GroupUserRemoveCommand : ICommand<GroupUserRemoveCommand.Param, bool>
+    private readonly IProcessGroupUser _processTrainingGroupUser;
+    private readonly ITrainingGroupUserRepository _trainingGroupUserRepository;
+    private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
+
+    public GroupUserRemoveCommand(
+        IProcessGroupUser processTrainingGroupUser,
+        ITrainingGroupUserRepository trainingGroupUserRepository,
+        ICrudRepo<UserInfoDb> userInfoRepository)
     {
-        private readonly IProcessGroupUser _processTrainingGroupUser;
-        private readonly ITrainingGroupUserRepository _trainingGroupUserRepository;
-        private readonly ICrudRepo<UserInfoDb> _userInfoRepository;
+        _processTrainingGroupUser = processTrainingGroupUser;
+        _trainingGroupUserRepository = trainingGroupUserRepository;
+        _userInfoRepository = userInfoRepository;
+    }
 
-        public GroupUserRemoveCommand(
-            IProcessGroupUser processTrainingGroupUser,
-            ITrainingGroupUserRepository trainingGroupUserRepository,
-            ICrudRepo<UserInfoDb> userInfoRepository)
+    public async Task<bool> ExecuteAsync(Param param)
+    {
+        (TrainingGroupDb group, UserInfoDb userInfo) = await _processTrainingGroupUser.CheckAssignmentAvailable(param.UserGroup);
+
+        var userGroupsDb = await _trainingGroupUserRepository.FindAsync(t => t.UserId == param.UserGroup.UserId && t.GroupId == param.UserGroup.GroupId);
+        if (userGroupsDb.Any())
         {
-            _processTrainingGroupUser = processTrainingGroupUser;
-            _trainingGroupUserRepository = trainingGroupUserRepository;
-            _userInfoRepository = userInfoRepository;
+            _trainingGroupUserRepository.Delete(userGroupsDb.First());
+
+            userInfo.CoachId = null;
+            _userInfoRepository.Update(userInfo);
         }
 
-        public async Task<bool> ExecuteAsync(Param param)
-        {
-            (TrainingGroupDb group, UserInfoDb userInfo) = await _processTrainingGroupUser.CheckAssignmentAvailable(param.UserGroup);
+        return true;
+    }
 
-            var userGroupsDb = await _trainingGroupUserRepository.FindAsync(t => t.UserId == param.UserGroup.UserId && t.GroupId == param.UserGroup.GroupId);
-            if (userGroupsDb.Any())
-            {
-                _trainingGroupUserRepository.Delete(userGroupsDb.First());
-
-                userInfo.CoachId = null;
-                _userInfoRepository.Update(userInfo);
-            }
-
-            return true;
-        }
-
-        public class Param
-        {
-            public TrainingGroupUser UserGroup { get; set; }
-        }
+    public class Param
+    {
+        public TrainingGroupUser UserGroup { get; set; }
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace SportAssistant.Domain.Enums
+﻿namespace SportAssistant.Domain.Enums;
+
+public enum EmailMessageTypes
 {
-    public enum EmailMessageTypes
-    {
-        ConfirmRegistration = 1,
-        ResetPassword = 2,
-    }
+    ConfirmRegistration = 1,
+    ResetPassword = 2,
 }

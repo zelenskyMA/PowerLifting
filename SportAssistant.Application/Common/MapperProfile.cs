@@ -11,62 +11,61 @@ using SportAssistant.Domain.Models.TrainingPlan;
 using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Domain.Models.UserData;
 
-namespace SportAssistant.Application.Common
+namespace SportAssistant.Application.Common;
+
+public class MapperProfile : Profile
 {
-    public class MapperProfile : Profile
+    public MapperProfile()
     {
-        public MapperProfile()
-        {
-            PlanProfile();
-            UserProfile();
-            CoachProfile();
-            TemplateProfile();
+        PlanProfile();
+        UserProfile();
+        CoachProfile();
+        TemplateProfile();
 
-            CreateMap<DictionaryDb, DictionaryItem>().ReverseMap();
-            CreateMap<DictionaryTypeDb, DictionaryType>().ReverseMap();
-            CreateMap<EmailMessageDb, EmailMessage>().ReverseMap();
-        }
+        CreateMap<DictionaryDb, DictionaryItem>().ReverseMap();
+        CreateMap<DictionaryTypeDb, DictionaryType>().ReverseMap();
+        CreateMap<EmailMessageDb, EmailMessage>().ReverseMap();
+    }
 
-        private void UserProfile()
-        {
-            CreateMap<UserDb, UserModel>().ReverseMap();
-            CreateMap<UserInfoDb, UserInfo>().ReverseMap();
-            CreateMap<UserAchivementDb, UserAchivement>().ReverseMap();
-            CreateMap<UserRoleDb, UserRole>().ReverseMap();
-            CreateMap<UserBlockHistoryDb, UserBlockHistory>().ReverseMap();
-        }
+    private void UserProfile()
+    {
+        CreateMap<UserDb, UserModel>().ReverseMap();
+        CreateMap<UserInfoDb, UserInfo>().ReverseMap();
+        CreateMap<UserAchivementDb, UserAchivement>().ReverseMap();
+        CreateMap<UserRoleDb, UserRole>().ReverseMap();
+        CreateMap<UserBlockHistoryDb, UserBlockHistory>().ReverseMap();
+    }
 
-        private void PlanProfile()
-        {
-            CreateMap<PlanDb, Plan>().ReverseMap();
-            CreateMap<PlanDayDb, PlanDay>().ReverseMap();
-            CreateMap<ExerciseDb, Exercise>().ReverseMap();
-            CreateMap<PlanExerciseSettingsDb, PlanExerciseSettings>().ReverseMap();
-            CreateMap<PercentageDb, Percentage>().ReverseMap();
-            CreateMap<PlanExerciseDb, PlanExercise>()
-                .ForPath(dest => dest.Exercise.Id, opt => opt.MapFrom(src => src.ExerciseId))
-                .ReverseMap();
-        }
+    private void PlanProfile()
+    {
+        CreateMap<PlanDb, Plan>().ReverseMap();
+        CreateMap<PlanDayDb, PlanDay>().ReverseMap();
+        CreateMap<ExerciseDb, Exercise>().ReverseMap();
+        CreateMap<PlanExerciseSettingsDb, PlanExerciseSettings>().ReverseMap();
+        CreateMap<PercentageDb, Percentage>().ReverseMap();
+        CreateMap<PlanExerciseDb, PlanExercise>()
+            .ForPath(dest => dest.Exercise.Id, opt => opt.MapFrom(src => src.ExerciseId))
+            .ReverseMap();
+    }
 
-        private void CoachProfile()
-        {
-            CreateMap<TrainingRequestDb, TrainingRequest>().ReverseMap();
-            CreateMap<TrainingGroupDb, TrainingGroup>().ReverseMap();
+    private void CoachProfile()
+    {
+        CreateMap<TrainingRequestDb, TrainingRequest>().ReverseMap();
+        CreateMap<TrainingGroupDb, TrainingGroup>().ReverseMap();
 
-            CreateMap<UserInfoDb, CoachInfo>()
-                .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
-                .ReverseMap();
-        }
+        CreateMap<UserInfoDb, CoachInfo>()
+            .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
+            .ReverseMap();
+    }
 
-        private void TemplateProfile()
-        {
-            CreateMap<TemplateSetDb, TemplateSet>().ReverseMap();
-            CreateMap<TemplatePlanDb, TemplatePlan>().ReverseMap();
-            CreateMap<TemplateDayDb, TemplateDay>().ReverseMap();
-            CreateMap<TemplateExerciseSettingsDb, TemplateExerciseSettings>().ReverseMap();
-            CreateMap<TemplateExerciseDb, TemplateExercise>()
-                .ForPath(dest => dest.Exercise.Id, opt => opt.MapFrom(src => src.ExerciseId))
-                .ReverseMap();
-        }
+    private void TemplateProfile()
+    {
+        CreateMap<TemplateSetDb, TemplateSet>().ReverseMap();
+        CreateMap<TemplatePlanDb, TemplatePlan>().ReverseMap();
+        CreateMap<TemplateDayDb, TemplateDay>().ReverseMap();
+        CreateMap<TemplateExerciseSettingsDb, TemplateExerciseSettings>().ReverseMap();
+        CreateMap<TemplateExerciseDb, TemplateExercise>()
+            .ForPath(dest => dest.Exercise.Id, opt => opt.MapFrom(src => src.ExerciseId))
+            .ReverseMap();
     }
 }

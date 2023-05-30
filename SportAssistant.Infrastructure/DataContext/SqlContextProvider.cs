@@ -1,86 +1,84 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace SportAssistant.Infrastructure.DataContext
+namespace SportAssistant.Infrastructure.DataContext;
+
+public class SqlContextProvider : IContextProvider
 {
-    public class SqlContextProvider : IContextProvider
+    private bool _disposed = false;
+    private IDbContextTransaction _transaction;
+
+    public SportContext Context { get; }
+
+    public SqlContextProvider(DbContextOptions<SportContext> contextOptions) => Context = new SportContext(contextOptions);
+
+    /// <inheritdoc/>
+    public IDbContextTransaction BeginTransaction()
     {
-        private bool _disposed = false;
-        private IDbContextTransaction _transaction;
+        _transaction = Context.Database.CurrentTransaction ?? Context.Database.BeginTransaction();
+        return _transaction;
+    }
 
-        public SportContext Context { get; }
-
-        public SqlContextProvider(DbContextOptions<SportContext> contextOptions) => Context = new SportContext(contextOptions);
-
-        /// <inheritdoc/>
-        public IDbContextTransaction BeginTransaction()
+    /// <inheritdoc/>
+    public IDbContextTransaction GetTransaction()
+    {
+        if (_transaction is null)
         {
-            _transaction = Context.Database.CurrentTransaction ?? Context.Database.BeginTransaction();
-            return _transaction;
+            throw new InvalidOperationException("Отсутствует открытая транзакция.");
         }
 
-        /// <inheritdoc/>
-        public IDbContextTransaction GetTransaction()
+        return _transaction;
+    }
+
+    /// <inheritdoc/>
+    public async Task CommitTransactionAsync()
+    {
+        if (_transaction == null)
         {
-            if (_transaction is null)
+            throw new InvalidOperationException("Отсутствует открытая транзакция.");
+        }
+
+        await Context.SaveChangesAsync();
+        await _transaction.CommitAsync();
+    }
+
+    /// <inheritdoc/>
+    public async Task RollbackAsync() => await _transaction.RollbackAsync();
+
+    /// <inheritdoc/>
+    public Task AcceptChangesAsync() => Context.SaveChangesAsync();
+
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        Dispose(true);
+    }
+
+    /// <summary>
+    /// Выполняет освобождение ресурсов.
+    /// </summary>
+    /// <param name="disposing">Признак освобождения управляемых ресурсов.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
             {
-                throw new InvalidOperationException("Отсутствует открытая транзакция.");
+                DisposeObject(_transaction);
+                Context.Dispose();
             }
 
-            return _transaction;
-        }
-
-        /// <inheritdoc/>
-        public async Task CommitTransactionAsync()
-        {
-            if (_transaction == null)
-            {
-                throw new InvalidOperationException("Отсутствует открытая транзакция.");
-            }
-
-            await Context.SaveChangesAsync();
-            await _transaction.CommitAsync();
-        }
-
-        /// <inheritdoc/>
-        public async Task RollbackAsync() => await _transaction.RollbackAsync();
-
-        /// <inheritdoc/>
-        public Task AcceptChangesAsync() => Context.SaveChangesAsync();
-
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        /// <summary>
-        /// Выполняет освобождение ресурсов.
-        /// </summary>
-        /// <param name="disposing">Признак освобождения управляемых ресурсов.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    DisposeObject(_transaction);
-                    Context.Dispose();
-                }
-
-                _disposed = true;
-            }
-        }
-
-        private void DisposeObject(IDisposable obj)
-        {
-            try
-            {
-                obj?.Dispose();
-            }
-            catch { }
+            _disposed = true;
         }
     }
 
+    private void DisposeObject(IDisposable obj)
+    {
+        try
+        {
+            obj?.Dispose();
+        }
+        catch { }
+    }
 }

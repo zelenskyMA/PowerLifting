@@ -2,49 +2,48 @@
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Infrastructure.Common
+namespace SportAssistant.Infrastructure.Common;
+
+public class BaseRepo<T> : IBaseRepo<T> where T : class
 {
-    public class BaseRepo<T> : IBaseRepo<T> where T : class
+    protected SportContext Context { get; }
+    protected DbSet<T> DbSet { get; set; }
+
+    public BaseRepo(IContextProvider provider)
     {
-        protected SportContext Context { get; }
-        protected DbSet<T> DbSet { get; set; }
+        Context = provider.Context;
+        DbSet = Context.Set<T>();
+    }
 
-        public BaseRepo(IContextProvider provider)
+    public async Task<IEnumerable<T>> GetAllAsync() => await DbSet.AsNoTracking().ToListAsync();
+
+    public async Task CreateAsync(T entity)
+    {
+        var dbEntityEntry = Context.Entry(entity);
+        if (dbEntityEntry.State != EntityState.Detached)
         {
-            Context = provider.Context;
-            DbSet = Context.Set<T>();
+            dbEntityEntry.State = EntityState.Added;
         }
-
-        public async Task<IEnumerable<T>> GetAllAsync() => await DbSet.AsNoTracking().ToListAsync();
-
-        public async Task CreateAsync(T entity)
+        else
         {
-            var dbEntityEntry = Context.Entry(entity);
-            if (dbEntityEntry.State != EntityState.Detached)
-            {
-                dbEntityEntry.State = EntityState.Added;
-            }
-            else
-            {
-                await DbSet.AddAsync(entity);
-            }
+            await DbSet.AddAsync(entity);
         }
+    }
 
-        public void Update(T entity)
+    public void Update(T entity)
+    {
+        var dbEntityEntry = Context.Entry(entity);
+        if (dbEntityEntry.State == EntityState.Detached)
         {
-            var dbEntityEntry = Context.Entry(entity);
-            if (dbEntityEntry.State == EntityState.Detached)
-            {
-                DbSet.Attach(entity);
-            }
-            dbEntityEntry.State = EntityState.Modified;
+            DbSet.Attach(entity);
         }
+        dbEntityEntry.State = EntityState.Modified;
+    }
 
-        public void Delete(T entity)
-        {
-            var dbEntityEntry = Context.Entry(entity);
-            dbEntityEntry.State = EntityState.Deleted;
-            DbSet.Remove(entity);
-        }
+    public void Delete(T entity)
+    {
+        var dbEntityEntry = Context.Entry(entity);
+        dbEntityEntry.State = EntityState.Deleted;
+        DbSet.Remove(entity);
     }
 }

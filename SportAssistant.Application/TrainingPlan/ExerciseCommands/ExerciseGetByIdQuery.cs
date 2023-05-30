@@ -2,29 +2,28 @@
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Models.TrainingPlan;
 
-namespace SportAssistant.Application.TrainingPlan.ExerciseCommands
+namespace SportAssistant.Application.TrainingPlan.ExerciseCommands;
+
+/// <summary>
+/// Get exercise by it's Id
+/// </summary>
+public class ExerciseGetByIdQuery : ICommand<ExerciseGetByIdQuery.Param, Exercise>
 {
-    /// <summary>
-    /// Get exercise by it's Id
-    /// </summary>
-    public class ExerciseGetByIdQuery : ICommand<ExerciseGetByIdQuery.Param, Exercise>
+    private readonly IProcessExercise _processExercise;
+
+    public ExerciseGetByIdQuery(IProcessExercise processExercise)
     {
-        private readonly IProcessExercise _processExercise;
+        _processExercise = processExercise;
+    }
 
-        public ExerciseGetByIdQuery(IProcessExercise processExercise)
-        {
-            _processExercise = processExercise;
-        }
+    public async Task<Exercise> ExecuteAsync(Param param)
+    {
+        var result = await _processExercise.GetAsync(param.Id) ?? new Exercise();
+        return result;
+    }
 
-        public async Task<Exercise> ExecuteAsync(Param param)
-        {
-            var result = await _processExercise.GetAsync(param.Id) ?? new Exercise();
-            return result;
-        }
-
-        public class Param
-        {
-            public int Id { get; set; }
-        }
+    public class Param
+    {
+        public int Id { get; set; }
     }
 }

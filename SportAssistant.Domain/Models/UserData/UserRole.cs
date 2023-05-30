@@ -1,9 +1,8 @@
-﻿namespace SportAssistant.Domain.Models.UserData
-{
-    public class UserRole
-    {
-        public int UserId { get; set; }
+﻿namespace SportAssistant.Domain.Models.UserData;
 
-        public int RoleId { get; set; }
-    }
+public class UserRole
+{
+    public int UserId { get; set; }
+
+    public int RoleId { get; set; }
 }

@@ -1,8 +1,7 @@
-﻿namespace SportAssistant.Domain.Enums
+﻿namespace SportAssistant.Domain.Enums;
+
+public enum UserRoles
 {
-    public enum UserRoles
-    {
-        Admin = 10,
-        Coach = 11,
-    }
+    Admin = 10,
+    Coach = 11,
 }

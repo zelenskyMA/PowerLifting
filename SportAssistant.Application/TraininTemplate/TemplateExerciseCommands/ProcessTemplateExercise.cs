@@ -6,80 +6,79 @@ using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands;
+
+public class ProcessTemplateExercise : IProcessTemplateExercise
 {
-    public class ProcessTemplateExercise : IProcessTemplateExercise
+    private readonly IProcessTemplateExerciseSettings _processTemplateExerciseSettings;
+    private readonly IProcessExercise _processExercise;
+    private readonly ICrudRepo<TemplateExerciseDb> _templateExerciseRepository;
+    private readonly ITrainingCountersSetup _trainingCountersSetup;
+    private readonly IContextProvider _contextProvider;
+    private readonly IMapper _mapper;
+
+    public ProcessTemplateExercise(
+        IProcessTemplateExerciseSettings processTemplateExerciseSettings,
+        IProcessExercise processExercise,
+        ICrudRepo<TemplateExerciseDb> templateExerciseRepository,
+        ITrainingCountersSetup trainingCountersSetup,
+        IContextProvider contextProvider,
+        IMapper mapper)
     {
-        private readonly IProcessTemplateExerciseSettings _processTemplateExerciseSettings;
-        private readonly IProcessExercise _processExercise;
-        private readonly ICrudRepo<TemplateExerciseDb> _templateExerciseRepository;
-        private readonly ITrainingCountersSetup _trainingCountersSetup;
-        private readonly IContextProvider _contextProvider;
-        private readonly IMapper _mapper;
+        _processTemplateExerciseSettings = processTemplateExerciseSettings;
+        _processExercise = processExercise;
+        _templateExerciseRepository = templateExerciseRepository;
+        _trainingCountersSetup = trainingCountersSetup;
+        _contextProvider = contextProvider;
+        _mapper = mapper;
+    }
 
-        public ProcessTemplateExercise(
-            IProcessTemplateExerciseSettings processTemplateExerciseSettings,
-            IProcessExercise processExercise,
-            ICrudRepo<TemplateExerciseDb> templateExerciseRepository,
-            ITrainingCountersSetup trainingCountersSetup,
-            IContextProvider contextProvider,
-            IMapper mapper)
+    /// <inheritdoc />
+    public async Task<List<TemplateExercise>> GetByDaysAsync(List<int> dayIds)
+    {
+        var templateExerciseDb = await _templateExerciseRepository.FindAsync(t => dayIds.Contains(t.TemplateDayId));
+        var exercises = await PrepareExerciseDataAsync(templateExerciseDb);
+        return exercises;
+    }
+
+    /// <inheritdoc />
+    public async Task<List<TemplateExercise>> PrepareExerciseDataAsync(List<TemplateExerciseDb> templateExerciseDb)
+    {
+        if (templateExerciseDb.Count() == 0)
         {
-            _processTemplateExerciseSettings = processTemplateExerciseSettings;
-            _processExercise = processExercise;
-            _templateExerciseRepository = templateExerciseRepository;
-            _trainingCountersSetup = trainingCountersSetup;
-            _contextProvider = contextProvider;
-            _mapper = mapper;
+            return new List<TemplateExercise>();
         }
 
-        /// <inheritdoc />
-        public async Task<List<TemplateExercise>> GetByDaysAsync(List<int> dayIds)
+        var exerciseIds = templateExerciseDb.Select(t => t.ExerciseId).Distinct().ToList();
+        var exercises = await _processExercise.GetAsync(exerciseIds);
+
+        var settings = await _processTemplateExerciseSettings.GetAsync(templateExerciseDb.Select(t => t.Id).ToList());
+
+        var tmpltExercises = templateExerciseDb.Select(_mapper.Map<TemplateExercise>).ToList();
+        foreach (var item in tmpltExercises)
         {
-            var templateExerciseDb = await _templateExerciseRepository.FindAsync(t => dayIds.Contains(t.TemplateDayId));
-            var exercises = await PrepareExerciseDataAsync(templateExerciseDb);
-            return exercises;
+            item.Exercise = exercises.First(t => t.Id == item.Exercise.Id).Clone();
+            item.Exercise.PlannedExerciseId = item.Id;
+
+            item.Settings = settings.Where(t => t.TemplateExerciseId == item.Id).OrderBy(t => t.WeightPercentage).ToList();
+
+            _trainingCountersSetup.SetExerciseCounters(item);
         }
 
-        /// <inheritdoc />
-        public async Task<List<TemplateExercise>> PrepareExerciseDataAsync(List<TemplateExerciseDb> templateExerciseDb)
+        return tmpltExercises;
+    }
+
+    /// <inheritdoc />
+    public async Task DeleteTemplateExercisesAsync(List<TemplateExerciseDb> templateExercises)
+    {
+        if (templateExercises.Count == 0)
         {
-            if (templateExerciseDb.Count() == 0)
-            {
-                return new List<TemplateExercise>();
-            }
-
-            var exerciseIds = templateExerciseDb.Select(t => t.ExerciseId).Distinct().ToList();
-            var exercises = await _processExercise.GetAsync(exerciseIds);
-
-            var settings = await _processTemplateExerciseSettings.GetAsync(templateExerciseDb.Select(t => t.Id).ToList());
-
-            var tmpltExercises = templateExerciseDb.Select(_mapper.Map<TemplateExercise>).ToList();
-            foreach (var item in tmpltExercises)
-            {
-                item.Exercise = exercises.First(t => t.Id == item.Exercise.Id).Clone();
-                item.Exercise.PlannedExerciseId = item.Id;
-
-                item.Settings = settings.Where(t => t.TemplateExerciseId == item.Id).OrderBy(t => t.WeightPercentage).ToList();
-
-                _trainingCountersSetup.SetExerciseCounters(item);
-            }
-
-            return tmpltExercises;
+            return;
         }
 
-        /// <inheritdoc />
-        public async Task DeleteTemplateExercisesAsync(List<TemplateExerciseDb> templateExercises)
-        {
-            if (templateExercises.Count == 0)
-            {
-                return;
-            }
+        await _processTemplateExerciseSettings.DeleteByTemplateExerciseIdsAsync(templateExercises.Select(t => t.Id).ToList());
+        _templateExerciseRepository.DeleteList(templateExercises);
 
-            await _processTemplateExerciseSettings.DeleteByTemplateExerciseIdsAsync(templateExercises.Select(t => t.Id).ToList());
-            _templateExerciseRepository.DeleteList(templateExercises);
-
-            await _contextProvider.AcceptChangesAsync();
-        }
+        await _contextProvider.AcceptChangesAsync();
     }
 }

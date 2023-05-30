@@ -4,45 +4,44 @@ using SportAssistant.Domain.Interfaces.Coaching.Repositories;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 
-namespace SportAssistant.Application.Coaching.TrainingGroupCommands
+namespace SportAssistant.Application.Coaching.TrainingGroupCommands;
+
+/// <summary>
+/// Удаление тренировочной группы владельцем
+/// </summary>
+public class GroupDeleteCommand : ICommand<GroupDeleteCommand.Param, bool>
 {
-    /// <summary>
-    /// Удаление тренировочной группы владельцем
-    /// </summary>
-    public class GroupDeleteCommand : ICommand<GroupDeleteCommand.Param, bool>
+    private readonly ICrudRepo<TrainingGroupDb> _trainingGroupRepository;
+    private readonly ITrainingGroupUserRepository _trainingGroupUserRepository;
+
+    public GroupDeleteCommand(
+     ICrudRepo<TrainingGroupDb> trainingGroupRepository,
+     ITrainingGroupUserRepository trainingGroupUserRepository)
     {
-        private readonly ICrudRepo<TrainingGroupDb> _trainingGroupRepository;
-        private readonly ITrainingGroupUserRepository _trainingGroupUserRepository;
+        _trainingGroupRepository = trainingGroupRepository;
+        _trainingGroupUserRepository = trainingGroupUserRepository;
+    }
 
-        public GroupDeleteCommand(
-         ICrudRepo<TrainingGroupDb> trainingGroupRepository,
-         ITrainingGroupUserRepository trainingGroupUserRepository)
+    public async Task<bool> ExecuteAsync(Param param)
+    {
+        var groupDb = await _trainingGroupRepository.FindAsync(t => t.Id == param.Id);
+        if (!groupDb.Any())
         {
-            _trainingGroupRepository = trainingGroupRepository;
-            _trainingGroupUserRepository = trainingGroupUserRepository;
+            throw new BusinessException($"Группа с Id '{param.Id}' не найдена");
         }
 
-        public async Task<bool> ExecuteAsync(Param param)
+        var groupUsersDb = await _trainingGroupUserRepository.FindAsync(t => t.GroupId == param.Id);
+        if (groupUsersDb.Any())
         {
-            var groupDb = await _trainingGroupRepository.FindAsync(t => t.Id == param.Id);
-            if (!groupDb.Any())
-            {
-                throw new BusinessException($"Группа с Id '{param.Id}' не найдена");
-            }
-
-            var groupUsersDb = await _trainingGroupUserRepository.FindAsync(t => t.GroupId == param.Id);
-            if (groupUsersDb.Any())
-            {
-                throw new BusinessException($"В удаляемой группе устались участники");
-            }
-
-            _trainingGroupRepository.Delete(groupDb.First());
-            return true;
+            throw new BusinessException($"В удаляемой группе устались участники");
         }
 
-        public class Param
-        {
-            public int Id { get; set; }
-        }
+        _trainingGroupRepository.Delete(groupDb.First());
+        return true;
+    }
+
+    public class Param
+    {
+        public int Id { get; set; }
     }
 }

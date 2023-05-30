@@ -2,10 +2,9 @@
 using SportAssistant.Infrastructure.Common;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Infrastructure.Repositories.UserData
+namespace SportAssistant.Infrastructure.Repositories.UserData;
+
+public class UserBlockHistoryRepository : CrudRepo<UserBlockHistoryDb>
 {
-    public class UserBlockHistoryRepository : CrudRepo<UserBlockHistoryDb>
-    {
-        public UserBlockHistoryRepository(IContextProvider provider) : base(provider) { }
-    }
+    public UserBlockHistoryRepository(IContextProvider provider) : base(provider) { }
 }

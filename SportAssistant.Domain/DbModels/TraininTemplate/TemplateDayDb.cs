@@ -1,13 +1,12 @@
 ﻿using SportAssistant.Domain.DbModels.Common;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SportAssistant.Domain.DbModels.TrainingTemplate
-{
-    [Table("TemplateDays", Schema = "plan")]
-    public class TemplateDayDb : EntityDb
-    {
-        public int TemplatePlanId { get; set; }
+namespace SportAssistant.Domain.DbModels.TrainingTemplate;
 
-        public int DayNumber { get; set; }
-    }
+[Table("TemplateDays", Schema = "plan")]
+public class TemplateDayDb : EntityDb
+{
+    public int TemplatePlanId { get; set; }
+
+    public int DayNumber { get; set; }
 }

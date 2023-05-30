@@ -1,13 +1,12 @@
 ﻿using SportAssistant.Domain.Models.Common;
 
-namespace SportAssistant.Domain.DbModels.TrainingTemplate
+namespace SportAssistant.Domain.DbModels.TrainingTemplate;
+
+public class TemplateSet : Entity
 {
-    public class TemplateSet : Entity
-    {
-        public int CoachId { get; set; }
+    public int CoachId { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public List<TemplatePlan> Templates { get; set; } = new List<TemplatePlan>();
-    }
+    public List<TemplatePlan> Templates { get; set; } = new List<TemplatePlan>();
 }

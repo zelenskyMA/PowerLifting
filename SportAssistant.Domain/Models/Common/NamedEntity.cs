@@ -1,9 +1,8 @@
-﻿namespace SportAssistant.Domain.Models.Common
-{
-    public class NamedEntity : Entity
-    {
-        public string? Name { get; set; }
+﻿namespace SportAssistant.Domain.Models.Common;
 
-        public string? Description { get; set; }
-    }
+public class NamedEntity : Entity
+{
+    public string? Name { get; set; }
+
+    public string? Description { get; set; }
 }

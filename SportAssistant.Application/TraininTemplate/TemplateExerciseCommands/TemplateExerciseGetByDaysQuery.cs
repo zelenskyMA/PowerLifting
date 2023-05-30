@@ -8,46 +8,45 @@ using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 using SportAssistant.Domain.Models.TrainingTemplate;
 
-namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands
+namespace SportAssistant.Application.TrainingTemplate.TemplateExerciseCommands;
+
+/// <summary>
+/// Получение запланированных упражнений по Ид дней в шаблоне.
+/// </summary>
+public class TemplateExerciseGetByDaysQuery : ICommand<TemplateExerciseGetByDaysQuery.Param, List<TemplateExercise>>
 {
-    /// <summary>
-    /// Получение запланированных упражнений по Ид дней в шаблоне.
-    /// </summary>
-    public class TemplateExerciseGetByDaysQuery : ICommand<TemplateExerciseGetByDaysQuery.Param, List<TemplateExercise>>
+    private readonly IProcessTemplateExercise _processTemplateExercise;
+    private readonly IProcessTemplateSet _processTemplateSet;
+    private readonly IProcessSetUserId _processSetUserId;
+    private readonly IUserProvider _user;
+
+    public TemplateExerciseGetByDaysQuery(
+        IProcessTemplateExercise processTemplateExercise,
+        IProcessTemplateSet processTemplateSet,
+        IProcessSetUserId processSetUserId,
+        IUserProvider user)
     {
-        private readonly IProcessTemplateExercise _processTemplateExercise;
-        private readonly IProcessTemplateSet _processTemplateSet;
-        private readonly IProcessSetUserId _processSetUserId;
-        private readonly IUserProvider _user;
+        _processTemplateExercise = processTemplateExercise;
+        _processTemplateSet = processTemplateSet;
+        _processSetUserId = processSetUserId;
+        _user = user;
+    }
 
-        public TemplateExerciseGetByDaysQuery(
-            IProcessTemplateExercise processTemplateExercise,
-            IProcessTemplateSet processTemplateSet,
-            IProcessSetUserId processSetUserId,
-            IUserProvider user)
+    public async Task<List<TemplateExercise>> ExecuteAsync(Param param)
+    {
+        var exercises = await _processTemplateExercise.GetByDaysAsync(new List<int>() { param.DayId });
+
+        if (exercises.Count > 0) // запрет просмотра чужих данных
         {
-            _processTemplateExercise = processTemplateExercise;
-            _processTemplateSet = processTemplateSet;
-            _processSetUserId = processSetUserId;
-            _user = user;
+            var ownerId = await _processSetUserId.GetByDayId(param.DayId);
+            await _processTemplateSet.ViewAllowedForDataOfUserAsync(ownerId);
         }
 
-        public async Task<List<TemplateExercise>> ExecuteAsync(Param param)
-        {
-            var exercises = await _processTemplateExercise.GetByDaysAsync(new List<int>() { param.DayId });
+        return exercises;
+    }
 
-            if (exercises.Count > 0) // запрет просмотра чужих данных
-            {
-                var ownerId = await _processSetUserId.GetByDayId(param.DayId);
-                await _processTemplateSet.ViewAllowedForDataOfUserAsync(ownerId);
-            }
-
-            return exercises;
-        }
-
-        public class Param
-        {
-            public int DayId { get; set; }
-        }
+    public class Param
+    {
+        public int DayId { get; set; }
     }
 }

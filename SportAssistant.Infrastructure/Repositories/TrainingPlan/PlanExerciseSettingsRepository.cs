@@ -2,12 +2,11 @@
 using SportAssistant.Infrastructure.Common;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Infrastructure.Repositories.TrainingPlan
+namespace SportAssistant.Infrastructure.Repositories.TrainingPlan;
+
+public class PlanExerciseSettingsRepository : CrudRepo<PlanExerciseSettingsDb>
 {
-    public class PlanExerciseSettingsRepository : CrudRepo<PlanExerciseSettingsDb>
+    public PlanExerciseSettingsRepository(IContextProvider provider) : base(provider)
     {
-        public PlanExerciseSettingsRepository(IContextProvider provider) : base(provider)
-        {
-        }
     }
 }

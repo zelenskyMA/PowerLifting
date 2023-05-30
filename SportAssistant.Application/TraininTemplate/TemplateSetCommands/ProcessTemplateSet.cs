@@ -2,38 +2,37 @@
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.Interfaces.TrainingTemplate.Application;
 
-namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands
+namespace SportAssistant.Application.TraininTemplate.TemplateSetCommands;
+
+public class ProcessTemplateSet : IProcessTemplateSet
 {
-    public class ProcessTemplateSet : IProcessTemplateSet
+    private readonly IUserProvider _user;
+
+    public ProcessTemplateSet(
+        IUserProvider user)
     {
-        private readonly IUserProvider _user;
+        _user = user;
+    }
 
-        public ProcessTemplateSet(
-            IUserProvider user)
+    /// <inheritdoc />
+    public async Task<int> ChangingAllowedForUserAsync(int coachIdForCheck)
+    {
+        if (coachIdForCheck != 0 && coachIdForCheck != _user.Id)
         {
-            _user = user;
+            throw new BusinessException("У вас нет права изменять данные в выбранном тренировочном цикле");
         }
 
-        /// <inheritdoc />
-        public async Task<int> ChangingAllowedForUserAsync(int coachIdForCheck)
-        {
-            if (coachIdForCheck != 0 && coachIdForCheck != _user.Id)
-            {
-                throw new BusinessException("У вас нет права изменять данные в выбранном тренировочном цикле");
-            }
+        return coachIdForCheck;
+    }
 
-            return coachIdForCheck;
+    /// <inheritdoc />
+    public async Task<bool> ViewAllowedForDataOfUserAsync(int coachIdForCheck)
+    {
+        if (coachIdForCheck != 0 && coachIdForCheck != _user.Id)
+        {
+            throw new DataException();
         }
 
-        /// <inheritdoc />
-        public async Task<bool> ViewAllowedForDataOfUserAsync(int coachIdForCheck)
-        {
-            if (coachIdForCheck != 0 && coachIdForCheck != _user.Id)
-            {
-                throw new DataException();
-            }
-
-            return true;
-        }
+        return true;
     }
 }

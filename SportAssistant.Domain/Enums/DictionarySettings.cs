@@ -1,9 +1,8 @@
-﻿namespace SportAssistant.Domain.Enums
+﻿namespace SportAssistant.Domain.Enums;
+
+public enum DictionarySettings
 {
-    public enum DictionarySettings
-    {
-        MaxActivePlans = 1,
-        MaxExercises = 2,
-        MaxLiftItems = 3,
-    }
+    MaxActivePlans = 1,
+    MaxExercises = 2,
+    MaxLiftItems = 3,
 }

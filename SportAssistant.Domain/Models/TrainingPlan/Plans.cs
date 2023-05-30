@@ -1,9 +1,8 @@
-﻿namespace SportAssistant.Domain.Models.TrainingPlan
-{
-    public class Plans
-    {
-        public List<Plan> ActivePlans { get; set; } = new List<Plan>();
+﻿namespace SportAssistant.Domain.Models.TrainingPlan;
 
-        public List<Plan> ExpiredPlans { get; set; } = new List<Plan>();
-    }
+public class Plans
+{
+    public List<Plan> ActivePlans { get; set; } = new List<Plan>();
+
+    public List<Plan> ExpiredPlans { get; set; } = new List<Plan>();
 }

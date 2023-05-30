@@ -2,10 +2,9 @@
 using SportAssistant.Infrastructure.Common;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Infrastructure.Repositories.Coaching
+namespace SportAssistant.Infrastructure.Repositories.Coaching;
+
+public class TrainingGroupRepository : CrudRepo<TrainingGroupDb>
 {
-    public class TrainingGroupRepository : CrudRepo<TrainingGroupDb>
-    {
-        public TrainingGroupRepository(IContextProvider provider) : base(provider) { }
-    }
+    public TrainingGroupRepository(IContextProvider provider) : base(provider) { }
 }

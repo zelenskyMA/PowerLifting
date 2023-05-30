@@ -2,10 +2,9 @@
 using SportAssistant.Infrastructure.Common;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Infrastructure.Repositories.Basic
+namespace SportAssistant.Infrastructure.Repositories.Basic;
+
+public class EmailMessageRepository : CrudRepo<EmailMessageDb>
 {
-    public class EmailMessageRepository : CrudRepo<EmailMessageDb>
-    {
-        public EmailMessageRepository(IContextProvider provider) : base(provider) { }
-    }
+    public EmailMessageRepository(IContextProvider provider) : base(provider) { }
 }

@@ -1,14 +1,13 @@
-﻿namespace SportAssistant.Domain.Models.UserData
+﻿namespace SportAssistant.Domain.Models.UserData;
+
+/// <summary>
+/// Model for UI to supply info about user blocking action
+/// </summary>
+public class BlockInfo
 {
-    /// <summary>
-    /// Model for UI to supply info about user blocking action
-    /// </summary>
-    public class BlockInfo
-    {
-        public int UserId { get; set; }
+    public int UserId { get; set; }
 
-        public bool Status { get; set; }
+    public bool Status { get; set; }
 
-        public string? Reason { get; set; }
-    }
+    public string? Reason { get; set; }
 }

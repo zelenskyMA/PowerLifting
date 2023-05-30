@@ -1,9 +1,8 @@
-﻿namespace SportAssistant.Domain.Models.Coaching
-{
-    public class TrainingGroupUser
-    {
-        public int UserId { get; set; }
+﻿namespace SportAssistant.Domain.Models.Coaching;
 
-        public int GroupId { get; set; }
-    }
+public class TrainingGroupUser
+{
+    public int UserId { get; set; }
+
+    public int GroupId { get; set; }
 }

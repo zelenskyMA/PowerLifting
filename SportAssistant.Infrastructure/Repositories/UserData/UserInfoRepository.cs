@@ -2,10 +2,9 @@
 using SportAssistant.Infrastructure.Common;
 using SportAssistant.Infrastructure.DataContext;
 
-namespace SportAssistant.Infrastructure.Repositories.UserData
+namespace SportAssistant.Infrastructure.Repositories.UserData;
+
+public class UserInfoRepository : CrudRepo<UserInfoDb>
 {
-    public class UserInfoRepository : CrudRepo<UserInfoDb>
-    {
-        public UserInfoRepository(IContextProvider provider) : base(provider) { }
-    }
+    public UserInfoRepository(IContextProvider provider) : base(provider) { }
 }

@@ -1,11 +1,10 @@
-﻿namespace SportAssistant.Domain.Models.Coaching
+﻿namespace SportAssistant.Domain.Models.Coaching;
+
+public class CoachInfo
 {
-    public class CoachInfo
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string? Name { get; set; }
+    public string? Name { get; set; }
 
-        public int? Age { get; set; }
-    }
+    public int? Age { get; set; }
 }
