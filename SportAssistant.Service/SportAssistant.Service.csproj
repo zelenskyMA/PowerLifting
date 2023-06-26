@@ -45,6 +45,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\public\locales\en\" />
+    <Folder Include="ClientApp\src\components\management\manager\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

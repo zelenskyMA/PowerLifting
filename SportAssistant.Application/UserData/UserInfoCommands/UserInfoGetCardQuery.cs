@@ -63,10 +63,14 @@ public class UserInfoGetCardQuery : ICommand<UserInfoGetCardQuery.Param, UserCar
 
         var info = await _processUserInfo.GetInfo(userDb.Id);
 
-        //доступно для просмотра админу, тренеру и себе
-        if (!(await _userRoleCommands.IHaveRole(UserRoles.Admin) || info.CoachId == _user.Id || userDb.Id == _user.Id))
+        if (!await CanSeeFullInfoAsync(info, userDb))
         {
-            throw new BusinessException("Нет прав для просмотра данной информации");
+            return new UserCard()
+            {
+                UserId = userDb.Id,
+                Login = userDb.Email,
+                UserName = UserNaming.GetLegalFullName(info),
+            };
         }
 
         var card = new UserCard()
@@ -85,6 +89,25 @@ public class UserInfoGetCardQuery : ICommand<UserInfoGetCardQuery.Param, UserCar
         }
 
         return card;
+    }
+
+    private async Task<bool> CanSeeFullInfoAsync(UserInfo info, UserDb userDb)
+    {
+        // проверка прав на просмотр полной информации
+        if (await _userRoleCommands.IHaveRole(UserRoles.Admin) || // админ
+            info.CoachId == _user.Id || // тренер юзера
+            userDb.Id == _user.Id) // мой профиль
+        {
+            return true;
+        }
+
+        // частичная, поисковая информация
+        if (await _userRoleCommands.IHaveAnyRoles(new List<UserRoles>() { UserRoles.Manager, UserRoles.OrgOwner }))
+        {
+            return false;
+        }
+
+        throw new BusinessException("Нет прав для просмотра данной информации");
     }
 
     public class Param

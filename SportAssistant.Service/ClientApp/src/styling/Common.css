@@ -1,4 +1,12 @@
 ﻿
+.spaceTopXs {
+  margin-top: 15px !important;
+}
+
+.spaceMinTop {
+  margin-top: 10px !important;
+}
+
 .spaceTop {
   margin-top: 30px !important;
 }
@@ -24,10 +32,6 @@
   margin-left: 15px;
 }
 
-.spaceMinTop {
-  margin-top: 10px !important;
-}
-
 .completeStatusColumn {
   width: 40px !important;
 }
@@ -42,6 +46,15 @@
 
 .daysButtonSection {
   padding-top: 7px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.inlineBlock {
+  display: flex;
+  justify-content: space-between;
 }
 
 .inlineLink {

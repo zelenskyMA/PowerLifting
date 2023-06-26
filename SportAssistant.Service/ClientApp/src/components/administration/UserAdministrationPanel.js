@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Button, Col, Container, Row } from "reactstrap";
-import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { ErrorPanel, InfoPanel, InputCheckbox, InputNumber, InputText } from "../../common/controls/CustomControls";
+import { PostAsync } from "../../common/ApiActions";
+import { ErrorPanel, InfoPanel, InputCheckbox, InputText, UserSearchControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 import { UserCardModal } from "../userData/UserCardModal";
@@ -11,9 +11,8 @@ class UserAdministrationPanel extends Component {
     super(props);
 
     this.state = {
-      userSearch: { id: 0, login: '' },
       blockUser: { block: false, reason: '' },
-      userRoles: { admin: false, coach: false },
+      userRoles: { admin: false, coach: false, manager: false, orgOwner: false },
 
       userCard: Object,
       userCardView: false,
@@ -22,42 +21,27 @@ class UserAdministrationPanel extends Component {
     };
   }
 
-  onSearchChange = (propName, value) => { this.setState(prevState => ({ userSearch: { ...prevState.userSearch, [propName]: value } })); }
   onBlockChange = (propName, value) => { this.setState(prevState => ({ blockUser: { ...prevState.blockUser, [propName]: value } })); }
   onUserRoleChange = (propName, value) => { this.setState(prevState => ({ userRoles: { ...prevState.userRoles, [propName]: value } })); }
 
   onUserCardView = (value) => { this.setState({ userCardView: value }); }
 
-  onUserSearch = async (lngStr) => {
-    try {
-      var searchId = this.state.userSearch.id > 0 ? `userId=${this.state.userSearch.id}` : '';
-      var searchLogin = this.state.userSearch.login ? `login=${this.state.userSearch.login}` : '';
-      if (!searchId && !searchLogin) {
-        this.setState({ error: lngStr('appSetup.admin.userSearchError') });
-      }
-
-      var cardData = null;
-      if (searchId) {
-        cardData = await GetAsync(`/administration/getCard?${searchId}`);
-      }
-      else {
-        if (searchLogin) { cardData = await GetAsync(`/administration/getCard?${searchLogin}`); }
-      }
-
-      var blockReason = cardData?.blockReason?.reason == null ? '' : cardData?.blockReason?.reason;
-      var roles = cardData?.baseInfo?.rolesInfo;
-
-      this.setState({
-        userCard: cardData,
-        userRoles: { admin: roles?.isAdmin, coach: roles?.isCoach },
-        blockUser: { block: blockReason !== '', reason: blockReason },
-        error: '',
-        success: ''
-      });
+  handleSearchResult = (userCard, errorText) => {
+    if (errorText) {
+      this.setState({ error: errorText });
+      return;
     }
-    catch (error) {
-      this.setState({ error: error.message });
-    }
+
+    var blockReason = userCard?.blockReason?.reason == null ? '' : userCard?.blockReason?.reason;
+    var roles = userCard?.baseInfo?.rolesInfo;
+
+    this.setState({
+      userCard: userCard,
+      userRoles: { admin: roles?.isAdmin, coach: roles?.isCoach, manager: roles?.isManager, orgOwner: roles?.isOrgOwner },
+      blockUser: { block: blockReason !== '', reason: blockReason },
+      error: '',
+      success: ''
+    });
   }
 
   blockUser = async (lngStr) => {
@@ -82,7 +66,9 @@ class UserAdministrationPanel extends Component {
       var roleInfo = {
         userId: this.state.userCard?.userId,
         isAdmin: this.state.userRoles.admin,
-        isCoach: this.state.userRoles.coach
+        isCoach: this.state.userRoles.coach,
+        isManager: this.state.userRoles.manager,
+        isOrgOwner: this.state.userRoles.orgOwner
       }
 
       await PostAsync('/administration/applyRoles', roleInfo);
@@ -102,25 +88,15 @@ class UserAdministrationPanel extends Component {
         <ErrorPanel errorMessage={this.state.error} />
         <InfoPanel infoMessage={this.state.success} />
 
-        <Row>
-          <Col xs={3}>
-            <InputNumber label={lngStr('appSetup.admin.byId')} initialValue={this.state.userSearch.id} propName="id" onChange={this.onSearchChange} />
-          </Col>
-          <Col xs={3}>
-            <InputText label={lngStr('appSetup.admin.byLogin')} initialValue={this.state.userSearch.login} propName="login" onChange={this.onSearchChange} />
-          </Col>
-          <Col xs={3}>
-            <Button color="primary" onClick={() => this.onUserSearch(lngStr)}>{lngStr('general.actions.search')}</Button>
-          </Col>
-        </Row>
+        <UserSearchControl handleSearchResult={this.handleSearchResult} />
         <hr style={{ width: '80%', paddingTop: "2px" }} />
 
-        {this.userData(lngStr)}
+        {this.loadedUserInfo(lngStr)}
       </>
     );
   }
 
-  userData = (lngStr) => {
+  loadedUserInfo = (lngStr) => {
     if (this.state.userCard?.userId == null) { return (<></>); }
 
     return (
@@ -161,13 +137,24 @@ class UserAdministrationPanel extends Component {
 
         <h6 className="spaceTop">{lngStr('appSetup.admin.userRoles')}</h6>
         <Container fluid>
-          <Col xs={2}>
-            <InputCheckbox label={lngStr('coaching.trainer')} initialValue={this.state.userRoles.coach} propName="coach" onChange={this.onUserRoleChange} />
-          </Col>
-          <Col xs={2}>
-            <InputCheckbox label={lngStr('appSetup.admin.adminRole')} initialValue={this.state.userRoles.admin} propName="admin" onChange={this.onUserRoleChange} />
-          </Col>
-          <Col xs={3}>
+          <Row>
+            <Col xs={2}>
+              <InputCheckbox label={lngStr('coaching.trainer')} initialValue={this.state.userRoles.coach} propName="coach" onChange={this.onUserRoleChange} />
+            </Col>
+            <Col xs={2}>
+              <InputCheckbox label={lngStr('appSetup.admin.adminRole')} initialValue={this.state.userRoles.admin} propName="admin" onChange={this.onUserRoleChange} />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={2}>
+              <InputCheckbox disabled label={lngStr('management.manager')} initialValue={this.state.userRoles.manager} propName="manager" onChange={this.onUserRoleChange} />
+            </Col>
+            <Col xs={2}>
+              <InputCheckbox disabled label={lngStr('management.org.owner')} initialValue={this.state.userRoles.orgOwner} propName="orgOwner" onChange={this.onUserRoleChange} />
+            </Col>
+          </Row>
+
+          <Col xs={3} className="spaceTopXs">
             <Button color="primary" onClick={() => this.applyUserRoles(lngStr)}>{lngStr('general.actions.confirm')}</Button>
           </Col>
         </Container>

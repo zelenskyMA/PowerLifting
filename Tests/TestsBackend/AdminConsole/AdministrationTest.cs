@@ -40,6 +40,30 @@ public class AdministrationTest : BaseTest
     }
 
     [Fact]
+    public void Get_UserCard_Manager_ByLogin_Success()
+    {
+        Factory.Actions.AuthorizeManager(Client);
+        var response = Client.Get<UserCard>($"/administration/getCard?login={TestConstants.BlockedUserLogin}");
+
+        //Assert
+        response.Login.Should().BeEquivalentTo(TestConstants.BlockedUserLogin);
+        response.BaseInfo.Should().BeNull(); // не базовая инфа
+        response.BlockReason.Should().BeNull(); // не базовая инфа
+    }
+
+    [Fact]
+    public void Get_UserCard_OrgOwner_ByLogin_Success()
+    {
+        Factory.Actions.AuthorizeOrgOwner(Client);
+        var response = Client.Get<UserCard>($"/administration/getCard?login={TestConstants.BlockedUserLogin}");
+
+        //Assert
+        response.Login.Should().BeEquivalentTo(TestConstants.BlockedUserLogin);
+        response.BaseInfo.Should().BeNull(); // не базовая инфа
+        response.BlockReason.Should().BeNull(); // не базовая инфа
+    }
+
+    [Fact]
     public void Get_UserCard_ById_Success()
     {
         var userId = Factory.Data.GetUserId(TestConstants.BlockedUserLogin);

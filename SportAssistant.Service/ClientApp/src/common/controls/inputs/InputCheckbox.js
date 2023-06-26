@@ -1,10 +1,10 @@
 ﻿import { Input, Label } from "reactstrap";
 
-export function InputCheckbox({ label, onChange, propName, initialValue }) {
+export function InputCheckbox({ label, onChange, propName, initialValue, disabled }) {
   return (
     <>
       <Label check>
-        <Input type="checkbox" onChange={(e) => setValue(e, propName, onChange)} checked={initialValue} />{' '}
+        <Input disabled={disabled} type="checkbox" onChange={(e) => setValue(e, propName, onChange)} checked={initialValue} />{' '}
         {label}
       </Label>
     </>

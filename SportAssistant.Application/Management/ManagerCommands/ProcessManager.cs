@@ -1,0 +1,49 @@
+﻿using AutoMapper;
+using SportAssistant.Domain.CustomExceptions;
+using SportAssistant.Domain.DbModels.Management;
+using SportAssistant.Domain.Enums;
+using SportAssistant.Domain.Interfaces.Common.Repositories;
+using SportAssistant.Domain.Interfaces.Management;
+using SportAssistant.Domain.Interfaces.UserData.Application;
+
+namespace SportAssistant.Application.Management.ManagerCommands;
+
+public class ProcessManager : IProcessManager
+{
+    private readonly IUserRoleCommands _userRoleCommands;
+    private readonly IProcessCoachAssignment _processCoachAssignment;
+    private readonly ICrudRepo<ManagerDb> _managerRepository;
+    private readonly IMapper _mapper;
+
+    public ProcessManager(
+        IUserRoleCommands userRoleCommands,
+        IProcessCoachAssignment processCoachAssignment,
+        ICrudRepo<ManagerDb> managerRepository,
+        IMapper mapper)
+    {
+        _userRoleCommands = userRoleCommands;
+        _processCoachAssignment = processCoachAssignment;
+        _managerRepository = managerRepository;
+        _mapper = mapper;
+    }
+
+    /// <inheritdoc />
+    public async Task<List<Manager>> GetListAsync(int orgId)
+    {
+        if (!await _userRoleCommands.IHaveAnyRoles(new[] { UserRoles.Admin, UserRoles.OrgOwner }))
+        {
+            throw new RoleException();
+        }
+
+        var managersDb = await _managerRepository.FindAsync(t => t.OrgId == orgId);
+        var managers = managersDb.Select(_mapper.Map<Manager>).ToList();
+
+        var coaches = await _processCoachAssignment.GetAssignedCoachesAsync(managers.Select(t => t.UserId).ToList());
+        foreach (var item in managers)
+        {
+            item.AssignedCoaches = coaches.FirstOrDefault(t => t.ManagerId == item.UserId)?.CoachIds?.Count ?? 0;
+        }
+
+        return managers;
+    }
+}

@@ -3,17 +3,27 @@
 public class RolesInfo
 {
     /// <summary>
-    /// UI supplies this field for role update
+    /// UI передает значение для обновления прав
     /// </summary>
     public int UserId { get; set; }
 
     /// <summary>
-    /// True if user har administration role
+    /// True, если есть роль администратора
     /// </summary>
     public bool IsAdmin { get; set; } = false;
 
     /// <summary>
-    /// True if user har coach role
+    /// True, если есть роль тренера
     /// </summary>
     public bool IsCoach { get; set; } = false;
+
+    /// <summary>
+    /// True, если есть роль менеджера
+    /// </summary>
+    public bool IsManager { get; set; } = false;
+
+    /// <summary>
+    /// True, если есть роль руководителя
+    /// </summary>
+    public bool IsOrgOwner { get; set; } = false;
 }

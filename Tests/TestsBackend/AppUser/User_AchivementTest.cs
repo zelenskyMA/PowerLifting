@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using SportAssistant.Application.UserData.UserCommands1;
+using SportAssistant.Application.UserData.UserAchivementCommands;
 using SportAssistant.Domain.Models.UserData;
 using TestFramework;
 using TestFramework.TestExtensions;

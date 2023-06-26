@@ -5,7 +5,6 @@ import { ErrorPanel, InputText, InputTextArea, TableControl } from "../../common
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
-
 class GroupConsoleView extends Component {
   constructor(props) {
     super(props);

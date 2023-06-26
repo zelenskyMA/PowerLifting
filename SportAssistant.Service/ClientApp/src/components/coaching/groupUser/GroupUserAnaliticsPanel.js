@@ -3,11 +3,7 @@ import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
 import PlanAnaliticsPanel from "../../analitics/PlanAnaliticsPanel";
 
-class GroupUserAnaliticsPanel extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class GroupUserAnaliticsPanel extends Component {  
   render() {
     return (
       <>

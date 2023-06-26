@@ -9,6 +9,7 @@ import { TableControl } from "./complex/TableControl";
 import { TabControl } from "./complex/TabControl";
 import { LineChartControl } from "./complex/LineChartControl";
 import { DropdownControl } from "./complex/DropdownControl";
+import { UserSearchControl } from "./complex/UserSearchControl";
 
 import { ErrorPanel } from "./panels/ErrorPanel";
 import { InfoPanel } from "./panels/InfoPanel";
@@ -19,7 +20,7 @@ import { Tooltip } from "./misc/TooltipControl";
 export {
   InputNumber, InputText, InputPassword, InputEmail, InputTextArea, InputDate, InputCheckbox,
   MultiTextInput, MultiNumberInput,
-  TableControl, LineChartControl, TabControl, DropdownControl,
+  TableControl, LineChartControl, TabControl, DropdownControl, UserSearchControl,
   ErrorPanel, InfoPanel, LoadingPanel,
   Tooltip
 };

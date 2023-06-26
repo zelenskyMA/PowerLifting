@@ -12,6 +12,8 @@ public class ActionsPreset
     public void AuthorizeSecondCoach(HttpClient client) => Authorize(client, TestConstants.SecondCoachLogin);
     public void AuthorizeUser(HttpClient client) => Authorize(client, TestConstants.UserLogin);
     public void AuthorizeNoCoachUser(HttpClient client) => Authorize(client, TestConstants.NoCoachUserLogin);
+    public void AuthorizeManager(HttpClient client) => Authorize(client, TestConstants.ManagerLogin);
+    public void AuthorizeOrgOwner(HttpClient client) => Authorize(client, TestConstants.OrgOwnerLogin);
 
     public void UnAuthorize(HttpClient client) => client.DefaultRequestHeaders.Remove("Authorization");
 

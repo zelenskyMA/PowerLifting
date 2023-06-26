@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
+using SportAssistant.Domain.DbModels.Management;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.DbModels.UserData;
@@ -21,6 +22,10 @@ public class SportContext : DbContext
     public DbSet<TemplateDayDb> TemplateDays { get; set; }
     public DbSet<TemplateExerciseDb> TemplateExercises { get; set; }
     public DbSet<TemplateExerciseSettingsDb> TemplateExerciseSettings { get; set; }
+
+    public DbSet<OrganizationDb> Organizations { get; set; }
+    public DbSet<ManagerDb> Managers { get; set; }
+    public DbSet<AssignedCoachDb> AssignedCoaches { get; set; }
 
     public DbSet<DictionaryDb> Dictionaries { get; set; }
     public DbSet<DictionaryTypeDb> DictionaryTypes { get; set; }
@@ -45,6 +50,9 @@ public class SportContext : DbContext
         modelBuilder.Entity<UserInfoDb>().HasKey(c => new { c.UserId });
 
         modelBuilder.Entity<TrainingGroupUserDb>().HasKey(c => new { c.UserId, c.GroupId });
+
+        modelBuilder.Entity<ManagerDb>().HasKey(c => new { c.UserId });
+        modelBuilder.Entity<AssignedCoachDb>().HasKey(c => new { c.ManagerId, c.CoachId });
     }
 
     public SportContext(DbContextOptions<SportContext> options) : base(options) { }

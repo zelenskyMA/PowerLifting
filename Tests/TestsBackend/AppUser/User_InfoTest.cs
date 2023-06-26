@@ -32,6 +32,7 @@ public class User_InfoTest : BaseTest
 
         // обновление данных пользователя
         var request = new UserInfoUpdateCommand.Param() { Info = Factory.GetBuilder().Build().Create<UserInfo>() };
+        request.Info.Id = info.Id;
 
         var response = Client.Post<bool>("/userInfo", request);
         response.Should().BeTrue();

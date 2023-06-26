@@ -1,5 +1,4 @@
-﻿/// <reference path="../trainingplan/view/plandayviewpanel.js" />
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import { Button } from "reactstrap";
 import { GetAsync } from "../../common/ApiActions";
 import PlanDayViewPanel from "../trainingPlan/view/PlanDayViewPanel";

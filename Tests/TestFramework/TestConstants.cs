@@ -12,6 +12,9 @@ public static class TestConstants
     public static string User2Login => "user2@mail.ru";
     public static string NoCoachUserLogin => "noCoach@mail.ru";
     public static string BlockedUserLogin => "blocked@mail.ru";
+    public static string ManagerLogin => "manager@mail.ru";
+    public static string OrgOwnerLogin => "orgOwner@mail.ru";
+
     public static string Password => "asdf123";
     public static string Salt => "1CCFD3C98A";
     public static string EncriptedPwd => "BD-40-DC-2F-2B-E1-A6-EC-E0-27-63-65-BD-0C-E6-AB-57-54-8F-65";

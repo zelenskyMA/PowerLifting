@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import {
-  Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, UncontrolledDropdown, NavItem, NavLink
+  Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, UncontrolledDropdown
 } from 'reactstrap';
+import { Tooltip } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
 import { RemoveTokens } from '../../common/TokenActions';
-import { Tooltip } from "../../common/controls/CustomControls";
 import '../../styling/Common.css';
 import '../../styling/NavMenu.css';
 import { CoachTopMenu } from "./menu/CoachTopMenu";
 import { CommonTopMenu } from "./menu/CommonTopMenu";
+import { ManagerTopMenu } from "./menu/ManagerTopMenu";
+import { OrgOwnerTopMenu } from "./menu/OrgOwnerTopMenu";
 
 const mapStateToProps = store => {
   return {
@@ -33,6 +35,14 @@ class NavMenu extends Component {
     const lngStr = this.props.lngStr;
     var legalName = this.props.userInfo?.legalName ?? '';
 
+    const menuSelection = () => {
+      if (this.props.userInfo?.coachOnly) { return <CoachTopMenu userInfo={this.props.userInfo} /> }
+      if (this.props.userInfo?.rolesInfo?.isManager) { return <ManagerTopMenu userInfo={this.props.userInfo} /> }
+      if (this.props.userInfo?.rolesInfo?.isOrgOwner) { return <OrgOwnerTopMenu userInfo={this.props.userInfo} /> }
+
+      return <CommonTopMenu userInfo={this.props.userInfo} />
+    }
+
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3 navbar-dark" container light>
@@ -41,7 +51,7 @@ class NavMenu extends Component {
               <NavbarBrand className="menu-first-page-item" tag={Link} to="/">{lngStr('general.common.main')}</NavbarBrand>
 
               <NavbarBrand id="help" className="help-menu-item" tag={Link} to="/help/0">
-                <img src="/img/help_icon.png" width="30" height="30" className="rounded mx-auto d-block" />
+                <img src="/img/help_icon.png" width="30" height="30" className="rounded mx-auto d-block" alt="" />
               </NavbarBrand>
               <Tooltip text={lngStr('general.common.help')} tooltipTargetId="help" placement="bottom" />
 
@@ -50,14 +60,12 @@ class NavMenu extends Component {
           }
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
-              {this.props.userInfo?.coachOnly ?
-                <CoachTopMenu userInfo={this.props.userInfo} /> :
-                <CommonTopMenu userInfo={this.props.userInfo} />}
+              {menuSelection()}
               {this.loginLink(lngStr)}
             </ul>
           </Collapse>
         </Navbar>
-      </header>
+      </header >
     );
   }
 

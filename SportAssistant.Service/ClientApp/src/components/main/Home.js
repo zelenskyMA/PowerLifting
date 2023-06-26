@@ -8,6 +8,7 @@ import { GetToken } from '../../common/TokenActions';
 import '../../styling/Common.css';
 import '../../styling/Custom.css';
 import CoachHomePanel from "../coaching/CoachHomePanel";
+import OrgHomePanel from "../management/organization/OrgHomePanel";
 import PlanDayViewPanel from "../trainingPlan/view/PlanDayViewPanel";
 import LoginUserPanel from "../userData/auth/LoginUserPanel";
 
@@ -54,6 +55,8 @@ class Home extends Component {
     if (this.state.loading) { return (<LoadingPanel />); }
 
     if (this.state.loggedUser === false) { return (this.startScreenPanel(lngStr)); }
+
+    if (this.props.userInfo?.rolesInfo?.isOrgOwner) { return (<OrgHomePanel />); }
 
     if (this.props.userInfo?.coachOnly) { return (<CoachHomePanel userInfo={this.props.userInfo} />); }
 
