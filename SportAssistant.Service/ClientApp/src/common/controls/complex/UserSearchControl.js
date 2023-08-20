@@ -6,13 +6,13 @@ import { InputNumber, InputText, Tooltip } from "../CustomControls";
 
 // handleSearchResult - обработка карточки юзера, которую нашли, и ошибок. handleSearchResult(userCard, errorText);
 // showIdSerach -  показывать ли поиск по Ид.
-export function UserSearchControl({ handleSearchResult, userName = '', showIdSerach = true }) {
+export function UserSearchControl({ handleSearchResult, className = '', userName = '', showIdSerach = true }) {
   const { t } = useTranslation(); //language pack implementation
   const [userSearch, searchChange] = useState({ id: 0, login: '' });
   const [showSearchBlock, onEdit] = useState(!userName);
 
   return (
-    <Row>
+    <Row className={className}>
       {!showSearchBlock ?
         <Container fluid>
           {userName}

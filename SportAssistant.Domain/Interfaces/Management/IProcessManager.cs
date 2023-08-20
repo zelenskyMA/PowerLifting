@@ -1,4 +1,4 @@
-﻿using SportAssistant.Domain.DbModels.Management;
+﻿using SportAssistant.Domain.Models.Management;
 
 namespace SportAssistant.Domain.Interfaces.Management;
 

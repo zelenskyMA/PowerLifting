@@ -42,7 +42,7 @@ public class PlanExerciseGetByIdQuery : ICommand<PlanExerciseGetByIdQuery.Param,
         var planExerciseDb = await _planExerciseRepository.FindOneAsync(t => t.Id == param.Id);
         if (planExerciseDb != null)
         {
-            planUserId = await _processPlanUserId.GetByPlanExerciseId(param.Id);
+            planUserId = await _processPlanUserId.GetByPlanExerciseIdAsync(param.Id);
             await _processPlan.ViewAllowedForDataOfUserAsync(planUserId);
         }
         else

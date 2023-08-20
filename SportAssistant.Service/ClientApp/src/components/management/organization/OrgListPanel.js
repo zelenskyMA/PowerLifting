@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Button } from "reactstrap";
 import { GetAsync } from "../../../common/ApiActions";
-import { TableControl } from "../../../common/controls/CustomControls";
+import { TableControl, LoadingPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
 
@@ -12,7 +12,7 @@ class OrgListPanel extends Component {
     this.state = {
       orgList: [],
 
-      loading: false,
+      loading: true,
     };
   }
 
@@ -27,6 +27,7 @@ class OrgListPanel extends Component {
 
   render() {
     const lngStr = this.props.lngStr;
+    if (this.state.loading) { return (<LoadingPanel />); }
 
     const columns = [
       { Header: 'Id', accessor: 'id' },

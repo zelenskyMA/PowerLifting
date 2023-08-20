@@ -12,6 +12,7 @@ using SportAssistant.Application.Common.Actions.TrainingCounters;
 using SportAssistant.Application.Dictionaryies;
 using SportAssistant.Application.Management.CoachAssignment;
 using SportAssistant.Application.Management.ManagerCommands;
+using SportAssistant.Application.Management.OrganizationCommands;
 using SportAssistant.Application.ReportGeneration;
 using SportAssistant.Application.Settings;
 using SportAssistant.Application.TrainingPlan.ExerciseCommands;
@@ -112,6 +113,7 @@ public partial class Program
 
         builder.Services.AddScoped<IProcessCoachAssignment, ProcessCoachAssignment>();
         builder.Services.AddScoped<IProcessManager, ProcessManager>();
+        builder.Services.AddScoped<IProcessOrgDataByUserId, ProcessOrgDataByUserId>();
         
         builder.Services.AddScoped<IProcessEmail, ProcessEmail>();
         builder.Services.AddScoped<IResetPasswordEmailHandler, ResetPasswordEmailHandler>();

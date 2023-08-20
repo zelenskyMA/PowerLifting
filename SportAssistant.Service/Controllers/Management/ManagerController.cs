@@ -1,18 +1,33 @@
 ﻿using LoggerLib.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using SportAssistant.Application.Management.ManagerCommands;
-using SportAssistant.Domain.DbModels.Management;
 using SportAssistant.Domain.Interfaces.Common.Operations;
+using SportAssistant.Domain.Models.Management;
 using SportAssistant.Service.Controllers;
 
 [Route("manager")]
 public class ManagerController : BaseController
 {
     [HttpGet]
-    [Route("getList/{orgId}"), ExcludeLogItem]
-    public async Task<List<Manager>> GetListAsync([FromServices] ICommand<ManagerGetListQuery.Param, List<Manager>> command, int orgId)
+    [Route("getList"), ExcludeLogItem]
+    public async Task<List<Manager>> GetListAsync([FromServices] ICommand<ManagerGetListQuery.Param, List<Manager>> command)
     {
-        var result = await command.ExecuteAsync(new ManagerGetListQuery.Param() { OrgId = orgId });
+        var result = await command.ExecuteAsync(new ManagerGetListQuery.Param() { });
+        return result;
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<Manager> GetAsync([FromServices] ICommand<ManagerGetQuery.Param, Manager> command, int id)
+    {
+        var result = await command.ExecuteAsync(new ManagerGetQuery.Param() { Id = id });
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<bool> UpdateAsync([FromServices] ICommand<ManagerUpdateCommand.Param, bool> command, ManagerUpdateCommand.Param param)
+    {
+        var result = await command.ExecuteAsync(param);
         return result;
     }
 
@@ -20,6 +35,14 @@ public class ManagerController : BaseController
     [HttpPost]
     [Route("changeRole")]
     public async Task<bool> ManagerRoleChangeAsync([FromServices] ICommand<ManagerRoleChangeCommand.Param, bool> command, ManagerRoleChangeCommand.Param param)
+    {
+        var result = await command.ExecuteAsync(param);
+        return result;
+    }
+
+    [HttpPost]
+    [Route("transfer")]
+    public async Task<bool> ManagerTrnasferCommandAsync([FromServices] ICommand<ManagerTrnasferCommand.Param, bool> command, ManagerTrnasferCommand.Param param)
     {
         var result = await command.ExecuteAsync(param);
         return result;

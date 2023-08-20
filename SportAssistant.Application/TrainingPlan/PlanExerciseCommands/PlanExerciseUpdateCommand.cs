@@ -50,7 +50,7 @@ public class PlanExerciseUpdateCommand : ICommand<PlanExerciseUpdateCommand.Para
 
     private async Task<int> GetAndCheckUserId(int planExerciseId)
     {
-        var userId = await _processPlanUserId.GetByPlanExerciseId(planExerciseId);
+        var userId = await _processPlanUserId.GetByPlanExerciseIdAsync(planExerciseId);
 
         return await _processPlan.PlanningAllowedForUserAsync(userId);
     }

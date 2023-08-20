@@ -5,6 +5,7 @@ using SportAssistant.Domain.Enums;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
 using SportAssistant.Domain.Interfaces.Management;
 using SportAssistant.Domain.Interfaces.UserData.Application;
+using SportAssistant.Domain.Models.Management;
 
 namespace SportAssistant.Application.Management.ManagerCommands;
 
@@ -38,10 +39,10 @@ public class ProcessManager : IProcessManager
         var managersDb = await _managerRepository.FindAsync(t => t.OrgId == orgId);
         var managers = managersDb.Select(_mapper.Map<Manager>).ToList();
 
-        var coaches = await _processCoachAssignment.GetAssignedCoachesAsync(managers.Select(t => t.UserId).ToList());
+        var coaches = await _processCoachAssignment.GetAssignedCoachesAsync(managers.Select(t => t.Id).ToList());
         foreach (var item in managers)
         {
-            item.AssignedCoaches = coaches.FirstOrDefault(t => t.ManagerId == item.UserId)?.CoachIds?.Count ?? 0;
+            item.DistributedCoaches = coaches.FirstOrDefault(t => t.ManagerId == item.Id)?.CoachIds?.Count ?? 0;
         }
 
         return managers;

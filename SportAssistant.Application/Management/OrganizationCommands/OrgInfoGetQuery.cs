@@ -12,16 +12,16 @@ namespace SportAssistant.Application.Management.OrganizationCommands;
 /// </summary>
 public class OrgInfoGetQuery : ICommand<OrgInfoGetQuery.Param, OrgInfo>
 {
-    private readonly IProcessManager _processManager;
+    private readonly IProcessOrgDataByUserId _processOrgDataByUserId;
     private readonly ICrudRepo<OrganizationDb> _orgRepository;
     private readonly IUserProvider _user;
 
     public OrgInfoGetQuery(
-        IProcessManager processManager,
+        IProcessOrgDataByUserId processOrgDataByUserId,
         ICrudRepo<OrganizationDb> orgRepository,
         IUserProvider user)
     {
-        _processManager = processManager;
+        _processOrgDataByUserId = processOrgDataByUserId;
         _orgRepository = orgRepository;
         _user = user;
     }
@@ -34,15 +34,7 @@ public class OrgInfoGetQuery : ICommand<OrgInfoGetQuery.Param, OrgInfo>
             return new OrgInfo();
         }
 
-        var managers = await _processManager.GetListAsync(orgDb.Id);
-
-        var orgInfo = new OrgInfo()
-        {
-            ManagerCount = managers.Count,
-            DistributedLicences = managers.Sum(t => t.AllowedCoaches),
-            UsedLicenses = managers.Sum(t => t.AssignedCoaches),
-        };
-
+        var orgInfo = await _processOrgDataByUserId.GetOrgInfoAsync(orgDb.Id, orgDb.MaxCoaches);
         return orgInfo;
     }
 

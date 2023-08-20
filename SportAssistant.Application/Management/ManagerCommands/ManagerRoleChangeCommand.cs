@@ -12,52 +12,70 @@ public class ManagerRoleChangeCommand : ICommand<ManagerRoleChangeCommand.Param,
 {
     private readonly IUserRoleCommands _userRoleCommands;
     private readonly IProcessCoachAssignment _processCoachAssignment;
+    private readonly IProcessOrgDataByUserId _processOrgDataByUserId;
     private readonly ICrudRepo<ManagerDb> _managerRepository;
 
     public ManagerRoleChangeCommand(
         IUserRoleCommands userRoleCommands,
         IProcessCoachAssignment processCoachAssignment,
+        IProcessOrgDataByUserId processOrgDataByUserId,
         ICrudRepo<ManagerDb> managerRepository)
     {
         _userRoleCommands = userRoleCommands;
         _processCoachAssignment = processCoachAssignment;
+        _processOrgDataByUserId = processOrgDataByUserId;
         _managerRepository = managerRepository;
     }
 
     /// <inheritdoc />
     public async Task<bool> ExecuteAsync(Param param)
     {
-        if (!await _userRoleCommands.IHaveRole(UserRoles.OrgOwner))
+        var org = await _processOrgDataByUserId.GetOrgByUserIdAsync();
+        if (org == null)
         {
             throw new RoleException();
         }
 
-        return param.RoleStatus ? await AddManagerStatus(param) : await RemoveManagerStatus(param);
+        return param.RoleStatus ?
+            await AddManagerStatus(param.UserId, org) :
+            await RemoveManagerStatus(param.UserId, org);
     }
 
-    private async Task<bool> AddManagerStatus(Param param)
+    private async Task<bool> AddManagerStatus(int userId, OrganizationDb org)
     {
-        await _userRoleCommands.AddRole(param.UserId, UserRoles.Manager);
+        var managerInfo = await _managerRepository.FindOneAsync(t => t.UserId == userId);
+        if (managerInfo != null)
+        {
+            throw new BusinessException("Указанный пользователь уже менеджер"); // возможно, менеджер другой организации
+        }
+
+        await _userRoleCommands.AddRole(userId, UserRoles.Manager);
 
         await _managerRepository.CreateAsync(new ManagerDb()
         {
-            UserId = param.UserId,
+            UserId = userId,
+            OrgId = org.Id,
         });
 
         return true;
     }
 
-    private async Task<bool> RemoveManagerStatus(Param param)
+    private async Task<bool> RemoveManagerStatus(int userId, OrganizationDb org)
     {
-        await _processCoachAssignment.DropCoachesByManagerAsync(param.UserId);
-
-        await _userRoleCommands.RemoveRole(param.UserId, UserRoles.Manager);
-
-        var managerInfo = await _managerRepository.FindOneAsync(t => t.UserId == param.UserId);
+        var managerInfo = await _managerRepository.FindOneAsync(t => t.UserId == userId);
         if (managerInfo == null)
         {
-            return false;
+            throw new BusinessException("Указанный пользователь не менеджер");
         }
+
+        if (managerInfo.OrgId != org.Id)
+        {
+            throw new BusinessException("Указанный менеджер из другой организации");
+        }
+
+        await _processCoachAssignment.DropCoachesByManagerAsync(userId);
+
+        await _userRoleCommands.RemoveRole(userId, UserRoles.Manager);
 
         _managerRepository.Delete(managerInfo);
 

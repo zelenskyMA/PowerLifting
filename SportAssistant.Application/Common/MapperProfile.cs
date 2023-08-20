@@ -8,6 +8,7 @@ using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models;
 using SportAssistant.Domain.Models.Basic;
 using SportAssistant.Domain.Models.Coaching;
+using SportAssistant.Domain.Models.Management;
 using SportAssistant.Domain.Models.TrainingPlan;
 using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Domain.Models.UserData;
@@ -75,6 +76,8 @@ public class MapperProfile : Profile
     private void ManagementProfile()
     {
         CreateMap<OrganizationDb, Organization>().ReverseMap();
-        CreateMap<ManagerDb, Manager>().ReverseMap();        
+        CreateMap<ManagerDb, Manager>()
+             .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
+             .ReverseMap();
     }
 }

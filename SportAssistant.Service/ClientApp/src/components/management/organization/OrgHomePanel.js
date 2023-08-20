@@ -49,7 +49,8 @@ class OrgHomePanel extends Component {
 
         <Row>
           <Col xs={1}><strong>{lngStr('management.license.main')}</strong></Col>
-          <Col xs={2}>{lngStr('management.license.available') + ': ' + this.state.organization.maxCoaches}</Col>
+          <Col xs={2}>{lngStr('management.license.sum') + ': ' + this.state.organization.maxCoaches}</Col>
+          <Col xs={2}>{lngStr('management.license.available') + ': ' + this.state.orgInfo.leftToDistribute}</Col>          
           <Col xs={2}>{lngStr('management.license.distributed') + ': ' + this.state.orgInfo.distributedLicences}</Col>
           <Col xs={2}>{lngStr('management.license.used') + ': ' + this.state.orgInfo.usedLicenses}</Col>
         </Row>

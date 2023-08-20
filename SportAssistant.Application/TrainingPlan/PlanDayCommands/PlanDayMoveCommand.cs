@@ -73,7 +73,7 @@ public class PlanDayMoveCommand : ICommand<PlanDayMoveCommand.Param, bool>
 
     private async Task<int> GetAndCheckUserId(int dayId)
     {
-        var userId = await _processPlanUserId.GetByDayId(dayId);
+        var userId = await _processPlanUserId.GetByDayIdAsync(dayId);
         return await _processPlan.PlanningAllowedForUserAsync(userId);
     }
 
