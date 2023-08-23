@@ -16,8 +16,9 @@ public interface IProcessCoachAssignment
     /// </summary>
     /// <param name="managerId">Ид текущего менеджера</param>
     /// <param name="newManagerId">Ид нового менеджера</param>
-    /// <returns></returns>
-    Task<bool> ReassignCoachesAsync(int managerId, int newManagerId);
+    /// <param name="coachIds">Опциональный список для переподчинения не всех, а выбранных тренеров</param>
+    /// <returns>Кол-во переподчиненных тренеров</returns>
+    Task<int> ReassignCoachesAsync(int managerId, int newManagerId, List<int>? coachIds = null);
 
     /// <summary>
     /// Получение списка ид подчиненных менеджерам трениров

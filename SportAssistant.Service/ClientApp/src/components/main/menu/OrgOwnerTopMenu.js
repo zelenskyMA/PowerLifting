@@ -21,7 +21,7 @@ function mainMenu(userInfo, lngStr) {
   return (
     <>
       <NavItem>
-        <NavLink tag={Link} className="menu-item" to="/manager/list">{lngStr('management.managerManagement')}</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/manager/list">{lngStr('management.forManager')}</NavLink>
       </NavItem>
 
       <NavItem>

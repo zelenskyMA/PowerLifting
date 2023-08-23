@@ -47,6 +47,7 @@ public class ProcessGroup : IProcessGroup
         return _mapper.Map<TrainingGroup>(groupDb);
     }
 
+    /// <inheritdoc />
     public async Task<TrainingGroupInfo> GetGroupInfoByIdAsync(int id)
     {
         var groupsDb = await _trainingGroupRepository.FindAsync(t => t.Id == id);
@@ -75,6 +76,7 @@ public class ProcessGroup : IProcessGroup
         return groupInfo;
     }
 
+    /// <inheritdoc />
     public async Task<List<TrainingGroup>> GetGroupsListAsync()
     {
         var groupsDb = await _trainingGroupRepository.FindAsync(t => t.CoachId == _user.Id);

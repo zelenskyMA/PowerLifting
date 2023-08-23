@@ -9,6 +9,7 @@ import '../../styling/Common.css';
 import '../../styling/Custom.css';
 import CoachHomePanel from "../coaching/CoachHomePanel";
 import OrgHomePanel from "../management/organization/OrgHomePanel";
+import ManagerHomePanel from "../management/manager/ManagerHomePanel";
 import PlanDayViewPanel from "../trainingPlan/view/PlanDayViewPanel";
 import LoginUserPanel from "../userData/auth/LoginUserPanel";
 
@@ -56,8 +57,9 @@ class Home extends Component {
 
     if (this.state.loggedUser === false) { return (this.startScreenPanel(lngStr)); }
 
+    if (this.props.userInfo?.rolesInfo?.isManager) { return (<ManagerHomePanel />); }
     if (this.props.userInfo?.rolesInfo?.isOrgOwner) { return (<OrgHomePanel />); }
-
+    
     if (this.props.userInfo?.coachOnly) { return (<CoachHomePanel userInfo={this.props.userInfo} />); }
 
     return (

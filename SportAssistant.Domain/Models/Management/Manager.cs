@@ -9,7 +9,7 @@ public class Manager
 
     public string Name { get; set; } = string.Empty;
 
-    public string TelNumber { get; set; } = string.Empty;
+    public string? TelNumber { get; set; } = string.Empty;
 
     public int AllowedCoaches { get; set; }
 

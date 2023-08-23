@@ -8,6 +8,8 @@ public interface ICrudRepo<T> : IBaseRepo<T> where T : class
 
     Task<T?> FindOneAsync(Expression<Func<T, bool>> predicate);
 
+    Task<int> CountAsync(Expression<Func<T, bool>> predicate);
+
     Task CreateListAsync(List<T> entities);
 
     void DeleteList(List<T> entities);

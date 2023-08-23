@@ -1,4 +1,5 @@
-﻿using SportAssistant.Domain.CustomExceptions;
+﻿using SportAssistant.Application.UserData.Auth.Interfaces;
+using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Management;
 using SportAssistant.Domain.Interfaces.UserData.Application;
@@ -10,22 +11,23 @@ public class ManagerGetListQuery : ICommand<ManagerGetListQuery.Param, List<Mana
 {
     private readonly IProcessManager _processManager;
     private readonly IProcessUserInfo _processUserInfo;
-    private readonly IProcessOrgDataByUserId _processOrgDataByUserId;
+    private readonly IProcessOrgData _processOrgData;
 
     public ManagerGetListQuery(
         IProcessManager processManager,
         IProcessUserInfo processUserInfo,
-        IProcessOrgDataByUserId processOrgDataByUserId)
+        IProcessOrgData processOrgData,
+        IUserProvider user)
     {
         _processManager = processManager;
         _processUserInfo = processUserInfo;
-        _processOrgDataByUserId = processOrgDataByUserId;
+        _processOrgData = processOrgData;
     }
 
     /// <inheritdoc />
     public async Task<List<Manager>> ExecuteAsync(Param param)
     {
-        var org = await _processOrgDataByUserId.GetOrgByUserIdAsync();
+        var org = await _processOrgData.GetOrgByUserIdAsync() ?? await _processOrgData.GetOrgByManagerIdAsync();
         if (org == null)
         {
             throw new RoleException();
@@ -36,7 +38,7 @@ public class ManagerGetListQuery : ICommand<ManagerGetListQuery.Param, List<Mana
         var infoList = await _processUserInfo.GetInfoList(managerList.Select(t => t.Id).ToList());
         foreach (var manager in managerList)
         {
-            manager.Name = infoList.FirstOrDefault(t => t.Id == manager.Id)?.LegalName;
+            manager.Name = infoList.FirstOrDefault(t => t.Id == manager.Id)?.LegalName ?? string.Empty;
         }
 
         return managerList;

@@ -40,22 +40,25 @@ public class ProcessCoachAssignment : IProcessCoachAssignment
     }
 
     /// <inheritdoc />
-    public async Task<bool> ReassignCoachesAsync(int managerId, int newManagerId)
+    public async Task<int> ReassignCoachesAsync(int managerId, int newManagerId, List<int>? coachIds = null)
     {
         var assignedCoaches = await _assignedCoachRepository.FindAsync(t => t.ManagerId == managerId);
+        if (coachIds != null && coachIds.Count > 0)
+        {
+            assignedCoaches = assignedCoaches.Where(t => coachIds.Contains(t.CoachId)).ToList();
+        }
+
         if (assignedCoaches.Count == 0)
         {
-            return true;
+            return 0;
         }
 
-        foreach (var item in assignedCoaches)
-        {
-            item.ManagerId = newManagerId;
-        }
+        _assignedCoachRepository.DeleteList(assignedCoaches);
 
-        _assignedCoachRepository.UpdateList(assignedCoaches);
+        var newList = assignedCoaches.Select(t=> new AssignedCoachDb() { CoachId = t.CoachId, ManagerId = newManagerId }).ToList();
+        await _assignedCoachRepository.CreateListAsync(newList);
 
-        return true;
+        return assignedCoaches.Count;
     }
 
     /// <inheritdoc />

@@ -12,12 +12,12 @@ namespace SportAssistant.Application.Management.OrganizationCommands;
 /// </summary>
 public class OrgInfoGetQuery : ICommand<OrgInfoGetQuery.Param, OrgInfo>
 {
-    private readonly IProcessOrgDataByUserId _processOrgDataByUserId;
+    private readonly IProcessOrgData _processOrgDataByUserId;
     private readonly ICrudRepo<OrganizationDb> _orgRepository;
     private readonly IUserProvider _user;
 
     public OrgInfoGetQuery(
-        IProcessOrgDataByUserId processOrgDataByUserId,
+        IProcessOrgData processOrgDataByUserId,
         ICrudRepo<OrganizationDb> orgRepository,
         IUserProvider user)
     {

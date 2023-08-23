@@ -79,5 +79,6 @@ public class MapperProfile : Profile
         CreateMap<ManagerDb, Manager>()
              .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
              .ReverseMap();
+        CreateMap<AssignedCoachDb, AssignedCoach>().ReverseMap();
     }
 }

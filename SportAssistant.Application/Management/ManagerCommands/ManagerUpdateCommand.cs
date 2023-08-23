@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SixLabors.ImageSharp.ColorSpaces;
 using SportAssistant.Application.UserData.Auth.Interfaces;
 using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.Management;
@@ -12,18 +11,18 @@ namespace SportAssistant.Application.Management.ManagerCommands;
 
 public class ManagerUpdateCommand : ICommand<ManagerUpdateCommand.Param, bool>
 {
-    private readonly IProcessOrgDataByUserId _processOrgDataByUserId;
+    private readonly IProcessOrgData _processOrgData;
     private readonly ICrudRepo<ManagerDb> _managerRepository;
     private readonly IMapper _mapper;
     private readonly IUserProvider _user;
 
     public ManagerUpdateCommand(
-        IProcessOrgDataByUserId processOrgDataByUserId,
+        IProcessOrgData processOrgData,
         ICrudRepo<ManagerDb> managerRepository,
         IMapper mapper,
         IUserProvider user)
     {
-        _processOrgDataByUserId = processOrgDataByUserId;
+        _processOrgData = processOrgData;
         _managerRepository = managerRepository;
         _mapper = mapper;
         _user = user;
@@ -47,7 +46,7 @@ public class ManagerUpdateCommand : ICommand<ManagerUpdateCommand.Param, bool>
             return manager; // сохрани сам
         }
 
-        var org = await _processOrgDataByUserId.GetOrgByUserIdAsync();
+        var org = await _processOrgData.GetOrgByUserIdAsync() ?? await _processOrgData.GetOrgByManagerIdAsync();
         if (org == null)
         {
             throw new RoleException(); // я не владелец орг
@@ -61,7 +60,7 @@ public class ManagerUpdateCommand : ICommand<ManagerUpdateCommand.Param, bool>
 
         if (managerDb?.AllowedCoaches < manager.AllowedCoaches)
         {
-            var orgInfo = await _processOrgDataByUserId.GetOrgInfoAsync(org.Id, org.MaxCoaches);
+            var orgInfo = await _processOrgData.GetOrgInfoAsync(org.Id, org.MaxCoaches);
             var numberToAssign = manager.AllowedCoaches - managerDb.AllowedCoaches;
             if (orgInfo.LeftToDistribute < numberToAssign)
             {

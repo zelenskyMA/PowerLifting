@@ -113,7 +113,7 @@ public partial class Program
 
         builder.Services.AddScoped<IProcessCoachAssignment, ProcessCoachAssignment>();
         builder.Services.AddScoped<IProcessManager, ProcessManager>();
-        builder.Services.AddScoped<IProcessOrgDataByUserId, ProcessOrgDataByUserId>();
+        builder.Services.AddScoped<IProcessOrgData, ProcessOrgData>();
         
         builder.Services.AddScoped<IProcessEmail, ProcessEmail>();
         builder.Services.AddScoped<IResetPasswordEmailHandler, ResetPasswordEmailHandler>();

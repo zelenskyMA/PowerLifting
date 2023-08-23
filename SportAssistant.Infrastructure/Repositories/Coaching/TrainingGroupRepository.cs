@@ -1,4 +1,7 @@
 ﻿using SportAssistant.Domain.DbModels.Coaching;
+using SportAssistant.Domain.DbModels.UserData;
+using SportAssistant.Domain.Models.Coaching;
+using SportAssistant.Domain.Models.UserData;
 using SportAssistant.Infrastructure.Common;
 using SportAssistant.Infrastructure.DataContext;
 

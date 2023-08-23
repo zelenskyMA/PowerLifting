@@ -9,16 +9,16 @@ namespace SportAssistant.Application.Management.ManagerCommands;
 public class ManagerTrnasferCommand : ICommand<ManagerTrnasferCommand.Param, bool>
 {
     private readonly IProcessCoachAssignment _processCoachAssignment;
-    private readonly IProcessOrgDataByUserId _processOrgDataByUserId;
+    private readonly IProcessOrgData _processOrgData;
     private readonly ICrudRepo<ManagerDb> _managerRepository;
 
     public ManagerTrnasferCommand(
         IProcessCoachAssignment processCoachAssignment,
-        IProcessOrgDataByUserId processOrgDataByUserId,
+        IProcessOrgData processOrgData,
         ICrudRepo<ManagerDb> managerRepository)
     {
         _processCoachAssignment = processCoachAssignment;
-        _processOrgDataByUserId = processOrgDataByUserId;
+        _processOrgData = processOrgData;
         _managerRepository = managerRepository;
     }
 
@@ -27,10 +27,11 @@ public class ManagerTrnasferCommand : ICommand<ManagerTrnasferCommand.Param, boo
     {
         (ManagerDb source, ManagerDb target) = await GetValidatedManagers(param);
 
-        target.AllowedCoaches += source.AllowedCoaches;
-        source.AllowedCoaches = 0;
+        var reassignedCoachCount = await _processCoachAssignment.ReassignCoachesAsync(source.UserId, target.UserId, param.CoachIds);
 
-        await _processCoachAssignment.ReassignCoachesAsync(source.UserId, source.UserId);
+        target.AllowedCoaches += reassignedCoachCount == 0 ? source.AllowedCoaches : reassignedCoachCount;
+        source.AllowedCoaches = reassignedCoachCount == 0 ? 0 : (source.AllowedCoaches - reassignedCoachCount);
+
         _managerRepository.UpdateList(new List<ManagerDb>() { source, target });
 
         return true;
@@ -38,7 +39,7 @@ public class ManagerTrnasferCommand : ICommand<ManagerTrnasferCommand.Param, boo
 
     private async Task<(ManagerDb source, ManagerDb target)> GetValidatedManagers(Param param)
     {
-        var org = await _processOrgDataByUserId.GetOrgByUserIdAsync();
+        var org = await _processOrgData.GetOrgByUserIdAsync() ?? await _processOrgData.GetOrgByManagerIdAsync();
         if (org == null)
         {
             throw new RoleException();
@@ -65,5 +66,7 @@ public class ManagerTrnasferCommand : ICommand<ManagerTrnasferCommand.Param, boo
         public int SourceManagerId { get; set; }
 
         public int TargetManagerId { get; set; }
+
+        public List<int> CoachIds { get; set; } = new List<int>();
     }
 }

@@ -8,8 +8,9 @@ using SportAssistant.Service.Controllers;
 [Route("manager")]
 public class ManagerController : BaseController
 {
-    [HttpGet]
-    [Route("getList"), ExcludeLogItem]
+    [HttpGet, ExcludeLogItem]
+    [Route("getList")]
+    [Route("getList/{orgId}")]
     public async Task<List<Manager>> GetListAsync([FromServices] ICommand<ManagerGetListQuery.Param, List<Manager>> command)
     {
         var result = await command.ExecuteAsync(new ManagerGetListQuery.Param() { });
@@ -17,6 +18,7 @@ public class ManagerController : BaseController
     }
 
     [HttpGet]
+    [Route("")]
     [Route("{id}")]
     public async Task<Manager> GetAsync([FromServices] ICommand<ManagerGetQuery.Param, Manager> command, int id)
     {

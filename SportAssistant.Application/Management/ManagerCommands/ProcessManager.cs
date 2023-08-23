@@ -28,10 +28,22 @@ public class ProcessManager : IProcessManager
         _mapper = mapper;
     }
 
+    public async Task<Manager> GetBaseAsync(int managerId)
+    {
+        var managerDb = await _managerRepository.FindOneAsync(t => t.UserId == managerId);
+        if (managerDb == null)
+        {
+            throw new BusinessException("Учетка менеджера не найдена");
+        }
+
+        var manager = _mapper.Map<Manager>(managerDb);
+        return manager;
+    }
+
     /// <inheritdoc />
     public async Task<List<Manager>> GetListAsync(int orgId)
     {
-        if (!await _userRoleCommands.IHaveAnyRoles(new[] { UserRoles.Admin, UserRoles.OrgOwner }))
+        if (!await _userRoleCommands.IHaveAnyRoles(new[] { UserRoles.Admin, UserRoles.OrgOwner, UserRoles.Manager }))
         {
             throw new RoleException();
         }

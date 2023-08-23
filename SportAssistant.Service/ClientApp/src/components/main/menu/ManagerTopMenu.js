@@ -21,15 +21,7 @@ function mainMenu(userInfo, lngStr) {
   return (
     <>
       <NavItem>
-        <NavLink tag={Link} className="menu-item" to="/finance">{lngStr('management.finance')}</NavLink>
-      </NavItem>
-
-      <NavItem>
-        <NavLink tag={Link} className="menu-item" to="/coachManagement">{lngStr('management.coachManagement')}</NavLink>
-      </NavItem>
-
-      <NavItem className="spaceRight">
-        <NavLink tag={Link} className="menu-item" to="/coachRequestConsole">{lngStr('management.request.header')}</NavLink>
+        <NavLink tag={Link} className="menu-item" to="/assignedCoaches/list">{lngStr('management.assignedCoach.coachManagement')}</NavLink>
       </NavItem>
     </>
   );

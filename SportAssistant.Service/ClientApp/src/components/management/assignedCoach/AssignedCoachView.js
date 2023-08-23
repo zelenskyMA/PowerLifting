@@ -2,23 +2,23 @@
 import { connect } from "react-redux";
 import { Button, Col, Container, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
-import { DropdownControl, ErrorPanel, InputNumber, InputText, LoadingPanel } from "../../../common/controls/CustomControls";
+import { DropdownControl, ErrorPanel, LoadingPanel, TableControl } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 import '../../../styling/Common.css';
 
 const mapDispatchToProps = dispatch => { return { changeModalVisibility: (modalInfo) => changeModalVisibility(modalInfo, dispatch) } }
 
-class ManagerView extends Component {
+class AssignedCoachView extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      manager: Object,
+      coach: Object,
 
       orgManagers: [],
-      targetManagerId: 0,
       toggleCoachTransfer: false,
+      targetManagerId: 0,
 
       loading: true,
       error: ''
@@ -28,36 +28,25 @@ class ManagerView extends Component {
   componentDidMount() { this.getInitData(); }
 
   getInitData = async () => {
-    const [managerData, managerList] = await Promise.all([
-      GetAsync(`/manager/${this.props.params.id}`),
+    const [coachData, managerList] = await Promise.all([
+      GetAsync(`/assignedCoach/${this.props.params.id}`),
       GetAsync(`/manager/getList`)
     ]);
 
-    var filteredList = managerList.filter((user) => user.id.toString() !== this.props.params.id)
+    var filteredList = managerList.filter((user) => user.id !== coachData.managerId)
 
-    this.setState({ manager: managerData, orgManagers: filteredList, loading: false });
+    this.setState({ coach: coachData, orgManagers: filteredList, loading: false });
   }
 
   onManagerSelect = (id) => { this.setState({ error: '', targetManagerId: id }); }
-  onValueChange = (propName, value) => { this.setState(prevState => ({ error: '', manager: { ...prevState.manager, [propName]: value } })); }
-  goBack = () => { this.props.navigate(`/manager/list`); }
+  goBack = () => { this.props.navigate(`/assignedCoaches/list`); }
   toggleTransfer = () => { this.setState({ toggleCoachTransfer: !this.state.toggleCoachTransfer }); }
 
-  onSaveChanges = async () => {
-    try {
-      var d = 0;
-
-      await PostAsync('manager', { manager: this.state.manager });
-      this.goBack();
-    }
-    catch (error) {
-      this.setState({ error: error.message });
-    }
-  }
-
   confirmTransfer = async () => {
+    var request = { sourceManagerId: this.state.coach.managerId, targetManagerId: this.state.targetManagerId, coachIds: [this.props.params.id] };
+
     try {
-      await PostAsync("manager/transfer", { sourceManagerId: this.props.params.id, targetManagerId: this.state.targetManagerId });
+      await PostAsync("manager/transfer", request);
       this.goBack();
     }
     catch (error) {
@@ -70,14 +59,14 @@ class ManagerView extends Component {
       isVisible: true,
       headerText: lngStr('appSetup.modal.confirm'),
       buttons: [{ name: lngStr('general.actions.confirm'), onClick: this.onConfirmUnAssign, color: "success" }],
-      body: () => { return (<p>{lngStr('management.confirmUnAssign')}</p>) }
+      body: () => { return (<p>{lngStr('management.assignedCoach.confirmUnAssign')}</p>) }
     };
     this.props.changeModalVisibility(modalInfo);
   }
 
   onConfirmUnAssign = async () => {
     try {
-      await PostAsync(`/manager/changeRole`, { userId: this.props.params.id, roleStatus: false });
+      await PostAsync(`/assignedCoach/changeRole`, { userId: this.props.params.id, roleStatus: false });
       this.goBack();
     }
     catch (error) {
@@ -92,8 +81,7 @@ class ManagerView extends Component {
 
     return (
       <>
-        <h5 className="spaceBottom">{this.state.manager.name} ({lngStr('management.manager')})</h5>
-
+        <h5>{this.state.coach?.coachName} ({lngStr('management.assignedCoach.coach')})</h5>
         <ErrorPanel errorMessage={this.state.error} />
 
         {this.personalInfoPanel(lngStr)}
@@ -104,7 +92,6 @@ class ManagerView extends Component {
 
         <div className="spaceTop">
           <Button color="primary" className="spaceRight" onClick={() => this.onUnAssignAsync(lngStr)}>{lngStr('management.unAssign')}</Button>
-          <Button color="primary" className="spaceRight" onClick={() => this.onSaveChanges()}>{lngStr('general.actions.save')}</Button>
           <Button color="primary" outline onClick={() => this.goBack()}>{lngStr('general.actions.back')}</Button>
         </div>
       </>
@@ -112,23 +99,19 @@ class ManagerView extends Component {
   }
 
   personalInfoPanel(lngStr) {
+    const columns = [
+      { Header: 'Id', accessor: 'id' },
+      { Header: lngStr('general.common.userName'), accessor: 'legalName' },
+    ];
+
+    if (!(this.state.coach && this.state.coach?.sportsmen?.length > 0)) { return (<p><em>{lngStr('management.assignedCoach.noSportsmen')}</em></p>); }
+
     return (
       <>
-        <p>{lngStr('management.license.main')}</p>
-        <Row className="spaceBottom" style={{ marginTop: '10px' }}>
-          <Col xs={3}>
-            <InputNumber label={lngStr('management.license.available') + ':'} propName="allowedCoaches" onChange={this.onValueChange} initialValue={this.state.manager.allowedCoaches} />
-          </Col>
-          <Col xs={3} className="spaceMinTop">
-            <p>{lngStr('management.license.distributed') + ': ' + this.state.manager.distributedCoaches}</p>
-          </Col>
-        </Row>
-
-        <Row className="spaceBottom">
-          <Col xs={3}>
-            <InputText label={lngStr('general.common.tel') + ':'} propName="telNumber" onChange={this.onValueChange} initialValue={this.state.manager.telNumber} />
-          </Col>
-        </Row>
+        <p>{lngStr('management.assignedCoach.coachSportsmen')}</p>
+        <Container className="spaceMinTop">
+          <TableControl columnsInfo={columns} data={this.state.coach?.sportsmen} pageSize={10} />
+        </Container>
       </>
     );
   }
@@ -137,7 +120,7 @@ class ManagerView extends Component {
     if (!this.state.orgManagers || this.state.orgManagers?.length === 0) { return (<></>); }
 
     return (
-      <div className="spaceMinTop">
+      <div className="spaceTop">
         <Button color="primary" outline onClick={() => this.toggleTransfer()}>{lngStr('management.assignedCoach.coachTransfer')}</Button>
         {this.state.toggleCoachTransfer && (
           <Container className="spaceMinTop">
@@ -156,4 +139,4 @@ class ManagerView extends Component {
   }
 }
 
-export default WithRouter(connect(null, mapDispatchToProps)(ManagerView))
+export default WithRouter(connect(null, mapDispatchToProps)(AssignedCoachView))

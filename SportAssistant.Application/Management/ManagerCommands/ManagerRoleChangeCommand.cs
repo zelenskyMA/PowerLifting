@@ -12,25 +12,25 @@ public class ManagerRoleChangeCommand : ICommand<ManagerRoleChangeCommand.Param,
 {
     private readonly IUserRoleCommands _userRoleCommands;
     private readonly IProcessCoachAssignment _processCoachAssignment;
-    private readonly IProcessOrgDataByUserId _processOrgDataByUserId;
+    private readonly IProcessOrgData _processOrgData;
     private readonly ICrudRepo<ManagerDb> _managerRepository;
 
     public ManagerRoleChangeCommand(
         IUserRoleCommands userRoleCommands,
         IProcessCoachAssignment processCoachAssignment,
-        IProcessOrgDataByUserId processOrgDataByUserId,
+        IProcessOrgData processOrgData,
         ICrudRepo<ManagerDb> managerRepository)
     {
         _userRoleCommands = userRoleCommands;
         _processCoachAssignment = processCoachAssignment;
-        _processOrgDataByUserId = processOrgDataByUserId;
+        _processOrgData = processOrgData;
         _managerRepository = managerRepository;
     }
 
     /// <inheritdoc />
     public async Task<bool> ExecuteAsync(Param param)
     {
-        var org = await _processOrgDataByUserId.GetOrgByUserIdAsync();
+        var org = await _processOrgData.GetOrgByUserIdAsync() ?? await _processOrgData.GetOrgByManagerIdAsync();
         if (org == null)
         {
             throw new RoleException();

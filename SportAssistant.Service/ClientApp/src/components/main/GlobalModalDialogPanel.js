@@ -17,10 +17,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 class GlobalModalDialogPanel extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   hideModal = () => {
     this.props.changeModalVisibility({ isVisible: false, headerText: "", buttons: [], body: () => { return (<p></p>) } });
   }
