@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { Button } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
 import { ErrorPanel, LoadingPanel, TabControl, TableControl, Tooltip } from "../../../common/controls/CustomControls";
+import { SaveExcelFile } from "../../../common/DownloadActions";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { DateToLocal } from "../../../common/LocalActions";
-import { SaveExcelFile } from "../../../common/DownloadActions";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
 
 const mapDispatchToProps = dispatch => {
@@ -102,7 +102,7 @@ class PlansListPanel extends Component {
     return (
       <>
         <img id={'downloadPlan' + planId} src="/img/download_icon.png" width="25" height="23" className="rounded mx-auto d-block"
-          onClick={(e) => this.onDownloadAction(e, planId, planFileName, lngStr)} />
+          alt="" onClick={(e) => this.onDownloadAction(e, planId, planFileName, lngStr)} />
         <Tooltip text={lngStr('report.export') + ' ' + planFileName} tooltipTargetId={'downloadPlan' + planId} />
       </>
     )

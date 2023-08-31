@@ -66,6 +66,7 @@
     <Folder Include="Tables\trn" />
     <Folder Include="Tables\usr" />
     <Folder Include="Tables\plan" />
+    <Folder Include="Tables\org" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploy\A_master.PostDeployment.sql" />
@@ -104,5 +105,8 @@
     <Build Include="Tables\plan\TemplateExercises.sql" />
     <Build Include="Tables\plan\TemplateExerciseSettings.sql" />
     <Build Include="Tables\dbo\EmailMessages.sql" />
+    <Build Include="Tables\org\Organizations.sql" />
+    <Build Include="Tables\org\Managers.sql" />
+    <Build Include="Tables\org\AssignedCoaches.sql" />
   </ItemGroup>
 </Project>

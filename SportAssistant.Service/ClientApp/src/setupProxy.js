@@ -11,6 +11,7 @@ const context =  [
   "/user", "/userInfo", "/userAchivement",
 
   "/administration", "/dictionary", "/appSettings", "/reports",
+  "/organization", "/manager", "/assignedCoach",
 
   "/trainingRequests", "/trainingGroups", "/groupUser"
 ];

@@ -37,14 +37,16 @@ public class UserRoleCommands : IUserRoleCommands
     /// <inheritdoc />
     public async Task<RolesInfo> GetUserRoles(int userId)
     {
-        var roles = (await _userRoleRepository.FindAsync(t => t.UserId == userId)).Select(t => _mapper.Map<UserRole>(t)).ToList();
+        var roles = (await _userRoleRepository.FindAsync(t => t.UserId == userId)).Select(_mapper.Map<UserRole>).ToList();
         var roleInfo = new RolesInfo();
         foreach (var item in roles)
         {
             switch (item.RoleId)
             {
-                case 10: roleInfo.IsAdmin = true; break;
-                case 11: roleInfo.IsCoach = true; break;
+                case (int)UserRoles.Admin: roleInfo.IsAdmin = true; break;
+                case (int)UserRoles.Coach: roleInfo.IsCoach = true; break;
+                case (int)UserRoles.Manager: roleInfo.IsManager = true; break;
+                case (int)UserRoles.OrgOwner: roleInfo.IsOrgOwner = true; break;
             }
         }
 
@@ -56,12 +58,16 @@ public class UserRoleCommands : IUserRoleCommands
         (await _userRoleRepository.FindAsync(t => t.UserId == _user.Id && t.RoleId == (int)role)).Any();
 
     /// <inheritdoc />
+    public async Task<bool> IHaveAnyRoles(IEnumerable<UserRoles> roles)
+    {
+        List<int> roleIds = roles.Cast<int>().ToList();
+        return (await _userRoleRepository.FindAsync(t => t.UserId == _user.Id && roleIds.Contains(t.RoleId))).Any();
+    }
+
+    /// <inheritdoc />
     public async Task AddRole(int userId, UserRoles role)
     {
-        if (!await IHaveRole(UserRoles.Admin))
-        {
-            throw new RoleException();
-        }
+        await CheckRightsAsync(role);
 
         if ((await _userRoleRepository.FindAsync(t => t.UserId == userId && t.RoleId == (int)role)).Any())
         {
@@ -74,10 +80,7 @@ public class UserRoleCommands : IUserRoleCommands
     /// <inheritdoc />
     public async Task RemoveRole(int userId, UserRoles role)
     {
-        if (!await IHaveRole(UserRoles.Admin))
-        {
-            throw new RoleException();
-        }
+        await CheckRightsAsync(role);
 
         if (userId == _user.Id && role == UserRoles.Admin)
         {
@@ -89,5 +92,25 @@ public class UserRoleCommands : IUserRoleCommands
         {
             _userRoleRepository.Delete(roleDb.First());
         }
+    }
+
+    private async Task CheckRightsAsync(UserRoles role)
+    {
+        if (await IHaveRole(UserRoles.Admin))
+        {
+            return; // админ может все
+        }
+
+        if (await IHaveRole(UserRoles.OrgOwner) && new[] { UserRoles.OrgOwner, UserRoles.Manager }.Contains(role))
+        {
+            return; // владелец может выбирать другого владельца и менеджеров
+        }
+
+        if (await IHaveRole(UserRoles.Manager) && new[] { UserRoles.Coach }.Contains(role))
+        {
+            return; // менеджер может назначать тренеров
+        }
+
+        throw new RoleException();
     }
 }

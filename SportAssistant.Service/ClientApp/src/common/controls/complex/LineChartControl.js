@@ -12,7 +12,7 @@ export function LineChartControl({ linesDataList, chartXDots = null, multidata =
 
   // формируем доп. свойство в объектах массива под тоггл. True по дефолту, чтоб новые данные не прятались.
   const [lineProps, setLineProps] = useState(
-    linesDataList.length == 0 ? [] :
+    linesDataList.length === 0 ? [] :
       linesDataList.reduce(
         (item, key) => {
           item.name = item.name ? item.name : t('analitics.commonLineName');
@@ -21,7 +21,7 @@ export function LineChartControl({ linesDataList, chartXDots = null, multidata =
         })
   );
 
-  if (chartXDots?.length == 0) { return (<></>); }
+  if (chartXDots?.length === 0) { return (<></>); }
   if (chartXDots?.length > 25) { return (<>{t('analitics.chartOverload')}</>); }
 
   var colors = [

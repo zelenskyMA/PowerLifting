@@ -227,6 +227,8 @@ public static class DbSeed
         ctx.UserRoles.Add(new UserRoleDb() { UserId = adminId, RoleId = 10 });
         ctx.UserRoles.Add(new UserRoleDb() { UserId = coachId, RoleId = 11 });
         ctx.UserRoles.Add(new UserRoleDb() { UserId = users.First(t => t.Email == TestConstants.SecondCoachLogin).Id, RoleId = 11 });
+        ctx.UserRoles.Add(new UserRoleDb() { UserId = users.First(t => t.Email == TestConstants.ManagerLogin).Id, RoleId = 12 });
+        ctx.UserRoles.Add(new UserRoleDb() { UserId = users.First(t => t.Email == TestConstants.OrgOwnerLogin).Id, RoleId = 13 });
 
         var achivements = new List<UserAchivementDb>() {
             new UserAchivementDb() { UserId = mainUserId, CreationDate = DateTime.Now.AddDays(-1), ExerciseTypeId = 1, Result = 20 },

@@ -41,7 +41,7 @@ function setValue(event, propName, onChange) {
   }
 
   let number = parseInt(val, 10);
-  onChange(propName, number.toString());   
+  onChange(propName, number);   
 }
 
 function onFocus(event) {

@@ -6,3 +6,6 @@ GO
 
 CREATE SCHEMA [plan]
 GO
+
+CREATE SCHEMA [org]
+GO

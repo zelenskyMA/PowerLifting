@@ -3,10 +3,7 @@ import WithRouter from "../../../common/extensions/WithRouter";
 import PlansListPanel from "./PlansListPanel";
 
 class PlansListView extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+  
   render() {
     const lngStr = this.props.lngStr;
 

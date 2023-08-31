@@ -24,9 +24,9 @@ public class ProcessUserInfo : IProcessUserInfo
     }
 
     /// <inheritdoc />
-    public async Task<UserInfo> GetInfo(int userId, bool coachInfoRequest = false)
+    public async Task<UserInfo> GetInfo(int userId, bool coachInfoRequest = true)
     {
-        var infoDb = (await _userInfoRepository.FindOneAsync(t => t.UserId == userId));
+        var infoDb = await _userInfoRepository.FindOneAsync(t => t.UserId == userId);
         if (infoDb == null)
         {
             return new UserInfo();
@@ -36,11 +36,25 @@ public class ProcessUserInfo : IProcessUserInfo
         info.LegalName = UserNaming.GetLegalShortName(info.FirstName, info.Surname, info.Patronimic, "Кабинет");
         info.RolesInfo = await _userRoleCommands.GetUserRoles(userId);
 
-        if (info.CoachId > 0 && !coachInfoRequest)
+        if (info.CoachId > 0 && coachInfoRequest)
         {
-            info.CoachLegalName = (await GetInfo(info.CoachId.Value, true)).LegalName;
+            info.CoachLegalName = (await GetInfo(info.CoachId.Value, false)).LegalName;
         }
 
         return info;
+    }
+
+    /// <inheritdoc />
+    public async Task<List<UserInfo>> GetInfoList(List<int> userIds)
+    {
+        var infoDbList = await _userInfoRepository.FindAsync(t => userIds.Contains(t.UserId));
+        
+        var infoList = infoDbList.Select(_mapper.Map<UserInfo>).ToList();
+        foreach (var info in infoList)
+        {
+            info.LegalName = UserNaming.GetLegalFullName(info, "Имя не задано");
+        }
+
+        return infoList;
     }
 }

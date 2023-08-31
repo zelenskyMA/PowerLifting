@@ -27,6 +27,13 @@ public interface IUserRoleCommands
     Task<bool> IHaveRole(UserRoles role);
 
     /// <summary>
+    /// Check, if user has any role in supplied list
+    /// </summary>
+    /// <param name="roles">roles list</param>
+    /// <returns></returns>
+    Task<bool> IHaveAnyRoles(IEnumerable<UserRoles> roles);
+
+    /// <summary>
     /// Add role for selected user
     /// </summary>
     /// <param name="userId">User Id</param>

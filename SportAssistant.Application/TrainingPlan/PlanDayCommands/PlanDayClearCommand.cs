@@ -29,7 +29,7 @@ public class PlanDayClearCommand : ICommand<PlanDayClearCommand.Param, bool>
 
     public async Task<bool> ExecuteAsync(Param param)
     {
-        var userId = await _processPlanUserId.GetByDayId(param.Id);
+        var userId = await _processPlanUserId.GetByDayIdAsync(param.Id);
         await _processPlan.PlanningAllowedForUserAsync(userId);
 
         var planExercisesDb = await _planExerciseRepository.FindAsync(t => t.PlanDayId == param.Id);

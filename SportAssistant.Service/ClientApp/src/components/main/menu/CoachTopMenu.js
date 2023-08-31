@@ -8,7 +8,10 @@ import '../../../styling/NavMenu.css';
 export function CoachTopMenu({ userInfo }) {
   const { t } = useTranslation();
 
-  return (<>{mainMenu(userInfo, t)}</>);
+  return (
+    <>
+      {mainMenu(userInfo, t)}
+    </>);
 }
 
 function mainMenu(userInfo, lngStr) {

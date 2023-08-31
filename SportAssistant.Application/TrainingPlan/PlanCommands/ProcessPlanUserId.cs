@@ -27,7 +27,7 @@ public class ProcessPlanUserId : IProcessPlanUserId
     }
 
     /// <inheritdoc />
-    public async Task<int> GetByDayId(int id)
+    public async Task<int> GetByDayIdAsync(int id)
     {
         var day = await _planDayRepository.FindOneAsync(t => t.Id == id);
         if (day == null)
@@ -41,7 +41,7 @@ public class ProcessPlanUserId : IProcessPlanUserId
     }
 
     /// <inheritdoc />
-    public async Task<int> GetByPlanExerciseId(int id)
+    public async Task<int> GetByPlanExerciseIdAsync(int id)
     {
         var planExercise = await _planExerciseRepository.FindOneAsync(t => t.Id == id);
         if (planExercise == null)
@@ -49,11 +49,11 @@ public class ProcessPlanUserId : IProcessPlanUserId
             return 0;
         }
 
-        return await GetByDayId(planExercise.PlanDayId);
+        return await GetByDayIdAsync(planExercise.PlanDayId);
     }
 
     /// <inheritdoc />
-    public async Task<int> GetByPlanExerciseSettingsId(int id)
+    public async Task<int> GetByPlanExerciseSettingsIdAsync(int id)
     {
         var planExerciseSettings = await _exerciseSettingsRepository.FindOneAsync(t => t.Id == id);
         if (planExerciseSettings == null)
@@ -61,6 +61,6 @@ public class ProcessPlanUserId : IProcessPlanUserId
             return 0;
         }
 
-        return await GetByPlanExerciseId(planExerciseSettings.PlanExerciseId);
+        return await GetByPlanExerciseIdAsync(planExerciseSettings.PlanExerciseId);
     }
 }

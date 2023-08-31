@@ -15,6 +15,10 @@ public class CrudRepo<T> : BaseRepo<T>, ICrudRepo<T> where T : class
     public Task<T?> FindOneAsync(Expression<Func<T, bool>> predicate) =>
         predicate == null ? DbSet.AsNoTracking().FirstOrDefaultAsync() : DbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
 
+    public Task<int> CountAsync(Expression<Func<T, bool>> predicate) =>
+        predicate == null ? DbSet.AsNoTracking().CountAsync() : DbSet.AsNoTracking().CountAsync(predicate);
+
+
     public async Task CreateListAsync(List<T> entities)
     {
         foreach (var item in entities)

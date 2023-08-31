@@ -39,7 +39,7 @@ public class PlanDayGetByIdQuery : ICommand<PlanDayGetByIdQuery.Param, PlanDay>
             return planDay;
         }
 
-        var planUserId = await _processPlanUserId.GetByDayId(param.Id);
+        var planUserId = await _processPlanUserId.GetByDayIdAsync(param.Id);
         await _processPlan.ViewAllowedForDataOfUserAsync(planUserId);
         
         if (planUserId != _user.Id)

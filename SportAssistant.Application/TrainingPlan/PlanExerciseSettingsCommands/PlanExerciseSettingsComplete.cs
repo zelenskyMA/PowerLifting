@@ -34,7 +34,7 @@ public class PlanExerciseSettingsComplete : ICommand<PlanExerciseSettingsComplet
 
         foreach (var item in excercisesDb)
         {
-            var planUserId = await _processPlanUserId.GetByPlanExerciseSettingsId(item.Id);
+            var planUserId = await _processPlanUserId.GetByPlanExerciseSettingsIdAsync(item.Id);
             await _processPlan.PlanningAllowedForUserAsync(planUserId);
 
             item.Completed = param.IsCompleted;

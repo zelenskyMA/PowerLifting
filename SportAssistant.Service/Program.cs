@@ -10,6 +10,9 @@ using SportAssistant.Application.Common;
 using SportAssistant.Application.Common.Actions.EmailNotifications;
 using SportAssistant.Application.Common.Actions.TrainingCounters;
 using SportAssistant.Application.Dictionaryies;
+using SportAssistant.Application.Management.CoachAssignment;
+using SportAssistant.Application.Management.ManagerCommands;
+using SportAssistant.Application.Management.OrganizationCommands;
 using SportAssistant.Application.ReportGeneration;
 using SportAssistant.Application.Settings;
 using SportAssistant.Application.TrainingPlan.ExerciseCommands;
@@ -33,6 +36,7 @@ using SportAssistant.Domain.Interfaces.Actions.EmailNotifications;
 using SportAssistant.Domain.Interfaces.Coaching.Application;
 using SportAssistant.Domain.Interfaces.Coaching.Repositories;
 using SportAssistant.Domain.Interfaces.Common;
+using SportAssistant.Domain.Interfaces.Management;
 using SportAssistant.Domain.Interfaces.ReportGeneration;
 using SportAssistant.Domain.Interfaces.Settings.Application;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
@@ -107,6 +111,10 @@ public partial class Program
         builder.Services.AddScoped<IUserRoleCommands, UserRoleCommands>();
         builder.Services.AddScoped<IUserBlockCommands, UserBlockCommands>();
 
+        builder.Services.AddScoped<IProcessCoachAssignment, ProcessCoachAssignment>();
+        builder.Services.AddScoped<IProcessManager, ProcessManager>();
+        builder.Services.AddScoped<IProcessOrgData, ProcessOrgData>();
+        
         builder.Services.AddScoped<IProcessEmail, ProcessEmail>();
         builder.Services.AddScoped<IResetPasswordEmailHandler, ResetPasswordEmailHandler>();
 

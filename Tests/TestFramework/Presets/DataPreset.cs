@@ -34,6 +34,8 @@ public class DataPreset
             new UserDb() { Id = 5, Email = TestConstants.User2Login, Password = TestConstants.EncriptedPwd, Salt = TestConstants.Salt, },
             new UserDb() { Id = 6, Email = TestConstants.BlockedUserLogin, Password = TestConstants.EncriptedPwd, Salt = TestConstants.Salt, Blocked = true },
             new UserDb() { Id = 7, Email = TestConstants.NoCoachUserLogin, Password = TestConstants.EncriptedPwd, Salt = TestConstants.Salt, },
+            new UserDb() { Id = 8, Email = TestConstants.ManagerLogin, Password = TestConstants.EncriptedPwd, Salt = TestConstants.Salt, },
+            new UserDb() { Id = 9, Email = TestConstants.OrgOwnerLogin, Password = TestConstants.EncriptedPwd, Salt = TestConstants.Salt, },
         };
 
         DbSeed.InitializeDbForTests(ctx, Users);

@@ -8,11 +8,12 @@ import '../../../styling/NavMenu.css';
 export function CommonTopMenu({ userInfo }) {
   const { t } = useTranslation();
 
-  return (<>
-    {mainMenu(userInfo, t)}
-    {coachLink(userInfo, t)}
-    {adminLink(userInfo, t)}
-  </>);
+  return (
+    <>
+      {mainMenu(userInfo, t)}
+      {coachLink(userInfo, t)}
+      {adminLink(userInfo, t)}
+    </>);
 }
 
 function mainMenu(userInfo, lngStr) {

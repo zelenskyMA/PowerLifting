@@ -84,7 +84,11 @@ class UserCabinet extends Component {
 
     return (
       <>
-        <h5 className="spaceBottom">{lngStr('appSetup.user.cabinet')}</h5>
+        <Row>
+          <Col xs={2}><h5 className="spaceBottom">{lngStr('appSetup.user.cabinet')}</h5></Col>
+          <Col><i>Мой ид: {this.state.userInfo.id}</i></Col>
+        </Row>
+                
         {this.personalInfoPanel(lngStr)}
 
         <hr style={{ width: '75%', paddingTop: "2px", marginBottom: '30px' }} />
@@ -147,9 +151,9 @@ class UserCabinet extends Component {
         </Row>
 
         <Row className="spaceTop">
-          <Col xs={10}>            
-              <span style={{ marginRight: '20px' }} >{lngStr('coaching.myTrainer')}:</span>
-              {this.coachRequestView(lngStr)}            
+          <Col xs={10}>
+            <span style={{ marginRight: '20px' }} >{lngStr('coaching.myTrainer')}:</span>
+            {this.coachRequestView(lngStr)}
           </Col>
         </Row>
 

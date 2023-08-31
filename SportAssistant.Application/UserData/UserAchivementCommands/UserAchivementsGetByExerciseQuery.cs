@@ -26,7 +26,7 @@ public class UserAchivementsGetByExerciseQuery : ICommand<UserAchivementsGetByEx
     /// <inheritdoc />
     public async Task<UserAchivement> ExecuteAsync(Param param)
     {
-        var userId = await _processPlanUserId.GetByPlanExerciseId(param.PlanExerciseId);
+        var userId = await _processPlanUserId.GetByPlanExerciseIdAsync(param.PlanExerciseId);
         if (userId == 0)
         {
             throw new BusinessException("Упражнение не найдено, нельзя определить рекорд.");

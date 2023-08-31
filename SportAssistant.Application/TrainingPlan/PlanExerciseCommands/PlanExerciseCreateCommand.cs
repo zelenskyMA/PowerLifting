@@ -92,7 +92,7 @@ public class PlanExerciseCreateCommand : ICommand<PlanExerciseCreateCommand.Para
 
     private async Task<int> GetAndCheckUserId(int dayId)
     {
-        var userId = await _processPlanUserId.GetByDayId(dayId);
+        var userId = await _processPlanUserId.GetByDayIdAsync(dayId);
         return await _processPlan.PlanningAllowedForUserAsync(userId);
     }
 

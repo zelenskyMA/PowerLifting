@@ -29,7 +29,7 @@ public class PlanExerciseGetByDayQuery : ICommand<PlanExerciseGetByDayQuery.Para
 
         if (exercises.Count > 0) //запрет просмотра чужих данных
         {
-            var userId = await _processPlanUserId.GetByDayId(param.DayId);
+            var userId = await _processPlanUserId.GetByDayIdAsync(param.DayId);
             await _processPlan.ViewAllowedForDataOfUserAsync(userId);
         }
 

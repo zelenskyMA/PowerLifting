@@ -1,6 +1,7 @@
 ﻿using SportAssistant.Domain.Enums;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.UserData.Application;
+using SportAssistant.Domain.Models.UserData;
 
 namespace SportAssistant.Application.Administration.AdministrationCommands;
 
@@ -19,42 +20,25 @@ public class ApplyRolesCommand : ICommand<ApplyRolesCommand.Param, bool>
     /// <inheritdoc />
     public async Task<bool> ExecuteAsync(Param param)
     {
-        if (param.IsAdmin)
-        {
-            await _userRoleCommands.AddRole(param.UserId, UserRoles.Admin);
-        }
-        else
-        {
-            await _userRoleCommands.RemoveRole(param.UserId, UserRoles.Admin);
-        }
-
-        if (param.IsCoach)
-        {
-            await _userRoleCommands.AddRole(param.UserId, UserRoles.Coach);
-        }
-        else
-        {
-            await _userRoleCommands.RemoveRole(param.UserId, UserRoles.Coach);
-        }
+        await UpdateRole(param.UserId, param.IsAdmin, UserRoles.Admin);
+        await UpdateRole(param.UserId, param.IsCoach, UserRoles.Coach);
+        await UpdateRole(param.UserId, param.IsManager, UserRoles.Manager);
+        await UpdateRole(param.UserId, param.IsOrgOwner, UserRoles.OrgOwner);
 
         return true;
     }
 
-    public class Param
+    private async Task UpdateRole(int userId, bool hasRole, UserRoles role)
     {
-        /// <summary>
-        /// UI supplies this field for role update
-        /// </summary>
-        public int UserId { get; set; }
-
-        /// <summary>
-        /// True if user har administration role
-        /// </summary>
-        public bool IsAdmin { get; set; } = false;
-
-        /// <summary>
-        /// True if user har coach role
-        /// </summary>
-        public bool IsCoach { get; set; } = false;
+        if (hasRole)
+        {
+            await _userRoleCommands.AddRole(userId, role);
+        }
+        else
+        {
+            await _userRoleCommands.RemoveRole(userId, role);
+        }
     }
+
+    public class Param : RolesInfo { }
 }

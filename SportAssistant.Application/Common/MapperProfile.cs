@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using SportAssistant.Domain.DbModels.Basic;
 using SportAssistant.Domain.DbModels.Coaching;
+using SportAssistant.Domain.DbModels.Management;
 using SportAssistant.Domain.DbModels.TrainingPlan;
 using SportAssistant.Domain.DbModels.TrainingTemplate;
 using SportAssistant.Domain.DbModels.UserData;
 using SportAssistant.Domain.Models;
 using SportAssistant.Domain.Models.Basic;
 using SportAssistant.Domain.Models.Coaching;
+using SportAssistant.Domain.Models.Management;
 using SportAssistant.Domain.Models.TrainingPlan;
 using SportAssistant.Domain.Models.TrainingTemplate;
 using SportAssistant.Domain.Models.UserData;
@@ -21,6 +23,7 @@ public class MapperProfile : Profile
         UserProfile();
         CoachProfile();
         TemplateProfile();
+        ManagementProfile();
 
         CreateMap<DictionaryDb, DictionaryItem>().ReverseMap();
         CreateMap<DictionaryTypeDb, DictionaryType>().ReverseMap();
@@ -30,10 +33,11 @@ public class MapperProfile : Profile
     private void UserProfile()
     {
         CreateMap<UserDb, UserModel>().ReverseMap();
-        CreateMap<UserInfoDb, UserInfo>().ReverseMap();
         CreateMap<UserAchivementDb, UserAchivement>().ReverseMap();
         CreateMap<UserRoleDb, UserRole>().ReverseMap();
         CreateMap<UserBlockHistoryDb, UserBlockHistory>().ReverseMap();
+
+        CreateMap<UserInfoDb, UserInfo>().ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId)).ReverseMap();
     }
 
     private void PlanProfile()
@@ -67,5 +71,14 @@ public class MapperProfile : Profile
         CreateMap<TemplateExerciseDb, TemplateExercise>()
             .ForPath(dest => dest.Exercise.Id, opt => opt.MapFrom(src => src.ExerciseId))
             .ReverseMap();
+    }
+
+    private void ManagementProfile()
+    {
+        CreateMap<OrganizationDb, Organization>().ReverseMap();
+        CreateMap<ManagerDb, Manager>()
+             .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
+             .ReverseMap();
+        CreateMap<AssignedCoachDb, AssignedCoach>().ReverseMap();
     }
 }

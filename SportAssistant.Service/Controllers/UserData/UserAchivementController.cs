@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportAssistant.Application.UserData.UserAchivementCommands;
-using SportAssistant.Application.UserData.UserCommands1;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Models.UserData;
 

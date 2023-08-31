@@ -16,8 +16,8 @@ public class GroupUpdateCommand : ICommand<GroupUpdateCommand.Param, bool>
     private readonly IUserProvider _user;
 
     public GroupUpdateCommand(
-     ICrudRepo<TrainingGroupDb> trainingGroupRepository,
-     IUserProvider user)
+        ICrudRepo<TrainingGroupDb> trainingGroupRepository,
+        IUserProvider user)
     {
         _trainingGroupRepository = trainingGroupRepository;
         _user = user;
