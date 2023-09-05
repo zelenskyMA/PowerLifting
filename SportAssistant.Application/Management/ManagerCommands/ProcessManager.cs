@@ -37,6 +37,10 @@ public class ProcessManager : IProcessManager
         }
 
         var manager = _mapper.Map<Manager>(managerDb);
+        var info = await _processCoachAssignment.GetAssignedCoachesAsync(new List<int>() { managerId });
+
+        manager.DistributedCoaches = info[0].CoachIds.Count;
+
         return manager;
     }
 
