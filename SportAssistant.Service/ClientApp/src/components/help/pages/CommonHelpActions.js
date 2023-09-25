@@ -9,5 +9,5 @@ export function GetAsHtml(helpStrId) {
 
 export function GetMsgWithUrl(url, text = "Ссылка на видео") {
   const { t } = useTranslation('help');
-  return (<>{t('common.link')} <a href={url} target="_blank">{text}</a></>);
+  return (<>{t('common.link')} <a href={url} target="_blank" rel="noreferrer">{text}</a></>);
 }

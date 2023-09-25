@@ -10,7 +10,7 @@ import { GetAsHtml, GetMsgWithUrl } from "./CommonHelpActions";
 "footer2": ""
 */
 
-export function Coach_Header({ }) {
+export function Header({ }) {
   return (
     <>
       {GetAsHtml('topMenuItem.coach.header1')}
@@ -27,7 +27,7 @@ export function Coach_Header({ }) {
   );
 }
 
-export function Coach_MenuSetup({ }) {
+export function MenuSetup({ }) {
   return (
     <>
       {GetAsHtml('coach.menuSetup.header1')}
@@ -46,7 +46,7 @@ export function Coach_MenuSetup({ }) {
   );
 }
 
-export function Coach_GroupSetup({ }) {
+export function GroupSetup({ }) {
   return (
     <>
       {GetAsHtml('coach.groupSetup.header1')}
@@ -65,7 +65,7 @@ export function Coach_GroupSetup({ }) {
   );
 }
 
-export function Coach_RequestManagement({ }) {
+export function RequestManagement({ }) {
   return (
     <>
       {GetAsHtml('coach.requestManagement.header1')}
@@ -86,7 +86,7 @@ export function Coach_RequestManagement({ }) {
   );
 }
 
-export function Coach_ManageUserInGroup({ }) {
+export function ManageUserInGroup({ }) {
   return (
     <>
       {GetAsHtml('coach.manageUserInGroup.header1')}
@@ -106,7 +106,7 @@ export function Coach_ManageUserInGroup({ }) {
   );
 }
 
-export function Coach_BeforePlanning({ }) {
+export function BeforePlanning({ }) {
   return (
     <>
       {GetAsHtml('coach.beforePlanning.header1')}
@@ -115,7 +115,7 @@ export function Coach_BeforePlanning({ }) {
   );
 }
 
-export function Coach_SetPlanning({ }) {
+export function SetPlanning({ }) {
   return (
     <>
       <div>
@@ -146,7 +146,7 @@ export function Coach_SetPlanning({ }) {
   );
 }
 
-export function Coach_TrainingAssignment({ }) {
+export function TrainingAssignment({ }) {
   return (
     <>
       <div>
@@ -167,7 +167,7 @@ export function Coach_TrainingAssignment({ }) {
 }
 
 
-export function Coach_TrainingCorrection({ }) {
+export function TrainingCorrection({ }) {
   return (
     <>
       {GetAsHtml('coach.trainingCorrection.header1')}

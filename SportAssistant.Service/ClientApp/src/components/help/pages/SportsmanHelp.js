@@ -10,7 +10,7 @@ import { GetAsHtml, GetMsgWithUrl } from "./CommonHelpActions";
 "footer2": ""
 */
 
-export function Usr_Header({ }) {
+export function Header({ }) {
   return (
     <>
       {GetAsHtml('topMenuItem.sportsman.header1')}
@@ -27,7 +27,7 @@ export function Usr_Header({ }) {
   );
 }
 
-export function Usr_ExerciseCreation({ }) {
+export function ExerciseCreation({ }) {
   return (
     <>
       {GetAsHtml('sportsman.exerciseCreation.header1')}
@@ -48,7 +48,7 @@ export function Usr_ExerciseCreation({ }) {
   );
 }
 
-export function Usr_Planning({ }) {
+export function Planning({ }) {
   return (
     <>
       {GetAsHtml('sportsman.planning.header')}
@@ -73,7 +73,7 @@ export function Usr_Planning({ }) {
   );
 }
 
-export function Usr_OfpPlanning({ }) {
+export function OfpPlanning({ }) {
   return (
     <>
       {GetAsHtml('sportsman.ofpPlanning.header1')}
@@ -85,7 +85,7 @@ export function Usr_OfpPlanning({ }) {
   );
 }
 
-export function Usr_CancelAndTransfer({ }) {
+export function CancelAndTransfer({ }) {
   return (
     <>
       {GetAsHtml('sportsman.cancelAndTransfer.header')}
@@ -106,7 +106,7 @@ export function Usr_CancelAndTransfer({ }) {
   );
 }
 
-export function Usr_CompliteTraining({ }) {
+export function CompliteTraining({ }) {
   return (
     <>
       {GetAsHtml('sportsman.compliteTraining.header1')}
@@ -129,7 +129,7 @@ export function Usr_CompliteTraining({ }) {
   );
 }
 
-export function Usr_TrainingAnalitics({ }) {
+export function TrainingAnalitics({ }) {
   return (
     <>
       {GetAsHtml('sportsman.trainingAnalitics.header')}
@@ -148,7 +148,7 @@ export function Usr_TrainingAnalitics({ }) {
   );
 }
 
-export function Usr_WorkWithCoach({ }) {
+export function WorkWithCoach({ }) {
   return (
     <>
       {GetAsHtml('sportsman.workWithCoach.header1')}
