@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Button, Col, Row } from "reactstrap";
 import { GetAsync, PostAsync, DeleteAsync } from "../../common/ApiActions";
 import { DropdownControl, ErrorPanel, LoadingPanel } from "../../common/controls/CustomControls";
+import { ContactsPanel } from '../userData/ContactsPanels';
 import WithRouter from "../../common/extensions/WithRouter";
 import '../../styling/Common.css';
 
@@ -69,6 +70,9 @@ class RequestAcceptView extends Component {
           <Col xs={2}>{lngStr('appSetup.user.height') + ': ' + this.state.request.userHeight}</Col>
           <Col xs={2}>{lngStr('appSetup.user.age') + ': ' + this.state.request.userAge}</Col>
           <Col xs={2}>{lngStr('appSetup.user.weight') + ': ' + this.state.request.userWeight}</Col>
+        </Row>
+        <Row className="spaceTop">
+          <ContactsPanel contacts={this.state.request.contacts} />
         </Row>
         <Row className="spaceTop">
           <Col xs={6}>

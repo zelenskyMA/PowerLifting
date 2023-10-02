@@ -37,7 +37,11 @@ public class MapperProfile : Profile
         CreateMap<UserRoleDb, UserRole>().ReverseMap();
         CreateMap<UserBlockHistoryDb, UserBlockHistory>().ReverseMap();
 
-        CreateMap<UserInfoDb, UserInfo>().ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId)).ReverseMap();
+        CreateMap<UserInfoDb, UserInfo>()
+            .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
+            .ForPath(dest => dest.Contacts.TelNumber, opt => opt.MapFrom(src => src.TelNumber))
+            .ForPath(dest => dest.Contacts.Telegram, opt => opt.MapFrom(src => src.Telegram))
+            .ReverseMap();
     }
 
     private void PlanProfile()
@@ -59,6 +63,8 @@ public class MapperProfile : Profile
 
         CreateMap<UserInfoDb, CoachInfo>()
             .ForPath(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
+            .ForPath(dest => dest.Contacts.TelNumber, opt => opt.MapFrom(src => src.TelNumber))
+            .ForPath(dest => dest.Contacts.Telegram, opt => opt.MapFrom(src => src.Telegram))
             .ReverseMap();
     }
 

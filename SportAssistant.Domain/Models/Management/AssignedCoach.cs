@@ -14,7 +14,7 @@ public class AssignedCoach
 
     public string ManagerName { get; set; } = string.Empty;
 
-    public string ManagerTel { get; set; } = string.Empty;
+    public string? ManagerTel { get; set; } = string.Empty;
 
     public List<UserInfo> Sportsmen { get; set; } = new List<UserInfo>();
 }

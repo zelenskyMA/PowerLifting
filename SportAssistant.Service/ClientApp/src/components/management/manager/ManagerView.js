@@ -126,7 +126,7 @@ class ManagerView extends Component {
 
         <Row className="spaceBottom">
           <Col xs={3}>
-            <InputText label={lngStr('general.common.tel') + ':'} propName="telNumber" onChange={this.onValueChange} initialValue={this.state.manager.telNumber} />
+            <p>{lngStr('general.common.tel') + ': ' + this.state.manager.telNumber}</p>
           </Col>
         </Row>
       </>

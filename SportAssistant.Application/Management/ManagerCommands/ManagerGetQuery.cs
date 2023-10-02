@@ -29,8 +29,9 @@ public class ManagerGetQuery : ICommand<ManagerGetQuery.Param, Manager>
 
         var manager = await _processManager.GetBaseAsync(param.Id);
 
-        var info = await _processUserInfo.GetInfoList(new List<int>() { manager.Id });
-        manager.Name = info.FirstOrDefault()?.LegalName ?? string.Empty;
+        var info = (await _processUserInfo.GetInfoList(new List<int>() { manager.Id })).FirstOrDefault();
+        manager.Name = info?.LegalName ?? string.Empty;
+        manager.TelNumber = info?.Contacts?.TelNumber ?? string.Empty;
 
         return manager;
     }

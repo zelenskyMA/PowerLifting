@@ -2,6 +2,7 @@
 import { connect } from "react-redux";
 import { Button, Col, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
+import { ContactsPanel } from '../../userData/ContactsPanels';
 import { DropdownControl, ErrorPanel, LoadingPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import { changeModalVisibility } from "../../../stores/appStore/appActions";
@@ -106,6 +107,10 @@ class GroupUserCardPanel extends Component {
           <Col xs={2}>{lngStr('appSetup.user.pushAchivement') + ': ' + (this.state.pushAchivement?.result ?? 0)}</Col>
           <Col xs={2}>{lngStr('appSetup.user.jerkAchivement') + ': ' + (this.state.jerkAchivement?.result ?? 0)}</Col>
         </Row>
+        <Row className="spaceTop">
+          <ContactsPanel contacts={this.state.card.baseInfo.contacts} />
+        </Row>
+
         <Row className="spaceTop">
           <Col xs={6}>
             <DropdownControl placeholder={lngStr('general.common.notSet')} label={lngStr('coaching.groups.groupForTransfer') + ': '}

@@ -135,6 +135,12 @@
       "userCard": "Карточка",
       "toUserCard": "К карточке спортсмена",
 
+      "messengers": "Приложения",
+      "contactMe": "Мои контакты",
+      "noContacts": "Не указано контактов",
+      "telegram": "Телеграм",
+      "telegramCode": "Ваше имя (без @)",
+
       "sportAchivements": "Спортивные достижения",
       "pushAchivement": "Рекорд в толчке",
       "jerkAchivement": "Рекорд в рывке",

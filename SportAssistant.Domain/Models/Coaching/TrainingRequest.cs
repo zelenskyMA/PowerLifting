@@ -1,4 +1,5 @@
 ﻿using SportAssistant.Domain.Models.Common;
+using SportAssistant.Domain.Models.UserData;
 
 namespace SportAssistant.Domain.Models.Coaching;
 
@@ -19,4 +20,6 @@ public class TrainingRequest : Entity
     public int UserWeight { get; set; }
 
     public int UserHeight { get; set; }
+
+    public Contacts Contacts { get; set; } = new Contacts();
 }

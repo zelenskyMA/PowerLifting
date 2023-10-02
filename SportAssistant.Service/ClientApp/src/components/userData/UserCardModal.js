@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { Popover, PopoverHeader, PopoverBody, Row, Col } from "reactstrap";
 import { useTranslation } from 'react-i18next';
+import { ContactsPanel } from './ContactsPanels';
 import '../../styling/Common.css';
 
 export function UserCardModal({ userInfo, targetId, isOpen }) {
@@ -18,6 +19,11 @@ export function UserCardModal({ userInfo, targetId, isOpen }) {
           <p>{t('appSetup.user.age')}:{' '}{userInfo.age}</p>
           <p>{t('appSetup.user.weight')}:{' '}{userInfo.weight}</p>
         </div>
+
+        <div className="spaceTop">
+          <ContactsPanel contacts={userInfo.contacts} />
+        </div>
+
         {userInfo.CoachLegalName &&
           <Row>
             <Col xs={2}>{t('coaching.trainer') + ': ' + userInfo.CoachLegalName}</Col>

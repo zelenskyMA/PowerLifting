@@ -29,6 +29,7 @@ public class User_InfoTest : BaseTest
         info.Should().NotBeNull();
         info.FirstName.IsNullOrEmpty().Should().BeFalse();
         info.Age.Should().NotBeNull();
+        info.Contacts.TelNumber.Should().BeNull();
 
         // обновление данных пользователя
         var request = new UserInfoUpdateCommand.Param() { Info = Factory.GetBuilder().Build().Create<UserInfo>() };
@@ -41,6 +42,8 @@ public class User_InfoTest : BaseTest
         var assertInfo = Client.Get<UserInfo>("/userInfo");
         assertInfo.FirstName.Should().NotBe(info.FirstName);
         assertInfo.Age.Should().NotBe(info.Age);
+        assertInfo.Contacts.TelNumber.Should().NotBeNull();
+
         assertInfo.Should().BeEquivalentTo(request.Info, t => t
             .Excluding(m => m.LegalName)
             .Excluding(m => m.CoachLegalName)

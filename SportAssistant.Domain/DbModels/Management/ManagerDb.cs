@@ -7,8 +7,6 @@ public class ManagerDb
 {
     public int UserId { get; set; }
 
-    public string? TelNumber { get; set; }
-
     public int AllowedCoaches { get; set; }
 
     public int OrgId { get; set; }

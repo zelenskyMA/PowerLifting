@@ -5,6 +5,7 @@ using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.Interfaces.Coaching.Repositories;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Models.Coaching;
+using SportAssistant.Domain.Models.UserData;
 
 namespace SportAssistant.Application.Coaching.TrainingRequestCommands;
 
@@ -37,12 +38,13 @@ public class RequestGetForCoachSingleQuery : ICommand<RequestGetForCoachSingleQu
 
         var usersInfoDb = await _trainingRequestRepository.GetUsersAsync(requestsDb.Select(t => t.UserId).ToList());
 
-        var request = requestsDb.Select(t => _mapper.Map<TrainingRequest>(t)).First();
-        var userInfoDb = usersInfoDb.First(t => t.UserId == request.UserId);
-        request.UserName = UserNaming.GetLegalFullName(userInfoDb.FirstName, userInfoDb.Surname, userInfoDb.Patronimic);
-        request.UserWeight = userInfoDb.Weight ?? 0;
-        request.UserHeight = userInfoDb.Height ?? 0;
-        request.UserAge = userInfoDb.Age ?? 0;
+        var request = requestsDb.Select(_mapper.Map<TrainingRequest>).First();
+        var userInfo = _mapper.Map<UserInfo>(usersInfoDb.First(t => t.UserId == request.UserId));
+        request.UserName = UserNaming.GetLegalFullName(userInfo.FirstName, userInfo.Surname, userInfo.Patronimic);
+        request.UserWeight = userInfo.Weight ?? 0;
+        request.UserHeight = userInfo.Height ?? 0;
+        request.UserAge = userInfo.Age ?? 0;
+        request.Contacts = userInfo.Contacts;
 
         return request;
     }

@@ -43,6 +43,7 @@ class UserCabinet extends Component {
   }
 
   onValueChange = (propName, value) => { this.setState(prevState => ({ userInfo: { ...prevState.userInfo, [propName]: value } })); }
+  onContactsChange = (propName, value) => { this.setState(prevState => ({ userInfo: { ...prevState.userInfo, contacts: { ...prevState.userInfo.contacts, [propName]: value } } })); }
   onPushChange = (propName, value) => { this.setState(prevState => ({ pushAchivement: { ...prevState.pushAchivement, [propName]: value } })); }
   onJerkChange = (propName, value) => { this.setState(prevState => ({ jerkAchivement: { ...prevState.jerkAchivement, [propName]: value } })); }
 
@@ -88,8 +89,11 @@ class UserCabinet extends Component {
           <Col xs={2}><h5 className="spaceBottom">{lngStr('appSetup.user.cabinet')}</h5></Col>
           <Col><i>Мой ид: {this.state.userInfo.id}</i></Col>
         </Row>
-                
+
         {this.personalInfoPanel(lngStr)}
+
+        <p>{lngStr('appSetup.user.contactMe')}</p>
+        {this.contactInfoPanel(lngStr)}
 
         <hr style={{ width: '75%', paddingTop: "2px", marginBottom: '30px' }} />
 
@@ -157,6 +161,23 @@ class UserCabinet extends Component {
           </Col>
         </Row>
 
+      </>
+    );
+  }
+
+  contactInfoPanel(lngStr) {
+    return (
+      <>
+        <Row className="spaceBottom" style={{ marginTop: '10px' }}>
+          <Col xs={3}>
+            <InputText label={lngStr('general.common.tel') + ':'} propName="telNumber" onChange={this.onContactsChange}
+              initialValue={this.state.userInfo.contacts.telNumber} />
+          </Col>
+          <Col xs={3}>
+            <InputText label={lngStr('appSetup.user.telegram') + ':'} propName="telegram" onChange={this.onContactsChange}
+              initialValue={this.state.userInfo.contacts.telegram} placeholder={lngStr('appSetup.user.telegramCode')} />
+          </Col>
+        </Row>
       </>
     );
   }

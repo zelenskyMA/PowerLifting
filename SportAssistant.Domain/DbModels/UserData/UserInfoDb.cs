@@ -22,4 +22,9 @@ public class UserInfoDb
     public int? CoachId { get; set; }
 
     public bool CoachOnly { get; set; }
+
+    public string? TelNumber { get; set; }
+
+    public string? Telegram { get; set; }
+
 }

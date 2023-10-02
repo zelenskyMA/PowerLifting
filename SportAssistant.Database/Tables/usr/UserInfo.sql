@@ -9,6 +9,8 @@
     [Age] INT NULL, 
     [CoachId] INT NULL,
     [CoachOnly] BIT NOT NULL DEFAULT 0,
+    [TelNumber] NVARCHAR(20) NULL, 
+    [Telegram] NVARCHAR(100) NULL, 
     FOREIGN KEY ([UserId]) REFERENCES [usr].[Users] ([Id]),
     FOREIGN KEY ([CoachId]) REFERENCES [usr].[Users] ([Id]), 
     CONSTRAINT [PK_UserInfo] PRIMARY KEY ([UserId])

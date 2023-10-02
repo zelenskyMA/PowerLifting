@@ -1,12 +1,13 @@
 ﻿import { Input, InputGroup, InputGroupText } from "reactstrap";
 
-export function InputText({ label, onChange, propName, initialValue }) {
+export function InputText({ label, onChange, propName, initialValue, placeholder }) {
   initialValue = initialValue || '';
+  placeholder = placeholder || '';
 
   return (
     <InputGroup>
       <InputGroupText>{label}</InputGroupText>
-      <Input onChange={(e) => setValue(e, propName, onChange)} value={initialValue} />
+      <Input onChange={(e) => setValue(e, propName, onChange)} value={initialValue} placeholder={placeholder} />
     </InputGroup>
   )
 }

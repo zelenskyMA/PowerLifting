@@ -1,7 +1,8 @@
 ﻿import React, { Component } from 'react';
 import { GetAsync, PostAsync } from "../../common/ApiActions";
-import { TableControl, LoadingPanel } from "../../common/controls/CustomControls";
+import { LoadingPanel, TableControl } from "../../common/controls/CustomControls";
 import WithRouter from "../../common/extensions/WithRouter";
+import { MessengersPanel } from './ContactsPanels';
 
 class CoachSelection extends Component {
   constructor(props) {
@@ -33,7 +34,9 @@ class CoachSelection extends Component {
     const columns = [
       { Header: 'Id', accessor: 'id' },
       { Header: lngStr('appSetup.user.name'), accessor: 'name' },
-      { Header: lngStr('appSetup.user.age'), accessor: 'age' }
+      { Header: lngStr('appSetup.user.age'), accessor: 'age' },
+      { Header: lngStr('general.common.tel'), accessor: 'contacts.telNumber' },
+      { Header: lngStr('appSetup.user.messengers'), accessor: 'telegram', Cell: t => this.messengersCell(t) }
     ];
 
     return (
@@ -43,6 +46,12 @@ class CoachSelection extends Component {
         <TableControl columnsInfo={columns} data={this.state.coaches} rowClick={this.onRowDblClick} />
       </>
     );
+  }
+
+  messengersCell = (record) => {
+    return (
+      <MessengersPanel contacts={record.row.original.contacts} />
+    )
   }
 }
 

@@ -4,7 +4,6 @@ using SportAssistant.Domain.CustomExceptions;
 using SportAssistant.Domain.DbModels.Management;
 using SportAssistant.Domain.Interfaces.Common.Operations;
 using SportAssistant.Domain.Interfaces.Common.Repositories;
-using SportAssistant.Domain.Interfaces.Management;
 using SportAssistant.Domain.Interfaces.TrainingPlan.Application;
 using SportAssistant.Domain.Interfaces.UserData.Application;
 
@@ -13,7 +12,6 @@ namespace SportAssistant.Application.Management.CoachAssignment;
 public class AssignedCoachGetQuery : ICommand<AssignedCoachGetQuery.Param, AssignedCoach>
 {
     private readonly IProcessUserInfo _processUserInfo;
-    private readonly IProcessManager _processManager;
     private readonly IProcessGroupUser _processGroupUser;
     private readonly ICrudRepo<AssignedCoachDb> _assignedCoachRepository;
     private readonly IMapper _mapper;
@@ -21,14 +19,12 @@ public class AssignedCoachGetQuery : ICommand<AssignedCoachGetQuery.Param, Assig
 
     public AssignedCoachGetQuery(
         IProcessUserInfo processUserInfo,
-        IProcessManager processManager,
         IProcessGroupUser processGroupUser,
         ICrudRepo<AssignedCoachDb> assignedCoachRepository,
         IMapper mapper,
         IUserProvider user)
     {
         _processUserInfo = processUserInfo;
-        _processManager = processManager;
         _processGroupUser = processGroupUser;
         _assignedCoachRepository = assignedCoachRepository;
         _mapper = mapper;
@@ -51,11 +47,9 @@ public class AssignedCoachGetQuery : ICommand<AssignedCoachGetQuery.Param, Assig
         var infoList = await _processUserInfo.GetInfoList(new List<int>() { coach.CoachId, coach.ManagerId });
         coach.CoachName = infoList.FirstOrDefault(t => t.Id == coach.CoachId)?.LegalName ?? string.Empty;
         coach.ManagerName = infoList.FirstOrDefault(t => t.Id == coach.ManagerId)?.LegalName ?? string.Empty;
+        coach.ManagerTel = infoList.FirstOrDefault(t => t.Id == coach.ManagerId)?.Contacts?.TelNumber ?? string.Empty;
 
         coach.Sportsmen = await _processGroupUser.GetCoachUsersList(coach.CoachId);
-
-        var manager = await _processManager.GetBaseAsync(_user.Id);
-        coach.ManagerTel = manager.TelNumber;
 
         return coach;
     }

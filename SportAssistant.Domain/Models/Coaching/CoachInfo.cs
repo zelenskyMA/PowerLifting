@@ -1,4 +1,6 @@
-﻿namespace SportAssistant.Domain.Models.Coaching;
+﻿using SportAssistant.Domain.Models.UserData;
+
+namespace SportAssistant.Domain.Models.Coaching;
 
 public class CoachInfo
 {
@@ -7,4 +9,6 @@ public class CoachInfo
     public string? Name { get; set; }
 
     public int? Age { get; set; }
+
+    public Contacts Contacts { get; set; } = new Contacts();
 }

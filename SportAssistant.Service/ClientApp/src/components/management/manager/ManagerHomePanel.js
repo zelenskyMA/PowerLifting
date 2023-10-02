@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
-import { Button, Col, Container, Row } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 import { GetAsync, PostAsync } from "../../../common/ApiActions";
-import { InfoPanel, InputText, LoadingPanel } from "../../../common/controls/CustomControls";
+import { InfoPanel, LoadingPanel } from "../../../common/controls/CustomControls";
 import WithRouter from "../../../common/extensions/WithRouter";
 import '../../../styling/Common.css';
 
@@ -44,18 +44,7 @@ class ManagerHomePanel extends Component {
         <p>{lngStr('management.yourInfo')}</p>
         <InfoPanel infoMessage={this.state.success} />
 
-        <Container>
-          <Row>
-            <Col xs={3}>
-              <InputText label={lngStr('general.common.tel') + ':'} propName="telNumber" onChange={this.onValueChange} initialValue={this.state.manager.telNumber} />
-            </Col>
-          </Row>
-          <Row className="spaceTopXs">
-            <Col xs={3}>
-              <Button color="primary" onClick={() => this.onSaveChanges(lngStr)}>{lngStr('general.actions.save')}</Button>
-            </Col>
-          </Row>
-
+        <Container>         
           <Row className="spaceTop">
             <Col xs={1}><strong>{lngStr('management.license.main')}</strong></Col>
             <Col xs={2}>{lngStr('management.license.sum') + ': ' + this.state.manager.allowedCoaches}</Col>

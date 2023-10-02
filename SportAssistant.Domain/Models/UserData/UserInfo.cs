@@ -30,5 +30,7 @@ public class UserInfo
     /// </summary>
     public bool CoachOnly { get; set; }
 
+    public Contacts Contacts { get; set; } = new Contacts();
+
     public RolesInfo RolesInfo { get; set; } = new RolesInfo();
 }
