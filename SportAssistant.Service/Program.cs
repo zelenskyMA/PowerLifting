@@ -58,8 +58,8 @@ public partial class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddHttpContextAccessor();
 
-        builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ConnectionDb"));
-        // builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ProdCopyConnectionDb"));       
+       // builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ConnectionDb"));
+         builder.Services.AddConnectionProvider(builder.Configuration.GetConnectionString("ProdCopyConnectionDb"));       
 
         builder.Services.AddSingleton(new MapperConfiguration(t => t.AddProfile(new MapperProfile())).CreateMapper());
 

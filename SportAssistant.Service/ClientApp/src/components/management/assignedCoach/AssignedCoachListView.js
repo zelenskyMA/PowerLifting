@@ -77,7 +77,9 @@ class AssignedCoachListView extends Component {
   }
 
   SelectedUserPanel(lngStr) {
-    if (!this.state.checkedUser?.userName) { return (<></>) }
+    if (!this.state.checkedUser?.userId) { return (<></>) }
+
+    var name = !this.state.checkedUser?.userName ? lngStr('management.org.userWithoutName') : this.state.checkedUser?.userName;
 
     return (
       <Row className="spaceMinTop">
@@ -87,7 +89,7 @@ class AssignedCoachListView extends Component {
         <Col>
           <p className="spaceMinTop">
             <span className="spaceRight"> {lngStr('management.org.userExists')}: </span>
-            <b> {this.state.checkedUser?.userName} </b>
+            <b> {name} </b>
           </p>
         </Col>
       </Row>

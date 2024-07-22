@@ -45,16 +45,17 @@ class ManagerHomePanel extends Component {
         <InfoPanel infoMessage={this.state.success} />
 
         <Container>
-          <Row>
-            <Col xs={3}>
-              <InputText label={lngStr('general.common.tel') + ':'} propName="telNumber" onChange={this.onValueChange} initialValue={this.state.manager.telNumber} />
-            </Col>
-          </Row>
-          <Row className="spaceTopXs">
-            <Col xs={3}>
-              <Button color="primary" onClick={() => this.onSaveChanges(lngStr)}>{lngStr('general.actions.save')}</Button>
-            </Col>
-          </Row>
+
+          {/*<Row>*/}
+          {/*  <Col xs={3}>*/}
+          {/*    <InputText label={lngStr('general.common.tel') + ':'} propName="telNumber" onChange={this.onValueChange} initialValue={this.state.manager.telNumber} />*/}
+          {/*  </Col>*/}
+          {/*</Row>*/}
+          {/*<Row className="spaceTopXs">*/}
+          {/*  <Col xs={3}>*/}
+          {/*    <Button color="primary" onClick={() => this.onSaveChanges(lngStr)}>{lngStr('general.actions.save')}</Button>*/}
+          {/*  </Col>*/}
+          {/*</Row>*/}
 
           <Row className="spaceTop">
             <Col xs={1}><strong>{lngStr('management.license.main')}</strong></Col>
